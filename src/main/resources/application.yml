@@ -1,0 +1,28 @@
+server:
+  port: 40323
+  tomcat:
+    uri-encoding: UTF-8
+spring:
+  application:
+    name: push-center
+  kafka:
+    bootstrap-servers: xxx
+    consumer:
+      auto-commit-interval: 1000ms
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      group-id: xxx
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      max-poll-records: 1000
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      thread:
+        min: 2
+        max: 5
+    producer:
+      batch-size: 65536
+      buffer-memory: 524288
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      retries: 3
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    listener:
+      missing-topics-fatal: false
