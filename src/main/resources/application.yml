@@ -3,6 +3,8 @@ server:
   tomcat:
     uri-encoding: UTF-8
 spring:
+  messages:
+    basename: i18n/messages
   application:
     name: push-center
   kafka:
