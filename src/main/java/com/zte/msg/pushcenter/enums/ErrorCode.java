@@ -50,11 +50,6 @@ public enum ErrorCode {
     PARAM_MIN_ERROR(32000008, "param.min"),
 
     /**
-     *
-     */
-    ALERT_HANDLED_YET(32000009, "alert.handled.yet"),
-
-    /**
      * 参数不在枚举范围中
      */
     NOT_IN_ENUM(32000010, "not.in.enum"),
@@ -65,14 +60,13 @@ public enum ErrorCode {
     RESOURCE_NOT_EXIST(32000011, "resource.not.exist"),
 
     /**
-     * 用户创建的告警规则数量超过了最大值
+     * 指定的推送方式不存在
      */
-    RESOURCE_OUT_OF_RANGE(32000012, "resource.out.of.range"),
+    PUSH_TYPE_NOT_EXIST(32000011,"push.type.not.exist")
 
-    /**
-     * 关联场景联动规则失败
-     */
-    RULEENGINE_ALLOCATE_ERROR(32000013, "rule.engine.allocate.error");
+    ;
+
+
     private Integer code;
 
     private String message;

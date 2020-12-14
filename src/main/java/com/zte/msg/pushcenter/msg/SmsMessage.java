@@ -1,7 +1,11 @@
 package com.zte.msg.pushcenter.msg;
 
+import com.zte.msg.pushcenter.dto.req.SmsMessageReqDTO;
+import com.zte.msg.pushcenter.utils.UidUtils;
 import lombok.Data;
+import org.springframework.beans.BeanUtils;
 
+import java.sql.Timestamp;
 import java.util.Map;
 
 /**
@@ -17,7 +21,7 @@ public class SmsMessage extends Message {
     /**
      * 手机号码
      */
-    private String phoneNum;
+    private String[] phoneNums;
 
     /**
      * 短信模版id
@@ -32,7 +36,23 @@ public class SmsMessage extends Message {
     /**
      * 变量列表
      */
-    private Map<String, String> var;
+    private String[] var;
 
+    private String secretId;
+    private String secretKey;
+    private String appId;
+    private String sign;
+
+    /**
+     * 调用Auth接口返回的token
+     */
+    private String token;
+
+    public SmsMessage build(SmsMessageReqDTO reqDTO) {
+        BeanUtils.copyProperties(reqDTO, this);
+        this.setMessageId(UidUtils.getInstance().nextId());
+        this.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        return this;
+    }
 
 }

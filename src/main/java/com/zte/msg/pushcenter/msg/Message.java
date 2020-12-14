@@ -17,7 +17,7 @@ public class Message {
     /**
      * messageId
      */
-    private Integer messageId;
+    private Long messageId;
 
     /**
      * 推送方式
