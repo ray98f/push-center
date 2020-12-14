@@ -18,44 +18,6 @@ import java.util.Objects;
 @Component
 public class Selector {
 
-    private static SmsPusher smsPusher;
-
-    private static EmailPusher emailPusher;
-
-    private static AppPusher appPusher;
-
-    private static TelePusher telePusher;
-
-    public static BasePusher select(Message message) {
-
-        switch (PushType.valueOf(message.getPushType())) {
-            case SMS:
-                if (Objects.isNull(smsPusher)) {
-                    smsPusher = new SmsPusher();
-                }
-                return smsPusher;
-            case TELE:
-                if (Objects.isNull(telePusher)) {
-                    telePusher = new TelePusher();
-                }
-                return telePusher;
-            case EMAIL:
-                if (Objects.isNull(emailPusher)) {
-                    emailPusher = new EmailPusher();
-                }
-                return emailPusher;
-            case APP_PUSH:
-                if (Objects.isNull(appPusher)) {
-                    appPusher = new AppPusher();
-                }
-                return appPusher;
-            case UNKNOWN:
-                throw new CommonException(ErrorCode.PUSH_TYPE_NOT_EXIST);
-            default:
-        }
-        return new SmsPusher();
-    }
-
     public enum Company {
         /**
          *

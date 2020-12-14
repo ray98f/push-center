@@ -62,9 +62,9 @@ public enum ErrorCode {
     /**
      * 指定的推送方式不存在
      */
-    PUSH_TYPE_NOT_EXIST(32000011,"push.type.not.exist")
+    PUSH_TYPE_NOT_EXIST(32000011, "push.type.not.exist"),
 
-    ;
+    PUSH_ERROR(32000011, "push.error");
 
 
     private Integer code;

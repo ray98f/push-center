@@ -9,8 +9,11 @@ import com.tencentcloudapi.sms.v20190711.SmsClient;
 import com.tencentcloudapi.sms.v20190711.models.SendSmsRequest;
 import com.tencentcloudapi.sms.v20190711.models.SendSmsResponse;
 import com.zte.msg.pushcenter.common.Selector;
+import com.zte.msg.pushcenter.enums.ErrorCode;
+import com.zte.msg.pushcenter.exception.CommonException;
 import com.zte.msg.pushcenter.msg.Message;
 import com.zte.msg.pushcenter.msg.SmsMessage;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +32,7 @@ import java.util.concurrent.CompletableFuture;
  * @date 2020/12/11 9:14
  */
 @Service
+@Slf4j
 public class SmsPusher extends BasePusher {
 
     private HttpProfile httpProfile;
@@ -82,7 +86,10 @@ public class SmsPusher extends BasePusher {
                 default:
                     return null;
             }
-        }, executor);
+        }, executor).exceptionally(e -> {
+            log.error("Error while send a sms message: {}", e.getMessage());
+            throw new CommonException(ErrorCode.PUSH_ERROR);
+        });
     }
 
     /**

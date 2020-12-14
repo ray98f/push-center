@@ -1,9 +1,12 @@
 package com.zte.msg.pushcenter.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zte.msg.pushcenter.common.pusher.MailPusher;
 import com.zte.msg.pushcenter.common.pusher.SmsPusher;
 import com.zte.msg.pushcenter.dto.DataResponse;
+import com.zte.msg.pushcenter.dto.req.MailMessageReqDTO;
 import com.zte.msg.pushcenter.dto.req.SmsMessageReqDTO;
+import com.zte.msg.pushcenter.msg.MailMessage;
 import com.zte.msg.pushcenter.msg.SmsMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,19 +36,31 @@ public class PushCenterController {
     @Resource
     private SmsPusher smsPusher;
 
+    @Resource
+    private MailPusher mailPusher;
+
     @PostMapping(value = "/push/sms")
     @ApiOperation(value = "短信推送")
     public DataResponse<JSONObject> pushSms(@Valid SmsMessageReqDTO reqDTO) {
 
         SmsMessage smsMessage = new SmsMessage().build(reqDTO);
         CompletableFuture<JSONObject> push = smsPusher.push(smsMessage);
-        JSONObject jsonObject = null;
+        JSONObject resDTO = null;
         try {
-            jsonObject = push.get();
+            resDTO = push.get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        return DataResponse.of(jsonObject);
+        return DataResponse.of(resDTO);
+    }
+
+    @PostMapping(value = "/push/mail")
+    @ApiOperation(value = "邮件推送")
+    public DataResponse<JSONObject> pushMail(@Valid MailMessageReqDTO reqDTO) {
+
+        MailMessage mailMessage = new MailMessage().build(reqDTO);
+        mailPusher.push(mailMessage);
+        return DataResponse.of(null);
     }
 
 }

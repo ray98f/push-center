@@ -12,6 +12,26 @@ spring:
     basename: i18n/messages
   application:
     name: push-center
+  mail:
+
+    default-encoding: UTF-8
+    host: smtp.163.com
+    username: aChen1874@163.com
+    password: WNEGYCVVCBERKBYB
+    port: 465
+    properties:
+      mail:
+        display:
+          sendmail: zte-rail
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+          starttls:
+            enable: true
+            required: true
+    protocol: smtps
+    test-connection: true
 #  kafka:
 #    bootstrap-servers: xxx
 #    consumer:
