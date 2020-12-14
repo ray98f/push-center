@@ -1,14 +1,13 @@
 package com.zte.msg.pushcenter.common.pusher;
 
 import com.alibaba.fastjson.JSONObject;
-import com.zte.msg.pushcenter.common.Selector;
 import com.zte.msg.pushcenter.enums.ErrorCode;
 import com.zte.msg.pushcenter.exception.CommonException;
 import com.zte.msg.pushcenter.msg.MailMessage;
 import com.zte.msg.pushcenter.msg.Message;
+import com.zte.msg.pushcenter.utils.AesUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
@@ -40,7 +39,7 @@ public class MailPusher extends BasePusher {
         MailMessage mailMessage = (MailMessage) message;
         return CompletableFuture.supplyAsync(() -> {
             SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-            simpleMailMessage.setFrom(from);
+            simpleMailMessage.setFrom(AesUtils.decrypt(from));
             simpleMailMessage.setTo(mailMessage.getTo());
             simpleMailMessage.setSubject(mailMessage.getSubject());
             simpleMailMessage.setText(mailMessage.getContent());

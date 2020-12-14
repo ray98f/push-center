@@ -1,5 +1,6 @@
 package com.zte.msg.pushcenter.config;
 
+import com.zte.msg.pushcenter.utils.AesUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -24,8 +25,8 @@ public class BeanConfig {
         javaMailSender.setProtocol(javaMailConfig.getProtocol());
         javaMailSender.setHost(javaMailConfig.getHost());
         javaMailSender.setPort(javaMailConfig.getPort());
-        javaMailSender.setUsername(javaMailConfig.getUsername());
-        javaMailSender.setPassword(javaMailConfig.getPassword());
+        javaMailSender.setUsername(AesUtils.decrypt(javaMailConfig.getUsername()));
+        javaMailSender.setPassword(AesUtils.decrypt(javaMailConfig.getPassword()));
         return javaMailSender;
     }
 

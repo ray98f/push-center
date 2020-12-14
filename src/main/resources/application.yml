@@ -16,8 +16,8 @@ spring:
 
     default-encoding: UTF-8
     host: smtp.163.com
-    username: aChen1874@163.com
-    password: WNEGYCVVCBERKBYB
+    username: KRApxf1xDB7Ff2awefRQupp6wAAMfHTvRY3U0zkvNho=
+    password: eIMY+mFbPkujWgFNf6uOlF16JX2etFhgtc+1q3itb84=
     port: 465
     properties:
       mail:
