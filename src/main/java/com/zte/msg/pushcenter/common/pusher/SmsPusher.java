@@ -75,9 +75,9 @@ public class SmsPusher extends BasePusher {
     }
 
     @Override
-    public CompletableFuture<JSONObject> push(Message message) {
+    public void submit(Message message) {
         SmsMessage smsMessage = (SmsMessage) message;
-        return CompletableFuture.supplyAsync(() -> {
+        CompletableFuture.supplyAsync(() -> {
             switch (Selector.Company.valueOf(smsMessage.getProvider())) {
                 case TENCENT:
                     return tcSmsPush(smsMessage);
@@ -86,10 +86,15 @@ public class SmsPusher extends BasePusher {
                 default:
                     return null;
             }
-        }, executor).exceptionally(e -> {
+        }, pushExecutor).exceptionally(e -> {
             log.error("Error while send a sms message: {}", e.getMessage());
-            throw new CommonException(ErrorCode.PUSH_ERROR);
+            throw new CommonException(ErrorCode.SMS_PUSH_ERROR);
         });
+    }
+
+    @Override
+    public void response(JSONObject res) {
+
     }
 
     /**

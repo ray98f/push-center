@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.zte.msg.pushcenter.msg.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import sun.reflect.generics.tree.VoidDescriptor;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -18,7 +19,11 @@ import java.util.concurrent.CompletableFuture;
 @Component
 public class AppPusher extends BasePusher {
     @Override
-    public CompletableFuture<JSONObject> push(Message message) {
-        return null;
+    public void submit(Message message) {
+    }
+
+    @Override
+    public void response(JSONObject res) {
+
     }
 }

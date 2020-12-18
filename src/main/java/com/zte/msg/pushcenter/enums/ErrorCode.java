@@ -57,14 +57,18 @@ public enum ErrorCode {
     /**
      * 资源不存在
      */
-    RESOURCE_NOT_EXIST(32000011, "resource.not.exist"),
+    RESOURCE_NOT_EXIST(32000012, "resource.not.exist"),
 
     /**
      * 指定的推送方式不存在
      */
-    PUSH_TYPE_NOT_EXIST(32000011, "push.type.not.exist"),
+    PUSH_TYPE_NOT_EXIST(32000013, "push.type.not.exist"),
 
-    PUSH_ERROR(32000011, "push.error");
+    SMS_PUSH_ERROR(32000015, "sms.push.error"),
+
+    MAIL_PUSH_ERROR(32000016, "mail.push.error"),
+
+    WECHAT_PUSH_ERROR(32000017, "wechat.push.error");
 
 
     private Integer code;

@@ -4,11 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.zte.msg.pushcenter.msg.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -21,19 +19,24 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 public abstract class BasePusher {
 
-    @Resource(name = "asyncExecutor")
-    protected ThreadPoolTaskExecutor executor;
+    @Resource(name = "asyncPushExecutor")
+    protected ThreadPoolTaskExecutor pushExecutor;
+
+    @Resource(name = "asyncResponseExecutor")
+    protected ThreadPoolTaskExecutor resExecutor;
 
     @Resource
     protected RestTemplate restTemplate;
 
     /**
-     * 推送
+     * 提交推送
      *
      * @param message
      * @return
      */
-    public abstract CompletableFuture<JSONObject> push(Message message);
+    public abstract void submit(Message message);
+
+    public abstract void response(JSONObject res);
 
 
 }

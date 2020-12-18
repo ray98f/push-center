@@ -34,10 +34,10 @@ public class MailPusher extends BasePusher {
     private String from;
 
     @Override
-    public CompletableFuture<JSONObject> push(Message message) {
+    public void submit(Message message) {
 
         MailMessage mailMessage = (MailMessage) message;
-        return CompletableFuture.supplyAsync(() -> {
+        CompletableFuture.supplyAsync(() -> {
             SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
             simpleMailMessage.setFrom(AesUtils.decrypt(from));
             simpleMailMessage.setTo(mailMessage.getTo());
@@ -47,11 +47,16 @@ public class MailPusher extends BasePusher {
                 simpleMailMessage.setCc(mailMessage.getCc());
             }
             mailSender.send(simpleMailMessage);
-            return new JSONObject();
-        }, executor).exceptionally(e -> {
-            log.error("Error while send a sms message: {}", e.getMessage());
-            throw new CommonException(ErrorCode.PUSH_ERROR);
+            return null;
+        } , pushExecutor).exceptionally(e -> {
+            log.error("Error while send a mail message: {}", e.getMessage());
+            throw new CommonException(ErrorCode.MAIL_PUSH_ERROR);
         });
+
+    }
+
+    @Override
+    public void response(JSONObject res) {
 
     }
 }
