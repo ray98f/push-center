@@ -31,7 +31,7 @@ import java.util.concurrent.ExecutionException;
  * @date 2020/12/10 13:57
  */
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/push")
 @Api(tags = "消息推送")
 @Validated
 public class PushCenterController {
@@ -48,7 +48,7 @@ public class PushCenterController {
     @Resource
     private WeChatPusher weChatPusher;
 
-    @PostMapping(value = "/push/sms")
+    @PostMapping(value = "/sms")
     @ApiOperation(value = "短信推送")
     public DataResponse<JSONObject> pushSms(@Valid SmsMessageReqDTO reqDTO) {
 
@@ -57,7 +57,7 @@ public class PushCenterController {
         return DataResponse.success();
     }
 
-    @PostMapping(value = "/push/mail")
+    @PostMapping(value = "/mail")
     @ApiOperation(value = "邮件推送")
     public DataResponse<JSONObject> pushMail(@Valid MailMessageReqDTO reqDTO) {
 
@@ -66,7 +66,7 @@ public class PushCenterController {
         return DataResponse.success();
     }
 
-    @PostMapping(value = "/push/wechat")
+    @PostMapping(value = "/wechat")
     @ApiOperation(value = "公众号推送")
     public DataResponse<JSONObject> pushWeChat(@Valid WeChatMessageReqDTO reqDTO) {
         WeChatMessage weChatMessage = new WeChatMessage().build(reqDTO);
@@ -104,5 +104,7 @@ public class PushCenterController {
         }
         return DataResponse.of(s);
     }
+
+
 }
 

@@ -32,4 +32,5 @@ public class MetaObjectHandlerConfig implements MetaObjectHandler {
 
         setFieldValByName("updatedAt", Instant.now(), metaObject);
     }
+
 }

@@ -26,4 +26,5 @@ public class CommonException extends RuntimeException {
         this.code = error.code();
         this.message = error.message();
     }
+
 }

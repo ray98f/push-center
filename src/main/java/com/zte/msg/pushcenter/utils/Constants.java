@@ -9,5 +9,5 @@ package com.zte.msg.pushcenter.utils;
  */
 public class Constants {
 
-    public static long DATA_NOT_DELETED = 0;
+    public static int DATA_NOT_DELETED = 0;
 }

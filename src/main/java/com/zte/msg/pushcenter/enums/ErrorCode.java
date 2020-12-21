@@ -49,6 +49,8 @@ public enum ErrorCode {
      */
     PARAM_MIN_ERROR(32000008, "param.min"),
 
+    DATA_EXIST(32000009, "data.exist"),
+
     /**
      * 参数不在枚举范围中
      */
@@ -68,7 +70,13 @@ public enum ErrorCode {
 
     MAIL_PUSH_ERROR(32000016, "mail.push.error"),
 
-    WECHAT_PUSH_ERROR(32000017, "wechat.push.error");
+    WECHAT_PUSH_ERROR(32000017, "wechat.push.error"),
+
+    PROVIDER_NOT_EXIST(32000018, "provider.not.exist"),
+
+    TEMPLATE_EXIST(32000019, "template.exist")
+
+    ;
 
 
     private Integer code;

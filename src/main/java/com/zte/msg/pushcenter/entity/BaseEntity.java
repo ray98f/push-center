@@ -16,7 +16,6 @@ import java.time.Instant;
  * @date 2020/12/15 8:54
  */
 @Data
-@ApiModel
 public class BaseEntity {
 
     @ApiModelProperty(hidden = true)
@@ -33,6 +32,6 @@ public class BaseEntity {
 
     @JsonIgnore
     @TableLogic
-    @TableField(value = "flag",  fill = FieldFill.INSERT)
-    private Long flag;
+    @TableField(value = "flag", fill = FieldFill.INSERT)
+    private Integer flag;
 }

@@ -36,6 +36,11 @@ public abstract class BasePusher {
      */
     public abstract void submit(Message message);
 
+    /**
+     * 回调
+     *
+     * @param res
+     */
     public abstract void response(JSONObject res);
 
 
