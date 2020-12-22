@@ -15,16 +15,20 @@ public class CommonException extends RuntimeException {
 
     private Integer code;
 
-    private String message;
+    private String enMessage;
 
-    public CommonException(Integer code, String message) {
+    private String cnMessage;
+
+    public CommonException(Integer code, String enMessage, String cnMessage) {
         this.code = code;
-        this.message = message;
+        this.enMessage = enMessage;
+        this.cnMessage = cnMessage;
     }
 
     public CommonException(ErrorCode error) {
         this.code = error.code();
-        this.message = error.message();
+        this.enMessage = error.enMessage();
+        this.cnMessage = error.cnMessage();
     }
 
 }

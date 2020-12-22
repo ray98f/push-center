@@ -31,7 +31,7 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
         wrapper.eq("provider_name", providerReqDTO.getProviderName());
         Integer integer = getBaseMapper().selectCount(wrapper);
         if (integer >= 1) {
-            throw new CommonException(ErrorCode.DATA_EXIST);
+            throw new CommonException(ErrorCode.PROVIDER_EXIST);
         }
         long now = System.currentTimeMillis();
         Provider provider = new Provider();
