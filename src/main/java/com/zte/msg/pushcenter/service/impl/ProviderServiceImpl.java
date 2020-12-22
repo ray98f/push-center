@@ -34,7 +34,7 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
         wrapper.eq("type", providerReqDTO.getType());
         Integer integer = getBaseMapper().selectCount(wrapper);
         if (integer >= 1) {
-            throw new CommonException(ErrorCode.DATA_EXIST);
+            throw new CommonException(ErrorCode.PROVIDER_EXIST);
         }
         Provider provider = new Provider();
         BeanUtils.copyProperties(providerReqDTO, provider);

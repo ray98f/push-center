@@ -35,24 +35,27 @@ public class MailPusher extends BasePusher {
 
     @Override
     public void submit(Message message) {
-
         MailMessage mailMessage = (MailMessage) message;
-        CompletableFuture.supplyAsync(() -> {
-            SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-            simpleMailMessage.setFrom(AesUtils.decrypt(from));
-            simpleMailMessage.setTo(mailMessage.getTo());
-            simpleMailMessage.setSubject(mailMessage.getSubject());
-            simpleMailMessage.setText(mailMessage.getContent());
-            if (!Objects.isNull(mailMessage.getCc()) && mailMessage.getCc().length > 0) {
-                simpleMailMessage.setCc(mailMessage.getCc());
-            }
-            mailSender.send(simpleMailMessage);
-            return null;
-        } , pushExecutor).exceptionally(e -> {
-            log.error("Error while send a mail message: {}", e.getMessage());
-            throw new CommonException(ErrorCode.MAIL_PUSH_ERROR);
-        });
-
+        if (null != mailMessage) {
+            CompletableFuture.supplyAsync(() -> {
+                SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+                simpleMailMessage.setFrom(AesUtils.decrypt(from));
+                simpleMailMessage.setTo(mailMessage.getTo());
+                simpleMailMessage.setSubject(mailMessage.getSubject());
+                simpleMailMessage.setText(mailMessage.getContent());
+                if (!Objects.isNull(mailMessage.getCc()) && mailMessage.getCc().length > 0) {
+                    simpleMailMessage.setCc(mailMessage.getCc());
+                }
+                mailSender.send(simpleMailMessage);
+                return null;
+            }, pushExecutor).exceptionally(e -> {
+                log.error("Error while send a mail message: {}", e.getMessage());
+                throw new CommonException(ErrorCode.MAIL_PUSH_ERROR);
+            });
+        } else {
+            log.error("Mail push parameter is empty");
+            throw new CommonException(ErrorCode.MAIL_PARAM_EMPTY);
+        }
     }
 
     @Override
