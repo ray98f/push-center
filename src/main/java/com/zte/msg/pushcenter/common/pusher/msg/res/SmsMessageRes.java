@@ -1,4 +1,4 @@
-package com.zte.msg.pushcenter.msg.res;
+package com.zte.msg.pushcenter.common.pusher.msg.res;
 
 import com.zte.msg.pushcenter.dto.BaseResponse;
 import lombok.Data;

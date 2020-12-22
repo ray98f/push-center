@@ -11,8 +11,8 @@
 //import com.zte.msg.pushcenter.common.Selector;
 //import com.zte.msg.pushcenter.enums.ErrorCode;
 //import com.zte.msg.pushcenter.exception.CommonException;
-//import com.zte.msg.pushcenter.msg.Message;
-//import com.zte.msg.pushcenter.msg.SmsMessage;
+//import com.zte.msg.pushcenter.common.pusher.msg.Message;
+//import com.zte.msg.pushcenter.common.pusher.msg.SmsMessage;
 //import lombok.extern.slf4j.Slf4j;
 //import org.springframework.beans.factory.annotation.Value;
 //import org.springframework.http.HttpMethod;

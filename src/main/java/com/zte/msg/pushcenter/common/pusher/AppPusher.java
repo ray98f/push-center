@@ -1,12 +1,9 @@
 package com.zte.msg.pushcenter.common.pusher;
 
 import com.alibaba.fastjson.JSONObject;
-import com.zte.msg.pushcenter.msg.Message;
+import com.zte.msg.pushcenter.common.pusher.msg.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import sun.reflect.generics.tree.VoidDescriptor;
-
-import java.util.concurrent.CompletableFuture;
 
 /**
  * description:

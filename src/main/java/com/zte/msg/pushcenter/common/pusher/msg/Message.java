@@ -1,4 +1,4 @@
-package com.zte.msg.pushcenter.msg;
+package com.zte.msg.pushcenter.common.pusher.msg;
 
 import lombok.Data;
 

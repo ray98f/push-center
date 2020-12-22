@@ -1,4 +1,4 @@
-package com.zte.msg.pushcenter.msg;
+package com.zte.msg.pushcenter.common.pusher.msg;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zte.msg.pushcenter.dto.req.WeChatMessageReqDTO;

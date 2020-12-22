@@ -24,11 +24,11 @@ public class PageReqDTO {
 
     @Min(value = 1L, message = "32000008")
     @ApiModelProperty(value = "当前页码", required = true)
-    private Long currentPage;
+    private Long page;
 
     @Range(min = 1, max = 50, message = "32000003")
     @ApiModelProperty(value = "每页条数。范围：1-50", required = true)
-    private Long pageSize;
+    private Long size;
 
     @Size(max = 128, message = "32000003")
     @ApiModelProperty(value = "排序字段。长度：0-128")
@@ -39,11 +39,11 @@ public class PageReqDTO {
 
     public <T> Page<T> of() {
         if (null != sort && null != order) {
-            Page<T> page = new Page<>(this.getCurrentPage(), this.getPageSize());
+            Page<T> page = new Page<>(this.getPage(), this.getSize());
             page.setOrders(Collections.singletonList(new OrderItem().setAsc("asc".equals(order.toLowerCase())).setColumn(sort)));
             return page;
         }
-        return new Page<>(this.getCurrentPage(), this.getPageSize());
+        return new Page<>(this.getPage(), this.getSize());
     }
 
 }

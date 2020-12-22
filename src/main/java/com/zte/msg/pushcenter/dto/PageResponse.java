@@ -36,23 +36,23 @@ public class PageResponse<T> extends BaseResponse {
         private List<T> content;
 
         @ApiModelProperty(value = "当前页面序号", example = "1")
-        private Long currentPage;
+        private Long page;
 
         @ApiModelProperty(value = "当前页面大小", example = "20")
-        private Long pageSize;
+        private Long size;
 
         @ApiModelProperty(value = "总页面数", example = "5")
-        private Long totalPage;
+        private Long pages;
 
         @ApiModelProperty(value = "总记录数", example = "100")
-        private Long totalCount;
+        private Long count;
 
         PagedData(Page<T> page) {
             this.content = page.getRecords();
-            this.currentPage = page.getCurrent();
-            this.pageSize = page.getSize();
-            this.totalPage = page.getPages();
-            this.totalCount = page.getTotal();
+            this.page = page.getCurrent();
+            this.size = page.getSize();
+            this.pages = page.getPages();
+            this.count = page.getTotal();
         }
     }
 }

@@ -1,7 +1,6 @@
-package com.zte.msg.pushcenter.msg;
+package com.zte.msg.pushcenter.common.pusher.msg;
 
 import com.zte.msg.pushcenter.dto.req.MailMessageReqDTO;
-import com.zte.msg.pushcenter.dto.req.SmsMessageReqDTO;
 import com.zte.msg.pushcenter.utils.UidUtils;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;

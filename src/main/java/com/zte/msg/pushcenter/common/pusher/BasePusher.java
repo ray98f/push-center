@@ -1,13 +1,12 @@
 package com.zte.msg.pushcenter.common.pusher;
 
 import com.alibaba.fastjson.JSONObject;
-import com.zte.msg.pushcenter.msg.Message;
+import com.zte.msg.pushcenter.common.pusher.msg.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * description:
