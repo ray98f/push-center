@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * description:
  *
@@ -20,6 +22,7 @@ public class MailMessageReqDTO {
      * 收件人地址
      */
     @ApiModelProperty(value = "收件人地址")
+    @NotNull(message = "32000020")
     private String to;
 
     /**

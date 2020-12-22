@@ -29,7 +29,7 @@ public class SmsProviderServiceImpl extends ServiceImpl<SmsProviderConfigMapper,
         Integer count = getBaseMapper().selectCount(new QueryWrapper<SmsProviderConfig>()
                 .eq("provider_id", reqDTO.getProviderId()));
         if (count >= 1) {
-            throw new CommonException(ErrorCode.DATA_EXIST);
+//            throw new CommonException(ErrorCode.DATA_EXIST);
         }
 
         SmsProviderConfig smsProviderConfig = new SmsProviderConfig();

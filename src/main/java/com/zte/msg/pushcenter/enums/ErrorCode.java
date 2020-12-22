@@ -10,70 +10,95 @@ package com.zte.msg.pushcenter.enums;
 public enum ErrorCode {
 
     /**
-     * 资源配置
+     * 该用户无相关资源操作权限
      */
-    RESOURCE_INIT_ERROR(300001, "Resource configuration initialization failed","资源配置初始化失败"),
+    RESOURCE_AUTH_FAIL(32000001, "resource.authority.error"),
 
     /**
-     * 用户
+     * 参数错误
      */
-    RESOURCE_AUTH_FAIL(301001, "The user has no permission to operate related resources", "该用户无相关资源操作权限"),
-
+    PARAM_ERROR(32000002, "param.error"),
 
     /**
-     * 枚举
+     * 参数超过范围
      */
-    ENUM_VALUE_ERROR(302001, "enum.value.error","枚举值错误"),
-    NOT_IN_ENUM(302002, "not.in.enum","参数不在枚举范围中"),
+    PARAM_OUT_OF_RANGE(32000003, "param.range.error"),
 
     /**
-     * 供应商
+     * 错误的枚举值
      */
-    PROVIDER_EXIST(303001, "Provider is exists", "供应商已存在"),
-    PROVIDER_NOT_EXIST(303002, "Provider is not exists","供应商不存在"),
-
+    ENUM_VALUE_ERROR(32000004, "enum.value.error"),
 
     /**
-     * 模板
+     * 字段不符合要求，仅限中英文字母、数字、中划线和下划线，且长度在4-32之间
      */
-    TEMPLATE_EXIST(304001, "Template is exists","模板已存在"),
-    TEMPLATE_NOT_EXIST(304002, "Template is not exists","模板不存在"),
-
+    PARAM_PATTERN_INCOMPATIBLE(32000005, "param.pattern.incompatible"),
 
     /**
-     * 短信
+     * 参数不能为空
      */
-    SMS_PUSH_ERROR(305001, "Sms push error","短信推送错误"),
+    PARAM_NULL_ERROR(32000006, "param.null.error"),
 
     /**
-     * 邮件
+     * 资源配置初始化失败
      */
-    MAIL_PUSH_ERROR(306001, "Mail push error","邮件推送错误"),
-    MAIL_PARAM_EMPTY(306002,"Mail push parameter is empty","邮箱推送参数为空"),
+    RESOURCE_INIT_ERROR(32000007, "resource.init.error"),
 
     /**
-     * 微信
+     * 参数小于最小值
      */
-    WECHAT_PUSH_ERROR(307001, "Wechat push error","微信推送错误")
-    ;
+    PARAM_MIN_ERROR(32000008, "param.min"),
 
+    DATA_EXIST(32000009, "data.exist"),
+
+    /**
+     * 参数不在枚举范围中
+     */
+    NOT_IN_ENUM(32000010, "not.in.enum"),
+
+    /**
+     * 资源不存在
+     */
+    RESOURCE_NOT_EXIST(32000012, "resource.not.exist"),
+
+    /**
+     * 指定的推送方式不存在
+     */
+    PUSH_TYPE_NOT_EXIST(32000013, "push.type.not.exist"),
+
+    SMS_PUSH_ERROR(32000015, "sms.push.error"),
+
+    MAIL_PUSH_ERROR(32000016, "mail.push.error"),
+
+    WECHAT_PUSH_ERROR(32000017, "wechat.push.error"),
+
+    PROVIDER_NOT_EXIST(32000018, "provider.not.exist"),
+
+    TEMPLATE_EXIST(32000019, "template.exist"),
+
+    /**
+     * 邮箱
+     */
+    MAIL_PARAM_EMPTY(32000020, "mail.param.empty"),
+
+    /**
+     * 第三方供应商服务
+     */
+    PROVIDER_EXIST(3200040, "provider.exist");
 
     private Integer code;
 
-    private String enMessage;
+    private String message;
 
-    private String cnMessage;
-
-    ErrorCode(Integer code, String enMessage, String cnMessage) {
+    ErrorCode(Integer code, String message) {
         this.code = code;
-        this.enMessage = enMessage;
-        this.cnMessage = cnMessage;
+        this.message = message;
     }
 
     public static String messageOf(Integer code) {
         for (ErrorCode errorCode : ErrorCode.values()) {
             if (errorCode.code.equals(code)) {
-                return errorCode.cnMessage;
+                return errorCode.message;
             }
         }
         return "";
@@ -83,11 +108,8 @@ public enum ErrorCode {
         return this.code;
     }
 
-    public String enMessage() {
-        return this.enMessage;
+    public String message() {
+        return this.message;
     }
 
-    public String cnMessage() {
-        return this.cnMessage;
-    }
 }
