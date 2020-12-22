@@ -12,7 +12,7 @@ import com.zte.msg.pushcenter.dto.res.ProviderResDTO;
  */
 public interface ProviderService {
     /**
-     * 添加供应商
+     * 添加供应商配置
      *
      * @param providerReqDTO
      * @return

@@ -1,7 +1,5 @@
 package com.zte.msg.pushcenter.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
@@ -9,13 +7,19 @@ import lombok.Data;
  *
  * @author chentong
  * @version 1.0
- * @date 2020/12/21 10:35
+ * @date 2020/12/22 14:40
  */
 @Data
-@TableName(value = "provider")
 public class Provider extends BaseEntity{
 
-    @TableField(value = "provider_name")
     private String providerName;
+
+    private Integer type;
+
+    private String secretId;
+
+    private String secretKey;
+
+    private String appId;
 
 }

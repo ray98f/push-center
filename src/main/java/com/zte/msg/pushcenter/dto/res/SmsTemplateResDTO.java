@@ -27,5 +27,5 @@ public class SmsTemplateResDTO {
     @ApiModelProperty(value = "模版id")
     private String templateId;
 
-    private String[] vars;
+    private String example;
 }

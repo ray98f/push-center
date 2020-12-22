@@ -2,7 +2,6 @@ package com.zte.msg.pushcenter.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zte.msg.pushcenter.common.pusher.MailPusher;
-import com.zte.msg.pushcenter.common.pusher.SmsPusher;
 import com.zte.msg.pushcenter.common.pusher.WeChatPusher;
 import com.zte.msg.pushcenter.dto.DataResponse;
 import com.zte.msg.pushcenter.dto.req.MailMessageReqDTO;
@@ -39,8 +38,8 @@ public class PushCenterController {
     @Resource(name = "asyncPushExecutor")
     protected ThreadPoolTaskExecutor executor;
 
-    @Resource
-    private SmsPusher smsPusher;
+//    @Resource
+//    private SmsPusher smsPusher;
 
     @Resource
     private MailPusher mailPusher;
@@ -53,7 +52,7 @@ public class PushCenterController {
     public DataResponse<JSONObject> pushSms(@Valid SmsMessageReqDTO reqDTO) {
 
         SmsMessage smsMessage = new SmsMessage().build(reqDTO);
-        smsPusher.submit(smsMessage);
+//        smsPusher.submit(smsMessage);
         return DataResponse.success();
     }
 

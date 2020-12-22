@@ -1,6 +1,5 @@
 package com.zte.msg.pushcenter.dto.res;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
@@ -17,6 +16,14 @@ public class ProviderResDTO {
 
     private Long id;
 
-    @TableField(value = "provider_name")
     private String providerName;
+
+    private Integer type;
+
+    private String secretId;
+
+    private String secretKey;
+
+    private String appId;
+
 }

@@ -15,4 +15,6 @@ public class Dic extends BaseEntity {
     private Integer key;
 
     private String value;
+
+    private String type;
 }

@@ -2,11 +2,10 @@ package com.zte.msg.pushcenter.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.zte.msg.pushcenter.dto.req.ProviderReqDTO;
 import com.zte.msg.pushcenter.dto.req.SmsTemplateReqDTO;
-import com.zte.msg.pushcenter.dto.res.ProviderResDTO;
 import com.zte.msg.pushcenter.dto.res.SmsTemplateResDTO;
 import com.zte.msg.pushcenter.entity.Provider;
+import com.zte.msg.pushcenter.entity.SmsProviderConfig;
 import com.zte.msg.pushcenter.entity.SmsTemplate;
 import com.zte.msg.pushcenter.enums.ErrorCode;
 import com.zte.msg.pushcenter.exception.CommonException;
@@ -51,13 +50,19 @@ public class SmsTemplateServiceImpl extends ServiceImpl<SmsTemplateMapper, SmsTe
         }
         SmsTemplate entity = new SmsTemplate();
         BeanUtils.copyProperties(smsTemplateReqDTO, entity);
-        entity.setVars(Arrays.toString(smsTemplateReqDTO.getVars()));
         getBaseMapper().insert(entity);
         SmsTemplateResDTO resDTO = new SmsTemplateResDTO();
         BeanUtils.copyProperties(entity, resDTO);
         resDTO.setProviderName(provider.getProviderName());
-        resDTO.setVars(smsTemplateReqDTO.getVars());
+        resDTO.setExample(smsTemplateReqDTO.getExample());
         return resDTO;
     }
+
+    @Override
+    public SmsTemplateResDTO selectTemplate(String templateId) {
+
+        return null;
+    }
+
 
 }

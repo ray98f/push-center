@@ -1,7 +1,6 @@
 package com.zte.msg.pushcenter.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.zte.msg.pushcenter.entity.Provider;
 import com.zte.msg.pushcenter.entity.SmsProviderConfig;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -10,9 +9,8 @@ import org.apache.ibatis.annotations.Mapper;
  *
  * @author chentong
  * @version 1.0
- * @date 2020/12/21 10:34
+ * @date 2020/12/22 14:38
  */
 @Mapper
-public interface ProviderMapper extends BaseMapper<Provider> {
-
+public interface SmsProviderConfigMapper extends BaseMapper<SmsProviderConfig> {
 }

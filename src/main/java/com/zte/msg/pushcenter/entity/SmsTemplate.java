@@ -22,5 +22,5 @@ public class SmsTemplate extends BaseEntity {
     @TableField(value = "template_id")
     private String templateId;
 
-    private String vars;
+    private String example;
 }

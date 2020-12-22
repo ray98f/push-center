@@ -28,25 +28,11 @@ public class SmsMessage extends Message {
      */
     private String templateId;
 
-    /**
-     * 短信服务提供商
-     */
-    private String provider;
-
-    /**
-     * 变量列表
-     */
-    private String[] var;
-
     private String secretId;
     private String secretKey;
     private String appId;
     private String sign;
 
-    /**
-     * 调用Auth接口返回的token
-     */
-    private String token;
 
     public SmsMessage build(SmsMessageReqDTO reqDTO) {
         BeanUtils.copyProperties(reqDTO, this);

@@ -1,8 +1,6 @@
 package com.zte.msg.pushcenter.service;
 
-import com.zte.msg.pushcenter.dto.req.ProviderReqDTO;
 import com.zte.msg.pushcenter.dto.req.SmsTemplateReqDTO;
-import com.zte.msg.pushcenter.dto.res.ProviderResDTO;
 import com.zte.msg.pushcenter.dto.res.SmsTemplateResDTO;
 
 /**
@@ -15,7 +13,6 @@ import com.zte.msg.pushcenter.dto.res.SmsTemplateResDTO;
 public interface SmsTemplateService {
 
 
-
     /**
      * 添加短信模版
      *
@@ -23,5 +20,13 @@ public interface SmsTemplateService {
      * @return
      */
     SmsTemplateResDTO addSmsTemplate(SmsTemplateReqDTO smsTemplateReqDTO);
+
+    /**
+     * 根据templateId查询短信模版详情
+     *
+     * @param templateId
+     * @return
+     */
+    SmsTemplateResDTO selectTemplate(String templateId);
 
 }

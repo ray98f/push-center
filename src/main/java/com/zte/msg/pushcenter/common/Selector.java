@@ -78,7 +78,7 @@ public class Selector {
 
         SMS(3, "短信推送"),
 
-        TELE(4, "电话语音"),
+        TELE(4, "微信公众号推送"),
 
         UNKNOWN(-1, "未知");
 

@@ -29,5 +29,7 @@ public class SmsTemplateReqDTO {
     @JsonProperty(value = "template_id")
     private String templateId;
 
-    private String[] vars;
+    @ApiModelProperty(value = "模版样例，其中的变量用括号标识出来，例如：【中轨技术】您的验证码是{code}，有效期{m}分钟")
+    private String example;
+
 }
