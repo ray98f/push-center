@@ -67,7 +67,7 @@ public class SmsProviderConfigReqDTO {
      * 接口签名加密方法
      */
     @ApiModelProperty(value = "接口签名加密方法")
-    @JsonProperty(value = "m_auth")
-    private String mAuth;
+    @JsonProperty(value = "m_sign")
+    private String mSign;
 
 }

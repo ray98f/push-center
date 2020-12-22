@@ -41,6 +41,6 @@ public class SmsProviderConfig extends BaseEntity {
     /**
      * 接口签名加密方法
      */
-    private String mAuth;
+    private String mSign;
 
 }

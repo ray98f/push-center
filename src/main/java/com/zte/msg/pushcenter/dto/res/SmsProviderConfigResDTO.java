@@ -33,29 +33,34 @@ public class SmsProviderConfigResDTO {
      * 接口电话号码字段名
      */
     @ApiModelProperty(value = "接口电话号码字段名")
+    @JsonProperty(value = "p_phone_num")
     private String pPhoneNum;
 
     /**
      * 接口模版id字段名
      */
     @ApiModelProperty(value = "接口模版id字段名")
+    @JsonProperty(value = "p_tem_id")
     private String pTemId;
 
     /**
      * 接口模版值字段名
      */
     @ApiModelProperty(value = "接口模版值字段名")
+    @JsonProperty(value = "p_tem_value")
     private String pTemValue;
 
     /**
      * 接口扩展字段，Json字符串
      */
     @ApiModelProperty(value = "接口扩展字段，如果有指定的值，请求为键值对，Json字符串")
+    @JsonProperty(value = "p_ext")
     private String pExt;
 
     /**
      * 接口签名加密方法
      */
     @ApiModelProperty(value = "接口签名加密方法")
-    private String mAuth;
+    @JsonProperty(value = "m_sign")
+    private String mSign;
 }
