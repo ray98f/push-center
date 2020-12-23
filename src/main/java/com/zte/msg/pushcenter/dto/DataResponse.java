@@ -18,17 +18,21 @@ public class DataResponse<T> extends BaseResponse implements Serializable {
 
     private T data;
 
-    private DataResponse(T data) {
-        super(AppStatus.SUCCESS);
+    private DataResponse(T data, AppStatus state) {
+        super(state);
         this.data = data;
     }
 
     public static <T> DataResponse<T> of(T data) {
-        return new DataResponse<>(data);
+        return new DataResponse<>(data,null);
     }
 
     public static <T> DataResponse<T> success() {
-        return new DataResponse<>(null);
+        return new DataResponse<T>(null, AppStatus.SUCCESS);
+    }
+
+    public static <T> DataResponse<T> error(){
+        return new DataResponse<>(null, AppStatus.PARAM_EMPTY);
     }
 
 }

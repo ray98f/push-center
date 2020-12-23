@@ -57,10 +57,11 @@ spring:
 #    listener:
 #      missing-topics-fatal: false
 mybatis-plus:
-  mapper-locations: classpath:/mapper/*Mapper.xml
+  mapper-locations: classpath:/mapper/*.xml
   type-aliases-package: com.zte.msg.pushcenter.entity
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
   global-config:
     db-config:
       #全局逻辑删除字段值 3.3.0开始支持，详情看下面。
