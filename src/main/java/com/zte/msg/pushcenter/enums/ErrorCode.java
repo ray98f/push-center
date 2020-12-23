@@ -51,6 +51,14 @@ public enum ErrorCode {
 
     DATA_EXIST(32000009, "data.exist"),
 
+    INSERT_ERROR(31000001, "insert.error"),
+
+    SELECT_ERROR(31000002, "select.error"),
+
+    UPDATE_ERROR(31000003, "update.error"),
+
+    DELETE_ERROR(31000004, "delete.error"),
+
     /**
      * 参数不在枚举范围中
      */

@@ -4,4 +4,12 @@
     <insert id="addSecretKey" parameterType="com.zte.msg.pushcenter.entity.SecretKey">
         insert into secret_key(app_id, app_key, app_secret, app_token) value (#{appId},#{appKey},#{appSecret},#{appToken});
     </insert>
+
+    <select id="getSecretKey" resultType="com.zte.msg.pushcenter.entity.SecretKey">
+        select * from secret_key where app_id=#{appId}
+    </select>
+
+    <select id="listSecretKey" resultType="com.zte.msg.pushcenter.entity.SecretKey">
+        select * from secret_key
+    </select>
 </mapper>

@@ -20,8 +20,6 @@ public class BaseResponse implements Serializable {
 
     private static final BaseResponse AUTH_FAILED;
 
-    private static final BaseResponse PARAM_EMPTY;
-
     private Integer code;
 
     private String message;
@@ -54,7 +52,6 @@ public class BaseResponse implements Serializable {
     static {
         SUCCESS = new BaseResponse(AppStatus.SUCCESS);
         AUTH_FAILED = new BaseResponse(AppStatus.AUTH_FAILED);
-        PARAM_EMPTY = new BaseResponse(AppStatus.PARAM_EMPTY);
     }
 
     protected enum AppStatus {
@@ -62,8 +59,7 @@ public class BaseResponse implements Serializable {
          *
          */
         SUCCESS(0, "success"),
-        AUTH_FAILED(401, "auth failed"),
-        PARAM_EMPTY(500, "The parameter is empty");
+        AUTH_FAILED(401, "auth failed");
 
         private String message;
         private Integer code;

@@ -6,6 +6,8 @@ import com.zte.msg.pushcenter.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * description:
  *
@@ -22,5 +24,15 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public int addSecretKey(SecretKey secretKey){
         return tokenDao.addSecretKey(secretKey);
+    }
+
+    @Override
+    public SecretKey getSecretKey(String appId){
+        return tokenDao.getSecretKey(appId);
+    }
+
+    @Override
+    public List<SecretKey> listSecretKey(){
+        return tokenDao.listSecretKey();
     }
 }

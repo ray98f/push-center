@@ -2,6 +2,8 @@ package com.zte.msg.pushcenter.service;
 
 import com.zte.msg.pushcenter.entity.SecretKey;
 
+import java.util.List;
+
 /**
  * description:
  *
@@ -11,4 +13,8 @@ import com.zte.msg.pushcenter.entity.SecretKey;
  */
 public interface TokenService {
     int addSecretKey(SecretKey secretKey);
+
+    SecretKey getSecretKey(String appId);
+
+    List<SecretKey> listSecretKey();
 }
