@@ -9,6 +9,7 @@ package com.zte.msg.pushcenter.enums;
  */
 public enum ErrorCode {
 
+    AUTHORIZATION_CHECK_FAIL(401,"Authorization参数校验失败"),
     /**
      * 该用户无相关资源操作权限
      */

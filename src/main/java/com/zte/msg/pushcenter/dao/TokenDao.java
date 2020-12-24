@@ -1,5 +1,6 @@
 package com.zte.msg.pushcenter.dao;
 
+import com.zte.msg.pushcenter.dto.TokenInfo;
 import com.zte.msg.pushcenter.entity.SecretKey;
 import org.springframework.stereotype.Repository;
 
@@ -13,4 +14,6 @@ public interface TokenDao {
     SecretKey getSecretKey(String appId);
 
     List<SecretKey> listSecretKey();
+
+    TokenInfo selectTokenInfo(String appKey, String appSecret);
 }

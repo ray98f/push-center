@@ -12,4 +12,11 @@
     <select id="listSecretKey" resultType="com.zte.msg.pushcenter.entity.SecretKey">
         select * from secret_key
     </select>
+
+    <select id="selectTokenInfo" resultType="com.zte.msg.pushcenter.dto.TokenInfo">
+        select sk.app_id,a.app_name,sk.app_key,sk.app_secret,group_concat(r.role_name) as role from secret_key as sk
+        left join app as a on sk.app_id=a.id
+        left join app_role as ar on ar.app_id=sk.app_id and ar.is_flag=0
+        left join role as r on r.id=ar.role_id where sk.app_key=#{appKey} and sk.app_secret=#{appSecret}
+    </select>
 </mapper>
