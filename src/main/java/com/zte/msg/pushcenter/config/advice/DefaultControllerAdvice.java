@@ -1,9 +1,11 @@
 package com.zte.msg.pushcenter.config.advice;
 
+import com.google.gson.internal.$Gson$Preconditions;
 import com.zte.msg.pushcenter.dto.BaseResponse;
 import com.zte.msg.pushcenter.enums.ErrorCode;
 import com.zte.msg.pushcenter.exception.CommonException;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -17,6 +19,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Path;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -48,17 +53,13 @@ public class DefaultControllerAdvice {
     @ResponseStatus(HttpStatus.OK)
     public BaseResponse handMethodArgumentNotValidAndBindException(Exception e) {
         FieldError fieldError = null;
-        if (e.getClass() == MethodArgumentNotValidException.class) {
-            MethodArgumentNotValidException e1 = (MethodArgumentNotValidException) e;
+        String defaultMessage = "";
+        if (e instanceof BindException) {
+            BindException e1 = (BindException) e;
             fieldError = e1.getBindingResult().getFieldError();
-        }
-        if (e.getClass() == BindException.class) {
-            BindException e2 = (BindException) e;
-            fieldError = e2.getBindingResult().getFieldError();
+            defaultMessage = Objects.requireNonNull(fieldError).getDefaultMessage();
         }
         Locale locale = LocaleContextHolder.getLocale();
-
-        String defaultMessage = Objects.requireNonNull(fieldError).getDefaultMessage();
         if (null != defaultMessage) {
             Integer code = Integer.valueOf(defaultMessage);
             Object[] arguments = fieldError.getArguments();
@@ -82,5 +83,17 @@ public class DefaultControllerAdvice {
             }
         }
         return null;
+    }
+
+    @ExceptionHandler(value = ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public BaseResponse handMethodArgumentNotValidAndBindException(ConstraintViolationException e) {
+        Locale locale = LocaleContextHolder.getLocale();
+        ConstraintViolation<?> violation = e.getConstraintViolations().stream().findFirst().get();
+        Integer code = Integer.valueOf(violation.getMessageTemplate());
+        String field = e.getMessage().split(":")[0].split("\\.")[1];
+        String message = messageSource.getMessage(ErrorCode.messageOf(code),
+                new Object[]{field}, locale);
+        return new BaseResponse().code(code).message(message);
     }
 }

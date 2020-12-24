@@ -12,11 +12,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,11 +48,7 @@ public class TokenController {
      */
     @PostMapping("/secretKey")
     @ApiOperation(value = "生成app密钥")
-    public DataResponse<JSONObject> createSecretKey(@Valid String appId) {
-        if (StringUtils.isBlank(appId)) {
-            log.error("生成app密钥时appId返回为空");
-            throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
-        }
+    public DataResponse<JSONObject> createSecretKey(@Valid @RequestParam @NotBlank(message = "32000006") String appId) {
         SecretKey resultSecretKey = tokenService.getSecretKey(appId);
         if (!Objects.isNull(resultSecretKey)) {
             throw new CommonException(ErrorCode.DATA_EXIST);
