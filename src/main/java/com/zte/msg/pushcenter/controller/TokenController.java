@@ -122,7 +122,7 @@ public class TokenController {
         tokenInfo.setAppName(info.getAppName());
         tokenInfo.setRole(info.getRole());
         String token = CreateToken(tokenInfo);
-        String jsonToken = "'appKey':'" + tokenInfo.getAppKey() + "', 'appSecret':'" + tokenInfo.getAppSecret() + "', 'token':'" + token + "'";
+        String jsonToken = "{'appKey':'" + tokenInfo.getAppKey() + "', 'appSecret':'" + tokenInfo.getAppSecret() + "', 'token':'" + token + "}'";
         jsonToken = AesUtils.encrypt(jsonToken);
         log.info("{} Token返回成功", tokenInfo.getAppId());
         return DataResponse.of(jsonToken);

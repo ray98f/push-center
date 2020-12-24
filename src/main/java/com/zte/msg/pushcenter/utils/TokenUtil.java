@@ -3,6 +3,7 @@ package com.zte.msg.pushcenter.utils;
 import com.alibaba.fastjson.JSONObject;
 import com.zte.msg.pushcenter.dto.TokenInfo;
 import com.zte.msg.pushcenter.enums.ErrorCode;
+import com.zte.msg.pushcenter.enums.TokenStatus;
 import com.zte.msg.pushcenter.exception.CommonException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -169,7 +170,7 @@ public class TokenUtil {
         );
     }
 
-    public static TokenInfo VerifyCode(String auth_code) {
+    public static TokenInfo getTokenInfo(String auth_code) {
         TokenInfo tokenInfo = null;
         try {
             tokenInfo = ParseToken(AesUtils.decrypt(auth_code));
@@ -183,11 +184,41 @@ public class TokenUtil {
         return tokenInfo;
     }
 
+    /**
+     * 校验token
+     *
+     * @param authorization
+     * @return TokenStatus
+     */
+    public TokenStatus verifyToken(String authorization) {
+        TokenStatus result;
+        Claims claims;
+        String js = AesUtils.decrypt(authorization);
+        if (js == null || js.equals("")) return null;
+        JSONObject jsStr = JSONObject.parseObject(js);
+        String token = jsStr.getString("token");
+        String appSecret = jsStr.getString("appSecret");
+        try {
+            claims = Jwts.parser()
+                    .setSigningKey(appSecret)
+                    .parseClaimsJws(token)
+                    .getBody();
+            final Date exp = claims.getExpiration();
+            if (exp.before(new Date(System.currentTimeMillis()))) {
+                result = TokenStatus.EXPIRED;
+            } else {
+                result = TokenStatus.VALID;
+            }
+        } catch (Exception e) {
+            result = TokenStatus.INVALID;
+        }
+        return result;
+    }
+
     public static void main(String[] args) throws Exception {
-        String s = AesUtils.encrypt("{'appKey':'zte16087894621166JEad','appSecret':'eab79b7b882e434dbcaa48d2e35820a3OmZrHEaZegbtfdKa'," +
-                "'token':'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJzZHNkc2RzIiwic3ViIjoiUmF5bWFuIiwicm9sZSI6IkFBQTogdHJ1ZSwgQkJCOiBmYWxzZSIsImFwcEtleSI6Inp0ZTE2MDg3ODk0NjIxMTY2SkVhZCIsImFwcFNlY3JldCI6ImVhYjc5YjdiODgyZTQzNGRiY2FhNDhkMmUzNTgyMGEzT21ackhFYVplZ2J0ZmRLYSIsImlhdCI6MTYwODc5MTU0MSwiZXhwIjoxNjA4Nzk4NzQxfQ.6OKlIJaslcbQNCaaxPHlINNUolLWWpJG6LOxQ_NE-FU'}");
+        String s = AesUtils.encrypt("{'appKey':'zte16087894621166JEad','appSecret':'eab79b7b882e434dbcaa48d2e35820a3OmZrHEaZegbtfdKa','token':'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJzZHNkc2RzIiwic3ViIjoiUmF5bWFuIiwiYXBwS2V5IjoienRlMTYwODc4OTQ2MjExNjZKRWFkIiwiYXBwU2VjcmV0IjoiZWFiNzliN2I4ODJlNDM0ZGJjYWE0OGQyZTM1ODIwYTNPbVpySEVhWmVnYnRmZEthIiwicm9sZSI6IkFBQTogdHJ1ZSwgQkJCOiBmYWxzZSIsImlhdCI6MTYwODc5ODUyOCwiZXhwIjoxNjA4ODA1NzI4fQ.7UsV0inFRNCjVJAUvqeiPR4lUCT3Sn3DXii7fy10J5Y'}");
         System.out.println(s);
-        TokenInfo tokenInfo = VerifyCode(AesUtils.decrypt(s));
+        TokenInfo tokenInfo = getTokenInfo(s);
         System.out.println(tokenInfo.getRole());
 //        String id = "sdsdsds", name = "Rayman", role = "AAA: true, BBB: false";
 //        TokenInfo it = new TokenInfo(id, name, "zte16087894621166JEad","eab79b7b882e434dbcaa48d2e35820a3OmZrHEaZegbtfdKa", role);
