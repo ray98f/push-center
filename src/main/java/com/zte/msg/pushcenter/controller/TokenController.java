@@ -3,6 +3,7 @@ package com.zte.msg.pushcenter.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.zte.msg.pushcenter.dto.*;
 import com.zte.msg.pushcenter.entity.SecretKey;
+import com.zte.msg.pushcenter.entity.TokenInfo;
 import com.zte.msg.pushcenter.enums.ErrorCode;
 import com.zte.msg.pushcenter.exception.CommonException;
 import com.zte.msg.pushcenter.service.TokenService;
@@ -10,6 +11,7 @@ import com.zte.msg.pushcenter.utils.Constants;
 import com.zte.msg.pushcenter.utils.TokenUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.validation.annotation.Validated;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Objects;
 
@@ -57,7 +60,7 @@ public class TokenController {
         SecretKey secretKey = new SecretKey();
         secretKey.setAppId(appId);
         secretKey.setAppKey(Constants.ZTE_NAME + TokenUtil.getTimestamp() + TokenUtil.getRandomString(5));
-        secretKey.setAppSecret(TokenUtil.getUUID());
+        secretKey.setAppSecret(TokenUtil.getUUID() + TokenUtil.getRandomString(16));
         int result = tokenService.addSecretKey(secretKey);
         if (result > 0) {
             log.info("app {} 密钥新增成功", appId);
@@ -91,8 +94,12 @@ public class TokenController {
         }
     }
 
+    /**
+     * 密钥列表获取
+     * @return DataResponse
+     */
     @GetMapping("/secretKey")
-    @ApiOperation(value = "根据appId获取app密钥")
+    @ApiOperation(value = "密钥列表获取")
     public DataResponse<List<SecretKey>> listSecretKey() {
         List<SecretKey> secretKey = tokenService.listSecretKey();
         if (!secretKey.isEmpty() && secretKey.size() > 0) {
@@ -102,6 +109,20 @@ public class TokenController {
             log.error("密钥列表查询失败");
             throw new CommonException(ErrorCode.SELECT_ERROR);
         }
+    }
+
+    @PostMapping("/openapi/token")
+    @ApiOperation(value = "第三方服务Token获取")
+    public DataResponse<JSONObject> openApiToken(@RequestBody @Valid @ApiParam(value = "第三方服务Token信息") TokenInfo tokenInfo){
+
+        return DataResponse.success();
+    }
+
+
+    @PostMapping("/token")
+    @ApiOperation(value = "密钥列表获取")
+    public DataResponse<JSONObject> centerToken(){
+        return DataResponse.success();
     }
 
 }
