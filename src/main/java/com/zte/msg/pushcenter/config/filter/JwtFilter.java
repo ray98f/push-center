@@ -31,13 +31,12 @@ public class JwtFilter implements Filter {
      */
     private final String[] excludedPages = {"/login", "/api/v1/openapi/token"};
 
-    private final String[] openApiPages = {};
-
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        if (Arrays.asList(openApiPages).contains(httpRequest.getRequestURI())) {
+        String openApiPages = "/api/openapi/v1/";
+        if (httpRequest.getRequestURI().contains(openApiPages)) {
             String token = httpRequest.getHeader("Authorization");
             if (token == null || StringUtils.isBlank(token)) {
                 request.setAttribute("filter.error", new CommonException(ErrorCode.AUTHORIZATION_EMPTY));

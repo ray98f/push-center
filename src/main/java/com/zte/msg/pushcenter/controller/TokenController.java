@@ -22,7 +22,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.zte.msg.pushcenter.utils.TokenUtil.*;
@@ -56,7 +58,7 @@ public class TokenController {
      */
     @PostMapping("/secretKey")
     @ApiOperation(value = "生成app密钥")
-    public DataResponse<JSONObject> createSecretKey(@Valid @RequestParam @NotBlank(message = "32000006") String appId) {
+    public <T> DataResponse<T> createSecretKey(@Valid @RequestParam @NotBlank(message = "32000006") String appId) {
         SecretKey resultSecretKey = tokenService.getSecretKey(appId);
         if (!Objects.isNull(resultSecretKey)) {
             throw new CommonException(ErrorCode.DATA_EXIST);
@@ -119,7 +121,7 @@ public class TokenController {
      */
     @DeleteMapping("/secretKey")
     @ApiOperation(value = "密钥删除")
-    public DataResponse<JSONObject> deleteSecretKey(@Valid @RequestParam @NotBlank(message = "32000006") String appId) {
+    public <T> DataResponse<T> deleteSecretKey(@Valid @RequestParam @NotBlank(message = "32000006") String appId) {
         int result = tokenService.deleteSecretKey(appId);
         if (result > 0) {
             log.info("密钥删除成功");
@@ -132,7 +134,7 @@ public class TokenController {
 
     @PostMapping("/openapi/token")
     @ApiOperation(value = "第三方服务Token获取")
-    public DataResponse<String> openApiToken(@Valid @RequestParam @NotBlank(message = "32000006") String appKey) throws Exception {
+    public DataResponse<Map<String, Object>> openApiToken(@Valid @RequestParam @NotBlank(message = "32000006") String appKey) throws Exception {
         OpenApiTokenInfo info = tokenService.selectTokenInfo(appKey);
         if (Objects.isNull(info)) {
             log.error("数据库第三方服务信息获取失败");
@@ -142,7 +144,9 @@ public class TokenController {
         String jsonToken = "{'appKey':'" + info.getAppKey() + "', 'appSecret':'" + info.getAppSecret() + "', 'token':'" + token + "'}";
         jsonToken = AesUtils.encrypt(jsonToken);
         log.info("{} Token返回成功", info.getAppId());
-        return DataResponse.of(jsonToken);
+        Map<String, Object> data = new HashMap<>();
+        data.put("token", jsonToken);
+        return DataResponse.of(data);
     }
 
 
