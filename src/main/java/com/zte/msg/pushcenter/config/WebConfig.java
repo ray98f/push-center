@@ -1,10 +1,11 @@
 package com.zte.msg.pushcenter.config;
 
-import com.zte.msg.pushcenter.utils.filter.JwtFilter;
+import com.zte.msg.pushcenter.config.filter.JwtFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 /**
@@ -21,7 +22,7 @@ public class WebConfig extends WebMvcConfigurationSupport {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(new JwtFilter());
         registration.setName("JwtFilter");
-        registration.addUrlPatterns("/*");
+        registration.addUrlPatterns("/api");
         registration.setOrder(1);
         return registration;
     }
@@ -35,4 +36,11 @@ public class WebConfig extends WebMvcConfigurationSupport {
                 .allowCredentials(false).maxAge(3600);
     }
 
+    @Override
+    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+    }
 }

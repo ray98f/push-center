@@ -15,7 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableScheduling
 @MapperScan("com/zte/msg/pushcenter/dao")
 @EnableAsync
-@ServletComponentScan("com.zte.msg.pushcenter.utils.filter")
+@ServletComponentScan("com.zte.msg.pushcenter.config.filter")
 public class Application {
 
     public static void main(String[] args) {

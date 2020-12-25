@@ -4,12 +4,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zte.msg.pushcenter.dto.req.SmsTemplateReqDTO;
 import com.zte.msg.pushcenter.dto.res.SmsTemplateResDTO;
-import com.zte.msg.pushcenter.entity.Provider;
-import com.zte.msg.pushcenter.entity.SmsProviderConfig;
+import com.zte.msg.pushcenter.entity.Config;
+import com.zte.msg.pushcenter.entity.SmsConfig;
 import com.zte.msg.pushcenter.entity.SmsTemplate;
 import com.zte.msg.pushcenter.enums.ErrorCode;
 import com.zte.msg.pushcenter.exception.CommonException;
-import com.zte.msg.pushcenter.mapper.ProviderMapper;
+import com.zte.msg.pushcenter.mapper.ConfigMapper;
+import com.zte.msg.pushcenter.mapper.SmsConfigMapper;
 import com.zte.msg.pushcenter.mapper.SmsTemplateMapper;
 import com.zte.msg.pushcenter.service.SmsTemplateService;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -32,20 +32,20 @@ import java.util.Objects;
 public class SmsTemplateServiceImpl extends ServiceImpl<SmsTemplateMapper, SmsTemplate> implements SmsTemplateService {
 
     @Resource
-    private ProviderMapper providerMapper;
+    private SmsConfigMapper smsConfigMapper;
 
     @Override
     public SmsTemplateResDTO addSmsTemplate(SmsTemplateReqDTO smsTemplateReqDTO) {
 
         Integer templateCount = getBaseMapper().selectCount(
                 new QueryWrapper<SmsTemplate>()
-                        .eq("provider_id", smsTemplateReqDTO.getProviderId())
+                        .eq("sms_config_id", smsTemplateReqDTO.getSmsConfigId())
                         .eq("template_id", smsTemplateReqDTO.getTemplateId()));
         if (templateCount >= 1) {
             throw new CommonException(ErrorCode.TEMPLATE_EXIST);
         }
-        Provider provider = providerMapper.selectById(smsTemplateReqDTO.getProviderId());
-        if (Objects.isNull(provider)) {
+        SmsConfig smsConfig = smsConfigMapper.selectById(smsTemplateReqDTO.getSmsConfigId());
+        if (Objects.isNull(smsConfig)) {
             throw new CommonException(ErrorCode.PROVIDER_NOT_EXIST);
         }
         SmsTemplate entity = new SmsTemplate();
@@ -53,7 +53,6 @@ public class SmsTemplateServiceImpl extends ServiceImpl<SmsTemplateMapper, SmsTe
         getBaseMapper().insert(entity);
         SmsTemplateResDTO resDTO = new SmsTemplateResDTO();
         BeanUtils.copyProperties(entity, resDTO);
-        resDTO.setProviderName(provider.getProviderName());
         resDTO.setExample(smsTemplateReqDTO.getExample());
         return resDTO;
     }

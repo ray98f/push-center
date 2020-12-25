@@ -1,5 +1,18 @@
 package com.zte.msg.pushcenter.utils;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -7,9 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.TreeMap;
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
+
 /**
  * description:
  *
@@ -17,12 +28,16 @@ import javax.xml.bind.DatatypeConverter;
  * @version 1.0
  * @date 2020/12/22 10:36
  */
+@Component
 public class TencentCloudAPITC3Demo {
 
+    @Resource
+    private RestTemplate restTemplate;
+
     private final static Charset UTF8 = StandardCharsets.UTF_8;
-    private final static String SECRET_ID = "AKIDz8krbsJ5yKBZQpn74WFkmLPx3*******";
-    private final static String SECRET_KEY = "Gu5t9xGARNpq86cd98joQYCN3*******";
-    private final static String CT_JSON = "application/json; charset=utf-8";
+    private final static String SECRET_ID = "AKIDyid2EePjPs75ljCt6qMbWDfrtf7h9JFv";
+    private final static String SECRET_KEY = "INDn8zKQHuLYUDOM9dqo68tPnunQEo86";
+    private final static String CT_JSON = "application/json";
 
     public static byte[] hmac256(byte[] key, String msg) throws Exception {
         Mac mac = Mac.getInstance("HmacSHA256");
@@ -38,14 +53,13 @@ public class TencentCloudAPITC3Demo {
     }
 
     public static void main(String[] args) throws Exception {
-        String service = "cvm";
-        String host = "cvm.tencentcloudapi.com";
-        String region = "ap-guangzhou";
+        String service = "sms";
+        String host = "sms.tencentcloudapi.com";
+//        String region = "ap-guangzhou";
         String action = "SendSms";
-        String version = "2017-03-12";
+        String version = "2019-07-11";
         String algorithm = "TC3-HMAC-SHA256";
-        String timestamp = "1551113065";
-        //String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
+        String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         // 注意时区，否则容易出错
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -55,32 +69,32 @@ public class TencentCloudAPITC3Demo {
         String httpRequestMethod = "POST";
         String canonicalUri = "/";
         String canonicalQueryString = "";
-        String canonicalHeaders = "content-type:application/json; charset=utf-8\n" + "host:" + host + "\n";
+        String canonicalHeaders = "content-type:application/json\n" + "host:" + host + "\n";
         String signedHeaders = "content-type;host";
 
-        String payload = "{\"Limit\": 1, \"Filters\": [{\"Values\": [\"\\u672a\\u547d\\u540d\"], \"Name\": \"instance-name\"}]}";
+        String payload = "{\"PhoneNumberSet\":[\"+8618349342711\"],\"TemplateParamSet\":[\"152525\"],\"TemplateID\":\"821098\",\"SmsSdkAppid\":\"1400465545\",\"Sign\":\"中兴轨道通讯\"}";
         String hashedRequestPayload = sha256Hex(payload);
         String canonicalRequest = httpRequestMethod + "\n" + canonicalUri + "\n" + canonicalQueryString + "\n"
                 + canonicalHeaders + "\n" + signedHeaders + "\n" + hashedRequestPayload;
-        System.out.println(canonicalRequest);
+        System.out.println("canonicalRequest: " + canonicalRequest);
 
         // ************* 步骤 2：拼接待签名字符串 *************
         String credentialScope = date + "/" + service + "/" + "tc3_request";
         String hashedCanonicalRequest = sha256Hex(canonicalRequest);
         String stringToSign = algorithm + "\n" + timestamp + "\n" + credentialScope + "\n" + hashedCanonicalRequest;
-        System.out.println(stringToSign);
+        System.out.println("stringToSign: " + stringToSign);
 
         // ************* 步骤 3：计算签名 *************
         byte[] secretDate = hmac256(("TC3" + SECRET_KEY).getBytes(UTF8), date);
         byte[] secretService = hmac256(secretDate, service);
         byte[] secretSigning = hmac256(secretService, "tc3_request");
         String signature = DatatypeConverter.printHexBinary(hmac256(secretSigning, stringToSign)).toLowerCase();
-        System.out.println(signature);
+        System.out.println("signature: " + signature);
 
         // ************* 步骤 4：拼接 Authorization *************
         String authorization = algorithm + " " + "Credential=" + SECRET_ID + "/" + credentialScope + ", "
                 + "SignedHeaders=" + signedHeaders + ", " + "Signature=" + signature;
-        System.out.println(authorization);
+        System.out.println("authorization为: " + authorization);
 
         TreeMap<String, String> headers = new TreeMap<String, String>();
         headers.put("Authorization", authorization);
@@ -89,18 +103,20 @@ public class TencentCloudAPITC3Demo {
         headers.put("X-TC-Action", action);
         headers.put("X-TC-Timestamp", timestamp);
         headers.put("X-TC-Version", version);
-        headers.put("X-TC-Region", region);
+//        headers.put("X-TC-Region", region);
 
         StringBuilder sb = new StringBuilder();
         sb.append("curl -X POST https://").append(host)
                 .append(" -H \"Authorization: ").append(authorization).append("\"")
-                .append(" -H \"Content-Type: application/json; charset=utf-8\"")
+                .append(" -H \"Content-Type: application/json\"")
                 .append(" -H \"Host: ").append(host).append("\"")
                 .append(" -H \"X-TC-Action: ").append(action).append("\"")
                 .append(" -H \"X-TC-Timestamp: ").append(timestamp).append("\"")
                 .append(" -H \"X-TC-Version: ").append(version).append("\"")
-                .append(" -H \"X-TC-Region: ").append(region).append("\"")
+                .append(" -H \"X-TC-Language: ").append("zh-CN").append("\"")
+//                .append(" -H \"X-TC-Region: ").append(region).append("\"")
                 .append(" -d '").append(payload).append("'");
         System.out.println(sb.toString());
     }
+
 }

@@ -3,6 +3,7 @@ package com.zte.msg.pushcenter.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zte.msg.pushcenter.entity.Dic;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 /**
@@ -21,5 +22,5 @@ public interface DicMapper extends BaseMapper<Dic> {
      * @return
      */
     @Select("SELECT * FROM `dic`")
-    Dic selectDic();
+    Dic selectDic(Integer type);
 }

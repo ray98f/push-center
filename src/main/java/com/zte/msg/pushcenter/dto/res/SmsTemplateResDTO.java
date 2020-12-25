@@ -19,10 +19,7 @@ public class SmsTemplateResDTO {
     private Long id;
 
     @ApiModelProperty(value = "供应商id")
-    private Integer providerId;
-
-    @ApiModelProperty(value = "供应商名称")
-    private String providerName;
+    private Integer smsConfigId;
 
     @ApiModelProperty(value = "模版id")
     private String templateId;
