@@ -1,7 +1,7 @@
 package com.zte.msg.pushcenter.service.impl;
 
 import com.zte.msg.pushcenter.dao.TokenDao;
-import com.zte.msg.pushcenter.dto.TokenInfo;
+import com.zte.msg.pushcenter.dto.OpenApiTokenInfo;
 import com.zte.msg.pushcenter.entity.SecretKey;
 import com.zte.msg.pushcenter.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public TokenInfo selectTokenInfo(String appKey, String appSecret){
+    public OpenApiTokenInfo selectTokenInfo(String appKey, String appSecret){
         return tokenDao.selectTokenInfo(appKey, appSecret);
     }
 }

@@ -3,16 +3,16 @@ package com.zte.msg.pushcenter.dto;
 import lombok.Data;
 
 @Data
-public class TokenInfo {
+public class OpenApiTokenInfo {
     private String appId;
     private String appName;
     private String appKey;
     private String appSecret;
     private String role;
 
-    public TokenInfo(){}
+    public OpenApiTokenInfo(){}
 
-    public TokenInfo(String appId, String appName, String appKey, String appSecret, String role) {
+    public OpenApiTokenInfo(String appId, String appName, String appKey, String appSecret, String role) {
         this.appId = appId;
         this.appName = appName;
         this.appKey = appKey;
@@ -20,7 +20,7 @@ public class TokenInfo {
         this.role = role;
     }
 
-    public TokenInfo(String appId, String appName, String appKey, String appSecret) {
+    public OpenApiTokenInfo(String appId, String appName, String appKey, String appSecret) {
         this.appId = appId;
         this.appName = appName;
         this.appKey = appKey;

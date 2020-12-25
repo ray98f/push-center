@@ -1,6 +1,6 @@
 package com.zte.msg.pushcenter.service;
 
-import com.zte.msg.pushcenter.dto.TokenInfo;
+import com.zte.msg.pushcenter.dto.OpenApiTokenInfo;
 import com.zte.msg.pushcenter.entity.SecretKey;
 
 import java.util.List;
@@ -19,5 +19,5 @@ public interface TokenService {
 
     List<SecretKey> listSecretKey();
 
-    TokenInfo selectTokenInfo(String appKey, String appSecret);
+    OpenApiTokenInfo selectTokenInfo(String appKey, String appSecret);
 }

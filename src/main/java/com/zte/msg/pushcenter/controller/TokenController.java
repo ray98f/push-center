@@ -3,7 +3,7 @@ package com.zte.msg.pushcenter.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.zte.msg.pushcenter.dto.*;
 import com.zte.msg.pushcenter.entity.SecretKey;
-import com.zte.msg.pushcenter.dto.TokenInfo;
+import com.zte.msg.pushcenter.dto.OpenApiTokenInfo;
 import com.zte.msg.pushcenter.enums.ErrorCode;
 import com.zte.msg.pushcenter.exception.CommonException;
 import com.zte.msg.pushcenter.service.TokenService;
@@ -109,22 +109,22 @@ public class TokenController {
 
     @PostMapping("/openapi/token")
     @ApiOperation(value = "第三方服务Token获取")
-    public DataResponse<String> openApiToken(@RequestBody @Valid @ApiParam(value = "第三方服务信息") TokenInfo tokenInfo) throws Exception {
-        if (Objects.isNull(tokenInfo) || StringUtils.isAnyBlank(tokenInfo.getAppKey(), tokenInfo.getAppSecret())) {
+    public DataResponse<String> openApiToken(@RequestBody @Valid @ApiParam(value = "第三方服务信息") OpenApiTokenInfo openApiTokenInfo) throws Exception {
+        if (Objects.isNull(openApiTokenInfo) || StringUtils.isAnyBlank(openApiTokenInfo.getAppKey(), openApiTokenInfo.getAppSecret())) {
             log.error("第三方服务信息为空");
             throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
         }
-        TokenInfo info = tokenService.selectTokenInfo(tokenInfo.getAppKey(), tokenInfo.getAppSecret());
+        OpenApiTokenInfo info = tokenService.selectTokenInfo(openApiTokenInfo.getAppKey(), openApiTokenInfo.getAppSecret());
         if (Objects.isNull(info)) {
             log.error("数据库第三方服务信息获取失败");
             throw new CommonException(ErrorCode.DATA_EXIST);
         }
-        tokenInfo.setAppName(info.getAppName());
-        tokenInfo.setRole(info.getRole());
-        String token = CreateToken(tokenInfo);
-        String jsonToken = "{'appKey':'" + tokenInfo.getAppKey() + "', 'appSecret':'" + tokenInfo.getAppSecret() + "', 'token':'" + token + "}'";
+        openApiTokenInfo.setAppName(info.getAppName());
+        openApiTokenInfo.setRole(info.getRole());
+        String token = createOpenApiToken(openApiTokenInfo);
+        String jsonToken = "{'appKey':'" + openApiTokenInfo.getAppKey() + "', 'appSecret':'" + openApiTokenInfo.getAppSecret() + "', 'token':'" + token + "}'";
         jsonToken = AesUtils.encrypt(jsonToken);
-        log.info("{} Token返回成功", tokenInfo.getAppId());
+        log.info("{} Token返回成功", openApiTokenInfo.getAppId());
         return DataResponse.of(jsonToken);
     }
 
