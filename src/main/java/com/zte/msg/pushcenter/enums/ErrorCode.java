@@ -9,11 +9,13 @@ package com.zte.msg.pushcenter.enums;
  */
 public enum ErrorCode {
 
-    AUTHORIZATION_CHECK_FAIL(401,"Authorization参数校验失败"),
+    AUTHORIZATION_CHECK_FAIL(401,"authorization.check.fail"),
 
-    AUTHORIZATION_IS_OVERDUE(401,"Authorization参数过期"),
+    AUTHORIZATION_IS_OVERDUE(401,"authorization.is.overdue"),
 
-    AUTHORIZATION_INVALID(401,"Authorization参数失效"),
+    AUTHORIZATION_INVALID(401,"authorization.invalid"),
+
+    AUTHORIZATION_EMPTY(401, "authorization.empty"),
     /**
      * 该用户无相关资源操作权限
      */
