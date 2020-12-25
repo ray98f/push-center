@@ -132,22 +132,16 @@ public class TokenController {
 
     @PostMapping("/openapi/token")
     @ApiOperation(value = "第三方服务Token获取")
-    public DataResponse<String> openApiToken(@RequestBody @Valid @ApiParam(value = "第三方服务信息") OpenApiTokenInfo openApiTokenInfo) throws Exception {
-        if (Objects.isNull(openApiTokenInfo) || StringUtils.isAnyBlank(openApiTokenInfo.getAppKey(), openApiTokenInfo.getAppSecret())) {
-            log.error("第三方服务信息为空");
-            throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
-        }
-        OpenApiTokenInfo info = tokenService.selectTokenInfo(openApiTokenInfo.getAppKey(), openApiTokenInfo.getAppSecret());
+    public DataResponse<String> openApiToken(@Valid @RequestParam @NotBlank(message = "32000006") String appKey) throws Exception {
+        OpenApiTokenInfo info = tokenService.selectTokenInfo(appKey);
         if (Objects.isNull(info)) {
             log.error("数据库第三方服务信息获取失败");
             throw new CommonException(ErrorCode.DATA_EXIST);
         }
-        openApiTokenInfo.setAppName(info.getAppName());
-        openApiTokenInfo.setRole(info.getRole());
-        String token = createOpenApiToken(openApiTokenInfo);
-        String jsonToken = "{'appKey':'" + openApiTokenInfo.getAppKey() + "', 'appSecret':'" + openApiTokenInfo.getAppSecret() + "', 'token':'" + token + "}'";
+        String token = createOpenApiToken(info);
+        String jsonToken = "{'appKey':'" + info.getAppKey() + "', 'appSecret':'" + info.getAppSecret() + "', 'token':'" + token + "'}";
         jsonToken = AesUtils.encrypt(jsonToken);
-        log.info("{} Token返回成功", openApiTokenInfo.getAppId());
+        log.info("{} Token返回成功", info.getAppId());
         return DataResponse.of(jsonToken);
     }
 
