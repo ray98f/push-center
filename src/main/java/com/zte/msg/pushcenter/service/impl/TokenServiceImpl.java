@@ -33,6 +33,11 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
+    public int deleteSecretKey(String appId){
+        return tokenDao.deleteSecretKey(appId);
+    }
+
+    @Override
     public List<SecretKey> listSecretKey(){
         return tokenDao.listSecretKey();
     }

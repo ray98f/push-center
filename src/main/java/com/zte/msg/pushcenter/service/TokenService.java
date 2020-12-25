@@ -17,6 +17,8 @@ public interface TokenService {
 
     SecretKey getSecretKey(String appId);
 
+    int deleteSecretKey(String appId);
+
     List<SecretKey> listSecretKey();
 
     OpenApiTokenInfo selectTokenInfo(String appKey, String appSecret);

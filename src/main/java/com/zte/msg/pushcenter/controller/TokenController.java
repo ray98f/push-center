@@ -112,6 +112,24 @@ public class TokenController {
         }
     }
 
+    /**
+     * 密钥列表获取
+     *
+     * @return DataResponse
+     */
+    @DeleteMapping("/secretKey")
+    @ApiOperation(value = "密钥删除")
+    public DataResponse<JSONObject> deleteSecretKey(@Valid @RequestParam @NotBlank(message = "32000006") String appId) {
+        int result = tokenService.deleteSecretKey(appId);
+        if (result > 0) {
+            log.info("密钥删除成功");
+            return DataResponse.success();
+        } else {
+            log.error("密钥删除失败");
+            throw new CommonException(ErrorCode.DELETE_ERROR);
+        }
+    }
+
     @PostMapping("/openapi/token")
     @ApiOperation(value = "第三方服务Token获取")
     public DataResponse<String> openApiToken(@RequestBody @Valid @ApiParam(value = "第三方服务信息") OpenApiTokenInfo openApiTokenInfo) throws Exception {
@@ -136,8 +154,8 @@ public class TokenController {
 
     @PostMapping("/token")
     @ApiOperation(value = "平台登录Token获取")
-    //TODO 接口补充
-    public DataResponse<JSONObject> centerToken() {
+    //TODO 直接写成登录接口
+    public DataResponse<JSONObject> centerToken(@RequestBody @Valid @ApiParam(value = "用户登录信息") SimpleTokenInfo simpleTokenInfo) {
         return DataResponse.success();
     }
 
