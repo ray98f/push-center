@@ -43,7 +43,7 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public OpenApiTokenInfo selectTokenInfo(String appKey, String appSecret){
-        return tokenDao.selectTokenInfo(appKey, appSecret);
+    public OpenApiTokenInfo selectTokenInfo(String appKey){
+        return tokenDao.selectTokenInfo(appKey);
     }
 }
