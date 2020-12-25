@@ -19,6 +19,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
@@ -42,6 +43,10 @@ public class TokenController {
 
     @Resource
     private TokenService tokenService;
+
+    @Resource
+    private HttpServletRequest request;
+
 
     /**
      * 生成app密钥
@@ -98,7 +103,7 @@ public class TokenController {
     @ApiOperation(value = "密钥列表获取")
     public DataResponse<List<SecretKey>> listSecretKey() {
         List<SecretKey> secretKey = tokenService.listSecretKey();
-        if (!secretKey.isEmpty() && secretKey.size() > 0) {
+        if (secretKey.size() > 0 && !secretKey.isEmpty()) {
             log.info("密钥列表查询成功");
             return DataResponse.of(secretKey);
         } else {

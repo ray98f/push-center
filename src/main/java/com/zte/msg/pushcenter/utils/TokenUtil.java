@@ -362,7 +362,7 @@ public class TokenUtil {
 //        SimpleTokenInfo sti = new SimpleTokenInfo(id, name, role);
 //        String token = createSimpleToken(sti);
 //        System.out.println(token);
-        String str = "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJzZHNkc2RzIiwic3ViIjoiUmF5bWFuIiwidXNlclJvbGUiOiJBQUE6IHRydWUsIEJCQjogZmFsc2UiLCJpYXQiOjE2MDg4NjIxODAsImV4cCI6MTYwODg2OTM4MH0.XxthR7k8d0UU14gTzoSHVqc0bv_4SBJ8kos1VJh4Jyo";
+        String str = "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJzZHNkc2RzIiwic3ViIjoiUmF5bWFuIiwidXNlclJvbGUiOiJBQUE6IHRydWUsIEJCQjogZmFsc2UiLCJpYXQiOjE2MDg4ODE1NDcsImV4cCI6MTYwODg4ODc0N30.tkNMmCvx9Y4KH2nDnQQyh0hFwDPCf_mY9C3P-UZi9Bs";
         TokenStatus status = verifySimpleToken(str);
         System.out.println(status);
         SimpleTokenInfo simpleTokenInfo = getSimpleTokenInfo(str);
