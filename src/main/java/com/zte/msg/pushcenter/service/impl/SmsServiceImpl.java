@@ -32,4 +32,19 @@ public class SmsServiceImpl extends ServiceImpl<SmsConfigMapper, SmsConfig> impl
         BeanUtils.copyProperties(smsConfig, resDTO);
         return resDTO;
     }
+
+    @Override
+    public void updateSmsConfig(Long smsConfigId, SmsConfigReqDTO reqDTO) {
+        SmsConfig config = new SmsConfig();
+        BeanUtils.copyProperties(reqDTO, config);
+        config.setId(smsConfigId);
+        getBaseMapper().updateById(config);
+    }
+
+    @Override
+    public void deleteSmsConfig(Long deleteSmsConfig) {
+        getBaseMapper().deleteById(deleteSmsConfig);
+    }
+
+
 }

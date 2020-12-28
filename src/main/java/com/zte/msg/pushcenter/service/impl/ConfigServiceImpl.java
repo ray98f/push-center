@@ -1,7 +1,9 @@
 package com.zte.msg.pushcenter.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zte.msg.pushcenter.dto.PageReqDTO;
 import com.zte.msg.pushcenter.dto.req.ConfigReqDTO;
 import com.zte.msg.pushcenter.dto.res.ConfigResDTO;
 import com.zte.msg.pushcenter.entity.Config;
@@ -65,5 +67,11 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> impleme
         ConfigResDTO configResDTO = new ConfigResDTO();
         BeanUtils.copyProperties(config, configResDTO);
         return configResDTO;
+    }
+
+    @Override
+    public Page<ConfigResDTO> getConfigs(PageReqDTO pageReqDTO) {
+
+        return getBaseMapper().selectByPage(pageReqDTO.of());
     }
 }

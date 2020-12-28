@@ -13,4 +13,8 @@ import com.zte.msg.pushcenter.dto.res.SmsConfigResDTO;
 public interface SmsConfigService {
 
     SmsConfigResDTO addSmsConfig(SmsConfigReqDTO reqDTO);
+
+    void updateSmsConfig(Long smsConfigId, SmsConfigReqDTO smsConfig);
+
+    void deleteSmsConfig(Long deleteSmsConfig);
 }

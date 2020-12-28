@@ -1,6 +1,8 @@
 package com.zte.msg.pushcenter.controller;
 
 import com.zte.msg.pushcenter.dto.DataResponse;
+import com.zte.msg.pushcenter.dto.PageReqDTO;
+import com.zte.msg.pushcenter.dto.PageResponse;
 import com.zte.msg.pushcenter.dto.req.ConfigReqDTO;
 import com.zte.msg.pushcenter.dto.req.ScriptReqDTO;
 import com.zte.msg.pushcenter.dto.req.SmsConfigReqDTO;
@@ -47,14 +49,14 @@ public class ConfigController {
     private ScriptService scriptService;
 
     @PostMapping
-    @ApiOperation(value = "添加配置")
+    @ApiOperation(value = "添加第三方服务基本配置")
     public DataResponse<ConfigResDTO> addConfig(@RequestBody @Valid @ApiParam(value = "添加一条基本配置") ConfigReqDTO config) {
 
         return DataResponse.of(configService.addConfig(config));
     }
 
     @PutMapping(value = "/{config_id}")
-    @ApiOperation(value = "修改配置")
+    @ApiOperation(value = "修改第三方服务基本配置")
     public DataResponse<ConfigResDTO> updateConfig(@PathVariable(value = "config_id") Long configId,
                                                    @RequestBody ConfigReqDTO config) {
 
@@ -62,22 +64,41 @@ public class ConfigController {
     }
 
     @DeleteMapping(value = "/{config_id}")
-    @ApiOperation(value = "删除配置")
+    @ApiOperation(value = "删除第三方服务基本配置")
     public <T> DataResponse<T> deleteConfig(@PathVariable(value = "config_id") Long configId) {
         configService.deleteConfig(configId);
         return DataResponse.success();
     }
 
     @GetMapping(value = "/{config_id}")
-    @ApiOperation(value = "获取配置详情")
+    @ApiOperation(value = "根据id获取第三方服务基本配置详情")
     public DataResponse<ConfigResDTO> getConfigById(@PathVariable(value = "config_id") Long configId) {
         return DataResponse.of(configService.getConfigById(configId));
     }
 
+    @GetMapping
+    @ApiOperation(value = "分页查询第三方服务基本配置")
+    public PageResponse<ConfigResDTO> getConfigs(PageReqDTO pageReqDTO) {
+        return PageResponse.of(configService.getConfigs(pageReqDTO));
+    }
+
     @PostMapping(value = "/sms")
-    @ApiOperation(value = "指定短信接口相关配置")
+    @ApiOperation(value = "添加短信配置")
     public DataResponse<SmsConfigResDTO> addSmsConfig(@RequestBody @Valid SmsConfigReqDTO reqDTO) {
         return DataResponse.of(smsConfigService.addSmsConfig(reqDTO));
+    }
+
+    @PutMapping(value = "/sms/{sms_config_id}")
+    @ApiOperation(value = "修改短信配置")
+    public void updateSmsConfig(@PathVariable(value = "sms_config_id") Long smsConfigId,
+                                @RequestBody SmsConfigReqDTO reqDTO) {
+        smsConfigService.updateSmsConfig(smsConfigId, reqDTO);
+    }
+
+    @DeleteMapping(value = "/sms/{sms_config_id}")
+    @ApiOperation(value = "根据id删除短信")
+    public void deleteSmsConfig(@PathVariable(value = "sms_config_id") Long smsConfigId) {
+        smsConfigService.deleteSmsConfig(smsConfigId);
     }
 
     @PostMapping(value = "/sms/template")

@@ -29,6 +29,7 @@ public class SmsTemplateReqDTO {
     private String templateId;
 
     @ApiModelProperty(value = "模版样例，其中的变量用#标识出来，例如：【中轨技术】您的验证码是#code#，有效期#m#分钟")
+    @NotNull(message = "32000006")
     private String example;
 
 }

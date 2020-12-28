@@ -1,5 +1,7 @@
 package com.zte.msg.pushcenter.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.zte.msg.pushcenter.dto.PageReqDTO;
 import com.zte.msg.pushcenter.dto.req.ConfigReqDTO;
 import com.zte.msg.pushcenter.dto.res.ConfigResDTO;
 
@@ -42,4 +44,12 @@ public interface ConfigService {
      * @return
      */
     ConfigResDTO getConfigById(Long configId);
+
+    /**
+     * 分页查询第三方服务基本配置
+     *
+     * @param pageReqDTO
+     * @return
+     */
+    Page<ConfigResDTO> getConfigs(PageReqDTO pageReqDTO);
 }
