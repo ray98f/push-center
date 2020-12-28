@@ -32,7 +32,7 @@ public class ScriptServiceImpl extends ServiceImpl<ScriptMapper, Script> impleme
 
     @Override
     public Page<ScriptResDTO> getScriptByPage(PageReqDTO pageReqDTO) {
-        getBaseMapper().selectPage(pageReqDTO, new QueryWrapper<>());
+//        getBaseMapper().selectPage(pageReqDTO, new QueryWrapper<>());
         return null;
     }
 }
