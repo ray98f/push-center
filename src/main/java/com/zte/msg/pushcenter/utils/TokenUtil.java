@@ -347,12 +347,12 @@ public class TokenUtil {
     public static void main(String[] args) throws Exception {
 //        String str = "{'appKey':'zte16087894621166JEad','appSecret':'eab79b7b882e434dbcaa48d2e35820a3OmZrHEaZegbtfdKa'," +
 //                "'token':'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJzZHNkc2RzIiwic3ViIjoiUmF5bWFuIiwiYXBwS2V5IjoienRlMTYwODc4OTQ2MjExNjZKRWFkIiwiYXBwU2VjcmV0IjoiZWFiNzliN2I4ODJlNDM0ZGJjYWE0OGQyZTM1ODIwYTNPbVpySEVhWmVnYnRmZEthIiwicm9sZSI6IkFBQTogdHJ1ZSwgQkJCOiBmYWxzZSIsImlhdCI6MTYwODg1ODM2MywiZXhwIjoxNjA4ODY1NTYzfQ.06NepZ0f5zUd0EpO6oWfL7a3ern4eW5DWZlf7xi1dPA'}";
-//        String s = AesUtils.encrypt(str);
+        String s = "25MQjSMQzL83qfVq8my3hSjDfaA+6p4CHm4FceEFzM9mGN2r4C8/RcNg0zdiLbfBFmhaUBsbmgCtJYPqtSfaEB+aDpmDtM/N3dRNT+i0fsZisU+rEb7PcMl/89YgsusMEGogJQjfwHHtjj3x/Ym9g1zXtlKt7jmg58akTNQyXF3IjuNDEs1TMjEKAsMY1RuFbggmljj90L73yXwZ1vT5ygTgUclCJoFy1bfpQ/V7WrtPXlo9AErIUsB4ic38MkAR3fpiIkCs4lHIVCFcIfnvGwM/XYW/H2frSUuCmhNuU4tAfUhE2VSEf9FMIglZyaw490HHr75JHaAtoMWRP3FciY8J9i2uFIT70SKAd6IMAekXWweZXPATtILHiHd+oBN9Neoy69wbOufkmDPcv3sSjeEb0kWBwuPRze8Zx0mfl3X/CYusCMofymx9dhbdxDsVBb9ypZnPEYE9QIIz+aPZdjneWohLLfAFaWLAFpigacIZXTUJtD6xQpzh8D0vAQ5a";
 //        System.out.println(s);
-//        TokenStatus tokenStatus = verifyOpenApiToken(s);
-//        System.out.println(tokenStatus);
-//        TokenInfo tokenInfo = getTokenInfo(s);
-//        System.out.println(tokenInfo.getRole());
+        TokenStatus tokenStatus = verifyOpenApiToken(s);
+        System.out.println(tokenStatus);
+        OpenApiTokenInfo tokenInfo = getOpenApiTokenInfo(s);
+        System.out.println(tokenInfo.getAppName());
 //        String id = "sdsdsds", name = "Rayman", role = "AAA: true, BBB: false";
 //        TokenInfo it = new TokenInfo(id, name, "zte16087894621166JEad","eab79b7b882e434dbcaa48d2e35820a3OmZrHEaZegbtfdKa", role);
 //        String token = CreateOpenApiToken(it);
@@ -362,11 +362,11 @@ public class TokenUtil {
 //        SimpleTokenInfo sti = new SimpleTokenInfo(id, name, role);
 //        String token = createSimpleToken(sti);
 //        System.out.println(token);
-        String str = "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJzZHNkc2RzIiwic3ViIjoiUmF5bWFuIiwidXNlclJvbGUiOiJBQUE6IHRydWUsIEJCQjogZmFsc2UiLCJpYXQiOjE2MDg4ODE1NDcsImV4cCI6MTYwODg4ODc0N30.tkNMmCvx9Y4KH2nDnQQyh0hFwDPCf_mY9C3P-UZi9Bs";
-        TokenStatus status = verifySimpleToken(str);
-        System.out.println(status);
-        SimpleTokenInfo simpleTokenInfo = getSimpleTokenInfo(str);
-        System.out.println(simpleTokenInfo.getUserRole());
+//        String str = "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJzZHNkc2RzIiwic3ViIjoiUmF5bWFuIiwidXNlclJvbGUiOiJBQUE6IHRydWUsIEJCQjogZmFsc2UiLCJpYXQiOjE2MDg4ODE1NDcsImV4cCI6MTYwODg4ODc0N30.tkNMmCvx9Y4KH2nDnQQyh0hFwDPCf_mY9C3P-UZi9Bs";
+//        TokenStatus status = verifySimpleToken(str);
+//        System.out.println(status);
+//        SimpleTokenInfo simpleTokenInfo = getSimpleTokenInfo(str);
+//        System.out.println(simpleTokenInfo.getUserRole());
 //        System.out.println("ZTE" + getUUID() + getRandomString(13));
     }
 
