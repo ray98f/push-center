@@ -1,12 +1,11 @@
 package com.zte.msg.pushcenter.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zte.msg.pushcenter.dto.PageReqDTO;
 import com.zte.msg.pushcenter.dto.req.SmsConfigReqDTO;
 import com.zte.msg.pushcenter.dto.res.SmsConfigResDTO;
 import com.zte.msg.pushcenter.entity.SmsConfig;
-import com.zte.msg.pushcenter.enums.ErrorCode;
-import com.zte.msg.pushcenter.exception.CommonException;
 import com.zte.msg.pushcenter.mapper.SmsConfigMapper;
 import com.zte.msg.pushcenter.service.SmsConfigService;
 import org.springframework.beans.BeanUtils;
@@ -44,6 +43,12 @@ public class SmsServiceImpl extends ServiceImpl<SmsConfigMapper, SmsConfig> impl
     @Override
     public void deleteSmsConfig(Long deleteSmsConfig) {
         getBaseMapper().deleteById(deleteSmsConfig);
+    }
+
+    @Override
+    public Page<SmsConfigResDTO> getSmsConfigs(PageReqDTO page) {
+
+        return getBaseMapper().selectByPage(page.of());
     }
 
 

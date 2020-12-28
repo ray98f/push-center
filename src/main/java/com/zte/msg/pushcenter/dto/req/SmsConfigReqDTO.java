@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.Range;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -17,6 +19,10 @@ import javax.validation.constraints.NotNull;
 @Data
 @ApiModel
 public class SmsConfigReqDTO {
+
+    @ApiModelProperty(value = "描述")
+    @Range(max = 60, message = "32000003")
+    private String description;
 
     @ApiModelProperty(value = "基础配置表id")
     @JsonProperty(value = "config_id")

@@ -14,7 +14,7 @@ public class SmsConfig extends BaseEntity {
 
     private Long configId;
 
-    private String curl;
+    private String description;
 
     private String appId;
 

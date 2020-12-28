@@ -10,11 +10,13 @@ import lombok.Data;
  * @date 2020/12/24 16:29
  */
 @Data
-public class Script extends BaseEntity{
+public class Script extends BaseEntity {
 
     private Long configId;
 
     private String context;
+
+    private String description;
 
     private String scriptName;
 

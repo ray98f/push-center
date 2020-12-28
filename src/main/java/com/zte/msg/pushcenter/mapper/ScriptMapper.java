@@ -1,7 +1,10 @@
 package com.zte.msg.pushcenter.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.zte.msg.pushcenter.dto.res.ScriptResDTO;
 import com.zte.msg.pushcenter.entity.Script;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * description:
@@ -12,5 +15,7 @@ import com.zte.msg.pushcenter.entity.Script;
  */
 public interface ScriptMapper extends BaseMapper<Script> {
 
+    @Select("SELECT * FROM `script`")
+    Page<ScriptResDTO> selectByPage(Page<ScriptResDTO> page);
 
 }

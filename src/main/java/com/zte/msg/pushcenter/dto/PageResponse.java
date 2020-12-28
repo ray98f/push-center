@@ -45,14 +45,14 @@ public class PageResponse<T> extends BaseResponse {
         private Long pages;
 
         @ApiModelProperty(value = "总记录数", example = "100")
-        private Long count;
+        private Long total;
 
         PagedData(Page<T> page) {
             this.content = page.getRecords();
             this.page = page.getCurrent();
             this.size = page.getSize();
             this.pages = page.getPages();
-            this.count = page.getTotal();
+            this.total = page.getTotal();
         }
     }
 }

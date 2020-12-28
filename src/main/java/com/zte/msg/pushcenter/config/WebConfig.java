@@ -16,10 +16,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 @Configuration
 public class WebConfig extends WebMvcConfigurationSupport {
 
-
     @Bean
-    public FilterRegistrationBean jwtFilterRegistration() {
-        FilterRegistrationBean registration = new FilterRegistrationBean();
+    public FilterRegistrationBean<JwtFilter> jwtFilterRegistration() {
+        FilterRegistrationBean<JwtFilter> registration = new FilterRegistrationBean<>();
         registration.setFilter(new JwtFilter());
         registration.setName("JwtFilter");
         registration.addUrlPatterns("/api/*");

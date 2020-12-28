@@ -16,5 +16,7 @@ public interface ScriptService {
 
     void addScript(ScriptReqDTO script);
 
-    Page<ScriptResDTO> getScriptByPage(PageReqDTO pageReqDTO);
+    Page<ScriptResDTO> getScripts(PageReqDTO pageReqDTO);
+
+    void relate(Long configId, Long scriptId);
 }

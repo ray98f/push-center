@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @Slf4j
 @Api(tags = "异常转发")
+@ApiIgnore
 public class ErrorController {
     /**
      * 重新抛出异常
