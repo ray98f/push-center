@@ -5,6 +5,7 @@ import com.zte.msg.pushcenter.dto.SimpleTokenInfo;
 import com.zte.msg.pushcenter.enums.ErrorCode;
 import com.zte.msg.pushcenter.enums.TokenStatus;
 import com.zte.msg.pushcenter.exception.CommonException;
+import com.zte.msg.pushcenter.utils.Constants;
 import com.zte.msg.pushcenter.utils.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -29,13 +30,13 @@ public class JwtFilter implements Filter {
     /**
      * 排除拦截的请求
      */
-    private final String[] excludedPages = {"/login", "/api/v1/openapi/token"};
+    private final String[] excludedPages = {"/api/v1/login", "/api/v1/openapi/token"};
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        String openApiPages = "/api/openapi/v1/";
+        String openApiPages = Constants.OPENAPI_URL;
         if (httpRequest.getRequestURI().contains(openApiPages)) {
             String token = httpRequest.getHeader("Authorization");
             if (token == null || StringUtils.isBlank(token)) {

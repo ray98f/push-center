@@ -12,4 +12,6 @@ public class Constants {
     public static int DATA_NOT_DELETED = 0;
 
     public static String ZTE_NAME = "zte";
+
+    public static final String OPENAPI_URL = "/api/openapi/v1/";
 }
