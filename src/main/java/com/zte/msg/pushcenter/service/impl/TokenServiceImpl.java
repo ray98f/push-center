@@ -46,4 +46,9 @@ public class TokenServiceImpl implements TokenService {
     public OpenApiTokenInfo selectTokenInfo(String appKey){
         return tokenDao.selectTokenInfo(appKey);
     }
+
+    @Override
+    public String selectAppRole(String appKey){
+        return tokenDao.selectAppRole(appKey);
+    }
 }

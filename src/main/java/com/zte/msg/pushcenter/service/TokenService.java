@@ -22,4 +22,6 @@ public interface TokenService {
     List<SecretKey> listSecretKey();
 
     OpenApiTokenInfo selectTokenInfo(String appKey);
+
+    String selectAppRole(String appKey);
 }

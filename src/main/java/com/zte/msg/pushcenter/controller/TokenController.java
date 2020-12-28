@@ -149,12 +149,4 @@ public class TokenController {
         return DataResponse.of(data);
     }
 
-
-    @PostMapping("/token")
-    @ApiOperation(value = "平台登录Token获取")
-    //TODO 直接写成登录接口
-    public DataResponse<JSONObject> centerToken(@RequestBody @Valid @ApiParam(value = "用户登录信息") SimpleTokenInfo simpleTokenInfo) {
-        return DataResponse.success();
-    }
-
 }

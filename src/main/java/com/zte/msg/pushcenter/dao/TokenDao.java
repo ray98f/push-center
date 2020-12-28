@@ -18,4 +18,6 @@ public interface TokenDao {
     List<SecretKey> listSecretKey();
 
     OpenApiTokenInfo selectTokenInfo(String appKey);
+
+    String selectAppRole(String appKey);
 }
