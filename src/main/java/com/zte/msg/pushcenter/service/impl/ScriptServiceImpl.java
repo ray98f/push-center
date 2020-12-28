@@ -1,7 +1,11 @@
 package com.zte.msg.pushcenter.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zte.msg.pushcenter.dto.PageReqDTO;
 import com.zte.msg.pushcenter.dto.req.ScriptReqDTO;
+import com.zte.msg.pushcenter.dto.res.ScriptResDTO;
 import com.zte.msg.pushcenter.entity.Script;
 import com.zte.msg.pushcenter.mapper.ScriptMapper;
 import com.zte.msg.pushcenter.service.ScriptService;
@@ -22,7 +26,13 @@ public class ScriptServiceImpl extends ServiceImpl<ScriptMapper, Script> impleme
     public void addScript(ScriptReqDTO reqDTO) {
         Script script = new Script();
         BeanUtils.copyProperties(reqDTO, script);
+        script.setScriptTag("Script" + System.currentTimeMillis() + "_" + reqDTO.getConfigId());
         getBaseMapper().insert(script);
-        script.setScriptName("script" + script.getConfigId());
+    }
+
+    @Override
+    public Page<ScriptResDTO> getScriptByPage(PageReqDTO pageReqDTO) {
+        getBaseMapper().selectPage(pageReqDTO, new QueryWrapper<>());
+        return null;
     }
 }

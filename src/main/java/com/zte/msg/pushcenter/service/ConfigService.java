@@ -18,4 +18,28 @@ public interface ConfigService {
      * @return
      */
     ConfigResDTO addConfig(ConfigReqDTO configReqDTO);
+
+    /**
+     * 更新供应商配置
+     *
+     * @param configId
+     * @param configReqDTO
+     * @return
+     */
+    ConfigResDTO updateConfig(Long configId, ConfigReqDTO configReqDTO);
+
+    /**
+     * 删除
+     *
+     * @param configId
+     */
+    void deleteConfig(Long configId);
+
+    /**
+     * 根据id查询配置详情
+     *
+     * @param configId
+     * @return
+     */
+    ConfigResDTO getConfigById(Long configId);
 }

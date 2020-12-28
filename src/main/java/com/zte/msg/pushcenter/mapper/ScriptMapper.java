@@ -11,4 +11,6 @@ import com.zte.msg.pushcenter.entity.Script;
  * @date 2020/12/24 16:30
  */
 public interface ScriptMapper extends BaseMapper<Script> {
+
+
 }

@@ -17,6 +17,10 @@ import javax.validation.constraints.NotNull;
 @ApiModel
 public class ScriptReqDTO {
 
+    @ApiModelProperty(value = "脚本名")
+    @NotNull(message = "32000006")
+    private String scriptName;
+
     @ApiModelProperty(value = "关联的配置id")
     @NotNull(message = "32000006")
     private Long configId;

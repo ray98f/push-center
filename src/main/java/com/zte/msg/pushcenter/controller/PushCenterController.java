@@ -45,9 +45,6 @@ public class PushCenterController {
     @Resource
     private MailPusher mailPusher;
 
-//    @Resource
-//    private WeChatPusher weChatPusher;
-
     @PostMapping(value = "/sms")
     @ApiOperation(value = "短信推送")
     public DataResponse<JSONObject> pushSms(@Valid @RequestBody SmsMessageReqDTO reqDTO) {
@@ -85,27 +82,6 @@ public class PushCenterController {
 
         return null;
 //        return DataResponse.of(weChatPusher.getAccessKey(weChatAppId, appSecret));
-    }
-
-    @GetMapping(value = "/sync/test")
-    @ApiOperation(value = "测试")
-    public DataResponse<String> test() {
-        String s = "";
-        CompletableFuture<String> stringCompletableFuture = CompletableFuture.supplyAsync(() -> {
-            try {
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return "111111111111";
-        }, executor);
-
-        try {
-            s = stringCompletableFuture.get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        return DataResponse.of(s);
     }
 
 

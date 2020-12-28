@@ -9,7 +9,6 @@ import com.zte.msg.pushcenter.enums.ErrorCode;
 import com.zte.msg.pushcenter.exception.CommonException;
 import com.zte.msg.pushcenter.mapper.ConfigMapper;
 import com.zte.msg.pushcenter.service.ConfigService;
-import com.zte.msg.pushcenter.utils.AesUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -40,5 +39,31 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> impleme
         ConfigResDTO resDTO = new ConfigResDTO();
         BeanUtils.copyProperties(config, resDTO);
         return resDTO;
+    }
+
+    @Override
+    public ConfigResDTO updateConfig(Long configId, ConfigReqDTO configReqDTO) {
+
+        Config config = new Config();
+        BeanUtils.copyProperties(configReqDTO, config);
+        config.setId(configId);
+        getBaseMapper().updateById(config);
+        ConfigResDTO resDTO = new ConfigResDTO();
+        BeanUtils.copyProperties(config, resDTO);
+        return resDTO;
+    }
+
+    @Override
+    public void deleteConfig(Long configId) {
+        getBaseMapper().deleteById(configId);
+    }
+
+    @Override
+    public ConfigResDTO getConfigById(Long configId) {
+
+        Config config = getBaseMapper().selectById(configId);
+        ConfigResDTO configResDTO = new ConfigResDTO();
+        BeanUtils.copyProperties(config, configResDTO);
+        return configResDTO;
     }
 }

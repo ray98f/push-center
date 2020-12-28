@@ -16,10 +16,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -56,8 +53,29 @@ public class ConfigController {
         return DataResponse.of(configService.addConfig(config));
     }
 
+    @PutMapping(value = "/{config_id}")
+    @ApiOperation(value = "修改配置")
+    public DataResponse<ConfigResDTO> updateConfig(@PathVariable(value = "config_id") Long configId,
+                                                   @RequestBody ConfigReqDTO config) {
+
+        return DataResponse.of(configService.updateConfig(configId, config));
+    }
+
+    @DeleteMapping(value = "/{config_id}")
+    @ApiOperation(value = "删除配置")
+    public <T> DataResponse<T> deleteConfig(@PathVariable(value = "config_id") Long configId) {
+        configService.deleteConfig(configId);
+        return DataResponse.success();
+    }
+
+    @GetMapping(value = "/{config_id}")
+    @ApiOperation(value = "获取配置详情")
+    public DataResponse<ConfigResDTO> getConfigById(@PathVariable(value = "config_id") Long configId) {
+        return DataResponse.of(configService.getConfigById(configId));
+    }
+
     @PostMapping(value = "/sms")
-    @ApiOperation(value = "指定供应商下面的短信接口相关配置")
+    @ApiOperation(value = "指定短信接口相关配置")
     public DataResponse<SmsConfigResDTO> addSmsConfig(@RequestBody @Valid SmsConfigReqDTO reqDTO) {
         return DataResponse.of(smsConfigService.addSmsConfig(reqDTO));
     }
