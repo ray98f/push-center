@@ -3,6 +3,7 @@ package com.zte.msg.pushcenter.utils;
 import com.alibaba.fastjson.JSONObject;
 import com.zte.msg.pushcenter.dto.OpenApiTokenInfo;
 import com.zte.msg.pushcenter.dto.SimpleTokenInfo;
+import com.zte.msg.pushcenter.entity.User;
 import com.zte.msg.pushcenter.enums.ErrorCode;
 import com.zte.msg.pushcenter.enums.TokenStatus;
 import com.zte.msg.pushcenter.exception.CommonException;
@@ -135,7 +136,7 @@ public class TokenUtil {
         long nowMillis = System.currentTimeMillis();
         Date now = new Date(nowMillis);
         JwtBuilder builder = Jwts.builder()
-                .setId(item.getAppId())
+                .setId(String.valueOf(item.getAppId()))
                 .setSubject(item.getAppName())
                 .claim("appKey", item.getAppKey())
                 .claim("appSecret", item.getAppSecret())
@@ -181,7 +182,7 @@ public class TokenUtil {
         }
         Claims res = jws.getBody();
         return new OpenApiTokenInfo(
-                res.getId(),
+                Integer.valueOf(res.getId()),
                 res.getSubject(),
                 (String) res.get("appKey"),
                 (String) res.get("appSecret"),
@@ -254,7 +255,7 @@ public class TokenUtil {
      * @return String
      * @throws Exception Token校验失败
      */
-    public static String createSimpleToken(SimpleTokenInfo item) throws Exception {
+    public static String createSimpleToken(User item) throws Exception {
         return createSimpleToken(item, 60 * 60 * 2 * 1000); //默认token有效时间为2小时
     }
 
@@ -266,13 +267,13 @@ public class TokenUtil {
      * @param ttlMillis 令牌有效时间
      * @return 返还生成的令牌
      */
-    public static String createSimpleToken(SimpleTokenInfo item, long ttlMillis) {
+    public static String createSimpleToken(User item, long ttlMillis) {
         long nowMillis = System.currentTimeMillis();
         Date now = new Date(nowMillis);
         JwtBuilder builder = Jwts.builder()
-                .setId(item.getUserId())
+                .setId(item.getUserName())
                 .setSubject(item.getUserName())
-                .claim("userRole", item.getUserRole())
+                .claim("userRealName", item.getUserRealName())
                 .setIssuedAt(now)
                 .signWith(generalKey(SIMPLE_TOKEN_SECRET));
         if (ttlMillis >= 0) {
@@ -301,7 +302,7 @@ public class TokenUtil {
         return new SimpleTokenInfo(
                 res.getId(),
                 res.getSubject(),
-                (String) res.get("userRole")
+                (String) res.get("userRealName")
         );
     }
 

@@ -1,6 +1,5 @@
 package com.zte.msg.pushcenter.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.zte.msg.pushcenter.dto.*;
 import com.zte.msg.pushcenter.entity.SecretKey;
 import com.zte.msg.pushcenter.dto.OpenApiTokenInfo;
@@ -8,13 +7,9 @@ import com.zte.msg.pushcenter.enums.ErrorCode;
 import com.zte.msg.pushcenter.exception.CommonException;
 import com.zte.msg.pushcenter.service.TokenService;
 import com.zte.msg.pushcenter.utils.AesUtils;
-import com.zte.msg.pushcenter.utils.Constants;
-import com.zte.msg.pushcenter.utils.TokenUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +17,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,16 +54,8 @@ public class TokenController {
      */
     @PostMapping("/secretKey")
     @ApiOperation(value = "生成app密钥")
-    public <T> DataResponse<T> createSecretKey(@Valid @RequestParam @NotBlank(message = "32000006") String appId) {
-        SecretKey resultSecretKey = tokenService.getSecretKey(appId);
-        if (!Objects.isNull(resultSecretKey)) {
-            throw new CommonException(ErrorCode.DATA_EXIST);
-        }
-        SecretKey secretKey = new SecretKey();
-        secretKey.setAppId(appId);
-        secretKey.setAppKey(Constants.ZTE_NAME + TokenUtil.getTimestamp() + TokenUtil.getRandomString(5));
-        secretKey.setAppSecret(TokenUtil.getUUID() + TokenUtil.getRandomString(16));
-        int result = tokenService.addSecretKey(secretKey);
+    public <T> DataResponse<T> createSecretKey(@Valid @RequestParam @NotNull(message = "32000006") Integer appId) {
+        int result = tokenService.addSecretKey(appId);
         if (result > 0) {
             log.info("app {} 密钥新增成功", appId);
             return DataResponse.success();
@@ -85,15 +73,8 @@ public class TokenController {
      */
     @PutMapping("/secretKey")
     @ApiOperation(value = "根据appId获取app密钥")
-    public DataResponse<SecretKey> getSecretKey(@Valid @RequestParam @NotBlank(message = "32000006") String appId) {
-        SecretKey secretKey = tokenService.getSecretKey(appId);
-        if (!Objects.isNull(secretKey)) {
-            log.info("app {} 密钥查询成功", appId);
-            return DataResponse.of(secretKey);
-        } else {
-            log.error("app {} 密钥查询失败", appId);
-            throw new CommonException(ErrorCode.SELECT_ERROR);
-        }
+    public DataResponse<SecretKey> getSecretKey(@Valid @RequestParam @NotNull(message = "32000006") Integer appId) {
+        return DataResponse.of(tokenService.getSecretKey(appId));
     }
 
     /**
@@ -104,24 +85,18 @@ public class TokenController {
     @GetMapping("/secretKey")
     @ApiOperation(value = "密钥列表获取")
     public DataResponse<List<SecretKey>> listSecretKey() {
-        List<SecretKey> secretKey = tokenService.listSecretKey();
-        if (secretKey.size() > 0 && !secretKey.isEmpty()) {
-            log.info("密钥列表查询成功");
-            return DataResponse.of(secretKey);
-        } else {
-            log.error("密钥列表查询失败");
-            throw new CommonException(ErrorCode.SELECT_ERROR);
-        }
+        return DataResponse.of(tokenService.listSecretKey());
     }
 
     /**
-     * 密钥列表获取
+     * 密钥删除
      *
+     * @param appId 服务ID
      * @return DataResponse
      */
     @DeleteMapping("/secretKey")
     @ApiOperation(value = "密钥删除")
-    public <T> DataResponse<T> deleteSecretKey(@Valid @RequestParam @NotBlank(message = "32000006") String appId) {
+    public <T> DataResponse<T> deleteSecretKey(@Valid @RequestParam @NotNull(message = "32000006") Integer appId) {
         int result = tokenService.deleteSecretKey(appId);
         if (result > 0) {
             log.info("密钥删除成功");
@@ -132,13 +107,20 @@ public class TokenController {
         }
     }
 
+    /**
+     * 第三方服务Token获取
+     *
+     * @param appKey 密钥
+     * @return DataResponse
+     * @throws Exception CommonException
+     */
     @PostMapping("/openapi/token")
     @ApiOperation(value = "第三方服务Token获取")
     public DataResponse<Map<String, Object>> openApiToken(@Valid @RequestParam @NotBlank(message = "32000006") String appKey) throws Exception {
         OpenApiTokenInfo info = tokenService.selectTokenInfo(appKey);
         if (Objects.isNull(info)) {
             log.error("数据库第三方服务信息获取失败");
-            throw new CommonException(ErrorCode.DATA_EXIST);
+            throw new CommonException(ErrorCode.SELECT_ERROR);
         }
         String token = createOpenApiToken(info);
         String jsonToken = "{'appKey':'" + info.getAppKey() + "', 'appSecret':'" + info.getAppSecret() + "', 'token':'" + token + "'}";
@@ -148,5 +130,4 @@ public class TokenController {
         data.put("token", jsonToken);
         return DataResponse.of(data);
     }
-
 }

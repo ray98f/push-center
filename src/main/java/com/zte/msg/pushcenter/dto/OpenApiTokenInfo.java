@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class OpenApiTokenInfo {
-    private String appId;
+    private Integer appId;
     private String appName;
     private String appKey;
     private String appSecret;
@@ -12,7 +12,7 @@ public class OpenApiTokenInfo {
 
     public OpenApiTokenInfo(){}
 
-    public OpenApiTokenInfo(String appId, String appName, String appKey, String appSecret, String role) {
+    public OpenApiTokenInfo(Integer appId, String appName, String appKey, String appSecret, String role) {
         this.appId = appId;
         this.appName = appName;
         this.appKey = appKey;
@@ -20,7 +20,7 @@ public class OpenApiTokenInfo {
         this.role = role;
     }
 
-    public OpenApiTokenInfo(String appId, String appName, String appKey, String appSecret) {
+    public OpenApiTokenInfo(Integer appId, String appName, String appKey, String appSecret) {
         this.appId = appId;
         this.appName = appName;
         this.appKey = appKey;
