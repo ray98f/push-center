@@ -22,7 +22,7 @@ public class WebConfig extends WebMvcConfigurationSupport {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(new JwtFilter());
         registration.setName("JwtFilter");
-        registration.addUrlPatterns("/api");
+        registration.addUrlPatterns("/api/*");
         registration.setOrder(1);
         return registration;
     }

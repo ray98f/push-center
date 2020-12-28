@@ -6,10 +6,12 @@ import com.zte.msg.pushcenter.dto.SimpleTokenInfo;
 import com.zte.msg.pushcenter.enums.ErrorCode;
 import com.zte.msg.pushcenter.enums.TokenStatus;
 import com.zte.msg.pushcenter.exception.CommonException;
+import com.zte.msg.pushcenter.service.TokenService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.apache.commons.codec.binary.Base64;
 
+import javax.annotation.Resource;
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.Random;
@@ -23,6 +25,9 @@ import java.util.UUID;
  * @date 2020/12/23 15:42
  */
 public class TokenUtil {
+
+    @Resource
+    private static TokenService tokenService;
 
     private static final String SIMPLE_TOKEN_SECRET = "ZTE96952f774ce244fcb42af56062e519b3lFOGZ3YaWuCZS";
     /**
@@ -230,6 +235,10 @@ public class TokenUtil {
                 result = TokenStatus.EXPIRED;
             } else {
                 result = TokenStatus.VALID;
+            }
+            String role = tokenService.selectAppRole((String) claims.get("appKey"));
+            if (!role.equals((String) claims.get("role"))) {
+                result = TokenStatus.INVALID;
             }
         } catch (Exception e) {
             result = TokenStatus.INVALID;

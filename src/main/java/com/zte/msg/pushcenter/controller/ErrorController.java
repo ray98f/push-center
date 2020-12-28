@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @Slf4j
-@Api(value = "异常转发")
+@Api(tags = "异常转发")
 public class ErrorController {
     /**
      * 重新抛出异常
