@@ -99,7 +99,11 @@ public enum ErrorCode {
     /**
      * 第三方供应商服务
      */
-    PROVIDER_EXIST(3200040, "provider.exist");
+    PROVIDER_EXIST(3200040, "provider.exist"),
+
+    USER_NOT_EXIST(3200050, "user.not.exist"),
+
+    LOGIN_PASSWORD_ERROR(3200051, "login.password.error");
 
     private Integer code;
 

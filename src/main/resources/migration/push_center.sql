@@ -16,6 +16,7 @@
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+SET sql_safe_updates=0;
 
 -- ----------------------------
 -- Table structure for app
@@ -107,18 +108,16 @@ CREATE TABLE `script`  (
 -- Table structure for secret_key
 -- ----------------------------
 DROP TABLE IF EXISTS `secret_key`;
-CREATE TABLE `secret_key`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `app_id` bigint(20) NOT NULL,
-  `app_key` varchar(40) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'Key',
-  `app_secret` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '密钥',
-  `app_token` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'Key和密钥生成的Token（2小时过期）',
-  `is_flag` tinyint(4) NOT NULL DEFAULT 0 COMMENT '此密钥是否生效（0生效，1失效）',
-  `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_time` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = 'App的Key和Secret存储表' ROW_FORMAT = Dynamic;
-
+CREATE TABLE `secret_key` (
+    `id` bigint NOT NULL AUTO_INCREMENT,
+    `app_id` bigint NOT NULL,
+    `app_key` varchar(40) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'Key',
+    `app_secret` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '密钥',
+    `created_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    `flag` int DEFAULT '0',
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC COMMENT='App的Key和Secret存储表';
 -- ----------------------------
 -- Table structure for sms_config
 -- ----------------------------
@@ -170,4 +169,18 @@ CREATE TABLE `sms_template`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
+-- ----------------------------
+-- Table structure for table `user`
+-- ----------------------------
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user` (
+    `id` bigint NOT NULL AUTO_INCREMENT,
+    `user_name` varchar(45) COLLATE utf8_bin NOT NULL COMMENT '用户名',
+    `user_real_name` varchar(45) COLLATE utf8_bin DEFAULT NULL COMMENT '用户真实姓名',
+    `password` text COLLATE utf8_bin NOT NULL COMMENT '密码（加密）',
+    `created_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    `flag` int DEFAULT '0',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='管理平台用户';
 SET FOREIGN_KEY_CHECKS = 1;
