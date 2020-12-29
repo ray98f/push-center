@@ -109,7 +109,9 @@ public enum ErrorCode {
 
     LOGIN_PASSWORD_ERROR(3200051, "login.password.error"),
 
-    USER_PWD_CHANGE_FAIL(320052, "user.pwd.change.fail");
+    USER_PWD_CHANGE_FAIL(320052, "user.pwd.change.fail"),
+
+    APP_ROLE_EDIT_ERROR(320053,"app.role.edit.error");
 
     private Integer code;
 
