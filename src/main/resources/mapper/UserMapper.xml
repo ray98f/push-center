@@ -16,4 +16,12 @@
         </if>
         )
     </insert>
+
+    <update id="changePwd" parameterType="com.zte.msg.pushcenter.dto.req.PasswordReqDTO">
+        update user set password=#{newPwd} where user_name=#{userName} and password=#{oldPwd}
+    </update>
+
+    <update id="deleteUser" parameterType="java.lang.String">
+        update user set flag=1 where user_name=#{userName} and flag=0
+    </update>
 </mapper>

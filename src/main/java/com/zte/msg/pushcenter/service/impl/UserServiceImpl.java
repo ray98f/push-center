@@ -1,5 +1,6 @@
 package com.zte.msg.pushcenter.service.impl;
 
+import com.zte.msg.pushcenter.dto.req.PasswordReqDTO;
 import com.zte.msg.pushcenter.entity.User;
 import com.zte.msg.pushcenter.enums.ErrorCode;
 import com.zte.msg.pushcenter.exception.CommonException;
@@ -7,6 +8,7 @@ import com.zte.msg.pushcenter.mapper.UserMapper;
 import com.zte.msg.pushcenter.service.UserService;
 import com.zte.msg.pushcenter.utils.AesUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,6 +66,38 @@ public class UserServiceImpl implements UserService {
         }else {
             log.error("用户新增失败");
             throw new CommonException(ErrorCode.INSERT_ERROR);
+        }
+    }
+
+    @Override
+    public void changePwd(PasswordReqDTO passwordReqDTO){
+        if(Objects.isNull(passwordReqDTO)){
+            log.error("修改密码传入参数为空");
+            throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
+        }
+        passwordReqDTO.setOldPwd(AesUtils.encrypt(passwordReqDTO.getOldPwd()));
+        passwordReqDTO.setNewPwd(AesUtils.encrypt(passwordReqDTO.getNewPwd()));
+        int result = userMapper.changePwd(passwordReqDTO);
+        if (result > 0){
+            log.info("用户密码修改成功");
+        }else {
+            log.error("用户密码修改失败");
+            throw new CommonException(ErrorCode.USER_PWD_CHANGE_FAIL);
+        }
+    }
+
+    @Override
+    public void deleteUser(String userName){
+        if(StringUtils.isBlank(userName)){
+            log.error("传入用户名为空");
+            throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
+        }
+        int result = userMapper.deleteUser(userName);
+        if (result > 0){
+            log.info("用户删除成功");
+        }else {
+            log.error("用户删除失败");
+            throw new CommonException(ErrorCode.DELETE_ERROR);
         }
     }
 }

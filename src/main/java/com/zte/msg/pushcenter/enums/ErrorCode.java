@@ -103,7 +103,9 @@ public enum ErrorCode {
 
     USER_NOT_EXIST(3200050, "user.not.exist"),
 
-    LOGIN_PASSWORD_ERROR(3200051, "login.password.error");
+    LOGIN_PASSWORD_ERROR(3200051, "login.password.error"),
+
+    USER_PWD_CHANGE_FAIL(320052, "user.pwd.change.fail");
 
     private Integer code;
 

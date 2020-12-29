@@ -1,6 +1,7 @@
 package com.zte.msg.pushcenter.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zte.msg.pushcenter.dto.req.PasswordReqDTO;
 import com.zte.msg.pushcenter.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -11,4 +12,8 @@ public interface UserMapper extends BaseMapper<User> {
     User selectUserInfo(String userName);
 
     int insertUser(User user);
+
+    int changePwd(PasswordReqDTO passwordReqDTO);
+
+    int deleteUser(String userName);
 }
