@@ -13,11 +13,11 @@ import java.util.List;
  * @date 2020/12/23 15:42
  */
 public interface TokenService {
-    int addSecretKey(Integer appId);
+    void addSecretKey(Integer appId);
 
     SecretKey getSecretKey(Integer appId);
 
-    int deleteSecretKey(Integer appId);
+    void deleteSecretKey(Integer appId);
 
     List<SecretKey> listSecretKey();
 

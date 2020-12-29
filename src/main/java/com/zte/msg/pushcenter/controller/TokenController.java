@@ -55,14 +55,8 @@ public class TokenController {
     @PostMapping("/secretKey")
     @ApiOperation(value = "生成app密钥")
     public <T> DataResponse<T> createSecretKey(@Valid @RequestParam @NotNull(message = "32000006") Integer appId) {
-        int result = tokenService.addSecretKey(appId);
-        if (result > 0) {
-            log.info("app {} 密钥新增成功", appId);
-            return DataResponse.success();
-        } else {
-            log.error("app {} 密钥新增失败", appId);
-            throw new CommonException(ErrorCode.INSERT_ERROR);
-        }
+        tokenService.addSecretKey(appId);
+        return DataResponse.success();
     }
 
     /**
@@ -97,14 +91,8 @@ public class TokenController {
     @DeleteMapping("/secretKey")
     @ApiOperation(value = "密钥删除")
     public <T> DataResponse<T> deleteSecretKey(@Valid @RequestParam @NotNull(message = "32000006") Integer appId) {
-        int result = tokenService.deleteSecretKey(appId);
-        if (result > 0) {
-            log.info("密钥删除成功");
-            return DataResponse.success();
-        } else {
-            log.error("密钥删除失败");
-            throw new CommonException(ErrorCode.DELETE_ERROR);
-        }
+        tokenService.deleteSecretKey(appId);
+        return DataResponse.success();
     }
 
     /**
@@ -118,10 +106,6 @@ public class TokenController {
     @ApiOperation(value = "第三方服务Token获取")
     public DataResponse<Map<String, Object>> openApiToken(@Valid @RequestParam @NotBlank(message = "32000006") String appKey) throws Exception {
         OpenApiTokenInfo info = tokenService.selectTokenInfo(appKey);
-        if (Objects.isNull(info)) {
-            log.error("数据库第三方服务信息获取失败");
-            throw new CommonException(ErrorCode.SELECT_ERROR);
-        }
         String token = createOpenApiToken(info);
         String jsonToken = "{'appKey':'" + info.getAppKey() + "', 'appSecret':'" + info.getAppSecret() + "', 'token':'" + token + "'}";
         jsonToken = AesUtils.encrypt(jsonToken);
