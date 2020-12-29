@@ -48,4 +48,12 @@ public class ScriptServiceImpl extends ServiceImpl<ScriptMapper, Script> impleme
         script.setConfigId(scriptId);
         getBaseMapper().insert(script);
     }
+
+    @Override
+    public void deleteScript(Long id) {
+        if (Objects.isNull(getBaseMapper().selectById(id))) {
+            throw new CommonException(ErrorCode.RESOURCE_NOT_EXIST);
+        }
+        getBaseMapper().deleteById(id);
+    }
 }

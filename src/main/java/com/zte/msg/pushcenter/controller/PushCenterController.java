@@ -3,11 +3,11 @@ package com.zte.msg.pushcenter.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.zte.msg.pushcenter.core.pusher.MailPusher;
 import com.zte.msg.pushcenter.core.pusher.SmsPusher;
+import com.zte.msg.pushcenter.core.pusher.msg.MailMessage;
+import com.zte.msg.pushcenter.core.pusher.msg.SmsMessage;
 import com.zte.msg.pushcenter.dto.DataResponse;
 import com.zte.msg.pushcenter.dto.req.MailMessageReqDTO;
 import com.zte.msg.pushcenter.dto.req.SmsMessageReqDTO;
-import com.zte.msg.pushcenter.core.pusher.msg.MailMessage;
-import com.zte.msg.pushcenter.core.pusher.msg.SmsMessage;
 import com.zte.msg.pushcenter.enums.ErrorCode;
 import com.zte.msg.pushcenter.exception.CommonException;
 import io.swagger.annotations.Api;
@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 /**
  * description:

@@ -3,7 +3,7 @@ package com.zte.msg.pushcenter.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zte.msg.pushcenter.dto.PageReqDTO;
 import com.zte.msg.pushcenter.dto.req.SmsConfigReqDTO;
-import com.zte.msg.pushcenter.dto.res.SmsConfigResDTO;
+import com.zte.msg.pushcenter.dto.res.SmsConfigDetailResDTO;
 
 /**
  * description:
@@ -14,11 +14,13 @@ import com.zte.msg.pushcenter.dto.res.SmsConfigResDTO;
  */
 public interface SmsConfigService {
 
-    SmsConfigResDTO addSmsConfig(SmsConfigReqDTO reqDTO);
+    SmsConfigDetailResDTO getSmsConfig(Long id);
+
+    SmsConfigDetailResDTO addSmsConfig(SmsConfigReqDTO reqDTO);
 
     void updateSmsConfig(Long smsConfigId, SmsConfigReqDTO smsConfig);
 
     void deleteSmsConfig(Long deleteSmsConfig);
 
-    Page<SmsConfigResDTO> getSmsConfigs(PageReqDTO page);
+    Page<SmsConfigDetailResDTO> getSmsConfigs(PageReqDTO page);
 }

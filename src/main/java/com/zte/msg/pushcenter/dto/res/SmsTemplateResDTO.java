@@ -1,6 +1,5 @@
 package com.zte.msg.pushcenter.dto.res;
 
-import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -25,4 +24,6 @@ public class SmsTemplateResDTO {
     private String templateId;
 
     private String example;
+
+    private String sign;
 }

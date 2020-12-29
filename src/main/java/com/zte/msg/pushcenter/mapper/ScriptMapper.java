@@ -15,7 +15,7 @@ import org.apache.ibatis.annotations.Select;
  */
 public interface ScriptMapper extends BaseMapper<Script> {
 
-    @Select("SELECT * FROM `script`")
+    @Select("SELECT * FROM `script` WHERE flag = 0")
     Page<ScriptResDTO> selectByPage(Page<ScriptResDTO> page);
 
 }

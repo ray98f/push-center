@@ -15,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 /**
  * description:
  *
@@ -46,6 +48,10 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> impleme
     @Override
     public ConfigResDTO updateConfig(Long configId, ConfigReqDTO configReqDTO) {
 
+        Config exist = getBaseMapper().selectById(configId);
+        if (Objects.isNull(exist)) {
+            throw new CommonException(ErrorCode.RESOURCE_NOT_EXIST);
+        }
         Config config = new Config();
         BeanUtils.copyProperties(configReqDTO, config);
         config.setId(configId);
@@ -64,9 +70,12 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> impleme
     public ConfigResDTO getConfigById(Long configId) {
 
         Config config = getBaseMapper().selectById(configId);
-        ConfigResDTO configResDTO = new ConfigResDTO();
-        BeanUtils.copyProperties(config, configResDTO);
-        return configResDTO;
+        if (!Objects.isNull(config)) {
+            ConfigResDTO configResDTO = new ConfigResDTO();
+            BeanUtils.copyProperties(config, configResDTO);
+            return configResDTO;
+        }
+        return null;
     }
 
     @Override

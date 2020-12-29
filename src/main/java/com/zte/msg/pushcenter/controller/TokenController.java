@@ -1,10 +1,8 @@
 package com.zte.msg.pushcenter.controller;
 
-import com.zte.msg.pushcenter.dto.*;
-import com.zte.msg.pushcenter.entity.SecretKey;
+import com.zte.msg.pushcenter.dto.DataResponse;
 import com.zte.msg.pushcenter.dto.OpenApiTokenInfo;
-import com.zte.msg.pushcenter.enums.ErrorCode;
-import com.zte.msg.pushcenter.exception.CommonException;
+import com.zte.msg.pushcenter.entity.SecretKey;
 import com.zte.msg.pushcenter.service.TokenService;
 import com.zte.msg.pushcenter.utils.AesUtils;
 import io.swagger.annotations.Api;
@@ -21,9 +19,8 @@ import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
-import static com.zte.msg.pushcenter.utils.TokenUtil.*;
+import static com.zte.msg.pushcenter.utils.TokenUtil.createOpenApiToken;
 
 /**
  * description:

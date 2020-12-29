@@ -24,20 +24,27 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("/api/v1/script")
-@Api(tags = "脚本")
+@Api(tags = "推送脚本")
 @Validated
 public class ScriptController {
 
     @Resource
     private ScriptService scriptService;
 
-    @PostMapping(value = "/script")
+    @PostMapping
     @ApiOperation(value = "添加脚本")
     public <T> DataResponse<T> addScript(@RequestBody ScriptReqDTO script) {
 
         scriptService.addScript(script);
         return DataResponse.success();
     }
+
+    @DeleteMapping(value = "/{id}")
+    public <T> DataResponse<T> deleteScript(@PathVariable Long id) {
+        scriptService.deleteScript(id);
+        return DataResponse.success();
+    }
+
 
     @PutMapping(value = "/relate")
     @ApiOperation(value = "关联脚本和配置")

@@ -19,4 +19,6 @@ public interface ScriptService {
     Page<ScriptResDTO> getScripts(PageReqDTO pageReqDTO);
 
     void relate(Long configId, Long scriptId);
+
+    void deleteScript(Long id);
 }

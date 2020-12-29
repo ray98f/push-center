@@ -1,15 +1,20 @@
 package com.zte.msg.pushcenter.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zte.msg.pushcenter.dto.PageReqDTO;
 import com.zte.msg.pushcenter.dto.req.SmsConfigReqDTO;
-import com.zte.msg.pushcenter.dto.res.SmsConfigResDTO;
+import com.zte.msg.pushcenter.dto.res.SmsConfigDetailResDTO;
 import com.zte.msg.pushcenter.entity.SmsConfig;
+import com.zte.msg.pushcenter.enums.ErrorCode;
+import com.zte.msg.pushcenter.exception.CommonException;
 import com.zte.msg.pushcenter.mapper.SmsConfigMapper;
 import com.zte.msg.pushcenter.service.SmsConfigService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 /**
  * description:
@@ -21,19 +26,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class SmsServiceImpl extends ServiceImpl<SmsConfigMapper, SmsConfig> implements SmsConfigService {
 
+    @Override
+    public SmsConfigDetailResDTO getSmsConfig(Long id) {
+        return getBaseMapper().selectDetailById(id);
+    }
 
     @Override
-    public SmsConfigResDTO addSmsConfig(SmsConfigReqDTO reqDTO) {
-        SmsConfig smsConfig = new SmsConfig();
-        BeanUtils.copyProperties(reqDTO, smsConfig);
-        getBaseMapper().insert(smsConfig);
-        SmsConfigResDTO resDTO = new SmsConfigResDTO();
-        BeanUtils.copyProperties(smsConfig, resDTO);
-        return resDTO;
+    public SmsConfigDetailResDTO addSmsConfig(SmsConfigReqDTO reqDTO) {
+        if (getBaseMapper().selectCount(new QueryWrapper<SmsConfig>().eq("config_name", reqDTO.getConfigName())) >= 1) {
+            throw new CommonException(ErrorCode.DATA_EXIST);
+        }
+        SmsConfig config = new SmsConfig();
+        BeanUtils.copyProperties(reqDTO, config);
+        getBaseMapper().insert(config);
+        return  getBaseMapper().selectDetailById(config.getId());
     }
 
     @Override
     public void updateSmsConfig(Long smsConfigId, SmsConfigReqDTO reqDTO) {
+        if (Objects.isNull(getBaseMapper().selectById(smsConfigId))) {
+            throw new CommonException(ErrorCode.RESOURCE_NOT_EXIST);
+        }
         SmsConfig config = new SmsConfig();
         BeanUtils.copyProperties(reqDTO, config);
         config.setId(smsConfigId);
@@ -41,13 +54,15 @@ public class SmsServiceImpl extends ServiceImpl<SmsConfigMapper, SmsConfig> impl
     }
 
     @Override
-    public void deleteSmsConfig(Long deleteSmsConfig) {
-        getBaseMapper().deleteById(deleteSmsConfig);
+    public void deleteSmsConfig(Long id) {
+        if (Objects.isNull(getBaseMapper().selectById(id))) {
+            throw new CommonException(ErrorCode.RESOURCE_NOT_EXIST);
+        }
+        getBaseMapper().deleteById(id);
     }
 
     @Override
-    public Page<SmsConfigResDTO> getSmsConfigs(PageReqDTO page) {
-
+    public Page<SmsConfigDetailResDTO> getSmsConfigs(PageReqDTO page) {
         return getBaseMapper().selectByPage(page.of());
     }
 

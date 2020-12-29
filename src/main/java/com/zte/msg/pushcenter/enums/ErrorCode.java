@@ -9,11 +9,14 @@ package com.zte.msg.pushcenter.enums;
  */
 public enum ErrorCode {
 
-    AUTHORIZATION_CHECK_FAIL(401,"authorization.check.fail"),
+    /**
+     * 鉴权
+     */
+    AUTHORIZATION_CHECK_FAIL(401, "authorization.check.fail"),
 
-    AUTHORIZATION_IS_OVERDUE(401,"authorization.is.overdue"),
+    AUTHORIZATION_IS_OVERDUE(401, "authorization.is.overdue"),
 
-    AUTHORIZATION_INVALID(401,"authorization.invalid"),
+    AUTHORIZATION_INVALID(401, "authorization.invalid"),
 
     AUTHORIZATION_EMPTY(401, "authorization.empty"),
     /**
@@ -90,6 +93,7 @@ public enum ErrorCode {
     PROVIDER_NOT_EXIST(32000018, "provider.not.exist"),
 
     TEMPLATE_EXIST(32000019, "template.exist"),
+
 
     /**
      * 邮箱
