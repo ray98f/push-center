@@ -31,7 +31,7 @@ public class TokenServiceImpl implements TokenService {
     private TokenMapper tokenMapper;
 
     @Override
-    public void addSecretKey(Integer appId){
+    public void addSecretKey(Integer appId) {
         SecretKey resultSecretKey = tokenMapper.getSecretKey(appId);
         if (!Objects.isNull(resultSecretKey)) {
             throw new CommonException(ErrorCode.DATA_EXIST);
@@ -50,7 +50,7 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public SecretKey getSecretKey(Integer appId){
+    public SecretKey getSecretKey(Integer appId) {
         SecretKey secretKey = tokenMapper.getSecretKey(appId);
         if (!Objects.isNull(secretKey)) {
             log.info("app {} 密钥查询成功", appId);
@@ -62,7 +62,7 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public void deleteSecretKey(Integer appId){
+    public void deleteSecretKey(Integer appId) {
         int result = tokenMapper.deleteSecretKey(appId);
         if (result > 0) {
             log.info("密钥删除成功");
@@ -73,9 +73,9 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public List<SecretKey> listSecretKey(){
+    public List<SecretKey> listSecretKey() {
         List<SecretKey> secretKey = tokenMapper.listSecretKey();
-        if (secretKey.size() != 0) {
+        if (null != secretKey && !secretKey.isEmpty()) {
             log.info("密钥列表查询成功");
             return secretKey;
         } else {
@@ -85,7 +85,7 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public OpenApiTokenInfo selectTokenInfo(String appKey){
+    public OpenApiTokenInfo selectTokenInfo(String appKey) {
         OpenApiTokenInfo info = tokenMapper.selectTokenInfo(appKey);
         if (Objects.isNull(info)) {
             log.error("数据库第三方服务信息获取失败");
@@ -95,7 +95,7 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public String selectAppRole(String appKey){
+    public String selectAppRole(String appKey) {
         return tokenMapper.selectAppRole(appKey);
     }
 }
