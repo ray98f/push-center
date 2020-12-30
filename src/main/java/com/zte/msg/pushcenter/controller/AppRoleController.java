@@ -37,8 +37,7 @@ public class AppRoleController {
      */
     @GetMapping("/appRole")
     public DataResponse<List<AppRoleResDTO>> listAppRole() {
-        List<AppRoleResDTO> appRoleResDTOList = appRoleService.listAppRole();
-        return DataResponse.of(appRoleResDTOList);
+        return DataResponse.of(appRoleService.listAppRole());
     }
 
     /**
@@ -49,8 +48,7 @@ public class AppRoleController {
      */
     @PutMapping("/appRole")
     public DataResponse<AppRoleResDTO> getAppRole(@Valid @RequestParam @NotNull(message = "32000006") Integer appId) {
-        AppRoleResDTO appRoleResDTO = appRoleService.selectAppRole(appId);
-        return DataResponse.of(appRoleResDTO);
+        return DataResponse.of(appRoleService.selectAppRole(appId));
     }
 
     /**

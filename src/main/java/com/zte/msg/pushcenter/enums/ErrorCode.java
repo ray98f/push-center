@@ -65,6 +65,8 @@ public enum ErrorCode {
 
     SELECT_ERROR(31000002, "select.error"),
 
+    SELECT_EMPTY(31000002, "select.empty"),
+
     UPDATE_ERROR(31000003, "update.error"),
 
     DELETE_ERROR(31000004, "delete.error"),

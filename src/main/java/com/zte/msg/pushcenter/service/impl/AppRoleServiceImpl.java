@@ -37,7 +37,7 @@ public class AppRoleServiceImpl implements AppRoleService {
             return appRole;
         } else {
             log.error("服务列表查询失败");
-            throw new CommonException(ErrorCode.SELECT_ERROR);
+            throw new CommonException(ErrorCode.SELECT_EMPTY);
         }
     }
 

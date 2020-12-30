@@ -80,7 +80,7 @@ public class TokenServiceImpl implements TokenService {
             return secretKey;
         } else {
             log.error("密钥列表查询失败");
-            throw new CommonException(ErrorCode.SELECT_ERROR);
+            throw new CommonException(ErrorCode.SELECT_EMPTY);
         }
     }
 
