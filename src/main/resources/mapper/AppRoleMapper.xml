@@ -11,7 +11,7 @@
         left join app as a on a.id=ar.app_id and a.flag=0 where ar.flag=0 where ar.app_id=#{appId};
     </select>
     
-    <select id="selectAppRole" resultType="com.zte.msg.pushcenter.entity.Role">
+    <select id="selectAppRole" resultType="com.zte.msg.pushcenter.entity.AppRole">
         SELECT ar.id,ar.role_id,r.role_name,ar.status FROM app_role as ar
         left join role as r on r.id=ar.role_id and r.flag=0 where ar.app_id=#{appId} and ar.flag=0;
     </select>
@@ -38,4 +38,25 @@
             </foreach>
         </foreach>
     </insert>
+
+    <select id="listRole" resultType="com.zte.msg.pushcenter.entity.Role">
+        select * from role
+    </select>
+
+    <delete id="deleteRole" parameterType="java.lang.Integer">
+        delete from role where id=#{roleId};
+        delete from app_role where role_id=#{roleId};
+    </delete>
+
+    <update id="updateRole" parameterType="com.zte.msg.pushcenter.entity.Role">
+        update role set role_name=#{roleName} where id=#{id}
+    </update>
+
+    <insert id="insertRole" parameterType="java.lang.String">
+        insert into role(role_name) value(#{roleName});
+    </insert>
+
+    <select id="selectRoleId" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select id from role where role_name=#{roleName}
+    </select>
 </mapper>

@@ -1,11 +1,13 @@
 package com.zte.msg.pushcenter.service.impl;
 
 import com.zte.msg.pushcenter.dto.res.AppRoleResDTO;
+import com.zte.msg.pushcenter.entity.Role;
 import com.zte.msg.pushcenter.enums.ErrorCode;
 import com.zte.msg.pushcenter.exception.CommonException;
 import com.zte.msg.pushcenter.mapper.AppRoleMapper;
 import com.zte.msg.pushcenter.service.AppRoleService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,6 +68,68 @@ public class AppRoleServiceImpl implements AppRoleService {
         } else {
             log.error("编辑app权限失败");
             throw new CommonException(ErrorCode.APP_ROLE_EDIT_ERROR);
+        }
+    }
+
+    @Override
+    public List<Role> listRole() {
+        List<Role> roleList = appRoleMapper.listRole();
+        if (null != roleList && !roleList.isEmpty()) {
+            log.info("权限列表获取成功");
+            return roleList;
+        } else {
+            log.error("权限列表获取失败");
+            throw new CommonException(ErrorCode.SELECT_EMPTY);
+        }
+    }
+
+    @Override
+    public void deleteRole(Integer roleId) {
+        if (Objects.isNull(roleId)) {
+            log.error("权限ID返回为空");
+            throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
+        }
+        int result = appRoleMapper.deleteRole(roleId);
+        if (result > 0) {
+            log.info("权限删除成功");
+        } else {
+            log.error("权限删除失败");
+            throw new CommonException(ErrorCode.DELETE_ERROR);
+        }
+    }
+
+    @Override
+    public void updateRole(Role role) {
+        if (Objects.isNull(role)) {
+            log.error("权限信息返回为空");
+            throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
+        }
+        int result = appRoleMapper.updateRole(role);
+        if (result > 0) {
+            log.info("权限修改成功");
+        } else {
+            log.error("权限修改失败");
+            throw new CommonException(ErrorCode.UPDATE_ERROR);
+        }
+    }
+
+    @Override
+    public void insertRole(String roleName) {
+        if (StringUtils.isBlank(roleName)) {
+            log.error("权限信息返回为空");
+            throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
+        }
+        Integer id = appRoleMapper.selectRoleId(roleName);
+        if (Objects.nonNull(id)) {
+            log.error("权限已存在");
+            throw new CommonException(ErrorCode.DATA_EXIST);
+        }
+        int result = appRoleMapper.insertRole(roleName);
+        if (result > 0) {
+            log.info("添加权限成功");
+        } else {
+            log.error("添加权限失败");
+            throw new CommonException(ErrorCode.INSERT_ERROR);
         }
     }
 }
