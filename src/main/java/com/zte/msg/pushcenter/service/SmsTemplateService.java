@@ -22,7 +22,7 @@ public interface SmsTemplateService {
      * @param smsTemplateReqDTO
      * @return
      */
-    SmsTemplateResDTO addSmsTemplate(SmsTemplateReqDTO smsTemplateReqDTO);
+    void addSmsTemplate(SmsTemplateReqDTO smsTemplateReqDTO);
 
     /**
      * 根据templateId查询短信模版详情

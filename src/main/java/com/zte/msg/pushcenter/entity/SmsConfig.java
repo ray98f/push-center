@@ -12,9 +12,9 @@ import lombok.Data;
 @Data
 public class SmsConfig extends BaseEntity {
 
-    private Long configId;
+    private Long providerId;
 
-    private String configName;
+    private String name;
 
     private String description;
 

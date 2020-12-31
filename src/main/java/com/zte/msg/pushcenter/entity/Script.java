@@ -12,7 +12,7 @@ import lombok.Data;
 @Data
 public class Script extends BaseEntity {
 
-    private Long configId;
+    private Long providerId;
 
     private String context;
 

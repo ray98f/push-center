@@ -5,7 +5,6 @@ import com.zte.msg.pushcenter.core.pusher.msg.Message;
 import com.zte.msg.pushcenter.dto.DataResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -29,9 +28,6 @@ public abstract class BasePusher {
     @Resource
     private KafkaTemplate<String, String> kafkaTemplate;
 
-    @Resource
-    private KafkaProperties kafkaProperties;
-
     @Value("${spring.kafka.consumer.topic}")
     private String kafkaTopic;
 
@@ -52,19 +48,6 @@ public abstract class BasePusher {
      */
     public final void submit(Message message) {
         kafkaTemplate.send(kafkaTopic, JSONObject.toJSONString(message));
-//        kafkaProducer.send();
-//        CompletableFuture.supplyAsync(() -> {
-//            log.info("==========submit sms push task==========");
-//            return message.push();
-//        }, pushExecutor).exceptionally(e -> {
-//            log.error("Error!!! An exception occurred when push a message.");
-//            // TODO: 2020/12/22 异常的情况返回错误详情
-//            return null;
-//        }).thenAcceptAsync(o -> {
-//            if (message.getIsCallBack()) {
-//                response(o, message.getCallBackUrl());
-//            }
-//        }, resExecutor);
     }
 
     public abstract void push(Message message);
@@ -74,7 +57,7 @@ public abstract class BasePusher {
      *
      * @param message
      */
-    public void response(Message message, JSONObject res) {
+    protected void response(Message message, JSONObject res) {
         if (!message.getIsCallBack()) {
             return;
         }
@@ -85,5 +68,4 @@ public abstract class BasePusher {
             log.error("Error!!! An exception occurred when response.");
         }
     }
-
 }

@@ -2,8 +2,8 @@ package com.zte.msg.pushcenter.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zte.msg.pushcenter.dto.res.ConfigResDTO;
-import com.zte.msg.pushcenter.entity.Config;
+import com.zte.msg.pushcenter.dto.res.ProviderResDTO;
+import com.zte.msg.pushcenter.entity.Provider;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -15,9 +15,9 @@ import org.apache.ibatis.annotations.Select;
  * @date 2020/12/21 10:34
  */
 @Mapper
-public interface ConfigMapper extends BaseMapper<Config> {
+public interface ProviderMapper extends BaseMapper<Provider> {
 
-    @Select("SELECT * FROM `config` WHERE flag = 0")
-    Page<ConfigResDTO> selectByPage(Page<ConfigResDTO> page);
+    @Select("SELECT * FROM `provider` WHERE flag = 0")
+    Page<ProviderResDTO> selectByPage(Page<ProviderResDTO> page);
 
 }

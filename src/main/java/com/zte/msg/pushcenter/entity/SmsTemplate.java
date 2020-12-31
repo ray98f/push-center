@@ -14,11 +14,8 @@ import lombok.Data;
 @TableName(value = "sms_template")
 public class SmsTemplate extends BaseEntity {
 
-    private Integer smsConfigId;
+    private String name;
 
-    private String templateId;
+    private String description;
 
-    private String example;
-
-    private String sign;
 }

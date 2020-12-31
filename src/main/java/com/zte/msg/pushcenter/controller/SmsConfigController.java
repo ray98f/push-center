@@ -7,7 +7,6 @@ import com.zte.msg.pushcenter.dto.PageResponse;
 import com.zte.msg.pushcenter.dto.req.SmsConfigReqDTO;
 import com.zte.msg.pushcenter.dto.req.SmsTemplateReqDTO;
 import com.zte.msg.pushcenter.dto.res.SmsConfigDetailResDTO;
-import com.zte.msg.pushcenter.dto.res.SmsTemplateResDTO;
 import com.zte.msg.pushcenter.service.SmsConfigService;
 import com.zte.msg.pushcenter.service.SmsTemplateService;
 import io.swagger.annotations.Api;
@@ -81,9 +80,10 @@ public class SmsConfigController {
 
     @PostMapping(value = "/template")
     @ApiOperation(value = "添加短信模版配置接口，来自于第三方服务的模版配置")
-    public DataResponse<SmsTemplateResDTO> addSmsTemplate(@RequestBody @Valid @ApiParam(value = "对应的供应商模版配置")
-                                                                  SmsTemplateReqDTO templateConfig) {
-        return DataResponse.of(smsTemplateService.addSmsTemplate(templateConfig));
+    public <T> DataResponse<T> addSmsTemplate(@RequestBody @Valid @ApiParam(value = "对应的供应商模版配置")
+                                                      SmsTemplateReqDTO templateConfig) {
+        smsTemplateService.addSmsTemplate(templateConfig);
+        return DataResponse.success();
     }
 
 }

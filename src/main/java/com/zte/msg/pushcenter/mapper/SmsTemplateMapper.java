@@ -23,32 +23,20 @@ public interface SmsTemplateMapper extends BaseMapper<SmsTemplate> {
     Page<SmsTemplate> selectByPage(Page<SmsTemplate> page);
 
     @Select("SELECT " +
-            " st.template_id, " +
-            " st.sms_config_id, " +
-            " sc.config_id, " +
-            " s.id script_id, " +
-            " c.config_name, " +
-            " c.provider_name, " +
-            " s.context, " +
-            " s.script_name, " +
-            " s.script_tag, " +
-            " sc.config_name sms_config_name, " +
+            " st.id, " +
+            " st.`name`, " +
+            " pst.example, " +
+            " pst.sign, " +
+            " pst.`order`, " +
             " sc.s_app_id, " +
             " sc.secret_id, " +
             " sc.secret_key, " +
-            " st.example, " +
-            " st.sign  " +
+            " p.provider_name " +
             "FROM " +
             " sms_template st " +
-            " LEFT JOIN sms_config sc ON st.sms_config_id = sc.id " +
-            " LEFT JOIN config c ON sc.config_id = c.id " +
-            " LEFT JOIN script s ON s.config_id = c.id  " +
-            "WHERE " +
-            " st.flag = 0  " +
-            " AND sc.flag = 0  " +
-            " AND c.flag = 0  " +
-            " AND s.flag = 0" +
-            " AND s.related = 1")
+            " LEFT JOIN provider_sms_template pst ON st.id = pst.sms_template_id " +
+            " LEFT JOIN sms_config sc ON sc.id = pst.sms_config_id " +
+            " LEFT JOIN provider p ON pst.provider_id = p.id")
     List<SmsPusher.ConfigDetail> selectConfigDetail();
 
 }

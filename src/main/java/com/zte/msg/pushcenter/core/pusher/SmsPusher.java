@@ -10,9 +10,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * description:
@@ -25,54 +24,66 @@ import java.util.Map;
 @Slf4j
 public class SmsPusher extends BasePusher {
 
-
     @Resource
     private SmsTemplateService smsTemplateService;
 
     /**
-     * templateId作为key
+     * 平
      */
-    public static Map<String, ConfigDetail> configMap = new HashMap<>();
+    public static Map<Long, TreeMap<Integer, ConfigDetail>> configMap = new HashMap<>();
 
     @PostConstruct
     public void init() {
         log.info("==========initialize sms push config...==========");
         List<ConfigDetail> configDetails = smsTemplateService.selectConfigDetail();
-        configDetails.forEach(o -> configMap.put(o.getTemplateId(), o));
-        log.info("==========initialize sms config completed : {}==========", configMap.size());
+        configDetails.forEach(this::flushConfigMap);
+        log.info("==========initialize sms config completed : {} ==========", configMap.size());
+    }
+
+    public void flushConfigMap(ConfigDetail o) {
+        TreeMap<Integer, ConfigDetail> treeMap = configMap.get(o.getId());
+        if (Objects.isNull(treeMap)) {
+            treeMap = new TreeMap<>();
+        }
+        treeMap.put(o.getOrder(), o);
+        configMap.put(o.getId(), treeMap);
     }
 
     @Override
     public void push(Message message) {
         SmsMessage smsMessage = (SmsMessage) message;
-        ConfigDetail configDetail = configMap.get(smsMessage.getTemplateId());
 
+        CompletableFuture.supplyAsync(() -> {
+            log.info("==========submit sms push task==========");
+            // TODO: 2020/12/31 调用脚本推送
+
+            return null;
+        }, pushExecutor).exceptionally(e -> {
+            log.error("Error!!! An exception occurred when push a message.");
+            // TODO: 2020/12/22 异常的情况返回错误详情
+            return null;
+        }).thenAcceptAsync(o -> {
+            if (message.getIsCallBack()) {
+                response(message, null);
+            }
+        }, resExecutor);
     }
 
     @Data
     public static class ConfigDetail {
 
-        private String templateId;
+        /**
+         * sms_template表id
+         */
+        private Long id;
 
-        private Integer type;
+        private String name;
 
-        private Long configId;
+        private String example;
 
-        private Long smsConfigId;
+        private String sign;
 
-        private Long scriptId;
-
-        private String configName;
-
-        private String providerName;
-
-        private String context;
-
-        private String scriptName;
-
-        private String scriptTag;
-
-        private String smsConfigName;
+        private Integer order;
 
         private String sAppId;
 
@@ -80,9 +91,7 @@ public class SmsPusher extends BasePusher {
 
         private String secretKey;
 
-        private String example;
-
-        private String sign;
+        private String providerName;
     }
 
     @Data
@@ -98,3 +107,4 @@ public class SmsPusher extends BasePusher {
 
     }
 }
+

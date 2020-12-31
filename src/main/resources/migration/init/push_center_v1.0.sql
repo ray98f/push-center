@@ -47,10 +47,10 @@ CREATE TABLE `app_role` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC COMMENT='服务对应的推送权限表';
 
 -- ----------------------------
--- Table structure for config
+-- Table structure for provider
 -- ----------------------------
-DROP TABLE IF EXISTS `config`;
-CREATE TABLE `config`  (
+DROP TABLE IF EXISTS `provider`;
+CREATE TABLE `provider`  (
   `id` int(8) NOT NULL AUTO_INCREMENT,
   `config_name` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '配置标题',
   `description` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述信息  ',

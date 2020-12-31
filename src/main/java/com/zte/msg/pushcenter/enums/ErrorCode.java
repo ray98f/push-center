@@ -92,19 +92,14 @@ public enum ErrorCode {
 
     WECHAT_PUSH_ERROR(32000017, "wechat.push.error"),
 
-    PROVIDER_NOT_EXIST(32000018, "provider.not.exist"),
-
     TEMPLATE_EXIST(32000019, "template.exist"),
-
-
-    /**
-     * 邮箱
-     */
-    MAIL_PARAM_EMPTY(32000020, "mail.param.empty"),
 
     /**
      * 短信 32000020 - 32000029
      */
+    SMS_CONFIG_NOT_EXIST(32000021, "sms.config.not.exist"),
+    SMS_PROVIDER_CONFIG_NOT_NULL(32000022, "sms.provider.config.not.null"),
+    SMS_CONFIG_NAME_EXIST(32000023, "sms.config.name.exist"),
 
     /**
      * App 32000030 - 32000039
@@ -115,26 +110,33 @@ public enum ErrorCode {
      */
 
     /**
-     * 鉴权 32000050 - 32000069
+     * 邮箱 32000050 - 32000059
      */
-    USER_NOT_EXIST(32000050, "user.not.exist"),
+    MAIL_PARAM_EMPTY(32000050, "mail.param.empty"),
 
-    LOGIN_PASSWORD_ERROR(32000051, "login.password.error"),
-
-    USER_PWD_CHANGE_FAIL(32000052, "user.pwd.change.fail"),
-
-    APP_ROLE_EDIT_ERROR(32000053, "app.role.edit.error"),
 
     /**
-     * 第三方供应商服务 32000070 - 32000079
+     * 鉴权 32000060 - 32000079
      */
-    PROVIDER_EXIST(32000040, "provider.exist"),
+    USER_NOT_EXIST(32000060, "user.not.exist"),
+
+    LOGIN_PASSWORD_ERROR(32000061, "login.password.error"),
+
+    USER_PWD_CHANGE_FAIL(32000062, "user.pwd.change.fail"),
+
+    APP_ROLE_EDIT_ERROR(32000063, "app.role.edit.error"),
 
     /**
-     * 脚本 32000080 - 32000089
+     * 第三方供应商服务 32000080 - 32000089
      */
-    SCRIPT_TYPE_ERROR(32000080, "script.type.error"),
+    PROVIDER_ALREADY_EXIST(32000080, "provider.already.exist"),
+    PROVIDER_NOT_EXIST(32000081, "provider.not.exist"),
 
+    /**
+     * 脚本 32000090- 32000099
+     */
+    SCRIPT_TYPE_ERROR(32000090, "script.type.error"),
+    SCRIPT_NOT_EXIST(32000091, "script.not.exist")
     ;
 
     private Integer code;

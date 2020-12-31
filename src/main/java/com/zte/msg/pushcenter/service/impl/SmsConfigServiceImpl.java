@@ -13,6 +13,7 @@ import com.zte.msg.pushcenter.mapper.SmsConfigMapper;
 import com.zte.msg.pushcenter.service.SmsConfigService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 
@@ -24,7 +25,14 @@ import java.util.Objects;
  * @date 2020/12/22 14:54
  */
 @Service
-public class SmsServiceImpl extends ServiceImpl<SmsConfigMapper, SmsConfig> implements SmsConfigService {
+@Transactional(rollbackFor = Exception.class)
+public class SmsConfigServiceImpl extends ServiceImpl<SmsConfigMapper, SmsConfig> implements SmsConfigService {
+
+    @Override
+    public SmsConfig getById(Long id) {
+
+        return getBaseMapper().selectById(id);
+    }
 
     @Override
     public SmsConfigDetailResDTO getSmsConfig(Long id) {
@@ -33,13 +41,13 @@ public class SmsServiceImpl extends ServiceImpl<SmsConfigMapper, SmsConfig> impl
 
     @Override
     public SmsConfigDetailResDTO addSmsConfig(SmsConfigReqDTO reqDTO) {
-        if (getBaseMapper().selectCount(new QueryWrapper<SmsConfig>().eq("config_name", reqDTO.getConfigName())) >= 1) {
-            throw new CommonException(ErrorCode.DATA_EXIST);
+        if (getBaseMapper().selectCount(new QueryWrapper<SmsConfig>().eq("name", reqDTO.getName())) >= 1) {
+            throw new CommonException(ErrorCode.SMS_CONFIG_NAME_EXIST);
         }
         SmsConfig config = new SmsConfig();
         BeanUtils.copyProperties(reqDTO, config);
         getBaseMapper().insert(config);
-        return  getBaseMapper().selectDetailById(config.getId());
+        return getBaseMapper().selectDetailById(config.getId());
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zte.msg.pushcenter.dto.PageReqDTO;
 import com.zte.msg.pushcenter.dto.req.SmsConfigReqDTO;
 import com.zte.msg.pushcenter.dto.res.SmsConfigDetailResDTO;
+import com.zte.msg.pushcenter.entity.SmsConfig;
 
 /**
  * description:
@@ -13,6 +14,8 @@ import com.zte.msg.pushcenter.dto.res.SmsConfigDetailResDTO;
  * @date 2020/12/22 14:52
  */
 public interface SmsConfigService {
+
+    SmsConfig getById(Long id);
 
     SmsConfigDetailResDTO getSmsConfig(Long id);
 

@@ -50,10 +50,10 @@ public class ScriptController {
 
     @PutMapping(value = "/relate")
     @ApiOperation(value = "关联脚本和配置")
-    public <T> DataResponse<T> relate(@RequestParam @ApiParam(value = "配置id") Long configId,
+    public <T> DataResponse<T> relate(@RequestParam @ApiParam(value = "供应商id") Long providerId,
                                       @RequestParam @ApiParam(value = "脚本id") Long scriptId) {
         // TODO: 2020/12/29 关联脚本时，需要进行配置的动态加载
-        scriptService.relate(configId, scriptId);
+        scriptService.relate(providerId, scriptId);
         return DataResponse.success();
     }
 

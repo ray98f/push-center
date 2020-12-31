@@ -23,17 +23,17 @@ public class SmsConfigReqDTO {
 
     @ApiModelProperty(value = "配置名称")
     @Length(min = 4, max = 30, message = "32000003")
-    @JsonProperty(value = "config_name")
-    private String configName;
+    @JsonProperty(value = "name")
+    private String name;
 
     @ApiModelProperty(value = "描述")
     @Length(max = 60, message = "32000003")
     private String description;
 
-    @ApiModelProperty(value = "基础配置表id")
-    @JsonProperty(value = "config_id")
+    @ApiModelProperty(value = "供应商id")
+    @JsonProperty(value = "provider_id")
     @NotNull(message = "32000006")
-    private Long configId;
+    private Long providerId;
 
     @ApiModelProperty(value = "第三方短信服务配置的appId")
     @JsonProperty(value = "s_app_id")

@@ -20,10 +20,10 @@ public class SmsConfigResDTO {
 
     private Long id;
 
-    @ApiModelProperty(value = "基础配置表id")
-    @JsonProperty(value = "config_id")
+    @ApiModelProperty(value = "服务供应商id")
+    @JsonProperty(value = "provider_id")
     @NotNull(message = "32000006")
-    private Long configId;
+    private Long providerId;
 
     @ApiModelProperty(value = "描述")
     private String description;

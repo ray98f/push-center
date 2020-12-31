@@ -25,10 +25,6 @@ public class ScriptReqDTO {
     @NotNull(message = "32000006")
     private Integer type;
 
-//    @ApiModelProperty(value = "关联的配置id")
-//    @NotNull(message = "32000006")
-//    private Long configId;
-
     @ApiModelProperty(value = "脚本描述")
     private String description;
 

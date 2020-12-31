@@ -21,32 +21,32 @@ public interface SmsConfigMapper extends BaseMapper<SmsConfig> {
 
     @Select("SELECT " +
             " s.id, " +
-            " s.config_name, " +
+            " s.name, " +
             " s.description, " +
-            " config_id, " +
+            " provider_id, " +
             " s_app_id, " +
             " secret_id, " +
             " secret_key, " +
             " c.provider_name " +
             "FROM " +
             " sms_config s " +
-            " LEFT JOIN config c ON s.config_id = c.id  " +
+            " LEFT JOIN provider c ON s.provider_id = c.id  " +
             "WHERE " +
             " s.flag = 0")
     Page<SmsConfigDetailResDTO> selectByPage(Page<SmsConfigResDTO> page);
 
     @Select("SELECT " +
             " s.id, " +
-            " s.config_name, " +
+            " s.name, " +
             " s.description, " +
-            " s.config_id, " +
+            " s.provider_id, " +
             " s_app_id, " +
             " secret_id, " +
             " secret_key, " +
             " c.provider_name " +
             "FROM " +
             " sms_config s " +
-            " LEFT JOIN config c ON s.config_id = c.id  " +
+            " LEFT JOIN provider c ON s.provider_id = c.id  " +
             "WHERE " +
             " s.id = #{id}" +
             " AND s.flag = 0")

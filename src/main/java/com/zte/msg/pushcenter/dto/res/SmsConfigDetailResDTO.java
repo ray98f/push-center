@@ -21,12 +21,11 @@ public class SmsConfigDetailResDTO {
     private Long id;
 
     @ApiModelProperty(value = "配置名称")
-    @JsonProperty(value = "config_name")
-    private String configName;
+    private String name;
 
     @ApiModelProperty(value = "基础配置表id")
-    @JsonProperty(value = "config_id")
-    private Long configId;
+    @JsonProperty(value = "provider_id")
+    private Long providerId;
 
     @ApiModelProperty(value = "描述")
     private String description;

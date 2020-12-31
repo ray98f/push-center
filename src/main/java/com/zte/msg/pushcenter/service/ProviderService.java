@@ -2,8 +2,8 @@ package com.zte.msg.pushcenter.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zte.msg.pushcenter.dto.PageReqDTO;
-import com.zte.msg.pushcenter.dto.req.ConfigReqDTO;
-import com.zte.msg.pushcenter.dto.res.ConfigResDTO;
+import com.zte.msg.pushcenter.dto.req.ProviderReqDTO;
+import com.zte.msg.pushcenter.dto.res.ProviderResDTO;
 
 /**
  * description:
@@ -12,38 +12,38 @@ import com.zte.msg.pushcenter.dto.res.ConfigResDTO;
  * @version 1.0
  * @date 2020/12/21 15:12
  */
-public interface ConfigService {
+public interface ProviderService {
     /**
      * 添加供应商配置
      *
-     * @param configReqDTO
+     * @param providerReqDTO
      * @return
      */
-    ConfigResDTO addConfig(ConfigReqDTO configReqDTO);
+    ProviderResDTO addProvider(ProviderReqDTO providerReqDTO);
 
     /**
      * 更新供应商配置
      *
-     * @param configId
-     * @param configReqDTO
+     * @param providerId
+     * @param providerReqDTO
      * @return
      */
-    ConfigResDTO updateConfig(Long configId, ConfigReqDTO configReqDTO);
+    ProviderResDTO updateProvider(Long providerId, ProviderReqDTO providerReqDTO);
 
     /**
      * 删除
      *
-     * @param configId
+     * @param providerId
      */
-    void deleteConfig(Long configId);
+    void deleteProvider(Long providerId);
 
     /**
      * 根据id查询配置详情
      *
-     * @param configId
+     * @param providerId
      * @return
      */
-    ConfigResDTO getConfigById(Long configId);
+    ProviderResDTO getProviderById(Long providerId);
 
     /**
      * 分页查询第三方服务基本配置
@@ -51,5 +51,5 @@ public interface ConfigService {
      * @param pageReqDTO
      * @return
      */
-    Page<ConfigResDTO> getConfigs(PageReqDTO pageReqDTO);
+    Page<ProviderResDTO> getProviders(PageReqDTO pageReqDTO);
 }

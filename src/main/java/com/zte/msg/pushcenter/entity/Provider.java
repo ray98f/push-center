@@ -10,10 +10,7 @@ import lombok.Data;
  * @date 2020/12/22 14:40
  */
 @Data
-public class Config extends BaseEntity {
-
-
-    private String configName;
+public class Provider extends BaseEntity {
 
     private String description;
 

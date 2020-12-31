@@ -1,12 +1,11 @@
 package com.zte.msg.pushcenter.dto.req;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * description:
@@ -19,22 +18,14 @@ import javax.validation.constraints.NotNull;
 @ApiModel
 public class SmsTemplateReqDTO {
 
-    @ApiModelProperty(value = "短信配置id")
+    @ApiModelProperty(value = "短信模版名称")
     @NotNull(message = "32000006")
-    @JsonProperty(value = "sms_config_id")
-    private Integer smsConfigId;
+    private String name;
 
-    @ApiModelProperty(value = "供应商id")
-    @NotBlank(message = "32000006")
-    @JsonProperty(value = "template_id")
-    private String templateId;
+    @ApiModelProperty(value = "短信模版描述")
+    private String description;
 
-    @ApiModelProperty(value = "模版样例，其中的变量用#标识出来，例如：【中轨技术】您的验证码是#code#，有效期#m#分钟")
-    @NotBlank(message = "32000006")
-    private String example;
-
-    @NotBlank(message = "32000006")
-    @ApiModelProperty(value = "短信签名")
-    private String sign;
+    @ApiModelProperty(value = "相关短信模版列表")
+    private List<ProviderSmsTemplateReqDTO> providerSmsTemplates;
 
 }
