@@ -21,13 +21,13 @@ public class ScriptReqDTO {
     @NotNull(message = "32000006")
     private String scriptName;
 
+    @ApiModelProperty(value = "脚本推送类型：1-短信，2-邮件，3-App，4-微信")
+    @NotNull(message = "32000006")
+    private Integer type;
+
 //    @ApiModelProperty(value = "关联的配置id")
 //    @NotNull(message = "32000006")
 //    private Long configId;
-
-    @ApiModelProperty(value = "脚本内容")
-    @NotNull(message = "32000006")
-    private String context;
 
     @ApiModelProperty(value = "脚本描述")
     private String description;

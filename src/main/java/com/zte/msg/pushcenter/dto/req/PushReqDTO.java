@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.springframework.boot.autoconfigure.validation.ValidationAutoConfiguration;
 
 import javax.validation.constraints.NotNull;
 
@@ -22,7 +21,7 @@ public class PushReqDTO {
     @ApiModelProperty(value = "雪花算法生成的64位整形", required = true)
     @NotNull(message = "32000006")
     @JsonProperty(value = "message_id")
-    private Long messageId;
+    private String messageId;
 
     @ApiModelProperty(value = "调用者id", required = true)
     @NotNull(message = "32000006")

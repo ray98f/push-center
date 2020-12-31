@@ -33,7 +33,7 @@ public class SmsConfigDetailResDTO {
 
     @ApiModelProperty(value = "第三方短信服务配置的appId")
     @JsonProperty(value = "app_id")
-    private String appId;
+    private String sAppId;
 
     @ApiModelProperty(value = "第三方短信服务配置的secretId")
     @JsonProperty(value = "secret_id")

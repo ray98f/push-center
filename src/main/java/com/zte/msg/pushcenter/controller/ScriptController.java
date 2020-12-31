@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -33,14 +34,15 @@ public class ScriptController {
 
     @PostMapping
     @ApiOperation(value = "添加脚本")
-    public <T> DataResponse<T> addScript(@RequestBody ScriptReqDTO script) {
+    public <T> DataResponse<T> addScript(@Valid ScriptReqDTO script, @RequestParam MultipartFile context) {
 
-        scriptService.addScript(script);
+        scriptService.addScript(script, context);
         return DataResponse.success();
     }
 
     @DeleteMapping(value = "/{id}")
     public <T> DataResponse<T> deleteScript(@PathVariable Long id) {
+        // TODO: 2020/12/29 关联脚本时，需要进行配置的动态更新
         scriptService.deleteScript(id);
         return DataResponse.success();
     }
@@ -50,6 +52,7 @@ public class ScriptController {
     @ApiOperation(value = "关联脚本和配置")
     public <T> DataResponse<T> relate(@RequestParam @ApiParam(value = "配置id") Long configId,
                                       @RequestParam @ApiParam(value = "脚本id") Long scriptId) {
+        // TODO: 2020/12/29 关联脚本时，需要进行配置的动态加载
         scriptService.relate(configId, scriptId);
         return DataResponse.success();
     }

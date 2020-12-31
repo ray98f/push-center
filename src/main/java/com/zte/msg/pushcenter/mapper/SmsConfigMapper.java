@@ -24,7 +24,7 @@ public interface SmsConfigMapper extends BaseMapper<SmsConfig> {
             " s.config_name, " +
             " s.description, " +
             " config_id, " +
-            " app_id, " +
+            " s_app_id, " +
             " secret_id, " +
             " secret_key, " +
             " c.provider_name " +
@@ -40,7 +40,7 @@ public interface SmsConfigMapper extends BaseMapper<SmsConfig> {
             " s.config_name, " +
             " s.description, " +
             " s.config_id, " +
-            " app_id, " +
+            " s_app_id, " +
             " secret_id, " +
             " secret_key, " +
             " c.provider_name " +

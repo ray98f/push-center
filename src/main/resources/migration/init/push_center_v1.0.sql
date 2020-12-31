@@ -51,14 +51,14 @@ CREATE TABLE `app_role` (
 -- ----------------------------
 DROP TABLE IF EXISTS `config`;
 CREATE TABLE `config`  (
-    `id` int(8) NOT NULL AUTO_INCREMENT,
-    `config_name` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '配置标题',
-    `description` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述信息  ',
-    `provider_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '第三方服务商名',
-    `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `flag` int NOT NULL DEFAULT '0',
-    PRIMARY KEY (`id`) USING BTREE
+  `id` int(8) NOT NULL AUTO_INCREMENT,
+  `config_name` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '配置标题',
+  `description` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述信息  ',
+  `provider_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '第三方服务商名',
+  `created_at` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
+  `updated_at` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
+  `flag` int(1) NULL DEFAULT 0,
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -94,17 +94,19 @@ CREATE TABLE `role`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `script`;
 CREATE TABLE `script`  (
-    `id` bigint(20) NOT NULL AUTO_INCREMENT,
-    `script_tag` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '脚本唯一标识',
-    `config_id` int(8) NOT NULL COMMENT 'config表主键',
-    `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
-    `context` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '脚本内容',
-    `script_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '脚本名',
-    `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `flag` int NOT NULL DEFAULT '0',
-    PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `type` int(1) NOT NULL COMMENT '脚本类型',
+  `related` int(1) NOT NULL DEFAULT 0 COMMENT '是否关联',
+  `script_tag` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '脚本唯一标识',
+  `config_id` int(8) NULL DEFAULT NULL COMMENT 'config表主键',
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `context` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '脚本内容',
+  `script_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '脚本名',
+  `created_at` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
+  `updated_at` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
+  `flag` int(1) NULL DEFAULT 0,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for secret_key
@@ -127,17 +129,17 @@ CREATE TABLE `secret_key`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `sms_config`;
 CREATE TABLE `sms_config`  (
-    `id` int(8) NOT NULL AUTO_INCREMENT,
-    `config_name` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-    `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-    `config_id` int(8) NOT NULL COMMENT 'config表id',
-    `s_app_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '第三方短信服务配置的appId',
-    `secret_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '第三方短信服务配置的secretId',
-    `secret_key` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '第三方短信服务配置的secretKey',
-    `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `flag` int NOT NULL DEFAULT '0',
-    PRIMARY KEY (`id`) USING BTREE
+  `id` int(8) NOT NULL AUTO_INCREMENT,
+  `config_name` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `config_id` int(8) NOT NULL COMMENT 'config表id',
+  `s_app_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '第三方短信服务配置的appId',
+  `secret_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '第三方短信服务配置的secretId',
+  `secret_key` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '第三方短信服务配置的secretKey',
+  `created_at` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
+  `updated_at` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
+  `flag` int(1) NULL DEFAULT 0 COMMENT '发送短信的curl命令',
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -166,15 +168,15 @@ CREATE TABLE `sms_info`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `sms_template`;
 CREATE TABLE `sms_template`  (
-    `id` int(8) NOT NULL AUTO_INCREMENT,
-    `sms_config_id` int(8) NOT NULL COMMENT 'sms_config表id',
-    `sign` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '短信模版签名',
-    `template_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-    `example` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '模版样例，其中的变量用括号标识出来，例如：【中轨技术】您的验证码是{code}，有效期{m}分钟',
-    `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `flag` int NOT NULL DEFAULT '0',
-    PRIMARY KEY (`id`) USING BTREE
+  `id` int(8) NOT NULL AUTO_INCREMENT,
+  `sms_config_id` int(8) NOT NULL COMMENT 'sms_config表id',
+  `sign` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '短信模版签名',
+  `template_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `example` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '模版样例，其中的变量用括号标识出来，例如：【中轨技术】您的验证码是{code}，有效期{m}分钟',
+  `created_at` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
+  `updated_at` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
+  `flag` int(1) NULL DEFAULT 0,
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------

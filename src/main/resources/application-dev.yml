@@ -26,28 +26,28 @@ spring:
             class: javax.net.ssl.SSLSocketFactory
     protocol: smtps
     test-connection: true
-  #  kafka:
-  #    bootstrap-servers: xxx
-  #    consumer:
-  #      auto-commit-interval: 1000ms
-  #      auto-offset-reset: earliest
-  #      enable-auto-commit: false
-  #      group-id: xxx
-  #      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-  #      max-poll-records: 1000
-  #      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-  #      thread:
-  #        min: 2
-  #        max: 5
-  #      topic: xxx
-  #    producer:
-  #      batch-size: 65536
-  #      buffer-memory: 524288
-  #      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-  #      retries: 3
-  #      value-serializer: org.apache.kafka.common.serialization.StringSerializer
-  #    listener:
-  #      missing-topics-fatal: false
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      auto-commit-interval: 1000ms
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      group-id: push-center-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      max-poll-records: 1000
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      thread:
+        min: 2
+        max: 5
+      topic: push-center-topic
+    producer:
+      batch-size: 65536
+      buffer-memory: 524288
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      retries: 3
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    listener:
+      missing-topics-fatal: false
 mybatis-plus:
   mapper-locations: classpath:/mapper/*.xml
   type-aliases-package: com.zte.msg.pushcenter.entity

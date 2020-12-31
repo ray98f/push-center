@@ -36,8 +36,8 @@ public class SmsConfigReqDTO {
     private Long configId;
 
     @ApiModelProperty(value = "第三方短信服务配置的appId")
-    @JsonProperty(value = "app_id")
-    private String appId;
+    @JsonProperty(value = "s_app_id")
+    private String sAppId;
 
     @ApiModelProperty(value = "第三方短信服务配置的secretId")
     @JsonProperty(value = "secret_id")

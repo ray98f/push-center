@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -35,6 +34,5 @@ public class SmsMessageReqDTO extends PushReqDTO {
 
     @ApiModelProperty(value = "模版变量键值对")
     private Map<String, String> vars;
-
 
 }

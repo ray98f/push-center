@@ -1,7 +1,10 @@
 package com.zte.msg.pushcenter.service;
 
+import com.zte.msg.pushcenter.core.pusher.SmsPusher;
 import com.zte.msg.pushcenter.dto.req.SmsTemplateReqDTO;
 import com.zte.msg.pushcenter.dto.res.SmsTemplateResDTO;
+
+import java.util.List;
 
 /**
  * description:
@@ -28,5 +31,13 @@ public interface SmsTemplateService {
      * @return
      */
     SmsTemplateResDTO selectTemplate(String templateId);
+
+    /**
+     * 查询全量配置
+     * @return
+     */
+    List<SmsPusher.ConfigDetail> selectConfigDetail();
+
+
 
 }

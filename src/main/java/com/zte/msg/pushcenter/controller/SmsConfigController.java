@@ -83,7 +83,6 @@ public class SmsConfigController {
     @ApiOperation(value = "添加短信模版配置接口，来自于第三方服务的模版配置")
     public DataResponse<SmsTemplateResDTO> addSmsTemplate(@RequestBody @Valid @ApiParam(value = "对应的供应商模版配置")
                                                                   SmsTemplateReqDTO templateConfig) {
-
         return DataResponse.of(smsTemplateService.addSmsTemplate(templateConfig));
     }
 

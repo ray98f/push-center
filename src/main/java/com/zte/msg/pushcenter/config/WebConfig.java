@@ -1,5 +1,6 @@
 package com.zte.msg.pushcenter.config;
 
+import com.zte.msg.pushcenter.config.filter.CorsFilter;
 import com.zte.msg.pushcenter.config.filter.JwtFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +23,16 @@ public class WebConfig extends WebMvcConfigurationSupport {
         registration.setFilter(new JwtFilter());
         registration.setName("JwtFilter");
         registration.addUrlPatterns("/api");
+        registration.setOrder(2);
+        return registration;
+    }
+
+    @Bean
+    public FilterRegistrationBean<CorsFilter> corsFilterRegistration() {
+        FilterRegistrationBean<CorsFilter> registration = new FilterRegistrationBean<>();
+        registration.setFilter(new CorsFilter());
+        registration.setName("CorsFilter");
+        registration.addUrlPatterns("/*");
         registration.setOrder(1);
         return registration;
     }

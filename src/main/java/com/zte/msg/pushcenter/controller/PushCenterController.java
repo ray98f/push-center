@@ -9,11 +9,11 @@ import com.zte.msg.pushcenter.dto.DataResponse;
 import com.zte.msg.pushcenter.dto.req.MailMessageReqDTO;
 import com.zte.msg.pushcenter.dto.req.SmsMessageReqDTO;
 import com.zte.msg.pushcenter.enums.ErrorCode;
+import com.zte.msg.pushcenter.enums.PushMethods;
 import com.zte.msg.pushcenter.exception.CommonException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,13 +29,10 @@ import java.util.Objects;
  * @date 2020/12/10 13:57
  */
 @RestController
-@RequestMapping("/api/v1/push")
+@RequestMapping("/api/openapi/v1/push")
 @Api(tags = "消息推送")
 @Validated
 public class PushCenterController {
-
-    @Resource(name = "asyncPushExecutor")
-    protected ThreadPoolTaskExecutor executor;
 
     @Resource
     private SmsPusher smsPusher;
@@ -51,6 +48,7 @@ public class PushCenterController {
             throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
         }
         SmsMessage smsMessage = new SmsMessage().build(reqDTO);
+        smsMessage.setPushMethods(PushMethods.SMS);
         smsPusher.submit(smsMessage);
         return DataResponse.success();
     }

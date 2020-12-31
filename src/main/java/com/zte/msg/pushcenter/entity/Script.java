@@ -16,6 +16,10 @@ public class Script extends BaseEntity {
 
     private String context;
 
+    private Integer related;
+
+    private Integer type;
+
     private String description;
 
     private String scriptName;

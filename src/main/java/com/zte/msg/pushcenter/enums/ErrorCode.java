@@ -103,17 +103,39 @@ public enum ErrorCode {
     MAIL_PARAM_EMPTY(32000020, "mail.param.empty"),
 
     /**
-     * 第三方供应商服务
+     * 短信 32000020 - 32000029
      */
-    PROVIDER_EXIST(3200040, "provider.exist"),
 
-    USER_NOT_EXIST(3200050, "user.not.exist"),
+    /**
+     * App 32000030 - 32000039
+     */
 
-    LOGIN_PASSWORD_ERROR(3200051, "login.password.error"),
+    /**
+     * 微信 32000040 - 32000049
+     */
 
-    USER_PWD_CHANGE_FAIL(320052, "user.pwd.change.fail"),
+    /**
+     * 鉴权 32000050 - 32000069
+     */
+    USER_NOT_EXIST(32000050, "user.not.exist"),
 
-    APP_ROLE_EDIT_ERROR(320053,"app.role.edit.error");
+    LOGIN_PASSWORD_ERROR(32000051, "login.password.error"),
+
+    USER_PWD_CHANGE_FAIL(32000052, "user.pwd.change.fail"),
+
+    APP_ROLE_EDIT_ERROR(32000053, "app.role.edit.error"),
+
+    /**
+     * 第三方供应商服务 32000070 - 32000079
+     */
+    PROVIDER_EXIST(32000040, "provider.exist"),
+
+    /**
+     * 脚本 32000080 - 32000089
+     */
+    SCRIPT_TYPE_ERROR(32000080, "script.type.error"),
+
+    ;
 
     private Integer code;
 

@@ -2,14 +2,13 @@ package com.zte.msg.pushcenter.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zte.msg.pushcenter.core.pusher.SmsPusher;
 import com.zte.msg.pushcenter.dto.req.SmsTemplateReqDTO;
 import com.zte.msg.pushcenter.dto.res.SmsTemplateResDTO;
-import com.zte.msg.pushcenter.entity.Config;
 import com.zte.msg.pushcenter.entity.SmsConfig;
 import com.zte.msg.pushcenter.entity.SmsTemplate;
 import com.zte.msg.pushcenter.enums.ErrorCode;
 import com.zte.msg.pushcenter.exception.CommonException;
-import com.zte.msg.pushcenter.mapper.ConfigMapper;
 import com.zte.msg.pushcenter.mapper.SmsConfigMapper;
 import com.zte.msg.pushcenter.mapper.SmsTemplateMapper;
 import com.zte.msg.pushcenter.service.SmsTemplateService;
@@ -18,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -61,6 +61,11 @@ public class SmsTemplateServiceImpl extends ServiceImpl<SmsTemplateMapper, SmsTe
     public SmsTemplateResDTO selectTemplate(String templateId) {
 
         return null;
+    }
+
+    @Override
+    public List<SmsPusher.ConfigDetail> selectConfigDetail() {
+        return getBaseMapper().selectConfigDetail();
     }
 
 

@@ -1,6 +1,5 @@
 package com.zte.msg.pushcenter.core.pusher;
 
-import com.alibaba.fastjson.JSONObject;
 import com.zte.msg.pushcenter.core.BasePusher;
 import com.zte.msg.pushcenter.core.pusher.msg.Message;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +15,10 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class AppPusher extends BasePusher {
-    @Override
-    public void submit(Message message) {
-    }
 
+
+    @Override
+    public void push(Message message) {
+
+    }
 }

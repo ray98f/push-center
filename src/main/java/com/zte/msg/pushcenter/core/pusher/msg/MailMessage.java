@@ -1,6 +1,5 @@
 package com.zte.msg.pushcenter.core.pusher.msg;
 
-import com.alibaba.fastjson.JSONObject;
 import com.zte.msg.pushcenter.dto.req.MailMessageReqDTO;
 import com.zte.msg.pushcenter.utils.UidUtils;
 import lombok.Data;
@@ -28,6 +27,8 @@ public class MailMessage extends Message {
      */
     private String subject;
 
+    private String content;
+
     /**
      * 抄送地址
      */
@@ -40,13 +41,4 @@ public class MailMessage extends Message {
         return this;
     }
 
-    @Override
-    public JSONObject push() {
-        return null;
-    }
-
-    @Override
-    public void persistence() {
-
-    }
 }
