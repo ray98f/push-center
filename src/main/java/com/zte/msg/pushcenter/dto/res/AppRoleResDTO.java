@@ -1,6 +1,6 @@
 package com.zte.msg.pushcenter.dto.res;
 
-import com.zte.msg.pushcenter.entity.Role;
+import com.zte.msg.pushcenter.entity.AppRole;
 import lombok.Data;
 
 import java.util.List;
@@ -11,5 +11,5 @@ public class AppRoleResDTO {
 
     private String appName;
 
-    private List<Role> role;
+    private List<AppRole> role;
 }

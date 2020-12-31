@@ -2,6 +2,7 @@ package com.zte.msg.pushcenter.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zte.msg.pushcenter.dto.res.AppRoleResDTO;
+import com.zte.msg.pushcenter.entity.AppRole;
 import com.zte.msg.pushcenter.entity.Role;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -16,7 +17,17 @@ public interface AppRoleMapper extends BaseMapper<AppRoleResDTO> {
 
     AppRoleResDTO selectApp(Integer appId);
 
-    List<Role> selectAppRole(Integer appId);
+    List<AppRole> selectAppRole(Integer appId);
 
     int editAppRole(List<AppRoleResDTO> appRoleResDTOList);
+
+    List<Role> listRole();
+
+    int deleteRole(Integer roleId);
+
+    int updateRole(Role role);
+
+    int insertRole(String roleName);
+
+    Integer selectRoleId(String roleName);
 }

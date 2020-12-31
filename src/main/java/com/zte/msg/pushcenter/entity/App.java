@@ -3,7 +3,7 @@ package com.zte.msg.pushcenter.entity;
 import lombok.Data;
 
 @Data
-public class Role extends BaseEntity {
+public class App extends BaseEntity{
 
-    private String roleName;
+    private String appName;
 }
