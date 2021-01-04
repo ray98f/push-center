@@ -14,10 +14,14 @@ import lombok.Data;
 @TableName(value = "template")
 public class Template extends BaseEntity {
 
+    private Integer appRoleId;
+
     private String name;
 
     private Integer type;
 
     private String description;
+
+    private Integer status;
 
 }
