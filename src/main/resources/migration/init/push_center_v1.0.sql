@@ -61,6 +61,24 @@ CREATE TABLE `provider` (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for provider_sms_template
+-- ----------------------------
+DROP TABLE IF EXISTS `provider_sms_template`;
+CREATE TABLE `provider_sms_template` (
+  `id` int(8) NOT NULL AUTO_INCREMENT COMMENT '服务商短信模版表',
+  `provider_id` int(8) NOT NULL COMMENT '服务供应商表id',
+  `sms_template_id` int(8) NOT NULL COMMENT 'sms_template表id',
+  `example` text NOT NULL COMMENT '短信内容',
+  `sms_config_id` int(8) NOT NULL COMMENT '模版对应的配置id',
+  `s_template_id` varchar(30) NOT NULL COMMENT '服务商短信模版id',
+  `sign` varchar(45) NOT NULL COMMENT '短信签名',
+  `order` int(4) NOT NULL DEFAULT '0' COMMENT '排序',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `flag` int(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+-- ----------------------------
 -- Table structure for dic
 -- ----------------------------
 DROP TABLE IF EXISTS `dic`;
