@@ -1,18 +1,18 @@
 package com.zte.msg.pushcenter.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.zte.msg.pushcenter.core.pusher.SmsPusher;
 import com.zte.msg.pushcenter.dto.req.ProviderSmsTemplateReqDTO;
 import com.zte.msg.pushcenter.dto.req.SmsTemplateReqDTO;
 import com.zte.msg.pushcenter.dto.res.SmsTemplateResDTO;
 import com.zte.msg.pushcenter.entity.ProviderSmsTemplate;
-import com.zte.msg.pushcenter.entity.SmsTemplate;
+import com.zte.msg.pushcenter.entity.Template;
 import com.zte.msg.pushcenter.enums.ErrorCode;
+import com.zte.msg.pushcenter.enums.PushMethods;
 import com.zte.msg.pushcenter.exception.CommonException;
-import com.zte.msg.pushcenter.mapper.SmsTemplateMapper;
+import com.zte.msg.pushcenter.mapper.TemplateMapper;
 import com.zte.msg.pushcenter.service.ProviderSmsTemplateService;
 import com.zte.msg.pushcenter.service.SmsConfigService;
-import com.zte.msg.pushcenter.service.SmsTemplateService;
+import com.zte.msg.pushcenter.service.TemplateService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ import java.util.Objects;
 @Service
 @Slf4j
 @Transactional(rollbackFor = Exception.class)
-public class SmsTemplateServiceImpl extends ServiceImpl<SmsTemplateMapper, SmsTemplate> implements SmsTemplateService {
+public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, Template> implements TemplateService {
 
     @Resource
     private SmsConfigService smsConfigService;
@@ -54,8 +54,9 @@ public class SmsTemplateServiceImpl extends ServiceImpl<SmsTemplateMapper, SmsTe
                 throw new CommonException(ErrorCode.SMS_CONFIG_NOT_EXIST);
             }
         });
-        SmsTemplate entity = new SmsTemplate();
+        Template entity = new Template();
         BeanUtils.copyProperties(smsTemplateReqDTO, entity);
+        entity.setType(PushMethods.SMS.value());
         getBaseMapper().insert(entity);
         Long id = entity.getId();
 
@@ -75,10 +76,6 @@ public class SmsTemplateServiceImpl extends ServiceImpl<SmsTemplateMapper, SmsTe
         return null;
     }
 
-    @Override
-    public List<SmsPusher.ConfigDetail> selectConfigDetail() {
-        return getBaseMapper().selectConfigDetail();
-    }
 
 
 }

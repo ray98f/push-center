@@ -11,10 +11,12 @@ import lombok.Data;
  * @date 2020/12/21 13:54
  */
 @Data
-@TableName(value = "sms_template")
-public class SmsTemplate extends BaseEntity {
+@TableName(value = "template")
+public class Template extends BaseEntity {
 
     private String name;
+
+    private Integer type;
 
     private String description;
 

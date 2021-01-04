@@ -3,7 +3,8 @@ package com.zte.msg.pushcenter.core.pusher;
 import com.zte.msg.pushcenter.core.BasePusher;
 import com.zte.msg.pushcenter.core.pusher.msg.Message;
 import com.zte.msg.pushcenter.core.pusher.msg.SmsMessage;
-import com.zte.msg.pushcenter.service.SmsTemplateService;
+import com.zte.msg.pushcenter.enums.PushMethods;
+import com.zte.msg.pushcenter.service.SmsConfigService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,34 +26,33 @@ import java.util.concurrent.CompletableFuture;
 public class SmsPusher extends BasePusher {
 
     @Resource
-    private SmsTemplateService smsTemplateService;
+    private SmsConfigService smsConfigService;
 
     /**
-     * 平
+     * 模版id作为key，order作为内部嵌套map的key
      */
-    public static Map<Long, TreeMap<Integer, ConfigDetail>> configMap = new HashMap<>();
+    public static Map<Long, TreeMap<Integer, ConfigDetail>> smsConfigMap = new HashMap<>();
 
     @PostConstruct
     public void init() {
         log.info("==========initialize sms push config...==========");
-        List<ConfigDetail> configDetails = smsTemplateService.selectConfigDetail();
+        List<ConfigDetail> configDetails = smsConfigService.selectConfigDetail(PushMethods.SMS.value());
         configDetails.forEach(this::flushConfigMap);
-        log.info("==========initialize sms config completed : {} ==========", configMap.size());
+        log.info("==========initialize sms config completed : {} ==========", smsConfigMap.size());
     }
 
     public void flushConfigMap(ConfigDetail o) {
-        TreeMap<Integer, ConfigDetail> treeMap = configMap.get(o.getId());
+        TreeMap<Integer, ConfigDetail> treeMap = smsConfigMap.get(o.getId());
         if (Objects.isNull(treeMap)) {
             treeMap = new TreeMap<>();
         }
         treeMap.put(o.getOrder(), o);
-        configMap.put(o.getId(), treeMap);
+        smsConfigMap.put(o.getId(), treeMap);
     }
 
     @Override
     public void push(Message message) {
         SmsMessage smsMessage = (SmsMessage) message;
-
         CompletableFuture.supplyAsync(() -> {
             log.info("==========submit sms push task==========");
             // TODO: 2020/12/31 调用脚本推送

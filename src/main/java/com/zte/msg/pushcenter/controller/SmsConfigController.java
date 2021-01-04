@@ -5,13 +5,10 @@ import com.zte.msg.pushcenter.dto.DataResponse;
 import com.zte.msg.pushcenter.dto.PageReqDTO;
 import com.zte.msg.pushcenter.dto.PageResponse;
 import com.zte.msg.pushcenter.dto.req.SmsConfigReqDTO;
-import com.zte.msg.pushcenter.dto.req.SmsTemplateReqDTO;
 import com.zte.msg.pushcenter.dto.res.SmsConfigDetailResDTO;
 import com.zte.msg.pushcenter.service.SmsConfigService;
-import com.zte.msg.pushcenter.service.SmsTemplateService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,9 +30,6 @@ public class SmsConfigController {
 
     @Resource
     private SmsConfigService smsConfigService;
-
-    @Resource
-    private SmsTemplateService smsTemplateService;
 
     @PostMapping
     @ApiOperation(value = "添加短信配置")
@@ -76,14 +70,6 @@ public class SmsConfigController {
         Page<SmsConfigDetailResDTO> smsConfigs = smsConfigService.getSmsConfigs(page);
         smsConfigs.getRecords().forEach(SmsConfigDetailResDTO::decrypt);
         return PageResponse.of(smsConfigs);
-    }
-
-    @PostMapping(value = "/template")
-    @ApiOperation(value = "添加短信模版配置接口，来自于第三方服务的模版配置")
-    public <T> DataResponse<T> addSmsTemplate(@RequestBody @Valid @ApiParam(value = "对应的供应商模版配置")
-                                                      SmsTemplateReqDTO templateConfig) {
-        smsTemplateService.addSmsTemplate(templateConfig);
-        return DataResponse.success();
     }
 
 }

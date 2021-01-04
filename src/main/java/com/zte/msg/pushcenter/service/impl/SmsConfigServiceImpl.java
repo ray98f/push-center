@@ -3,6 +3,7 @@ package com.zte.msg.pushcenter.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zte.msg.pushcenter.core.pusher.SmsPusher;
 import com.zte.msg.pushcenter.dto.PageReqDTO;
 import com.zte.msg.pushcenter.dto.req.SmsConfigReqDTO;
 import com.zte.msg.pushcenter.dto.res.SmsConfigDetailResDTO;
@@ -15,6 +16,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -74,5 +76,9 @@ public class SmsConfigServiceImpl extends ServiceImpl<SmsConfigMapper, SmsConfig
         return getBaseMapper().selectByPage(page.of());
     }
 
+    @Override
+    public List<SmsPusher.ConfigDetail> selectConfigDetail(Integer type) {
+        return getBaseMapper().selectConfigDetail(type);
+    }
 
 }
