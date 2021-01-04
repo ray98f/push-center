@@ -42,7 +42,12 @@
                         <if test="template.status!=null">#{template.status},</if>
                     </trim>
                     ON DUPLICATE KEY UPDATE
-                    app_id=#{item.appId},role_id=#{role.roleId},template_id=#{template.id},status=#{template.status}
+                    <trim suffixOverrides=",">
+                        <if test="item.appId!=null">app_id=#{item.appId},</if>
+                        <if test="role.roleId!=null">role_id=#{role.roleId},</if>
+                        <if test="template.id!=null">template_id=#{template.id},</if>
+                        <if test="template.status!=null">status=#{template.status},</if>
+                    </trim>
                 </foreach>
             </foreach>
         </foreach>

@@ -1,10 +1,8 @@
 package com.zte.msg.pushcenter.controller;
 
 import com.zte.msg.pushcenter.dto.DataResponse;
-import com.zte.msg.pushcenter.dto.OpenApiTokenInfo;
 import com.zte.msg.pushcenter.entity.SecretKey;
 import com.zte.msg.pushcenter.service.TokenService;
-import com.zte.msg.pushcenter.utils.AesUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -14,13 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static com.zte.msg.pushcenter.utils.TokenUtil.createOpenApiToken;
 
 /**
  * description:
@@ -92,23 +85,23 @@ public class TokenController {
         return DataResponse.success();
     }
 
-    /**
-     * 第三方服务Token获取
-     *
-     * @param appKey 密钥
-     * @return DataResponse
-     * @throws Exception CommonException
-     */
-    @PostMapping("/openapi/token")
-    @ApiOperation(value = "第三方服务Token获取")
-    public DataResponse<Map<String, Object>> openApiToken(@Valid @RequestParam @NotBlank(message = "32000006") String appKey) throws Exception {
-        OpenApiTokenInfo info = tokenService.selectTokenInfo(appKey);
-        String token = createOpenApiToken(info);
-        String jsonToken = "{'appKey':'" + info.getAppKey() + "', 'appSecret':'" + info.getAppSecret() + "', 'token':'" + token + "'}";
-        jsonToken = AesUtils.encrypt(jsonToken);
-        log.info("{} Token返回成功", info.getAppId());
-        Map<String, Object> data = new HashMap<>();
-        data.put("token", jsonToken);
-        return DataResponse.of(data);
-    }
+//    /**
+//     * 第三方服务Token获取
+//     *
+//     * @param appKey 密钥
+//     * @return DataResponse
+//     * @throws Exception CommonException
+//     */
+//    @PostMapping("/openapi/token")
+//    @ApiOperation(value = "第三方服务Token获取")
+//    public DataResponse<Map<String, Object>> openApiToken(@Valid @RequestParam @NotBlank(message = "32000006") String appKey) throws Exception {
+//        OpenApiTokenInfo info = tokenService.selectTokenInfo(appKey);
+//        String token = createOpenApiToken(info);
+//        String jsonToken = "{'appKey':'" + info.getAppKey() + "', 'appSecret':'" + info.getAppSecret() + "', 'token':'" + token + "'}";
+//        jsonToken = AesUtils.encrypt(jsonToken);
+//        log.info("{} Token返回成功", info.getAppId());
+//        Map<String, Object> data = new HashMap<>();
+//        data.put("token", jsonToken);
+//        return DataResponse.of(data);
+//    }
 }

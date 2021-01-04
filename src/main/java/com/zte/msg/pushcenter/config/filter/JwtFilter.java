@@ -37,31 +37,7 @@ public class JwtFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         String openApiPages = Constants.OPENAPI_URL;
-        if (httpRequest.getRequestURI().contains(openApiPages)) {
-            String token = httpRequest.getHeader("Authorization");
-            if (token == null || StringUtils.isBlank(token)) {
-                request.setAttribute("filter.error", new CommonException(ErrorCode.AUTHORIZATION_EMPTY));
-                request.getRequestDispatcher("/error/exthrow").forward(request, response);
-                return;
-            }
-            TokenStatus tokenStatus = TokenUtil.verifyOpenApiToken(token);
-            switch (Objects.requireNonNull(tokenStatus)) {
-                //有效
-                case VALID:
-                    OpenApiTokenInfo openApiTokenInfo = TokenUtil.getOpenApiTokenInfo(token);
-                    httpRequest.setAttribute("tokenInfo", openApiTokenInfo);
-                    chain.doFilter(httpRequest, httpResponse);
-                    break;
-                //过期
-                case EXPIRED:
-                    request.setAttribute("filter.error", new CommonException(ErrorCode.AUTHORIZATION_IS_OVERDUE));
-                    request.getRequestDispatcher("/error/exthrow").forward(request, response);
-                //无效
-                default:
-                    request.setAttribute("filter.error", new CommonException(ErrorCode.AUTHORIZATION_INVALID));
-                    request.getRequestDispatcher("/error/exthrow").forward(request, response);
-            }
-        } else if (Arrays.asList(excludedPages).contains(httpRequest.getRequestURI())) {
+        if (httpRequest.getRequestURI().contains(openApiPages) || Arrays.asList(excludedPages).contains(httpRequest.getRequestURI())) {
             chain.doFilter(httpRequest, httpResponse);
         } else {
             String token = httpRequest.getHeader("Authorization");
