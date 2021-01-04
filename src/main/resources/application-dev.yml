@@ -4,6 +4,23 @@ spring:
     url: jdbc:mysql://115.221.9.124:33306/push_center?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
     username: root
     password: root123456
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1 FROM DUAL
+#      test-while-idle: true
+#      test-on-borrow: false
+#      test-on-return: false
+#      pool-prepared-statements: true
+#      max-pool-prepared-statement-per-connection-size: 20
+#      filters: stat,wall
+#      use-global-data-source-stat: true
+#      connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+
   mail:
     default-encoding: UTF-8
     host: smtp.163.com
