@@ -25,7 +25,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/v1")
-@Api(tags = "Token认证")
+@Api(tags = "密钥管理")
 @Validated
 public class TokenController {
 
