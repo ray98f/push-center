@@ -67,11 +67,11 @@
             <artifactId>spring-kafka</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.aliyun</groupId>
-            <artifactId>aliyun-java-sdk-core</artifactId>
-            <version>4.5.3</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.aliyun</groupId>-->
+<!--            <artifactId>aliyun-java-sdk-core</artifactId>-->
+<!--            <version>4.5.3</version>-->
+<!--        </dependency>-->
 
         <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
         <dependency>
@@ -115,19 +115,19 @@
         </dependency>
 
 
-        <!-- https://mvnrepository.com/artifact/com.tencentcloudapi/tencentcloud-sdk-java-common -->
-        <dependency>
-            <groupId>com.tencentcloudapi</groupId>
-            <artifactId>tencentcloud-sdk-java-common</artifactId>
-            <version>3.1.80</version>
-        </dependency>
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/com.tencentcloudapi/tencentcloud-sdk-java-common &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.tencentcloudapi</groupId>-->
+<!--            <artifactId>tencentcloud-sdk-java-common</artifactId>-->
+<!--            <version>3.1.80</version>-->
+<!--        </dependency>-->
 
-        <!-- https://mvnrepository.com/artifact/com.tencentcloudapi/tencentcloud-sdk-java-sms -->
-        <dependency>
-            <groupId>com.tencentcloudapi</groupId>
-            <artifactId>tencentcloud-sdk-java-sms</artifactId>
-            <version>1.1.6</version>
-        </dependency>
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/com.tencentcloudapi/tencentcloud-sdk-java-sms &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.tencentcloudapi</groupId>-->
+<!--            <artifactId>tencentcloud-sdk-java-sms</artifactId>-->
+<!--            <version>1.1.6</version>-->
+<!--        </dependency>-->
 
 
         <!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
