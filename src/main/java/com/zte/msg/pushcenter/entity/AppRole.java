@@ -2,6 +2,8 @@ package com.zte.msg.pushcenter.entity;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class AppRole extends Role {
 
@@ -9,5 +11,5 @@ public class AppRole extends Role {
 
     private Integer appId;
 
-    private Integer status;
+    private List<Template> template;
 }

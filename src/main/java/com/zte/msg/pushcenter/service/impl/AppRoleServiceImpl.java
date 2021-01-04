@@ -1,6 +1,7 @@
 package com.zte.msg.pushcenter.service.impl;
 
 import com.zte.msg.pushcenter.dto.res.AppRoleResDTO;
+import com.zte.msg.pushcenter.entity.AppRole;
 import com.zte.msg.pushcenter.entity.Role;
 import com.zte.msg.pushcenter.enums.ErrorCode;
 import com.zte.msg.pushcenter.exception.CommonException;
@@ -30,13 +31,17 @@ public class AppRoleServiceImpl implements AppRoleService {
 
     @Override
     public List<AppRoleResDTO> listAppRole() {
-        List<AppRoleResDTO> appRole = appRoleMapper.listApp();
-        if (null != appRole && !appRole.isEmpty()) {
+        List<AppRoleResDTO> appRoleResDTOList = appRoleMapper.listApp();
+        if (null != appRoleResDTOList && !appRoleResDTOList.isEmpty()) {
             log.info("服务列表查询成功");
-            for (AppRoleResDTO appRoleResDTO : appRole) {
-                appRoleResDTO.setRole(appRoleMapper.selectAppRole(appRoleResDTO.getAppId()));
+            for (AppRoleResDTO appRoleResDTO : appRoleResDTOList) {
+                List<AppRole> appRole = appRoleMapper.selectAppRole(appRoleResDTO.getAppId());
+                for (AppRole appRoleTemplate : appRole){
+                    appRoleTemplate.setTemplate(appRoleMapper.selectTemplate(appRoleTemplate.getRoleId()));
+                }
+                appRoleResDTO.setRole(appRole);
             }
-            return appRole;
+            return appRoleResDTOList;
         } else {
             log.error("服务列表查询失败");
             throw new CommonException(ErrorCode.SELECT_EMPTY);
