@@ -24,8 +24,8 @@ import java.util.TreeMap;
 public class TencentSmsDemo {
 
     private final static Charset UTF8 = StandardCharsets.UTF_8;
-    private final static String SECRET_ID = "AKIDyid2EePjPs75ljCt6qMbWDfrtf7h9JFv";
-    private final static String SECRET_KEY = "INDn8zKQHuLYUDOM9dqo68tPnunQEo86";
+    private final static String SECRET_ID = "xxx";
+    private final static String SECRET_KEY = "xxx";
     private final static String CT_JSON = "application/json";
 
     public static byte[] hmac256(byte[] key, String msg) throws Exception {
