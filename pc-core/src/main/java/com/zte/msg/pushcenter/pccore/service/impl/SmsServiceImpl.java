@@ -7,11 +7,12 @@ import com.zte.msg.pushcenter.pccore.core.pusher.SmsPusher;
 import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsConfigReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.SmsConfigDetailResDTO;
+import com.zte.msg.pushcenter.pccore.entity.Sms;
 import com.zte.msg.pushcenter.pccore.entity.SmsConfig;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
-import com.zte.msg.pushcenter.pccore.mapper.SmsConfigMapper;
-import com.zte.msg.pushcenter.pccore.service.SmsConfigService;
+import com.zte.msg.pushcenter.pccore.mapper.SmsMapper;
+import com.zte.msg.pushcenter.pccore.service.SmsService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +29,7 @@ import java.util.Objects;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class SmsConfigServiceImpl extends ServiceImpl<SmsConfigMapper, SmsConfig> implements SmsConfigService {
+public class SmsServiceImpl extends ServiceImpl<SmsMapper, SmsConfig> implements SmsService {
 
     @Override
     public SmsConfig getById(Long id) {
@@ -79,6 +80,16 @@ public class SmsConfigServiceImpl extends ServiceImpl<SmsConfigMapper, SmsConfig
     @Override
     public List<SmsPusher.ConfigDetail> selectAllSmsConfigForInit() {
         return getBaseMapper().selectAllSmsConfigForInit();
+    }
+
+    @Override
+    public List<Sms> listHistorySms(){
+        List<Sms> result = getBaseMapper().listHistorySms();
+        if (null == result || result.isEmpty()){
+            throw new CommonException(ErrorCode.DATA_EXIST);
+        }else {
+            return result;
+        }
     }
 
 }

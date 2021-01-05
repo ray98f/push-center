@@ -6,7 +6,8 @@ import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.PageResponse;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsConfigReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.SmsConfigDetailResDTO;
-import com.zte.msg.pushcenter.pccore.service.SmsConfigService;
+import com.zte.msg.pushcenter.pccore.entity.Sms;
+import com.zte.msg.pushcenter.pccore.service.SmsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * description:
@@ -24,18 +26,18 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("/api/v1/sms")
-@Api(tags = "短信配置")
+@Api(tags = "短信")
 @Validated
-public class SmsConfigController {
+public class SmsController {
 
     @Resource
-    private SmsConfigService smsConfigService;
+    private SmsService smsService;
 
     @PostMapping
     @ApiOperation(value = "添加短信配置")
     public DataResponse<SmsConfigDetailResDTO> addSmsConfig(@RequestBody @Valid SmsConfigReqDTO reqDTO) {
         reqDTO.encrypt();
-        SmsConfigDetailResDTO resDTO = smsConfigService.addSmsConfig(reqDTO);
+        SmsConfigDetailResDTO resDTO = smsService.addSmsConfig(reqDTO);
         resDTO.decrypt();
         return DataResponse.of(resDTO);
     }
@@ -43,7 +45,7 @@ public class SmsConfigController {
     @GetMapping(value = "{id}")
     @ApiOperation(value = "根据id查询短信配置详情")
     public DataResponse<SmsConfigDetailResDTO> getSmsConfig(@PathVariable Long id) {
-        SmsConfigDetailResDTO smsConfig = smsConfigService.getSmsConfig(id);
+        SmsConfigDetailResDTO smsConfig = smsService.getSmsConfig(id);
         smsConfig.decrypt();
         return DataResponse.of(smsConfig);
     }
@@ -53,23 +55,29 @@ public class SmsConfigController {
     public <T> DataResponse<T> updateSmsConfig(@PathVariable Long id,
                                                @RequestBody SmsConfigReqDTO reqDTO) {
         reqDTO.encrypt();
-        smsConfigService.updateSmsConfig(id, reqDTO);
+        smsService.updateSmsConfig(id, reqDTO);
         return DataResponse.success();
     }
 
     @DeleteMapping(value = "/{id}")
     @ApiOperation(value = "根据id删除短信配置")
     public <T> DataResponse<T> deleteSmsConfig(@PathVariable Long id) {
-        smsConfigService.deleteSmsConfig(id);
+        smsService.deleteSmsConfig(id);
         return DataResponse.success();
     }
 
     @GetMapping(value = "/page")
     @ApiOperation(value = "分页查询")
     public PageResponse<SmsConfigDetailResDTO> getSmsConfigs(@Valid PageReqDTO page) {
-        Page<SmsConfigDetailResDTO> smsConfigs = smsConfigService.getSmsConfigs(page);
+        Page<SmsConfigDetailResDTO> smsConfigs = smsService.getSmsConfigs(page);
         smsConfigs.getRecords().forEach(SmsConfigDetailResDTO::decrypt);
         return PageResponse.of(smsConfigs);
+    }
+
+    @GetMapping("/history")
+    @ApiOperation(value = "查询短信发送历史")
+    public DataResponse<List<Sms>> listHistorySms(){
+        return DataResponse.of(smsService.listHistorySms());
     }
 
 }
