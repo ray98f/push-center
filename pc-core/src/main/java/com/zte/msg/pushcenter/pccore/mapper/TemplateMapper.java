@@ -16,7 +16,8 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface TemplateMapper extends BaseMapper<Template> {
 
-    @Select("SELECT * FROM sms_template WHERE flag = 0")
+
+    @Select("SELECT * FROM template WHERE flag = 0")
     Page<Template> selectByPage(Page<Template> page);
 
 

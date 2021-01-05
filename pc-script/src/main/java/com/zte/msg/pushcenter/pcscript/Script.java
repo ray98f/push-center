@@ -11,6 +11,6 @@ import java.util.Map;
  */
 public interface Script {
 
-    void execute(String phoneNum, String templateId, Map<String, String> vars);
+    void execute(Map<String, Object> params);
 
 }

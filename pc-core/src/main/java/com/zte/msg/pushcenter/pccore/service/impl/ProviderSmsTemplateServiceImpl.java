@@ -1,6 +1,7 @@
 package com.zte.msg.pushcenter.pccore.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zte.msg.pushcenter.pccore.dto.res.ProviderSmsTemplateResDTO;
 import com.zte.msg.pushcenter.pccore.entity.ProviderSmsTemplate;
 import com.zte.msg.pushcenter.pccore.mapper.ProviderSmsTemplateMapper;
 import com.zte.msg.pushcenter.pccore.service.ProviderSmsTemplateService;
@@ -20,9 +21,13 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class)
 public class ProviderSmsTemplateServiceImpl extends ServiceImpl<ProviderSmsTemplateMapper, ProviderSmsTemplate> implements ProviderSmsTemplateService {
 
-
     @Override
     public void saveBatch(List<ProviderSmsTemplate> templates) {
         super.saveBatch(templates);
+    }
+
+    @Override
+    public List<ProviderSmsTemplateResDTO> getProviderSmsTemplateList(List<Long> templateIds) {
+        return getBaseMapper().selectProviderSmsTemplateListByTemplateIds(templateIds);
     }
 }

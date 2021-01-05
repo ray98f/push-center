@@ -5,7 +5,6 @@ import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.PageResponse;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.SmsTemplateDetailResDTO;
-import com.zte.msg.pushcenter.pccore.dto.res.SmsTemplateResDTO;
 import com.zte.msg.pushcenter.pccore.service.TemplateService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,15 +41,15 @@ public class TemplateController {
 
     @GetMapping(value = "/sms")
     @ApiOperation(value = "分页查询短息模版")
-    public PageResponse<SmsTemplateResDTO> getSmsTemplate(@RequestParam(value = "模版内容的模糊查询字段", required = false) String example,
-                                                          @Valid PageReqDTO pageReqDTO) {
-        // TODO: 2021/1/4
-        return null;
+    public PageResponse<SmsTemplateDetailResDTO> getSmsTemplate(@RequestParam(required = false)
+                                                                @ApiParam(value = "模板名模糊查询字段") String example,
+                                                                @Valid PageReqDTO pageReqDTO) {
+        return PageResponse.of(templateService.getTemplateByPage(example, pageReqDTO));
     }
 
     @GetMapping(value = "/sms/{id}")
     @ApiOperation(value = "根据id查询模板详情")
-    public DataResponse<SmsTemplateDetailResDTO> getSmsTemplateById(@PathVariable Integer id) {
+    public DataResponse<SmsTemplateDetailResDTO> getSmsTemplateById(@PathVariable Long id) {
         return null;
     }
 

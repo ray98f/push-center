@@ -24,14 +24,12 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("/api/v1/provider")
-@Api(tags = "服务商配置")
+@Api(tags = "服务商管理")
 @Validated
 public class ProviderController {
 
-
     @Resource
     private ProviderService providerService;
-
 
     @PostMapping
     @ApiOperation(value = "添加第三方服务基本配置")
@@ -66,7 +64,5 @@ public class ProviderController {
     public PageResponse<ProviderResDTO> getProviders(@Valid PageReqDTO pageReqDTO) {
         return PageResponse.of(providerService.getProviders(pageReqDTO));
     }
-
-
 
 }

@@ -1,6 +1,7 @@
 package com.zte.msg.pushcenter.pccore.service;
 
 
+import com.zte.msg.pushcenter.pccore.dto.res.ProviderSmsTemplateResDTO;
 import com.zte.msg.pushcenter.pccore.entity.ProviderSmsTemplate;
 
 import java.util.List;
@@ -15,4 +16,7 @@ import java.util.List;
 public interface ProviderSmsTemplateService {
 
     void saveBatch(List<ProviderSmsTemplate> templates);
+
+    List<ProviderSmsTemplateResDTO> getProviderSmsTemplateList(List<Long> templateIds);
+
 }

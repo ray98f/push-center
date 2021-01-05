@@ -12,4 +12,6 @@ public class AppRole extends Role {
     private Integer appId;
 
     private List<Template> template;
+
+
 }

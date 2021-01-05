@@ -1,8 +1,13 @@
 package com.zte.msg.pushcenter.pccore.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.ProviderSmsTemplateReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateReqDTO;
+import com.zte.msg.pushcenter.pccore.dto.res.ProviderSmsTemplateResDTO;
+import com.zte.msg.pushcenter.pccore.dto.res.SmsTemplateDetailResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.SmsTemplateResDTO;
 import com.zte.msg.pushcenter.pccore.entity.ProviderSmsTemplate;
 import com.zte.msg.pushcenter.pccore.entity.Template;
@@ -14,6 +19,7 @@ import com.zte.msg.pushcenter.pccore.service.ProviderSmsTemplateService;
 import com.zte.msg.pushcenter.pccore.service.SmsService;
 import com.zte.msg.pushcenter.pccore.service.TemplateService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,11 +77,45 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, Template> i
     }
 
     @Override
-    public SmsTemplateResDTO selectTemplate(String templateId) {
+    public SmsTemplateResDTO getTemplate(String templateId) {
 
         return null;
     }
 
+    @Override
+    public Page<SmsTemplateDetailResDTO> getTemplateByPage(String example, PageReqDTO page) {
+        QueryWrapper<Template> wrapper = new QueryWrapper<>();
+        if (StringUtils.isNotBlank(example)) {
+            wrapper.like("name", example);
+        }
+        Page<Template> templatePage = getBaseMapper().selectPage(page.of(), wrapper);
+        Page<SmsTemplateDetailResDTO> res = new Page<>();
+        List<Template> templates = templatePage.getRecords();
+        BeanUtils.copyProperties(templatePage, res);
+        if (templates.size() == 0) {
+            return res;
+        }
+        List<Long> ids = new ArrayList<>();
+        templates.forEach(o -> ids.add(o.getId()));
+        List<ProviderSmsTemplateResDTO> providerSmsTemplateList = providerSmsTemplateService.getProviderSmsTemplateList(ids);
+
+        List<SmsTemplateDetailResDTO> list = new ArrayList<>(templates.size());
+        templates.forEach(o -> {
+            SmsTemplateDetailResDTO smsTemplate = new SmsTemplateDetailResDTO();
+            smsTemplate.setId(o.getId());
+            smsTemplate.setDescription(o.getDescription());
+            smsTemplate.setName(o.getName());
+            List<ProviderSmsTemplateResDTO> l1 = new ArrayList<>();
+            providerSmsTemplateList.forEach(o1 -> {
+                if (o1.getSmsTemplateId().equals(o.getId())) {
+                    l1.add(o1);
+                }
+            });
+            smsTemplate.setProviderSmsTemplates(l1);
+            list.add(smsTemplate);
+        });
+        return res.setRecords(list);
+    }
 
 
 }

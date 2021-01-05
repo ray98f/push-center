@@ -25,7 +25,7 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("/api/v1/script")
-@Api(tags = "推送脚本")
+@Api(tags = "脚本管理")
 @Validated
 public class ScriptController {
 

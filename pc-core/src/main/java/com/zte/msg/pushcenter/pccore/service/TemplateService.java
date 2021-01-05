@@ -1,7 +1,10 @@
 package com.zte.msg.pushcenter.pccore.service;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateReqDTO;
+import com.zte.msg.pushcenter.pccore.dto.res.SmsTemplateDetailResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.SmsTemplateResDTO;
 
 /**
@@ -28,10 +31,13 @@ public interface TemplateService {
      * @param templateId
      * @return
      */
-    SmsTemplateResDTO selectTemplate(String templateId);
+    SmsTemplateResDTO getTemplate(String templateId);
 
-
-
-
+    /**
+     * 分页查询模版
+     *
+     * @return
+     */
+    Page<SmsTemplateDetailResDTO> getTemplateByPage(String example, PageReqDTO page);
 
 }

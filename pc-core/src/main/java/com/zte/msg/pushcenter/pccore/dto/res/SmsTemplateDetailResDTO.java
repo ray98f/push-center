@@ -1,6 +1,5 @@
 package com.zte.msg.pushcenter.pccore.dto.res;
 
-import com.zte.msg.pushcenter.pccore.dto.req.ProviderSmsTemplateReqDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -18,12 +17,12 @@ import java.util.List;
 @ApiModel
 public class SmsTemplateDetailResDTO {
 
-    private Integer id;
+    private Long id;
 
     private String name;
 
     private String description;
 
     @ApiModelProperty(value = "相关短信模版列表")
-    private List<ProviderSmsTemplateReqDTO> providerSmsTemplates;
+    private List<ProviderSmsTemplateResDTO> providerSmsTemplates;
 }

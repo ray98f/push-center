@@ -3,6 +3,8 @@ package com.zte.msg.pushcenter.pccore.core.pusher;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.Message;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.SmsMessage;
 import com.zte.msg.pushcenter.pccore.service.SmsService;
+import com.zte.msg.pushcenter.pccore.utils.AesUtils;
+import com.zte.msg.pushcenter.pccore.utils.MapUtils;
 import com.zte.msg.pushcenter.pcscript.Script;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +47,12 @@ public class SmsPusher extends BasePusher {
         if (Objects.isNull(treeMap)) {
             treeMap = new TreeMap<>();
         }
+        if (Objects.nonNull(o.getSecretId())) {
+            o.setSecretId(AesUtils.decrypt(o.getSecretId()));
+        }
+        if (Objects.nonNull(o.getSecretKey())) {
+            o.setSecretKey(AesUtils.decrypt(o.getSecretKey()));
+        }
         treeMap.put(o.getOrder(), o);
         smsConfigMap.put(o.getId(), treeMap);
     }
@@ -55,10 +63,12 @@ public class SmsPusher extends BasePusher {
         CompletableFuture.supplyAsync(() -> {
             log.info("==========submit sms push task==========");
             TreeMap<Integer, ConfigDetail> treeMap = smsConfigMap.get(smsMessage.getTemplateId());
-
             ConfigDetail configDetail = treeMap.firstEntry().getValue();
+            Map<String, Object> mapAll = new HashMap<>();
+            mapAll.putAll(MapUtils.objectToMap(configDetail));
+            mapAll.putAll(MapUtils.objectToMap(smsMessage));
             Script scriptClass = scriptManager.getScriptClass(configDetail.getScriptTag());
-            scriptClass.execute(smsMessage.getPhoneNum(), configDetail.getSTemplateId(), smsMessage.getVars());
+            scriptClass.execute(mapAll);
             return null;
         }, pushExecutor).exceptionally(e -> {
             log.error("Error!!! An exception occurred when push a message.");

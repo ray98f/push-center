@@ -18,9 +18,9 @@ public interface AppRoleMapper extends BaseMapper<AppRoleResDTO> {
 
     AppRoleResDTO selectApp(Integer appId);
 
-    List<AppRole> selectAppRole(Integer appId);
-
     List<Template> selectTemplate(Integer roleId);
+
+    List<AppRole> selectAppRole(Integer appId);
 
     int editAppRole(List<AppRoleResDTO> appRoleResDTOList);
 
