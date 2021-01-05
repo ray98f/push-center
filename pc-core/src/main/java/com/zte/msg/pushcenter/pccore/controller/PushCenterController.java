@@ -58,6 +58,7 @@ public class PushCenterController {
     public DataResponse<JSONObject> pushMail(@Valid MailMessageReqDTO reqDTO) {
 
         MailMessage mailMessage = new MailMessage().build(reqDTO);
+        mailMessage.setPushMethod(PushMethods.MAIL);
         mailPusher.submit(mailMessage);
         return DataResponse.success();
     }

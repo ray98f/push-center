@@ -38,8 +38,8 @@ public class CodeJavac {
             scripts.forEach(o -> add(new JavaSourceFromString(o.getScriptTag(), JavaCodecUtils.replaceCodeJavaName(o.getContext(), o.getScriptTag()))));
         }};
         String projectPath = PathUtil.getAppHomePath();
-        String classPath = String.format("%s\\pc-script\\target\\pc-script-1.0.0.jar", projectPath);
-
+//        String classPath = String.format("%s\\pc-script\\target\\pc-script-1.0.0.jar", projectPath);
+        String classPath = String.format("%s\\pc-script-1.0.0.jar", projectPath);
         List<String> options = new ArrayList<>();
         options.add("-classpath");
         options.add(classPath);
