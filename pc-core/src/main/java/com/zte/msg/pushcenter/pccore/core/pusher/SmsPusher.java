@@ -2,7 +2,7 @@ package com.zte.msg.pushcenter.pccore.core.pusher;
 
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.Message;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.SmsMessage;
-import com.zte.msg.pushcenter.pccore.service.SmsConfigService;
+import com.zte.msg.pushcenter.pccore.service.SmsService;
 import com.zte.msg.pushcenter.pcscript.Script;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ import java.util.concurrent.CompletableFuture;
 public class SmsPusher extends BasePusher {
 
     @Resource
-    private SmsConfigService smsConfigService;
+    private SmsService smsService;
 
     /**
      * 模版id作为key，order作为内部嵌套map的key
@@ -35,7 +35,7 @@ public class SmsPusher extends BasePusher {
     @PostConstruct
     public void init() {
         log.info("==========initialize sms push config...==========");
-        List<ConfigDetail> configDetails = smsConfigService.selectAllSmsConfigForInit();
+        List<ConfigDetail> configDetails = smsService.selectAllSmsConfigForInit();
         configDetails.forEach(this::flushConfigMap);
         log.info("==========initialize sms config completed : {} ==========", smsConfigMap.size());
     }

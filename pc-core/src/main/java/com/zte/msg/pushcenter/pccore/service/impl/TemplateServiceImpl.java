@@ -11,7 +11,7 @@ import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.TemplateMapper;
 import com.zte.msg.pushcenter.pccore.service.ProviderSmsTemplateService;
-import com.zte.msg.pushcenter.pccore.service.SmsConfigService;
+import com.zte.msg.pushcenter.pccore.service.SmsService;
 import com.zte.msg.pushcenter.pccore.service.TemplateService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -36,7 +36,7 @@ import java.util.Objects;
 public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, Template> implements TemplateService {
 
     @Resource
-    private SmsConfigService smsConfigService;
+    private SmsService smsService;
 
     @Resource
     private ProviderSmsTemplateService providerSmsTemplateService;
@@ -50,7 +50,7 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, Template> i
             throw new CommonException(ErrorCode.SMS_PROVIDER_CONFIG_NOT_NULL);
         }
         providerSmsTemplates.forEach(o -> {
-            if (Objects.isNull(smsConfigService.getById(o.getSmsConfigId()))) {
+            if (Objects.isNull(smsService.getById(o.getSmsConfigId()))) {
                 throw new CommonException(ErrorCode.SMS_CONFIG_NOT_EXIST);
             }
         });

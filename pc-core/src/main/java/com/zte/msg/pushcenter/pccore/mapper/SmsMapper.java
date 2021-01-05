@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zte.msg.pushcenter.pccore.core.pusher.SmsPusher;
 import com.zte.msg.pushcenter.pccore.dto.res.SmsConfigDetailResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.SmsConfigResDTO;
+import com.zte.msg.pushcenter.pccore.entity.Sms;
 import com.zte.msg.pushcenter.pccore.entity.SmsConfig;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -20,7 +21,7 @@ import java.util.List;
  * @date 2020/12/22 14:38
  */
 @Mapper
-public interface SmsConfigMapper extends BaseMapper<SmsConfig> {
+public interface SmsMapper extends BaseMapper<SmsConfig> {
 
     @Select("SELECT " +
             " s.id, " +
@@ -82,6 +83,10 @@ public interface SmsConfigMapper extends BaseMapper<SmsConfig> {
             " s.id = #{id}" +
             " AND s.flag = 0")
     SmsConfigDetailResDTO selectDetailById(@Param("id") Long id);
+
+
+    @Select("SELECT * FROM sms_info")
+    List<Sms> listHistorySms();
 
 
 }
