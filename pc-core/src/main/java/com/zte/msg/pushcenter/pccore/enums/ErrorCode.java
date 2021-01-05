@@ -136,7 +136,12 @@ public enum ErrorCode {
      * 脚本 32000090- 32000099
      */
     SCRIPT_TYPE_ERROR(32000090, "script.type.error"),
-    SCRIPT_NOT_EXIST(32000091, "script.not.exist")
+    SCRIPT_NOT_EXIST(32000091, "script.not.exist"),
+
+    /**
+     * OpenApi签名校验
+     */
+    OPENAPI_VERIFY_FAIL(32000100,"openapi.verify.fail")
     ;
 
     private Integer code;

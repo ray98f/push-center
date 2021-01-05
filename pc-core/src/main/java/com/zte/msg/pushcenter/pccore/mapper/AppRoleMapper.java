@@ -2,6 +2,7 @@ package com.zte.msg.pushcenter.pccore.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zte.msg.pushcenter.pccore.dto.res.AppRoleResDTO;
+import com.zte.msg.pushcenter.pccore.dto.res.TemplateResDTO;
 import com.zte.msg.pushcenter.pccore.entity.AppRole;
 import com.zte.msg.pushcenter.pccore.entity.Role;
 import com.zte.msg.pushcenter.pccore.entity.Template;
@@ -18,7 +19,7 @@ public interface AppRoleMapper extends BaseMapper<AppRoleResDTO> {
 
     AppRoleResDTO selectApp(Integer appId);
 
-    List<Template> selectTemplate(Integer roleId);
+    List<TemplateResDTO> selectTemplate(Integer roleId);
 
     List<AppRole> selectAppRole(Integer appId);
 
