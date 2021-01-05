@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zte.msg.pushcenter.mapper.TokenMapper">
+    <insert id="addSecretKey" parameterType="com.zte.msg.pushcenter.entity.SecretKey">
+        insert into secret_key(app_id, app_key, app_secret) value (#{appId},#{appKey},#{appSecret});
+    </insert>
+
+    <select id="getSecretKey" resultType="com.zte.msg.pushcenter.entity.SecretKey" parameterType="java.lang.Integer">
+        select * from secret_key where app_id=#{appId} and flag=0
+    </select>
+
+    <update id="deleteSecretKey" parameterType="java.lang.Integer">
+        update secret_key set flag=1 where app_id=#{appId} and flag=0
+    </update>
+
+    <select id="listSecretKey" resultType="com.zte.msg.pushcenter.entity.SecretKey">
+        select * from secret_key where flag=0
+    </select>
+
+    <select id="selectTokenInfo" resultType="com.zte.msg.pushcenter.dto.OpenApiTokenInfo" parameterType="java.lang.String">
+        select sk.app_id,a.app_name,sk.app_key,sk.app_secret,group_concat(r.role_name) as role from secret_key as sk
+        left join app as a on sk.app_id=a.id and a.flag=0
+        left join app_role as ar on ar.app_id=sk.app_id and ar.flag=0
+        left join role as r on r.id=ar.role_id and r.flag=0 where sk.app_key=#{appKey} and sk.flag=0
+    </select>
+
+    <select id="selectAppRole" resultType="java.lang.String" parameterType="java.lang.String">
+        select group_concat(r.role_name) as role from secret_key as sk
+        left join app_role as ar on ar.app_id=sk.app_id and ar.flag=0
+        left join role as r on r.id=ar.role_id and r.flag=0 where sk.app_key=#{appKey} and sk.flag=0
+    </select>
+</mapper>
