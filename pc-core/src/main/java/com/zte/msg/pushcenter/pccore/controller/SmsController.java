@@ -33,7 +33,7 @@ public class SmsController {
     @Resource
     private SmsService smsService;
 
-    @PostMapping
+    @PostMapping(value = "/conf")
     @ApiOperation(value = "添加短信配置")
     public DataResponse<SmsConfigDetailResDTO> addSmsConfig(@RequestBody @Valid SmsConfigReqDTO reqDTO) {
         reqDTO.encrypt();
@@ -42,7 +42,7 @@ public class SmsController {
         return DataResponse.of(resDTO);
     }
 
-    @GetMapping(value = "{id}")
+    @GetMapping(value = "/conf/{id}")
     @ApiOperation(value = "根据id查询短信配置详情")
     public DataResponse<SmsConfigDetailResDTO> getSmsConfig(@PathVariable Long id) {
         SmsConfigDetailResDTO smsConfig = smsService.getSmsConfig(id);
@@ -50,7 +50,7 @@ public class SmsController {
         return DataResponse.of(smsConfig);
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/conf/{id}")
     @ApiOperation(value = "修改短信配置")
     public <T> DataResponse<T> updateSmsConfig(@PathVariable Long id,
                                                @RequestBody SmsConfigReqDTO reqDTO) {
@@ -59,14 +59,14 @@ public class SmsController {
         return DataResponse.success();
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/conf/{id}")
     @ApiOperation(value = "根据id删除短信配置")
     public <T> DataResponse<T> deleteSmsConfig(@PathVariable Long id) {
         smsService.deleteSmsConfig(id);
         return DataResponse.success();
     }
 
-    @GetMapping(value = "/page")
+    @GetMapping(value = "/conf/page")
     @ApiOperation(value = "分页查询")
     public PageResponse<SmsConfigDetailResDTO> getSmsConfigs(@Valid PageReqDTO page) {
         Page<SmsConfigDetailResDTO> smsConfigs = smsService.getSmsConfigs(page);
