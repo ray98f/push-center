@@ -16,7 +16,7 @@
         left join role as r on r.id=ar.role_id and r.flag=0 where ar.app_id=#{appId} and ar.flag=0;
     </select>
 
-    <select id="selectTemplate" resultType="com.zte.msg.pushcenter.pccore.entity.Template">
+    <select id="selectTemplate" resultType="com.zte.msg.pushcenter.pccore.dto.res.TemplateResDTO">
         select ar.id as app_role_id,ar.template_id as id,t.type,t.name,t.description,ar.status from app_role as ar
         left join template as t on ar.template_id=t.id and t.flag=0 where ar.role_id=#{roleId} and ar.flag=0
     </select>
