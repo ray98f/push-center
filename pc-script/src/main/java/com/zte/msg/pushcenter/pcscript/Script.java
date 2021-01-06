@@ -11,6 +11,6 @@ import java.util.Map;
  */
 public interface Script {
 
-    void execute(Map<String, Object> params);
+    String execute(Map<String, Object> params);
 
 }
