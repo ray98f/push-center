@@ -1,6 +1,7 @@
 package com.zte.msg.pushcenter.pccore.dto;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -18,6 +19,7 @@ import java.util.List;
 @ApiModel
 public class PageResponse<T> extends BaseResponse {
 
+
     private PageResponse.PagedData<T> data;
 
     public static <T> PageResponse<T> of(Page<T> page) {
@@ -25,10 +27,17 @@ public class PageResponse<T> extends BaseResponse {
         return new PageResponse<>(data);
     }
 
+    public static <T> PageResponse<T> of(PageInfo<T> page) {
+        PageResponse.PagedData<T> data = new PageResponse.PagedData<>(page);
+        return new PageResponse<>(data);
+    }
+
+
     private PageResponse(PageResponse.PagedData<T> data) {
         super(AppStatus.SUCCESS);
         this.data = data;
     }
+
 
     @Data
     public static class PagedData<T> {
@@ -54,5 +63,14 @@ public class PageResponse<T> extends BaseResponse {
             this.pages = page.getPages();
             this.total = page.getTotal();
         }
+
+        PagedData(PageInfo<T> page) {
+            this.content = page.getList();
+            this.page = (long) page.getPageNum();
+            this.size = (long) page.getSize();
+            this.pages = (long) page.getPages();
+            this.total = page.getTotal();
+        }
+
     }
 }
