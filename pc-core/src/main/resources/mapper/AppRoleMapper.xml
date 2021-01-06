@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zte.msg.pushcenter.core.mapper.AppRoleMapper">
+<mapper namespace="com.zte.msg.pushcenter.pccore.mapper.AppRoleMapper">
     <select id="listApp" resultType="com.zte.msg.pushcenter.pccore.dto.res.AppRoleResDTO">
         SELECT distinct ar.app_id,a.app_name FROM app_role as ar
         left join app as a on a.id=ar.app_id and a.flag=0 where ar.flag=0;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zte.msg.pushcenter.core.mapper.AppMapper">
+<mapper namespace="com.zte.msg.pushcenter.pccore.mapper.AppMapper">
 
     <select id="listApp" resultType="com.zte.msg.pushcenter.pccore.entity.App">
         select * from app

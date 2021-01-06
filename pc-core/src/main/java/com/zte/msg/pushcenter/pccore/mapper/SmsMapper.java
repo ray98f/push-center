@@ -84,9 +84,4 @@ public interface SmsMapper extends BaseMapper<SmsConfig> {
             " AND s.flag = 0")
     SmsConfigDetailResDTO selectDetailById(@Param("id") Long id);
 
-
-    @Select("SELECT * FROM sms_info")
-    List<Sms> listHistorySms();
-
-
 }

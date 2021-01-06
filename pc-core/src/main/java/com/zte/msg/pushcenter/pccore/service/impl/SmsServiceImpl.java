@@ -82,14 +82,4 @@ public class SmsServiceImpl extends ServiceImpl<SmsMapper, SmsConfig> implements
         return getBaseMapper().selectAllSmsConfigForInit();
     }
 
-    @Override
-    public List<Sms> listHistorySms(){
-        List<Sms> result = getBaseMapper().listHistorySms();
-        if (null == result || result.isEmpty()){
-            throw new CommonException(ErrorCode.DATA_EXIST);
-        }else {
-            return result;
-        }
-    }
-
 }

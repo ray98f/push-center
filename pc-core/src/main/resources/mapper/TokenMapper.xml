@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zte.msg.pushcenter.core.mapper.TokenMapper">
+<mapper namespace="com.zte.msg.pushcenter.pccore.mapper.TokenMapper">
     <insert id="addSecretKey" parameterType="com.zte.msg.pushcenter.pccore.entity.SecretKey">
         insert into secret_key(app_id, app_key, app_secret) value (#{appId},#{appKey},#{appSecret});
     </insert>

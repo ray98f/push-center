@@ -37,6 +37,4 @@ public interface SmsService {
      * @return
      */
     List<SmsPusher.ConfigDetail> selectAllSmsConfigForInit();
-
-    List<Sms> listHistorySms();
 }
