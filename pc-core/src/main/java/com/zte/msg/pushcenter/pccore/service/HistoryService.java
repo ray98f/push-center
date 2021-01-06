@@ -2,8 +2,9 @@ package com.zte.msg.pushcenter.pccore.service;
 
 import com.github.pagehelper.PageInfo;
 import com.zte.msg.pushcenter.pccore.dto.req.MailHistoryReqDTO;
+import com.zte.msg.pushcenter.pccore.dto.req.SmsHistoryReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.MailInfo;
-import com.zte.msg.pushcenter.pccore.entity.Sms;
+import com.zte.msg.pushcenter.pccore.entity.SmsInfo;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
  */
 public interface HistoryService {
 
-    List<Sms> listHistorySms();
+    PageInfo<SmsInfo> listHistorySms(SmsHistoryReqDTO smsHistoryReqDTO);
 
     PageInfo<MailInfo> listHistoryMail(MailHistoryReqDTO mailHistoryReqDTO);
 }

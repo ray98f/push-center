@@ -1,21 +1,18 @@
 package com.zte.msg.pushcenter.pccore.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zte.msg.pushcenter.pccore.dto.req.MailHistoryReqDTO;
+import com.zte.msg.pushcenter.pccore.dto.req.SmsHistoryReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.MailInfo;
-import com.zte.msg.pushcenter.pccore.entity.Sms;
-import com.zte.msg.pushcenter.pccore.entity.SmsConfig;
+import com.zte.msg.pushcenter.pccore.entity.SmsInfo;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
-import com.zte.msg.pushcenter.pccore.mapper.AppMapper;
 import com.zte.msg.pushcenter.pccore.mapper.HistoryMapper;
 import com.zte.msg.pushcenter.pccore.service.HistoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -34,8 +31,16 @@ public class HistoryServiceImpl implements HistoryService {
     private HistoryMapper historyMapper;
 
     @Override
-    public List<Sms> listHistorySms() {
-        return historyMapper.listHistorySms();
+    public PageInfo<SmsInfo> listHistorySms(SmsHistoryReqDTO smsHistoryReqDTO) {
+        if (null == smsHistoryReqDTO.getPage() || null == smsHistoryReqDTO.getSize()) {
+            throw new CommonException(ErrorCode.PAGE_PARAM_EMPTY);
+        }
+        if (0 >= smsHistoryReqDTO.getPage() || 0 >= smsHistoryReqDTO.getSize()){
+            throw new CommonException(ErrorCode.PAGE_PARAM_ERROR);
+        }
+        PageHelper.startPage(smsHistoryReqDTO.getPage().intValue(), smsHistoryReqDTO.getSize().intValue());
+        List<SmsInfo> list = historyMapper.listHistorySms(smsHistoryReqDTO);
+        return new PageInfo<>(list);
     }
 
     @Override

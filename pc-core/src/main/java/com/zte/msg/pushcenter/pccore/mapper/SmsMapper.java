@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zte.msg.pushcenter.pccore.core.pusher.SmsPusher;
 import com.zte.msg.pushcenter.pccore.dto.res.SmsConfigDetailResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.SmsConfigResDTO;
-import com.zte.msg.pushcenter.pccore.entity.Sms;
 import com.zte.msg.pushcenter.pccore.entity.SmsConfig;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

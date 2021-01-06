@@ -7,7 +7,6 @@ import com.zte.msg.pushcenter.pccore.core.pusher.SmsPusher;
 import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsConfigReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.SmsConfigDetailResDTO;
-import com.zte.msg.pushcenter.pccore.entity.Sms;
 import com.zte.msg.pushcenter.pccore.entity.SmsConfig;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
