@@ -17,7 +17,7 @@ public class JuheSmsDemo implements Script {
     public static String userAgent = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.66 Safari/537.36";
 
     @Override
-    public void execute(Map<String, Object> params) {
+    public String execute(Map<String, Object> params) {
         System.out.println("phoneNum :" + params.get("phoneNum") + "; templateId: " + params.get("templateId") + "; params size: " + params.size());
         StringBuilder var = new StringBuilder();
         Map<String, String> vars = (Map<String, String>) params.get("vars");
@@ -28,11 +28,8 @@ public class JuheSmsDemo implements Script {
                 .append("&").append("tpl_id").append("=").append(params.get("sTemplateId"))
                 .append("&").append("tpl_value").append("=").append(var.toString())
                 .append("&").append("key").append("=").append(params.get("secretKey"));
-        try {
-            System.out.println("Juhe send sms : " + net(url1.toString(), "GET"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        return net(url1.toString(), "GET");
     }
 
     /**
@@ -41,7 +38,7 @@ public class JuheSmsDemo implements Script {
      * @return 网络请求字符串
      * @throws Exception
      */
-    public static String net(String strUrl, String method) throws Exception {
+    public static String net(String strUrl, String method) {
         HttpURLConnection conn = null;
         BufferedReader reader = null;
         String rs = null;
@@ -65,12 +62,10 @@ public class JuheSmsDemo implements Script {
                 sb.append(strRead);
             }
             rs = sb.toString();
+            reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (reader != null) {
-                reader.close();
-            }
             if (conn != null) {
                 conn.disconnect();
             }
