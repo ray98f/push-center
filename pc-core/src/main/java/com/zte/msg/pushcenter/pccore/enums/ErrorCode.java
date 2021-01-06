@@ -141,7 +141,13 @@ public enum ErrorCode {
     /**
      * OpenApi签名校验
      */
-    OPENAPI_VERIFY_FAIL(32000100,"openapi.verify.fail")
+    OPENAPI_VERIFY_FAIL(32000100,"openapi.verify.fail"),
+
+    /**
+     * 查询分页
+     */
+    PAGE_PARAM_EMPTY(32000110,"page.param.empty"),
+    PAGE_PARAM_ERROR(32000111,"page.param.error")
     ;
 
     private Integer code;
