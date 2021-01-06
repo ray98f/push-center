@@ -33,6 +33,8 @@ public class SmsInfo extends BaseEntity {
 
     private String result;
 
+    private Integer failCode;
+
     private String failReason;
 
     private Timestamp resultTime;
