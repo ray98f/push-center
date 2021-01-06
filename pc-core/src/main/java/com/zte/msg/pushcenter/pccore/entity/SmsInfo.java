@@ -1,8 +1,11 @@
 package com.zte.msg.pushcenter.pccore.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * description:
@@ -16,15 +19,25 @@ public class SmsInfo extends BaseEntity {
 
     private Integer appId;
 
-    private String  phoneNum;
+    private String appName;
 
-    private Timestamp transmitTime;
+    private String phoneNum;
 
-    private String description;
+    @DateTimeFormat(pattern = "yyyy-MM-DD HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-DD HH:mm:ss")
+    private Date transmitTime;
 
     private String content;
 
-    private String provider;
+    private String providerName;
 
     private String templateId;
+
+    private String result;
+
+    private String failReason;
+
+    @DateTimeFormat(pattern = "yyyy-MM-DD HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-DD HH:mm:ss")
+    private Date resultTime;
 }
