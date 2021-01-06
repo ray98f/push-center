@@ -23,9 +23,7 @@ public class SmsInfo extends BaseEntity {
 
     private String phoneNum;
 
-    @DateTimeFormat(pattern = "yyyy-MM-DD HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-DD HH:mm:ss")
-    private Date transmitTime;
+    private Timestamp transmitTime;
 
     private String content;
 
@@ -37,7 +35,5 @@ public class SmsInfo extends BaseEntity {
 
     private String failReason;
 
-    @DateTimeFormat(pattern = "yyyy-MM-DD HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-DD HH:mm:ss")
-    private Date resultTime;
+    private Timestamp resultTime;
 }

@@ -1,12 +1,12 @@
 package com.zte.msg.pushcenter.pccore.controller;
 
-import com.github.pagehelper.PageInfo;
 import com.zte.msg.pushcenter.pccore.dto.DataResponse;
+import com.zte.msg.pushcenter.pccore.dto.PageResponse;
 import com.zte.msg.pushcenter.pccore.dto.req.MailHistoryReqDTO;
+import com.zte.msg.pushcenter.pccore.dto.req.SmsHistoryReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.MailInfo;
-import com.zte.msg.pushcenter.pccore.entity.Sms;
+import com.zte.msg.pushcenter.pccore.entity.SmsInfo;
 import com.zte.msg.pushcenter.pccore.service.HistoryService;
-import com.zte.msg.pushcenter.pccore.service.SmsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * description:
@@ -34,14 +33,14 @@ public class HistoryController {
 
     @PostMapping("/sms")
     @ApiOperation(value = "查询短信发送历史")
-    public DataResponse<List<Sms>> listHistorySms(){
-        return DataResponse.of(historyService.listHistorySms());
+    public PageResponse<SmsInfo> listHistorySms(@Valid @RequestBody SmsHistoryReqDTO smsHistoryReqDTO){
+        return PageResponse.of(historyService.listHistorySms(smsHistoryReqDTO));
     }
 
     @PostMapping("/mail")
     @ApiOperation(value = "查询邮件发送历史")
-    public DataResponse<PageInfo<MailInfo>> listHistoryMail(@Valid @RequestBody MailHistoryReqDTO mailHistoryReqDTO){
-        return DataResponse.of(historyService.listHistoryMail(mailHistoryReqDTO));
+    public PageResponse<MailInfo> listHistoryMail(@Valid @RequestBody MailHistoryReqDTO mailHistoryReqDTO){
+        return PageResponse.of(historyService.listHistoryMail(mailHistoryReqDTO));
     }
 
 

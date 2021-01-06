@@ -2,19 +2,44 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zte.msg.pushcenter.pccore.mapper.HistoryMapper">
 
-    <select id="listHistorySms" resultType="com.zte.msg.pushcenter.pccore.entity.SmsInfo">
-        select * from mail_info
+    <select id="listHistorySms" resultType="com.zte.msg.pushcenter.pccore.entity.SmsInfo" parameterType="com.zte.msg.pushcenter.pccore.dto.req.SmsHistoryReqDTO">
+        select * from sms_info
+        <if test="appId!=null or appName!=null or phoneNum!=null or startTime!=null or endTime!=null or result!=null">
+            <trim prefix="where " suffixOverrides="and">
+                <if test="appId!=null">
+                    app_id=#{appId} and
+                </if>
+                <if test="appName!=null">
+                    app_name like "%"#{appName}"%" and
+                </if>
+                <if test="phoneNum!=null">
+                    phone_num like "%"#{phoneNum}"%" and
+                </if>
+                <if test="startTime!=null">
+                    transmit_time >= #{startTime} and
+                </if>
+                <if test="endTime!=null">
+                    #{endTime} >= transmit_time and
+                </if>
+                <if test="result!=null">
+                    result=#{result} and
+                </if>
+            </trim>
+        </if>
     </select>
 
     <select id="listHistoryMail" resultType="com.zte.msg.pushcenter.pccore.entity.MailInfo" parameterType="com.zte.msg.pushcenter.pccore.dto.req.MailHistoryReqDTO">
         select * from mail_info
         <if test="appId!=null or appName!=null or receiveAddress!=null or startTime!=null or endTime!=null or result!=null">
             <trim prefix="where " suffixOverrides="and">
-                <if test="appId!=null and appName!=null">
-                    app_id=#{appId} and app_name like "%"#{appName}"%" and
+                <if test="appId!=null">
+                    app_id=#{appId} and
+                </if>
+                <if test="appName!=null">
+                    app_name like "%"#{appName}"%" and
                 </if>
                 <if test="receiveAddress!=null">
-                    receive_address like %#{receiveAddress}% and
+                    receive_address like "%"#{receiveAddress}"%" and
                 </if>
                 <if test="startTime!=null">
                     transmit_time >= #{startTime} and
