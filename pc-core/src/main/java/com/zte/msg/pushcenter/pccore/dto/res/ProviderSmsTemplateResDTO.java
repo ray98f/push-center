@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.sql.Timestamp;
+
 /**
  * description:
  *
@@ -37,5 +39,12 @@ public class ProviderSmsTemplateResDTO {
 
     @ApiModelProperty(value = "优先级，数值越大优先级越高")
     private Integer priority;
+
+    @ApiModelProperty(value = "操作人")
+    private String updatedBy;
+
+    @ApiModelProperty(value = "操作时间")
+    private Timestamp updatedAt;
+
 
 }

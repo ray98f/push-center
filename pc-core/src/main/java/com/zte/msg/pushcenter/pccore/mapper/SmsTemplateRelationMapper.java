@@ -1,7 +1,7 @@
 package com.zte.msg.pushcenter.pccore.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.zte.msg.pushcenter.pccore.model.SmsTemplateRelationDao;
+import com.zte.msg.pushcenter.pccore.model.SmsTemplateRelationModel;
 import com.zte.msg.pushcenter.pccore.entity.SmsTemplateRelation;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -50,7 +50,7 @@ public interface SmsTemplateRelationMapper extends BaseMapper<SmsTemplateRelatio
             "</foreach>",
             "</script>"
     })
-    List<SmsTemplateRelationDao> selectByTemplateIds(@Param("ids") List<Long> ids);
+    List<SmsTemplateRelationModel> selectByTemplateIds(@Param("ids") List<Long> ids);
 
 
 }

@@ -1,8 +1,11 @@
 package com.zte.msg.pushcenter.pccore.dto.res;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.sql.Timestamp;
 
 /**
  * description:
@@ -31,5 +34,13 @@ public class ProviderResDTO {
 
     @ApiModelProperty(value = "描述")
     private String description;
+
+    @JsonProperty
+    @ApiModelProperty(value = "操作人")
+    private String updatedBy;
+
+    @JsonProperty
+    @ApiModelProperty(value = "操作时间")
+    private Timestamp updatedAt;
 
 }

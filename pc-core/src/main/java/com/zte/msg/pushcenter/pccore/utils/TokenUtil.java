@@ -311,6 +311,10 @@ public class TokenUtil {
         );
     }
 
+    public static String getUserName() {
+        return getSimpleTokenInfo().getUserName();
+    }
+
     /**
      * Simple
      * 获取开放平台登录信息

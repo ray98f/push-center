@@ -4,6 +4,7 @@ import com.zte.msg.pushcenter.pccore.dto.DataResponse;
 import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.PageResponse;
 import com.zte.msg.pushcenter.pccore.dto.req.ProviderReqDTO;
+import com.zte.msg.pushcenter.pccore.dto.req.ProviderSmsTemplateReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.ProviderResDTO;
 import com.zte.msg.pushcenter.pccore.service.ProviderService;
 import io.swagger.annotations.Api;
@@ -32,14 +33,14 @@ public class ProviderController {
     private ProviderService providerService;
 
     @PostMapping
-    @ApiOperation(value = "添加消息平台")
-    public <T> DataResponse<T> addProvider(@RequestBody @Valid @ApiParam(value = "添加一条基本配置") ProviderReqDTO provider) {
+    @ApiOperation(value = "【消息平台配置】- 添加")
+    public <T> DataResponse<T> addProvider(@RequestBody @Valid ProviderReqDTO provider) {
         providerService.addProvider(provider);
         return DataResponse.success();
     }
 
     @PutMapping(value = "/{id}")
-    @ApiOperation(value = "修改第三方服务基本配置")
+    @ApiOperation(value = "【消息平台配置】- 修改")
     public <T> DataResponse<T> updateProvider(@PathVariable Long id,
                                               @RequestBody ProviderReqDTO provider) {
         providerService.updateProvider(id, provider);
@@ -47,22 +48,25 @@ public class ProviderController {
     }
 
     @DeleteMapping
-    @ApiOperation(value = "删除第三方服务基本配置")
+    @ApiOperation(value = "【消息平台配置】- 删除")
     public <T> DataResponse<T> deleteProvider(@PathVariable Long[] ids) {
         providerService.deleteProvider(ids);
         return DataResponse.success();
     }
 
-    @GetMapping(value = "/{id}")
-    @ApiOperation(value = "根据id获取第三方服务基本配置详情")
-    public DataResponse<ProviderResDTO> getProviderById(@PathVariable Long id) {
-        return DataResponse.of(providerService.getProviderById(id));
-    }
 
     @GetMapping(value = "/page")
-    @ApiOperation(value = "分页查询第三方服务基本配置")
-    public PageResponse<ProviderResDTO> getProviders(@Valid PageReqDTO pageReqDTO) {
-        return PageResponse.of(providerService.getProviders(pageReqDTO));
+    @ApiOperation(value = "【消息平台配置】- 分页查询")
+    public PageResponse<ProviderResDTO> getProviders(@RequestParam(required = false)
+                                                     @ApiParam("平台模糊查询") String provider,
+                                                     @RequestParam(required = false)
+                                                     @ApiParam("类型") Integer type,
+                                                     @RequestParam(required = false)
+                                                     @ApiParam("状态") Integer status,
+                                                     @Valid PageReqDTO pageReqDTO) {
+        return PageResponse.of(providerService.getProviders(provider, type, status, pageReqDTO));
     }
+
+
 
 }

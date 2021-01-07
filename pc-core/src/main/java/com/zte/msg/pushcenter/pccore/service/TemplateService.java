@@ -6,7 +6,10 @@ import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateRelateProviderReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateRelateProviderUpdateReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateReqDTO;
+import com.zte.msg.pushcenter.pccore.dto.res.ProviderSmsTemplateResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.SmsTemplateDetailResDTO;
+
+import java.util.List;
 
 /**
  * description:
@@ -43,6 +46,8 @@ public interface TemplateService {
 
     void deleteProviderSmsTemplateRelate(Long templateId,
                                          Long[] ids);
+
+    List<ProviderSmsTemplateResDTO> getProviderSmsTemplatesByTemplateId(Long templateId);
 
 
     /**

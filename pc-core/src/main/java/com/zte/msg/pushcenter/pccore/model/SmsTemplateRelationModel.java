@@ -12,7 +12,7 @@ import java.sql.Timestamp;
  * @date 2021/1/7 11:48
  */
 @Data
-public class SmsTemplateRelationDao {
+public class SmsTemplateRelationModel {
     /**
      * 模版id
      */

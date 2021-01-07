@@ -3,10 +3,13 @@ package com.zte.msg.pushcenter.pccore.controller;
 import com.zte.msg.pushcenter.pccore.dto.DataResponse;
 import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.PageResponse;
+import com.zte.msg.pushcenter.pccore.dto.req.ProviderSmsTemplateReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateRelateProviderReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateRelateProviderUpdateReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateReqDTO;
+import com.zte.msg.pushcenter.pccore.dto.res.ProviderSmsTemplateResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.SmsTemplateDetailResDTO;
+import com.zte.msg.pushcenter.pccore.service.PlatformSmsTemplateService;
 import com.zte.msg.pushcenter.pccore.service.TemplateService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * description:
@@ -33,6 +37,9 @@ public class TemplateController {
 
     @Resource
     private TemplateService templateService;
+
+    @Resource
+    private PlatformSmsTemplateService platformSmsTemplateService;
 
     @PostMapping(value = "/sms")
     @ApiOperation(value = "【短信模版】- 添加")
@@ -93,5 +100,49 @@ public class TemplateController {
                                                                @ApiParam(value = "模版关联关系id数组") Long[] relationIds) {
         templateService.deleteProviderSmsTemplateRelate(templateId, relationIds);
         return DataResponse.success();
+    }
+
+    @GetMapping(value = "/sms/relation/{templateId}")
+    @ApiOperation(value = "【短信模版】- 获取消息平台模版配置列表（根据消息中心模版id）")
+    public DataResponse<List<ProviderSmsTemplateResDTO>> getProviderSmsTemplatesByTemplateId(@PathVariable Long templateId) {
+        return DataResponse.of(templateService.getProviderSmsTemplatesByTemplateId(templateId));
+    }
+
+    @PostMapping(value = "/provider/{providerId}")
+    @ApiOperation(value = "【消息平台配置】- 短信模版配置 - 新增")
+    public <T> DataResponse<T> addSmsProviderTemplate(@PathVariable @ApiParam(value = "消息平台id") Long providerId,
+                                                      @RequestBody @Valid ProviderSmsTemplateReqDTO smsTemplateReqDTO) {
+
+        platformSmsTemplateService.addSmsProviderTemplate(providerId, smsTemplateReqDTO);
+        return DataResponse.success();
+    }
+
+    @PutMapping(value = "/provider/{providerId}/{providerSmsTemplateId}")
+    @ApiOperation(value = "【消息平台配置】- 短信模版配置 - 修改")
+    public <T> DataResponse<T> addSmsProviderTemplate(@PathVariable("providerId") @ApiParam("消息平台id") Long providerId,
+                                                      @PathVariable("providerSmsTemplateId") @ApiParam("消息平台短信模版id") Long providerSmsTemplateId,
+                                                      @RequestBody @Valid ProviderSmsTemplateReqDTO smsTemplateReqDTO) {
+
+        platformSmsTemplateService.updateSmsProviderTemplate(providerId, providerSmsTemplateId, smsTemplateReqDTO);
+
+        return DataResponse.success();
+    }
+
+    @DeleteMapping(value = "/provider/{providerId}/{providerSmsTemplateId}")
+    @ApiOperation(value = "【消息平台配置】- 短信模版配置 - 删除")
+    public <T> DataResponse<T> deleteSmsProviderTemplate(@PathVariable("providerId")
+                                                         @ApiParam("消息平台id") Long providerId,
+                                                         @PathVariable("providerSmsTemplateId")
+                                                         @ApiParam("消息平台短信模版id") Long providerSmsTemplateId) {
+
+        platformSmsTemplateService.deleteSmsProviderTemplate(providerId, providerSmsTemplateId);
+
+        return DataResponse.success();
+    }
+
+    @GetMapping(value = "/provider/{providerId}")
+    @ApiOperation(value = "【消息平台配置】- 短信模版配置 - 获取消息平台短信模版列表（根据消息平台id）")
+    public DataResponse<List<ProviderSmsTemplateResDTO>> getProviderSmsTemplatesByProviderId(@PathVariable Long providerId) {
+        return DataResponse.of(platformSmsTemplateService.getProviderSmsTemplatesByProviderId(providerId));
     }
 }

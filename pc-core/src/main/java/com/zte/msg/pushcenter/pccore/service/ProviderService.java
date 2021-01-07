@@ -47,11 +47,14 @@ public interface ProviderService {
     ProviderResDTO getProviderById(Long providerId);
 
     /**
-     * 分页查询第三方服务基本配置
+     * 分页查询消息平台配置
      *
      * @param pageReqDTO
      * @return
      */
-    Page<ProviderResDTO> getProviders(PageReqDTO pageReqDTO);
+    Page<ProviderResDTO> getProviders(String provider,
+                                      Integer type,
+                                      Integer status,
+                                      PageReqDTO pageReqDTO);
 
 }

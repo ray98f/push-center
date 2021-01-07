@@ -16,7 +16,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -79,8 +81,31 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
     }
 
     @Override
-    public Page<ProviderResDTO> getProviders(PageReqDTO pageReqDTO) {
+    public Page<ProviderResDTO> getProviders(String provider,
+                                             Integer type,
+                                             Integer status,
+                                             PageReqDTO pageReqDTO) {
 
-        return getBaseMapper().selectByPage(pageReqDTO.of());
+        QueryWrapper<Provider> wrapper = new QueryWrapper<>();
+        if (Objects.nonNull(provider)) {
+            wrapper.like("provider_name", provider);
+        }
+        if (Objects.nonNull(type)) {
+            wrapper.eq("type", type);
+        }
+        if (Objects.nonNull(status)) {
+            wrapper.eq("status", status);
+        }
+        Page<Provider> providerPage = getBaseMapper().selectPage(pageReqDTO.of(), wrapper);
+        Page<ProviderResDTO> dtoPage = new Page<>();
+        List<Provider> records = providerPage.getRecords();
+        List<ProviderResDTO> list = new ArrayList<>(records.size());
+        records.forEach(o -> {
+            ProviderResDTO providerResDTO = new ProviderResDTO();
+            BeanUtils.copyProperties(o, providerResDTO);
+            list.add(providerResDTO);
+        });
+
+        return dtoPage.setRecords(list);
     }
 }

@@ -2,6 +2,7 @@ package com.zte.msg.pushcenter.pccore.config;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.zte.msg.pushcenter.pccore.utils.Constants;
+import com.zte.msg.pushcenter.pccore.utils.TokenUtil;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,9 +25,9 @@ public class MetaObjectHandlerConfig implements MetaObjectHandler {
         //创建时间默认当前时间
         setFieldValByName("createdAt", Instant.now(), metaObject);
         // TODO: 2021/1/6
-        setFieldValByName("createdBy", "admin", metaObject);
+        setFieldValByName("createdBy", TokenUtil.getUserName(), metaObject);
 
-        setFieldValByName("updatedBy", "admin", metaObject);
+        setFieldValByName("updatedBy", TokenUtil.getUserName(), metaObject);
         //更新时间默认当前时间
         setFieldValByName("updatedAt", Instant.now(), metaObject);
     }
@@ -34,7 +35,7 @@ public class MetaObjectHandlerConfig implements MetaObjectHandler {
     @Override
     public void updateFill(MetaObject metaObject) {
         // TODO: 2021/1/6
-        setFieldValByName("updateBy", "admin", metaObject);
+        setFieldValByName("updateBy", TokenUtil.getUserName(), metaObject);
 
         setFieldValByName("updatedAt", Instant.now(), metaObject);
     }

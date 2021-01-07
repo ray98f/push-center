@@ -15,7 +15,7 @@ import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.PlatformSmsTemplateMapper;
 import com.zte.msg.pushcenter.pccore.mapper.SmsTemplateMapper;
 import com.zte.msg.pushcenter.pccore.mapper.SmsTemplateRelationMapper;
-import com.zte.msg.pushcenter.pccore.model.SmsTemplateRelationDao;
+import com.zte.msg.pushcenter.pccore.model.SmsTemplateRelationModel;
 import com.zte.msg.pushcenter.pccore.service.TemplateService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -110,6 +110,28 @@ public class TemplateServiceImpl implements TemplateService {
     }
 
     @Override
+    public List<ProviderSmsTemplateResDTO> getProviderSmsTemplatesByTemplateId(Long templateId) {
+
+        List<SmsTemplateRelationModel> smsTemplateRelationModels =
+                smsTemplateRelationMapper.selectByTemplateIds(Collections.singletonList(templateId));
+        List<ProviderSmsTemplateResDTO> resDTOList = new ArrayList<>(smsTemplateRelationModels.size());
+        smsTemplateRelationModels.forEach(o -> {
+            ProviderSmsTemplateResDTO providerSmsTemplateResDTO = new ProviderSmsTemplateResDTO();
+            providerSmsTemplateResDTO.setStatus(o.getPStatus());
+            providerSmsTemplateResDTO.setPriority(o.getPriority());
+            providerSmsTemplateResDTO.setCode(o.getCode());
+            providerSmsTemplateResDTO.setContent(o.getContent());
+            providerSmsTemplateResDTO.setSign(o.getSign());
+            providerSmsTemplateResDTO.setRelationId(o.getRelationId());
+            providerSmsTemplateResDTO.setPTemplateId(o.getPTemplateId());
+            providerSmsTemplateResDTO.setUpdatedAt(o.getUpdatedAt());
+            providerSmsTemplateResDTO.setUpdatedBy(o.getUpdatedBy());
+            resDTOList.add(providerSmsTemplateResDTO);
+        });
+        return resDTOList;
+    }
+
+    @Override
     public Page<SmsTemplateDetailResDTO> getTemplateByPage(String content,
                                                            Long templateId,
                                                            Integer status,
@@ -141,8 +163,8 @@ public class TemplateServiceImpl implements TemplateService {
             smsTemplateDetailResDTO.setStatus(o.getStatus());
             smsTemplateMap.put(o.getId(), smsTemplateDetailResDTO);
         });
-        List<SmsTemplateRelationDao> smsTemplateRelationDaos = smsTemplateRelationMapper.selectByTemplateIds(templateIds);
-        smsTemplateRelationDaos.forEach(o -> {
+        List<SmsTemplateRelationModel> smsTemplateRelationModels = smsTemplateRelationMapper.selectByTemplateIds(templateIds);
+        smsTemplateRelationModels.forEach(o -> {
 
 
             SmsTemplateDetailResDTO smsTemplateDetailResDTO = smsTemplateMap.get(o.getId());
