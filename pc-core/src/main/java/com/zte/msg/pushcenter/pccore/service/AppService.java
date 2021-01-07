@@ -18,9 +18,9 @@ public interface AppService {
 
     PageInfo<App> listApp(AppListReqDTO appListReqDTO);
 
-    void deleteApp(List<Integer> appIds);
+    void deleteApp(List<Integer> appIds, String userName);
 
     void updateApp(App app);
 
-    void insertApp(String appName);
+    void insertApp(App app);
 }

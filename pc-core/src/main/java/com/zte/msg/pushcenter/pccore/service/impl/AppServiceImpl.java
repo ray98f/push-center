@@ -4,10 +4,13 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zte.msg.pushcenter.pccore.dto.req.AppListReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.App;
+import com.zte.msg.pushcenter.pccore.entity.SecretKey;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.AppMapper;
 import com.zte.msg.pushcenter.pccore.service.AppService;
+import com.zte.msg.pushcenter.pccore.utils.Constants;
+import com.zte.msg.pushcenter.pccore.utils.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,12 +57,12 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public void deleteApp(List<Integer> appIds) {
+    public void deleteApp(List<Integer> appIds, String userName) {
         if (null == appIds || appIds.isEmpty()) {
             log.error("服务ID返回为空");
             throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
         }
-        int result = appMapper.deleteApp(appIds);
+        int result = appMapper.deleteApp(appIds, userName);
         if (result > 0) {
             log.info("服务删除成功");
         } else {
@@ -84,17 +87,19 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public void insertApp(String appName) {
-        if (StringUtils.isBlank(appName)) {
+    public void insertApp(App app) {
+        if (Objects.isNull(app)) {
             log.error("服务信息返回为空");
             throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
         }
-        Integer id = appMapper.selectAppId(appName);
+        Integer id = appMapper.selectAppId(app.getAppName());
         if (Objects.nonNull(id)) {
             log.error("服务已存在");
             throw new CommonException(ErrorCode.DATA_EXIST);
         }
-        int result = appMapper.insertApp(appName);
+        app.setAppKey(Constants.ZTE_NAME + TokenUtil.getTimestamp() + TokenUtil.getRandomString(5));
+        app.setAppSecret(TokenUtil.getUUID() + TokenUtil.getRandomString(16));
+        int result = appMapper.insertApp(app);
         if (result > 0) {
             log.info("服务权限成功");
         } else {

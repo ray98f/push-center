@@ -19,19 +19,31 @@
         select * from app where flag=0
     </select>
 
-    <delete id="deleteApp" parameterType="java.util.List">
-        <foreach collection="list" index="index" item="appId" separator=";">
-            update app set flag=1 where id=#{appId} and flag=0;
-            update app_role set flag=1 where app_id=#{appId} and flag=0
+    <delete id="deleteApp">
+        <foreach collection="appIds" index="index" item="appId" separator=";">
+            update app set flag=1, updated_by=#{userName} where id=#{appId} and flag=0;
+            update app_role set flag=1, updated_by=#{userName} where app_id=#{appId} and flag=0
         </foreach>
     </delete>
 
     <update id="updateApp" parameterType="com.zte.msg.pushcenter.pccore.entity.App">
-        update app set app_name=#{appName} where id=#{id}
+        update app
+        <set>
+            <trim suffixOverrides=",">
+                <if test="appName!=null">
+                    app_name=#{appName},
+                </if>
+                <if test="status!=null">
+                    status=#{status},
+                </if>
+            </trim>
+        </set>
+        where id=#{id} where flag=0
     </update>
 
-    <insert id="insertApp" parameterType="java.lang.String">
-        insert into app(app_name) value(#{appName});
+    <insert id="insertApp" parameterType="com.zte.msg.pushcenter.pccore.entity.App">
+        insert into app(app_name, app_key, app_secret, created_by, updated_by)
+        value(#{appName},#{appKey},#{appSecret},#{createdBy},#{updatedBy});
     </insert>
 
     <select id="selectAppId" resultType="java.lang.Integer" parameterType="java.lang.String">

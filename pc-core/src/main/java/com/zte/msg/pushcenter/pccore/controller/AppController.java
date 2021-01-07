@@ -2,9 +2,11 @@ package com.zte.msg.pushcenter.pccore.controller;
 
 import com.zte.msg.pushcenter.pccore.dto.DataResponse;
 import com.zte.msg.pushcenter.pccore.dto.PageResponse;
+import com.zte.msg.pushcenter.pccore.dto.SimpleTokenInfo;
 import com.zte.msg.pushcenter.pccore.dto.req.AppListReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.App;
 import com.zte.msg.pushcenter.pccore.service.AppService;
+import com.zte.msg.pushcenter.pccore.utils.TokenUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -33,6 +36,9 @@ public class AppController {
     @Resource
     private AppService appService;
 
+    @Resource
+    private HttpServletRequest request;
+
     /**
      * 服务列表获取
      *
@@ -53,7 +59,8 @@ public class AppController {
     @DeleteMapping("/app")
     @ApiOperation(value = "服务删除")
     public <T> DataResponse<T> deleteApp(@Valid @RequestBody List<Integer> appIds){
-        appService.deleteApp(appIds);
+        String userName = TokenUtil.getSimpleTokenInfo(request.getHeader("Authorization")).getUserName();
+        appService.deleteApp(appIds, userName);
         return DataResponse.success();
     }
 
@@ -66,6 +73,7 @@ public class AppController {
     @PostMapping("/app")
     @ApiOperation(value = "服务修改")
     public <T> DataResponse<T> updateApp(@RequestBody @Valid App app){
+        app.setUpdatedBy(TokenUtil.getSimpleTokenInfo(request.getHeader("Authorization")).getUserName());
         appService.updateApp(app);
         return DataResponse.success();
     }
@@ -73,13 +81,16 @@ public class AppController {
     /**
      * 新增服务
      *
-     * @param appName 服务名称
+     * @param app 服务详情
      * @return <T>
      */
     @PutMapping("/app")
     @ApiOperation(value = "新增服务")
-    public <T> DataResponse<T> insertApp(@Valid @RequestParam @NotNull(message = "32000006") String appName){
-        appService.insertApp(appName);
+    public <T> DataResponse<T> insertApp(@Valid @RequestBody App app){
+        String userName = TokenUtil.getSimpleTokenInfo(request.getHeader("Authorization")).getUserName();
+        app.setCreatedBy(userName);
+        app.setUpdatedBy(userName);
+        appService.insertApp(app);
         return DataResponse.success();
     }
 

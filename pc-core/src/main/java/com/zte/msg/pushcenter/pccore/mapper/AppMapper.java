@@ -16,11 +16,11 @@ public interface AppMapper extends BaseMapper<App> {
 
     List<App> listAllApp();
 
-    int deleteApp(List<Integer> appIds);
+    int deleteApp(List<Integer> appIds, String userName);
 
     int updateApp(App app);
 
-    int insertApp(String appName);
+    int insertApp(App app);
 
     Integer selectAppId(String appName);
 }

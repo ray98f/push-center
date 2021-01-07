@@ -6,11 +6,11 @@
     </select>
 
     <insert id="insertUser" parameterType="com.zte.msg.pushcenter.pccore.entity.User">
-        insert into user(user_name, password
+        insert into user(user_name, password,created_by,updated_by
         <if test="userRealName!=null" >
             , user_real_name
         </if>
-        ) value(#{userName},#{password}
+        ) value(#{userName},#{password},"admin","admin"
         <if test="userRealName!=null">
             ,#{userRealName}
         </if>
