@@ -25,7 +25,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/v1")
-@Api(tags = "第三方服务权限管理")
+@Api(tags = "服务权限管理")
 @Validated
 public class AppRoleController {
 
