@@ -59,7 +59,7 @@ public class AppController {
     @DeleteMapping("/app")
     @ApiOperation(value = "服务删除")
     public <T> DataResponse<T> deleteApp(@Valid @RequestBody List<Integer> appIds){
-        String userName = TokenUtil.getSimpleTokenInfo(request.getHeader("Authorization")).getUserName();
+        String userName = TokenUtil.getSimpleTokenInfo().getUserName();
         appService.deleteApp(appIds, userName);
         return DataResponse.success();
     }
@@ -73,7 +73,7 @@ public class AppController {
     @PostMapping("/app")
     @ApiOperation(value = "服务修改")
     public <T> DataResponse<T> updateApp(@RequestBody @Valid App app){
-        app.setUpdatedBy(TokenUtil.getSimpleTokenInfo(request.getHeader("Authorization")).getUserName());
+        app.setUpdatedBy(TokenUtil.getSimpleTokenInfo().getUserName());
         appService.updateApp(app);
         return DataResponse.success();
     }
@@ -87,7 +87,7 @@ public class AppController {
     @PutMapping("/app")
     @ApiOperation(value = "新增服务")
     public <T> DataResponse<T> insertApp(@Valid @RequestBody App app){
-        String userName = TokenUtil.getSimpleTokenInfo(request.getHeader("Authorization")).getUserName();
+        String userName = TokenUtil.getSimpleTokenInfo().getUserName();
         app.setCreatedBy(userName);
         app.setUpdatedBy(userName);
         appService.insertApp(app);
@@ -101,7 +101,7 @@ public class AppController {
     @PostMapping("/app/reset")
     @ApiOperation(value = "重置密钥")
     public <T> DataResponse<T> resetKey(@Valid @RequestParam @NotNull(message = "32000006") Integer appId){
-        String userName = TokenUtil.getSimpleTokenInfo(request.getHeader("Authorization")).getUserName();
+        String userName = TokenUtil.getSimpleTokenInfo().getUserName();
         appService.resetKey(userName,appId);
         return DataResponse.success();
     }

@@ -14,6 +14,7 @@ import org.apache.commons.codec.binary.Base64;
 
 import javax.annotation.Resource;
 import javax.crypto.SecretKey;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
@@ -29,6 +30,9 @@ public class TokenUtil {
 
     @Resource
     private static SecretService secretService;
+
+    @Resource
+    private static HttpServletRequest request;
 
     private static final String SIMPLE_TOKEN_SECRET = "ZTE96952f774ce244fcb42af56062e519b3lFOGZ3YaWuCZS";
 
@@ -311,10 +315,10 @@ public class TokenUtil {
      * Simple
      * 获取开放平台登录信息
      *
-     * @param token
      * @return
      */
-    public static SimpleTokenInfo getSimpleTokenInfo(String token) {
+    public static SimpleTokenInfo getSimpleTokenInfo() {
+        String token = request.getHeader("Authorization");
         SimpleTokenInfo simpleTokenInfo = null;
         try {
             simpleTokenInfo = simpleParseToken_(token);
