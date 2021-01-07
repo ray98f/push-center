@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 
 /**
@@ -23,17 +24,15 @@ public class BaseEntity {
 
     @JsonIgnore
     @TableField(value = "created_at", fill = FieldFill.INSERT)
-    private Instant createdAt;
+    private Timestamp createdAt;
 
     @JsonIgnore
     @TableField(value = "created_by", fill = FieldFill.INSERT)
     private String createdBy;
 
-    @JsonIgnore
     @TableField(value = "updated_at", fill = FieldFill.INSERT, update = "NOW()")
-    private Instant updatedAt;
+    private Timestamp updatedAt;
 
-    @JsonIgnore
     @TableField(value = "updated_by", fill = FieldFill.INSERT)
     private String updatedBy;
 
