@@ -26,8 +26,16 @@ public class BaseEntity {
     private Instant createdAt;
 
     @JsonIgnore
+    @TableField(value = "created_by", fill = FieldFill.INSERT)
+    private String createdBy;
+
+    @JsonIgnore
     @TableField(value = "updated_at", fill = FieldFill.INSERT, update = "NOW()")
     private Instant updatedAt;
+
+    @JsonIgnore
+    @TableField(value = "updated_by", fill = FieldFill.INSERT)
+    private String updatedBy;
 
     @JsonIgnore
     @TableLogic
