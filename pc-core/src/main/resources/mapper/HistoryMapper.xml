@@ -4,13 +4,16 @@
 
     <select id="listHistorySms" resultType="com.zte.msg.pushcenter.pccore.entity.SmsInfo" parameterType="com.zte.msg.pushcenter.pccore.dto.req.SmsHistoryReqDTO">
         select * from sms_info
-        <if test="appId!=null or appName!=null or phoneNum!=null or startTime!=null or endTime!=null or result!=null">
+        <if test="appId!=null or appName!=null or phoneNum!=null or startTime!=null or endTime!=null or result!=null or templateId!=null">
             <trim prefix="where " suffixOverrides="and">
                 <if test="appId!=null">
                     app_id=#{appId} and
                 </if>
                 <if test="appName!=null">
                     app_name like "%"#{appName}"%" and
+                </if>
+                <if test="templateId!=null">
+                    template_id=#{templateId} and
                 </if>
                 <if test="phoneNum!=null">
                     phone_num like "%"#{phoneNum}"%" and

@@ -25,4 +25,6 @@ public class SmsHistoryReqDTO extends PageReqDTO {
     private Date endTime;
 
     private Integer result;
+
+    private Integer templateId;
 }
