@@ -13,16 +13,6 @@ import java.util.List;
  * @version 1.0
  * @date 2020/12/23 15:42
  */
-public interface TokenService {
-    void addSecretKey(Integer appId);
-
-    SecretKey getSecretKey(Integer appId);
-
-    void deleteSecretKey(Integer appId);
-
-    List<SecretKey> listSecretKey();
-
-    OpenApiTokenInfo selectTokenInfo(String appKey);
-
+public interface SecretService {
     String selectAppRole(String appKey);
 }

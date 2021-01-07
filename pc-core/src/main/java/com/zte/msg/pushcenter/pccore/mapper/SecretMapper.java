@@ -8,17 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TokenMapper extends BaseMapper<SecretKey> {
-
-    int addSecretKey(SecretKey secretKey);
-
-    SecretKey getSecretKey(Integer appId);
-
-    int deleteSecretKey(Integer appId);
-
-    List<SecretKey> listSecretKey();
-
-    OpenApiTokenInfo selectTokenInfo(String appKey);
+public interface SecretMapper extends BaseMapper<SecretKey> {
 
     String selectAppRole(String appKey);
 }

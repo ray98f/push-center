@@ -94,4 +94,16 @@ public class AppController {
         return DataResponse.success();
     }
 
+    /**
+     * 重置密钥
+     * @return <T>
+     */
+    @PostMapping("/app/reset")
+    @ApiOperation(value = "重置密钥")
+    public <T> DataResponse<T> resetKey(@Valid @RequestParam @NotNull(message = "32000006") Integer appId){
+        String userName = TokenUtil.getSimpleTokenInfo(request.getHeader("Authorization")).getUserName();
+        appService.resetKey(userName,appId);
+        return DataResponse.success();
+    }
+
 }

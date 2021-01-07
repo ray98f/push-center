@@ -23,4 +23,6 @@ public interface AppMapper extends BaseMapper<App> {
     int insertApp(App app);
 
     Integer selectAppId(String appName);
+
+    int resetKey(String appSecret, String userName, Integer appId);
 }
