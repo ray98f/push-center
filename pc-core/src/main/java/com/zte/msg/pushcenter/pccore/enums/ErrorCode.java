@@ -100,7 +100,9 @@ public enum ErrorCode {
     SMS_CONFIG_NOT_EXIST(32000021, "sms.config.not.exist"),
     SMS_PROVIDER_CONFIG_NOT_NULL(32000022, "sms.provider.config.not.null"),
     SMS_CONFIG_NAME_EXIST(32000023, "sms.config.name.exist"),
-
+    SMS_TEMPLATE_NOT_EXIST(32000024, "sms.template.not.exist"),
+    SMS_PROVIDER_TEMPLATE_NOT_EXIST(32000025, "sms.provider.template.not.exist"),
+    SMS_TEMPLATE_RELATION_NOT_EXIST(32000026, "sms.template.relation.not.exist"),
     /**
      * App 32000030 - 32000039
      */

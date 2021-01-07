@@ -57,4 +57,9 @@ public class MailPusher extends BasePusher {
         }
     }
 
+    @Override
+    protected void persist() {
+
+    }
+
 }

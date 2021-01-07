@@ -39,7 +39,7 @@ public class CodeJavac {
         }};
         String projectPath = PathUtil.getAppHomePath();
         System.out.println("projectPath : " + projectPath);
-        String classPath = String.format("%s\\pc-script\\target\\pc-script-1.0.0.jar", projectPath);
+        String classPath = String.format("%s/pc-script/target/pc-script-1.0.0.jar", projectPath);
         List<String> options = new ArrayList<>();
         options.add("-classpath");
         options.add(classPath);

@@ -20,4 +20,9 @@ public class AppPusher extends BasePusher {
     public void push(Message message) {
 
     }
+
+    @Override
+    protected void persist() {
+        System.out.println("--------------- App message persist ---------------");
+    }
 }

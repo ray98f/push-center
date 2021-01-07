@@ -23,12 +23,18 @@ public class MetaObjectHandlerConfig implements MetaObjectHandler {
         setFieldValByName("flag", Constants.DATA_NOT_DELETED, metaObject);
         //创建时间默认当前时间
         setFieldValByName("createdAt", Instant.now(), metaObject);
+        // TODO: 2021/1/6
+        setFieldValByName("createdBy", "admin", metaObject);
+
+        setFieldValByName("updatedBy", "admin", metaObject);
         //更新时间默认当前时间
         setFieldValByName("updatedAt", Instant.now(), metaObject);
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
+        // TODO: 2021/1/6
+        setFieldValByName("updateBy", "admin", metaObject);
 
         setFieldValByName("updatedAt", Instant.now(), metaObject);
     }

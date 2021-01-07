@@ -2,21 +2,20 @@ package com.zte.msg.pushcenter.pccore.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
-import com.zte.msg.pushcenter.pccore.dto.req.ProviderSmsTemplateReqDTO;
+import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateRelateProviderReqDTO;
+import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateRelateProviderUpdateReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.ProviderSmsTemplateResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.SmsTemplateDetailResDTO;
-import com.zte.msg.pushcenter.pccore.dto.res.SmsTemplateResDTO;
-import com.zte.msg.pushcenter.pccore.entity.ProviderSmsTemplate;
-import com.zte.msg.pushcenter.pccore.entity.Template;
+import com.zte.msg.pushcenter.pccore.entity.SmsTemplate;
+import com.zte.msg.pushcenter.pccore.entity.SmsTemplateRelation;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
-import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
-import com.zte.msg.pushcenter.pccore.mapper.TemplateMapper;
-import com.zte.msg.pushcenter.pccore.service.ProviderSmsTemplateService;
-import com.zte.msg.pushcenter.pccore.service.SmsService;
+import com.zte.msg.pushcenter.pccore.mapper.PlatformSmsTemplateMapper;
+import com.zte.msg.pushcenter.pccore.mapper.SmsTemplateMapper;
+import com.zte.msg.pushcenter.pccore.mapper.SmsTemplateRelationMapper;
+import com.zte.msg.pushcenter.pccore.model.SmsTemplateRelationDao;
 import com.zte.msg.pushcenter.pccore.service.TemplateService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -25,9 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * description:
@@ -39,81 +36,146 @@ import java.util.Objects;
 @Service
 @Slf4j
 @Transactional(rollbackFor = Exception.class)
-public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, Template> implements TemplateService {
+public class TemplateServiceImpl implements TemplateService {
 
     @Resource
-    private SmsService smsService;
+    private SmsTemplateMapper smsTemplateMapper;
 
     @Resource
-    private ProviderSmsTemplateService providerSmsTemplateService;
+    private PlatformSmsTemplateMapper providerSmsTemplateRelateMapper;
+
+    @Resource
+    private SmsTemplateRelationMapper smsTemplateRelationMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addSmsTemplate(SmsTemplateReqDTO smsTemplateReqDTO) {
-
-        List<ProviderSmsTemplateReqDTO> providerSmsTemplates = smsTemplateReqDTO.getProviderSmsTemplates();
-        if (providerSmsTemplates.isEmpty()) {
-            throw new CommonException(ErrorCode.SMS_PROVIDER_CONFIG_NOT_NULL);
-        }
-        providerSmsTemplates.forEach(o -> {
-            if (Objects.isNull(smsService.getById(o.getSmsConfigId()))) {
-                throw new CommonException(ErrorCode.SMS_CONFIG_NOT_EXIST);
-            }
-        });
-        Template entity = new Template();
-        BeanUtils.copyProperties(smsTemplateReqDTO, entity);
-        entity.setType(PushMethods.SMS.value());
-        getBaseMapper().insert(entity);
-        Long id = entity.getId();
-
-        List<ProviderSmsTemplate> smsTemplates = new ArrayList<>(providerSmsTemplates.size());
-        providerSmsTemplates.forEach(o -> {
-            ProviderSmsTemplate pst = new ProviderSmsTemplate();
-            BeanUtils.copyProperties(o, pst);
-            pst.setSmsTemplateId(id);
-            smsTemplates.add(pst);
-        });
-        providerSmsTemplateService.saveBatch(smsTemplates);
+        String params = StringUtils.join(smsTemplateReqDTO.getParams(), ",");
+        SmsTemplate smsTemplate = new SmsTemplate();
+        BeanUtils.copyProperties(smsTemplateReqDTO, smsTemplate);
+        smsTemplate.setParams(params);
+        smsTemplateMapper.insert(smsTemplate);
     }
 
     @Override
-    public SmsTemplateResDTO getTemplate(String templateId) {
-
-        return null;
+    public void updateSmsTemplate(Long templateId, SmsTemplateReqDTO smsTemplateReqDTO) {
+        SmsTemplate smsTemplate = new SmsTemplate();
+        BeanUtils.copyProperties(smsTemplateReqDTO, smsTemplate);
+        smsTemplate.setParams(StringUtils.join(smsTemplateReqDTO.getParams(), ","));
+        smsTemplateMapper.updateById(smsTemplate);
     }
 
     @Override
-    public Page<SmsTemplateDetailResDTO> getTemplateByPage(String example, PageReqDTO page) {
-        QueryWrapper<Template> wrapper = new QueryWrapper<>();
-        if (StringUtils.isNotBlank(example)) {
-            wrapper.like("name", example);
-        }
-        Page<Template> templatePage = getBaseMapper().selectPage(page.of(), wrapper);
-        Page<SmsTemplateDetailResDTO> res = new Page<>();
-        List<Template> templates = templatePage.getRecords();
-        BeanUtils.copyProperties(templatePage, res);
-        if (templates.size() == 0) {
-            return res;
-        }
-        List<Long> ids = new ArrayList<>();
-        templates.forEach(o -> ids.add(o.getId()));
-        List<ProviderSmsTemplateResDTO> providerSmsTemplateList = providerSmsTemplateService.getProviderSmsTemplateList(ids);
+    public void deleteSmsTemplate(Long[] templateIds) {
+        smsTemplateMapper.deleteBatchIds(Arrays.asList(templateIds));
+    }
 
-        List<SmsTemplateDetailResDTO> list = new ArrayList<>(templates.size());
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void addProviderSmsTemplateRelate(Long templateId, SmsTemplateRelateProviderReqDTO reqDTO) {
+        if (Objects.isNull(smsTemplateMapper.selectById(templateId))) {
+            throw new CommonException(ErrorCode.SMS_TEMPLATE_NOT_EXIST);
+        }
+        if (Objects.isNull(providerSmsTemplateRelateMapper.selectById(reqDTO.getPTemplateId()))) {
+            throw new CommonException(ErrorCode.SMS_CONFIG_NAME_EXIST);
+        }
+        SmsTemplateRelation relation = new SmsTemplateRelation();
+        relation.setPriority(reqDTO.getPriority());
+        relation.setProviderTemplateId(reqDTO.getPTemplateId());
+        relation.setSmsTemplateId(templateId);
+        smsTemplateRelationMapper.insert(relation);
+    }
+
+    @Override
+    public void updateProviderSmsTemplateRelate(Long templateId, SmsTemplateRelateProviderUpdateReqDTO reqDTO) {
+        if (Objects.isNull(smsTemplateMapper.selectById(templateId))) {
+            throw new CommonException(ErrorCode.SMS_TEMPLATE_NOT_EXIST);
+        }
+        SmsTemplateRelation relation = smsTemplateRelationMapper.selectById(reqDTO.getRelationId());
+        if (Objects.isNull(relation)) {
+            throw new CommonException(ErrorCode.SMS_TEMPLATE_NOT_EXIST);
+        }
+        relation.setId(reqDTO.getRelationId());
+        relation.setPriority(reqDTO.getPriority());
+        relation.setSmsTemplateId(templateId);
+        smsTemplateRelationMapper.updateById(relation);
+    }
+
+    @Override
+    public void deleteProviderSmsTemplateRelate(Long templateId, Long[] ids) {
+        if (Objects.isNull(smsTemplateMapper.selectById(templateId))) {
+            throw new CommonException(ErrorCode.SMS_TEMPLATE_NOT_EXIST);
+        }
+        smsTemplateRelationMapper.deleteBatchIds(Arrays.asList(ids));
+    }
+
+    @Override
+    public Page<SmsTemplateDetailResDTO> getTemplateByPage(String content,
+                                                           Long templateId,
+                                                           Integer status,
+                                                           PageReqDTO pageReqDTO) {
+        QueryWrapper<SmsTemplate> wrapper = new QueryWrapper<>();
+        if (StringUtils.isNotBlank(content)) {
+            wrapper.like("content", content);
+        }
+        if (null != templateId) {
+            wrapper.eq("id", templateId);
+        }
+        if (null != status) {
+            wrapper.eq("status", status);
+        }
+
+        Page<SmsTemplate> smsTemplatePage = smsTemplateMapper.selectPage(pageReqDTO.of(), wrapper);
+        List<SmsTemplate> templates = smsTemplatePage.getRecords();
+
+        Page<SmsTemplateDetailResDTO> pageRes = new Page<>();
+        BeanUtils.copyProperties(smsTemplatePage, pageRes);
+        List<Long> templateIds = new ArrayList<>();
+        Map<Long, SmsTemplateDetailResDTO> smsTemplateMap = new HashMap<>();
         templates.forEach(o -> {
-            SmsTemplateDetailResDTO smsTemplate = new SmsTemplateDetailResDTO();
-            smsTemplate.setId(o.getId());
-            smsTemplate.setDescription(o.getDescription());
-            smsTemplate.setName(o.getName());
-            List<ProviderSmsTemplateResDTO> l1 = new ArrayList<>();
-            providerSmsTemplateList.forEach(o1 -> {
-                if (o1.getSmsTemplateId().equals(o.getId())) {
-                    l1.add(o1);
-                }
-            });
-            smsTemplate.setProviderSmsTemplates(l1);
-            list.add(smsTemplate);
+            SmsTemplateDetailResDTO smsTemplateDetailResDTO = new SmsTemplateDetailResDTO();
+            templateIds.add(o.getId());
+            smsTemplateDetailResDTO.setId(o.getId());
+            smsTemplateDetailResDTO.setContent(o.getContent());
+            smsTemplateDetailResDTO.setParams(o.getParams());
+            smsTemplateDetailResDTO.setStatus(o.getStatus());
+            smsTemplateMap.put(o.getId(), smsTemplateDetailResDTO);
         });
+        List<SmsTemplateRelationDao> smsTemplateRelationDaos = smsTemplateRelationMapper.selectByTemplateIds(templateIds);
+        smsTemplateRelationDaos.forEach(o -> {
+
+
+            SmsTemplateDetailResDTO smsTemplateDetailResDTO = smsTemplateMap.get(o.getId());
+            if (Objects.isNull(smsTemplateDetailResDTO.getProviderSmsTemplates())) {
+                smsTemplateDetailResDTO.setUpdatedAt(o.getUpdatedAt());
+                smsTemplateDetailResDTO.setUpdatedBy(o.getUpdatedBy());
+                smsTemplateDetailResDTO.setProviderSmsTemplates(new ArrayList<>());
+            }
+            if (null != o.getRelationId()) {
+                ProviderSmsTemplateResDTO providerSmsTemplateResDTO = new ProviderSmsTemplateResDTO();
+                providerSmsTemplateResDTO.setSign(o.getSign());
+                providerSmsTemplateResDTO.setContent(o.getPContent());
+                providerSmsTemplateResDTO.setCode(o.getCode());
+                providerSmsTemplateResDTO.setPriority(o.getPriority());
+                providerSmsTemplateResDTO.setRelationId(o.getRelationId());
+                providerSmsTemplateResDTO.setStatus(o.getPStatus());
+
+                if (StringUtils.isNotBlank(smsTemplateDetailResDTO.getProviders())
+                        && StringUtils.isNotBlank(o.getProviderName())) {
+                    smsTemplateDetailResDTO.setProviders(StringUtils.joinWith(",", smsTemplateDetailResDTO.getProviders(), o.getProviderName()));
+                }
+                if (StringUtils.isBlank(smsTemplateDetailResDTO.getProviders())
+                        && StringUtils.isNotBlank(o.getProviderName())) {
+                    smsTemplateDetailResDTO.setProviders(o.getProviderName());
+                }
+                smsTemplateDetailResDTO.getProviderSmsTemplates().add(providerSmsTemplateResDTO);
+            }
+
+        });
+
+        Page<SmsTemplateDetailResDTO> res = new Page<>();
+        BeanUtils.copyProperties(smsTemplatePage, res);
+        List<SmsTemplateDetailResDTO> list = new ArrayList<>(smsTemplateMap.values());
         return res.setRecords(list);
     }
 

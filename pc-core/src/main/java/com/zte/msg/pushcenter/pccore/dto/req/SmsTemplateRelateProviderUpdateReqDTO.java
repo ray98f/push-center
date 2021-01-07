@@ -11,22 +11,22 @@ import javax.validation.constraints.NotNull;
  *
  * @author chentong
  * @version 1.0
- * @date 2020/12/21 10:54
+ * @date 2021/1/7 9:50
  */
 @Data
 @ApiModel
-public class SmsTemplateReqDTO {
+public class SmsTemplateRelateProviderUpdateReqDTO {
 
-    @ApiModelProperty(value = "模版内容")
+    @ApiModelProperty(value = "模版关联关系id")
     @NotNull(message = "32000006")
-    private String content;
+    private Long relationId;
 
-    @ApiModelProperty(value = "参数列表")
+    @ApiModelProperty(value = "优先级")
     @NotNull(message = "32000006")
-    private String[] params;
+    private Integer priority;
 
-    @ApiModelProperty(value = "状态：0-禁用，1-启用")
+    @ApiModelProperty(value = "启用状态：0-禁用，1-启用")
+    @NotNull(message = "32000006")
     private Integer status;
-
 
 }

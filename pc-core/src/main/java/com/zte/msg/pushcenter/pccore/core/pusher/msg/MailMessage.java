@@ -20,7 +20,7 @@ public class MailMessage extends Message {
     /**
      * 收件人地址
      */
-    private String to;
+    private String[] to;
 
     /**
      * 主题

@@ -20,7 +20,7 @@ public interface ProviderService {
      * @param providerReqDTO
      * @return
      */
-    ProviderResDTO addProvider(ProviderReqDTO providerReqDTO);
+    void addProvider(ProviderReqDTO providerReqDTO);
 
     /**
      * 更新供应商配置
@@ -29,14 +29,14 @@ public interface ProviderService {
      * @param providerReqDTO
      * @return
      */
-    ProviderResDTO updateProvider(Long providerId, ProviderReqDTO providerReqDTO);
+    void updateProvider(Long providerId, ProviderReqDTO providerReqDTO);
 
     /**
      * 删除
      *
-     * @param providerId
+     * @param providerIds
      */
-    void deleteProvider(Long providerId);
+    void deleteProvider(Long[] providerIds);
 
     /**
      * 根据id查询配置详情
@@ -53,4 +53,5 @@ public interface ProviderService {
      * @return
      */
     Page<ProviderResDTO> getProviders(PageReqDTO pageReqDTO);
+
 }

@@ -3,9 +3,10 @@ package com.zte.msg.pushcenter.pccore.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
+import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateRelateProviderReqDTO;
+import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateRelateProviderUpdateReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.SmsTemplateDetailResDTO;
-import com.zte.msg.pushcenter.pccore.dto.res.SmsTemplateResDTO;
 
 /**
  * description:
@@ -16,7 +17,6 @@ import com.zte.msg.pushcenter.pccore.dto.res.SmsTemplateResDTO;
  */
 public interface TemplateService {
 
-
     /**
      * 添加短信模版
      *
@@ -25,19 +25,34 @@ public interface TemplateService {
      */
     void addSmsTemplate(SmsTemplateReqDTO smsTemplateReqDTO);
 
+    void updateSmsTemplate(Long templateId, SmsTemplateReqDTO smsTemplateReqDTO);
+
+    void deleteSmsTemplate(Long[] templateIds);
+
     /**
-     * 根据templateId查询短信模版详情
+     * 为平台短信模版添加供应商短信模版关联
      *
      * @param templateId
-     * @return
+     * @param reqDTO
      */
-    SmsTemplateResDTO getTemplate(String templateId);
+    void addProviderSmsTemplateRelate(Long templateId,
+                                      SmsTemplateRelateProviderReqDTO reqDTO);
+
+    void updateProviderSmsTemplateRelate(Long templateId,
+                                         SmsTemplateRelateProviderUpdateReqDTO reqDTO);
+
+    void deleteProviderSmsTemplateRelate(Long templateId,
+                                         Long[] ids);
+
 
     /**
      * 分页查询模版
      *
      * @return
      */
-    Page<SmsTemplateDetailResDTO> getTemplateByPage(String example, PageReqDTO page);
+    Page<SmsTemplateDetailResDTO> getTemplateByPage(String content,
+                                                    Long templateId,
+                                                    Integer status,
+                                                    PageReqDTO pageReqDTO);
 
 }

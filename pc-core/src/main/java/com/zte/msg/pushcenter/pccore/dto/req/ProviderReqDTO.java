@@ -26,4 +26,15 @@ public class ProviderReqDTO {
     @ApiModelProperty(value = "服务商名")
     private String providerName;
 
+    @ApiModelProperty(value = "服务商类型")
+    @NotNull(message = "32000006")
+    private Integer type;
+
+    @ApiModelProperty(value = "推送脚本内容")
+    private String scriptContext;
+
+    @ApiModelProperty(value = "配置信息Json字符串")
+    private String config;
+
+
 }

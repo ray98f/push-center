@@ -24,7 +24,7 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("/api/v1/provider")
-@Api(tags = "服务商管理")
+@Api(tags = "消息平台管理")
 @Validated
 public class ProviderController {
 
@@ -32,24 +32,24 @@ public class ProviderController {
     private ProviderService providerService;
 
     @PostMapping
-    @ApiOperation(value = "添加第三方服务基本配置")
-    public DataResponse<ProviderResDTO> addProvider(@RequestBody @Valid @ApiParam(value = "添加一条基本配置") ProviderReqDTO provider) {
-
-        return DataResponse.of(providerService.addProvider(provider));
+    @ApiOperation(value = "添加消息平台")
+    public <T> DataResponse<T> addProvider(@RequestBody @Valid @ApiParam(value = "添加一条基本配置") ProviderReqDTO provider) {
+        providerService.addProvider(provider);
+        return DataResponse.success();
     }
 
     @PutMapping(value = "/{id}")
     @ApiOperation(value = "修改第三方服务基本配置")
-    public DataResponse<ProviderResDTO> updateProvider(@PathVariable Long id,
-                                                     @RequestBody ProviderReqDTO provider) {
-
-        return DataResponse.of(providerService.updateProvider(id, provider));
+    public <T> DataResponse<T> updateProvider(@PathVariable Long id,
+                                              @RequestBody ProviderReqDTO provider) {
+        providerService.updateProvider(id, provider);
+        return DataResponse.success();
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping
     @ApiOperation(value = "删除第三方服务基本配置")
-    public <T> DataResponse<T> deleteProvider(@PathVariable Long id) {
-        providerService.deleteProvider(id);
+    public <T> DataResponse<T> deleteProvider(@PathVariable Long[] ids) {
+        providerService.deleteProvider(ids);
         return DataResponse.success();
     }
 

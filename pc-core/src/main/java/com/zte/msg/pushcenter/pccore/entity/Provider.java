@@ -12,8 +12,16 @@ import lombok.Data;
 @Data
 public class Provider extends BaseEntity {
 
-    private String description;
-
     private String providerName;
+
+    private Integer type;
+
+    private String scriptContext;
+
+    private String scriptTag;
+
+    private String config;
+
+    private String description;
 
 }

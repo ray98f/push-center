@@ -16,6 +16,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -32,23 +33,23 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
 
 
     @Override
-    public ProviderResDTO addProvider(ProviderReqDTO providerReqDTO) {
-        QueryWrapper<Provider> wrapper = new QueryWrapper<>();
-        wrapper.eq("provider_name", providerReqDTO.getProviderName());
-        Integer integer = getBaseMapper().selectCount(wrapper);
+    public void addProvider(ProviderReqDTO providerReqDTO) {
+
+        // TODO: 2021/1/6  新增供应商时，需要刷新缓存的配置信息
+
+        Integer integer = getBaseMapper().selectCount(new QueryWrapper<Provider>()
+                .eq("provider_name", providerReqDTO.getProviderName())
+                .eq("type", providerReqDTO.getType()));
         if (integer >= 1) {
             throw new CommonException(ErrorCode.PROVIDER_ALREADY_EXIST);
         }
         Provider provider = new Provider();
         BeanUtils.copyProperties(providerReqDTO, provider);
         getBaseMapper().insert(provider);
-        ProviderResDTO resDTO = new ProviderResDTO();
-        BeanUtils.copyProperties(provider, resDTO);
-        return resDTO;
     }
 
     @Override
-    public ProviderResDTO updateProvider(Long providerId, ProviderReqDTO providerReqDTO) {
+    public void updateProvider(Long providerId, ProviderReqDTO providerReqDTO) {
 
         Provider exist = getBaseMapper().selectById(providerId);
         if (Objects.isNull(exist)) {
@@ -58,14 +59,11 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
         BeanUtils.copyProperties(providerReqDTO, provider);
         provider.setId(providerId);
         getBaseMapper().updateById(provider);
-        ProviderResDTO resDTO = new ProviderResDTO();
-        BeanUtils.copyProperties(provider, resDTO);
-        return resDTO;
     }
 
     @Override
-    public void deleteProvider(Long providerId) {
-        getBaseMapper().deleteById(providerId);
+    public void deleteProvider(Long[] providerIds) {
+        getBaseMapper().deleteBatchIds(Arrays.asList(providerIds));
     }
 
     @Override

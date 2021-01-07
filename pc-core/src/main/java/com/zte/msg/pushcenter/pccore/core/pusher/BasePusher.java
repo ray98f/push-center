@@ -73,4 +73,10 @@ public abstract class BasePusher {
             log.error("Error!!! An exception occurred when response.");
         }
     }
+
+    /**
+     * 消息记录存库
+     */
+//    @Scheduled(cron = "0 0/1 * * * ? ")
+    abstract protected void persist();
 }

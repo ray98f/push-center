@@ -1,7 +1,7 @@
 package com.zte.msg.pushcenter.pccore.dto.res;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -17,9 +17,19 @@ public class ProviderResDTO {
 
     private Long id;
 
-    private String description;
-
-    @JsonProperty(value = "provider_name")
+    @ApiModelProperty(value = "供应商名称")
     private String providerName;
+
+    @ApiModelProperty(value = "供应商服务类型")
+    private Integer type;
+
+    @ApiModelProperty(value = "脚本内容")
+    private String scriptContext;
+
+    @ApiModelProperty(value = "配置信息")
+    private String config;
+
+    @ApiModelProperty(value = "描述")
+    private String description;
 
 }

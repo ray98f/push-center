@@ -23,14 +23,14 @@ public class SmsMessage extends Message {
     /**
      * 手机号码
      */
-    private String phoneNum;
+    private String[] phoneNum;
 
     /**
      * 短信模版id
      */
     private Long templateId;
 
-    private Long appId;
+    private Integer appId;
 
     private Map<String, String> vars;
 

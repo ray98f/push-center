@@ -22,7 +22,7 @@ public class MailMessageReqDTO {
      */
     @ApiModelProperty(value = "收件人地址")
     @NotNull(message = "32000020")
-    private String to;
+    private String[] to;
 
     /**
      * 主题
