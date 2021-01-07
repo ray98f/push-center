@@ -2,13 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zte.msg.pushcenter.pccore.mapper.AppMapper">
 
-    <select id="listApp" resultType="com.zte.msg.pushcenter.pccore.entity.App">
-        select * from app
+    <select id="listApp" resultType="com.zte.msg.pushcenter.pccore.entity.App" parameterType="com.zte.msg.pushcenter.pccore.dto.req.AppListReqDTO">
+        select * from app where flag=0
+        <if test="appId!=null">
+            and app_id=#{appId}
+        </if>
+        <if test="appName!=null">
+            and app_name like "%"#{appName}"%"
+        </if>
+        <if test="status!=null">
+            and status=#{status}
+        </if>
     </select>
 
-    <delete id="deleteApp" parameterType="java.lang.Integer">
-        delete from app where id=#{appId};
-        delete from app_role where app_id=#{appId};
+    <select id="listAllApp" resultType="com.zte.msg.pushcenter.pccore.entity.App">
+        select * from app where flag=0
+    </select>
+
+    <delete id="deleteApp" parameterType="java.util.List">
+        <foreach collection="list" index="index" item="appId" separator=";">
+            update app set flag=1 where id=#{appId} and flag=0;
+            update app_role set flag=1 where app_id=#{appId} and flag=0
+        </foreach>
     </delete>
 
     <update id="updateApp" parameterType="com.zte.msg.pushcenter.pccore.entity.App">

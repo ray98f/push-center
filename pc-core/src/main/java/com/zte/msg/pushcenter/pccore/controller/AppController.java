@@ -1,6 +1,8 @@
 package com.zte.msg.pushcenter.pccore.controller;
 
 import com.zte.msg.pushcenter.pccore.dto.DataResponse;
+import com.zte.msg.pushcenter.pccore.dto.PageResponse;
+import com.zte.msg.pushcenter.pccore.dto.req.AppListReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.App;
 import com.zte.msg.pushcenter.pccore.service.AppService;
 import io.swagger.annotations.Api;
@@ -36,22 +38,22 @@ public class AppController {
      *
      * @return List<App>
      */
-    @GetMapping("/app")
+    @PostMapping("/app/list")
     @ApiOperation(value = "服务列表获取")
-    public DataResponse<List<App>> listApp(){
-        return DataResponse.of(appService.listApp());
+    public PageResponse<App> listApp(@Valid @RequestBody AppListReqDTO appListReqDTO){
+        return PageResponse.of(appService.listApp(appListReqDTO));
     }
 
     /**
      * 服务删除
      *
-     * @param appId 服务ID
+     * @param appIds 服务ID
      * @return <T>
      */
     @DeleteMapping("/app")
     @ApiOperation(value = "服务删除")
-    public <T> DataResponse<T> deleteApp(@Valid @RequestParam @NotNull(message = "32000006") Integer appId){
-        appService.deleteApp(appId);
+    public <T> DataResponse<T> deleteApp(@Valid @RequestBody List<Integer> appIds){
+        appService.deleteApp(appIds);
         return DataResponse.success();
     }
 

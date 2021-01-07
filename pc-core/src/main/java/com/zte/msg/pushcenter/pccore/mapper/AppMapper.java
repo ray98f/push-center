@@ -1,6 +1,7 @@
 package com.zte.msg.pushcenter.pccore.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zte.msg.pushcenter.pccore.dto.req.AppListReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.App;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -11,9 +12,11 @@ import java.util.List;
 @Repository
 public interface AppMapper extends BaseMapper<App> {
 
-    List<App> listApp();
+    List<App> listApp(AppListReqDTO appListReqDTO);
 
-    int deleteApp(Integer appId);
+    List<App> listAllApp();
+
+    int deleteApp(List<Integer> appIds);
 
     int updateApp(App app);
 

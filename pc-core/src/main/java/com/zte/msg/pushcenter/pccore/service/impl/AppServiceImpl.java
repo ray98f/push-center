@@ -1,5 +1,8 @@
 package com.zte.msg.pushcenter.pccore.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.zte.msg.pushcenter.pccore.dto.req.AppListReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.App;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
@@ -28,11 +31,22 @@ public class AppServiceImpl implements AppService {
     private AppMapper appMapper;
 
     @Override
-    public List<App> listApp() {
-        List<App> appList = appMapper.listApp();
+    public PageInfo<App> listApp(AppListReqDTO appListReqDTO) {
+        if (Objects.isNull(appListReqDTO) || null == appListReqDTO.getPage() || null == appListReqDTO.getSize()){
+            List<App> appList = appMapper.listAllApp();
+            if (null != appList && !appList.isEmpty()) {
+                log.info("服务列表获取成功");
+                return new PageInfo<>(appList);
+            } else {
+                log.error("服务列表获取失败");
+                throw new CommonException(ErrorCode.SELECT_EMPTY);
+            }
+        }
+        PageHelper.startPage(appListReqDTO.getPage().intValue(), appListReqDTO.getSize().intValue());
+        List<App> appList = appMapper.listApp(appListReqDTO);
         if (null != appList && !appList.isEmpty()) {
             log.info("服务列表获取成功");
-            return appList;
+            return new PageInfo<>(appList);
         } else {
             log.error("服务列表获取失败");
             throw new CommonException(ErrorCode.SELECT_EMPTY);
@@ -40,16 +54,16 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public void deleteApp(Integer appId) {
-        if (Objects.isNull(appId)) {
+    public void deleteApp(List<Integer> appIds) {
+        if (null == appIds || appIds.isEmpty()) {
             log.error("服务ID返回为空");
             throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
         }
-        int result = appMapper.deleteApp(appId);
+        int result = appMapper.deleteApp(appIds);
         if (result > 0) {
             log.info("服务删除成功");
         } else {
-            log.error("服务删除失败");
+            log.error("服务删除异常");
             throw new CommonException(ErrorCode.DELETE_ERROR);
         }
     }

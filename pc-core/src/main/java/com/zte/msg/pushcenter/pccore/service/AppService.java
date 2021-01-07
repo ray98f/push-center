@@ -1,6 +1,8 @@
 package com.zte.msg.pushcenter.pccore.service;
 
 
+import com.github.pagehelper.PageInfo;
+import com.zte.msg.pushcenter.pccore.dto.req.AppListReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.App;
 
 import java.util.List;
@@ -14,9 +16,9 @@ import java.util.List;
  */
 public interface AppService {
 
-    List<App> listApp();
+    PageInfo<App> listApp(AppListReqDTO appListReqDTO);
 
-    void deleteApp(Integer appId);
+    void deleteApp(List<Integer> appIds);
 
     void updateApp(App app);
 
