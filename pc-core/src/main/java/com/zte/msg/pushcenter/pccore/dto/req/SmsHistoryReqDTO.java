@@ -15,15 +15,12 @@ import java.util.Date;
 public class SmsHistoryReqDTO extends PageReqDTO {
 
     @ApiModelProperty(value = "应用id")
-    @JsonProperty(value = "app_id")
     private Integer appId;
 
     @ApiModelProperty(value = "应用名称")
-    @JsonProperty(value = "app_name")
     private String appName;
 
     @ApiModelProperty(value = "发送号码")
-    @JsonProperty(value = "phone_num")
     private String phoneNum;
 
     @ApiModelProperty(value = "搜索开始时间")
@@ -40,6 +37,5 @@ public class SmsHistoryReqDTO extends PageReqDTO {
     private Integer result;
 
     @ApiModelProperty(value = "模板id")
-    @JsonProperty(value = "template_id")
     private Integer templateId;
 }

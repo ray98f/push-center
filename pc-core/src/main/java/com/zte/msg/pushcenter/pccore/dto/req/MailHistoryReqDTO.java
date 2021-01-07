@@ -15,15 +15,12 @@ import java.util.Date;
 public class MailHistoryReqDTO extends PageReqDTO {
 
     @ApiModelProperty(value = "应用id")
-    @JsonProperty(value = "app_id")
     private Integer appId;
 
     @ApiModelProperty(value = "应用名称")
-    @JsonProperty(value = "app_name")
     private String appName;
 
     @ApiModelProperty(value = "收件地址")
-    @JsonProperty(value = "receive_address")
     private String receiveAddress;
 
     @ApiModelProperty(value = "搜索开始时间")
