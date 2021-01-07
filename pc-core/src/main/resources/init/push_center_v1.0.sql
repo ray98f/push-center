@@ -94,10 +94,10 @@ CREATE TABLE `dic`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for role
+-- Table structure for sendMode
 -- ----------------------------
-DROP TABLE IF EXISTS `role`;
-CREATE TABLE `role`  (
+DROP TABLE IF EXISTS `sendMode`;
+CREATE TABLE `sendMode`  (
     `id` bigint(20) NOT NULL AUTO_INCREMENT,
     `role_name` varchar(45) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
     `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,

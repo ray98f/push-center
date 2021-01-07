@@ -2,7 +2,7 @@ package com.zte.msg.pushcenter.pccore.service;
 
 
 import com.zte.msg.pushcenter.pccore.dto.res.AppRoleResDTO;
-import com.zte.msg.pushcenter.pccore.entity.Role;
+import com.zte.msg.pushcenter.pccore.entity.SendMode;
 
 import java.util.List;
 
@@ -17,15 +17,13 @@ public interface AppRoleService {
 
     List<AppRoleResDTO> listAppRole();
 
-    AppRoleResDTO selectAppRole(Integer appId);
-
     void editAppRole(List<AppRoleResDTO> appRoleResDTOList);
 
-    List<Role> listRole();
+    List<SendMode> listSendMode();
 
-    void deleteRole(Integer roleId);
+    void deleteSendMode(Integer modeId);
 
-    void updateRole(Role role);
+    void updateSendMode(SendMode sendMode);
 
-    void insertRole(String roleName);
+    void insertSendMode(String modeName);
 }

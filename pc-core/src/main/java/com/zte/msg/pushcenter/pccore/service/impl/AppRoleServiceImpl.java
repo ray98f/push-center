@@ -2,7 +2,7 @@ package com.zte.msg.pushcenter.pccore.service.impl;
 
 import com.zte.msg.pushcenter.pccore.dto.res.AppRoleResDTO;
 import com.zte.msg.pushcenter.pccore.entity.AppRole;
-import com.zte.msg.pushcenter.pccore.entity.Role;
+import com.zte.msg.pushcenter.pccore.entity.SendMode;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.AppRoleMapper;
@@ -35,29 +35,15 @@ public class AppRoleServiceImpl implements AppRoleService {
         if (null != appRoleResDTOList && !appRoleResDTOList.isEmpty()) {
             log.info("服务列表查询成功");
             for (AppRoleResDTO appRoleResDTO : appRoleResDTOList) {
-                List<AppRole> appRole = appRoleMapper.selectAppRole(appRoleResDTO.getAppId());
+                List<AppRole> appRole = appRoleMapper.selectAppMode(appRoleResDTO.getAppId());
                 for (AppRole appRoleTemplate : appRole){
-                    appRoleTemplate.setTemplate(appRoleMapper.selectTemplate(appRoleTemplate.getRoleId()));
+                    appRoleTemplate.setTemplate(appRoleMapper.selectTemplate(appRoleTemplate.getModeId()));
                 }
-                appRoleResDTO.setRole(appRole);
+                appRoleResDTO.setSendMode(appRole);
             }
             return appRoleResDTOList;
         } else {
-            log.error("服务列表查询失败");
             throw new CommonException(ErrorCode.SELECT_EMPTY);
-        }
-    }
-
-    @Override
-    public AppRoleResDTO selectAppRole(Integer appId) {
-        AppRoleResDTO appRoleResDTO = appRoleMapper.selectApp(appId);
-        if (!Objects.isNull(appRoleResDTO)) {
-            log.info("app {} 权限查询成功", appId);
-            appRoleResDTO.setRole(appRoleMapper.selectAppRole(appId));
-            return appRoleResDTO;
-        } else {
-            log.error("app {} 权限查询失败", appId);
-            throw new CommonException(ErrorCode.SELECT_ERROR);
         }
     }
 
@@ -77,11 +63,11 @@ public class AppRoleServiceImpl implements AppRoleService {
     }
 
     @Override
-    public List<Role> listRole() {
-        List<Role> roleList = appRoleMapper.listRole();
-        if (null != roleList && !roleList.isEmpty()) {
+    public List<SendMode> listSendMode() {
+        List<SendMode> sendModeList = appRoleMapper.listSendMode();
+        if (null != sendModeList && !sendModeList.isEmpty()) {
             log.info("权限列表获取成功");
-            return roleList;
+            return sendModeList;
         } else {
             log.error("权限列表获取失败");
             throw new CommonException(ErrorCode.SELECT_EMPTY);
@@ -89,12 +75,12 @@ public class AppRoleServiceImpl implements AppRoleService {
     }
 
     @Override
-    public void deleteRole(Integer roleId) {
-        if (Objects.isNull(roleId)) {
+    public void deleteSendMode(Integer modeId) {
+        if (Objects.isNull(modeId)) {
             log.error("权限ID返回为空");
             throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
         }
-        int result = appRoleMapper.deleteRole(roleId);
+        int result = appRoleMapper.deleteSendMode(modeId);
         if (result > 0) {
             log.info("权限删除成功");
         } else {
@@ -104,12 +90,12 @@ public class AppRoleServiceImpl implements AppRoleService {
     }
 
     @Override
-    public void updateRole(Role role) {
-        if (Objects.isNull(role)) {
+    public void updateSendMode(SendMode sendMode) {
+        if (Objects.isNull(sendMode)) {
             log.error("权限信息返回为空");
             throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
         }
-        int result = appRoleMapper.updateRole(role);
+        int result = appRoleMapper.updateSendMode(sendMode);
         if (result > 0) {
             log.info("权限修改成功");
         } else {
@@ -119,17 +105,17 @@ public class AppRoleServiceImpl implements AppRoleService {
     }
 
     @Override
-    public void insertRole(String roleName) {
-        if (StringUtils.isBlank(roleName)) {
+    public void insertSendMode(String modeName) {
+        if (StringUtils.isBlank(modeName)) {
             log.error("权限信息返回为空");
             throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
         }
-        Integer id = appRoleMapper.selectRoleId(roleName);
+        Integer id = appRoleMapper.selectSendModeId(modeName);
         if (Objects.nonNull(id)) {
             log.error("权限已存在");
             throw new CommonException(ErrorCode.DATA_EXIST);
         }
-        int result = appRoleMapper.insertRole(roleName);
+        int result = appRoleMapper.insertSendMode(modeName);
         if (result > 0) {
             log.info("添加权限成功");
         } else {

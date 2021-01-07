@@ -6,9 +6,9 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class AppRole extends Role {
+public class AppRole extends SendMode {
 
-    private Integer roleId;
+    private Integer modeId;
 
     private Integer appId;
 

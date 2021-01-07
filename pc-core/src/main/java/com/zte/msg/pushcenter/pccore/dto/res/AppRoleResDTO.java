@@ -11,5 +11,5 @@ public class AppRoleResDTO {
 
     private String appName;
 
-    private List<AppRole> role;
+    private List<AppRole> sendMode;
 }

@@ -4,8 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zte.msg.pushcenter.pccore.dto.res.AppRoleResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.TemplateResDTO;
 import com.zte.msg.pushcenter.pccore.entity.AppRole;
-import com.zte.msg.pushcenter.pccore.entity.Role;
-import com.zte.msg.pushcenter.pccore.entity.Template;
+import com.zte.msg.pushcenter.pccore.entity.SendMode;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -17,21 +16,19 @@ public interface AppRoleMapper extends BaseMapper<AppRoleResDTO> {
 
     List<AppRoleResDTO> listApp();
 
-    AppRoleResDTO selectApp(Integer appId);
+    List<TemplateResDTO> selectTemplate(Integer modeId);
 
-    List<TemplateResDTO> selectTemplate(Integer roleId);
-
-    List<AppRole> selectAppRole(Integer appId);
+    List<AppRole> selectAppMode(Integer appId);
 
     int editAppRole(List<AppRoleResDTO> appRoleResDTOList);
 
-    List<Role> listRole();
+    List<SendMode> listSendMode();
 
-    int deleteRole(Integer roleId);
+    int deleteSendMode(Integer modeId);
 
-    int updateRole(Role role);
+    int updateSendMode(SendMode sendMode);
 
-    int insertRole(String roleName);
+    int insertSendMode(String modeName);
 
-    Integer selectRoleId(String roleName);
+    Integer selectSendModeId(String modeName);
 }

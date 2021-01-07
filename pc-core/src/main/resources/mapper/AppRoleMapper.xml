@@ -5,31 +5,26 @@
         SELECT distinct ar.app_id,a.app_name FROM app_role as ar
         left join app as a on a.id=ar.app_id and a.flag=0 where ar.flag=0;
     </select>
-
-    <select id="selectApp" resultType="com.zte.msg.pushcenter.pccore.dto.res.AppRoleResDTO">
-        SELECT distinct ar.app_id,a.app_name,group_concat(r.role_name) as role FROM app_role as ar
-        left join app as a on a.id=ar.app_id and a.flag=0 where ar.flag=0 where ar.app_id=#{appId};
-    </select>
     
-    <select id="selectAppRole" resultType="com.zte.msg.pushcenter.pccore.entity.AppRole">
-        SELECT ar.role_id,r.role_name FROM app_role as ar
-        left join role as r on r.id=ar.role_id and r.flag=0 where ar.app_id=#{appId} and ar.flag=0;
+    <select id="selectAppMode" resultType="com.zte.msg.pushcenter.pccore.entity.AppRole">
+        SELECT distinct ar.mode_id,r.mode_name FROM app_role as ar
+        left join send_mode as r on r.id=ar.mode_id and r.flag=0 where ar.app_id=#{appId} and ar.flag=0;
     </select>
 
     <select id="selectTemplate" resultType="com.zte.msg.pushcenter.pccore.dto.res.TemplateResDTO">
         select ar.id as app_role_id,ar.template_id as id,t.type,t.name,t.description,ar.status from app_role as ar
-        left join template as t on ar.template_id=t.id and t.flag=0 where ar.role_id=#{roleId} and ar.flag=0
+        left join template as t on ar.template_id=t.id and t.flag=0 where ar.mode_id=#{modeId} and ar.flag=0
     </select>
 
     <insert id="editAppRole" parameterType="com.zte.msg.pushcenter.pccore.dto.res.AppRoleResDTO">
         <foreach collection="list" item="item" index="index" separator=";">
-            <foreach collection="item.role" index="index" item="role" separator=";">
-                <foreach collection="role.template" item="template" index="index" separator=";">
+            <foreach collection="item.sendMode" index="index" item="sendMode" separator=";">
+                <foreach collection="sendMode.template" item="template" index="index" separator=";">
                     insert into app_role
                     <trim prefix="(" suffix=")" suffixOverrides=",">
                         <if test="template.appRoleId!=null">id,</if>
                         <if test="item.appId!=null">app_id,</if>
-                        <if test="role.roleId!=null">role_id,</if>
+                        <if test="sendMode.modeId!=null">mode_id,</if>
                         <if test="template.id!=null">template_id,</if>
                         <if test="template.status!=null">status,</if>
                     </trim>
@@ -37,14 +32,14 @@
                     <trim prefix="(" suffix=")" suffixOverrides=",">
                         <if test="template.appRoleId!=null">#{template.appRoleId},</if>
                         <if test="item.appId!=null">#{item.appId},</if>
-                        <if test="role.roleId!=null">#{role.roleId},</if>
+                        <if test="sendMode.modeId!=null">#{sendMode.modeId},</if>
                         <if test="template.id!=null">#{template.id},</if>
                         <if test="template.status!=null">#{template.status},</if>
                     </trim>
                     ON DUPLICATE KEY UPDATE
                     <trim suffixOverrides=",">
                         <if test="item.appId!=null">app_id=#{item.appId},</if>
-                        <if test="role.roleId!=null">role_id=#{role.roleId},</if>
+                        <if test="sendMode.modeId!=null">mode_id=#{sendMode.modeId},</if>
                         <if test="template.id!=null">template_id=#{template.id},</if>
                         <if test="template.status!=null">status=#{template.status},</if>
                     </trim>
@@ -53,24 +48,24 @@
         </foreach>
     </insert>
 
-    <select id="listRole" resultType="com.zte.msg.pushcenter.pccore.entity.Role">
-        select * from role
+    <select id="listSendMode" resultType="com.zte.msg.pushcenter.pccore.entity.SendMode">
+        select * from send_mode
     </select>
 
-    <delete id="deleteRole" parameterType="java.lang.Integer">
-        delete from role where id=#{roleId};
-        delete from app_role where role_id=#{roleId};
+    <delete id="deleteSendMode" parameterType="java.lang.Integer">
+        update send_mode set flag=1 where id=#{modeId} and flag=0;
+        update app_role set flag=1 where mode_id=#{modeId} and flag=0;
     </delete>
 
-    <update id="updateRole" parameterType="com.zte.msg.pushcenter.pccore.entity.Role">
-        update role set role_name=#{roleName} where id=#{id}
+    <update id="updateSendMode" parameterType="com.zte.msg.pushcenter.pccore.entity.SendMode">
+        update send_mode set mode_name=#{modeName} where id=#{id}
     </update>
 
-    <insert id="insertRole" parameterType="java.lang.String">
-        insert into role(role_name) value(#{roleName});
+    <insert id="insertSendMode" parameterType="java.lang.String">
+        insert into send_mode(mode_name) value(#{modeName});
     </insert>
 
-    <select id="selectRoleId" resultType="java.lang.Integer" parameterType="java.lang.String">
-        select id from role where role_name=#{roleName}
+    <select id="selectSendModeId" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select id from send_mode where mode_name=#{modeName}
     </select>
 </mapper>
