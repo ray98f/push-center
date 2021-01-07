@@ -147,7 +147,12 @@ public enum ErrorCode {
      * 查询分页
      */
     PAGE_PARAM_EMPTY(32000110,"page.param.empty"),
-    PAGE_PARAM_ERROR(32000111,"page.param.error")
+    PAGE_PARAM_ERROR(32000111,"page.param.error"),
+
+    /**
+     * 其他
+     */
+    SECRET_RESET_ERROR(32100000,"secret.reset.error")
     ;
 
     private Integer code;

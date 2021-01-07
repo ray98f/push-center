@@ -35,7 +35,7 @@ public class AppServiceImpl implements AppService {
 
     @Override
     public PageInfo<App> listApp(AppListReqDTO appListReqDTO) {
-        if (Objects.isNull(appListReqDTO) || null == appListReqDTO.getPage() || null == appListReqDTO.getSize()){
+        if (Objects.isNull(appListReqDTO) || null == appListReqDTO.getPage() || null == appListReqDTO.getSize()) {
             List<App> appList = appMapper.listAllApp();
             if (null != appList && !appList.isEmpty()) {
                 log.info("服务列表获取成功");
@@ -107,4 +107,21 @@ public class AppServiceImpl implements AppService {
             throw new CommonException(ErrorCode.INSERT_ERROR);
         }
     }
+
+    @Override
+    public void resetKey(String userName, Integer appId) {
+        if (StringUtils.isBlank(userName) || Objects.isNull(appId)) {
+            log.error("服务Id为空");
+            throw new CommonException(ErrorCode.ENUM_VALUE_ERROR);
+        }
+        String appSecret = TokenUtil.getUUID() + TokenUtil.getRandomString(16);
+        int result = appMapper.resetKey(appSecret, userName, appId);
+        if (result > 0) {
+            log.info("重置密钥成功");
+        } else {
+            log.error("重置密钥失败");
+            throw new CommonException(ErrorCode.SECRET_RESET_ERROR);
+        }
+    }
+
 }

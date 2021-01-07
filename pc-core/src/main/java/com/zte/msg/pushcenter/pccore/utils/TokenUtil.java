@@ -7,7 +7,7 @@ import com.zte.msg.pushcenter.pccore.entity.User;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.enums.TokenStatus;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
-import com.zte.msg.pushcenter.pccore.service.TokenService;
+import com.zte.msg.pushcenter.pccore.service.SecretService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.apache.commons.codec.binary.Base64;
@@ -28,7 +28,7 @@ import java.util.UUID;
 public class TokenUtil {
 
     @Resource
-    private static TokenService tokenService;
+    private static SecretService secretService;
 
     private static final String SIMPLE_TOKEN_SECRET = "ZTE96952f774ce244fcb42af56062e519b3lFOGZ3YaWuCZS";
 
@@ -238,7 +238,7 @@ public class TokenUtil {
             } else {
                 result = TokenStatus.VALID;
             }
-            String role = tokenService.selectAppRole((String) claims.get("appKey"));
+            String role = secretService.selectAppRole((String) claims.get("appKey"));
             if (!role.equals((String) claims.get("role"))) {
                 result = TokenStatus.INVALID;
             }

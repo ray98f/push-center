@@ -49,4 +49,12 @@
     <select id="selectAppId" resultType="java.lang.Integer" parameterType="java.lang.String">
         select id from app where app_name=#{appName}
     </select>
+
+    <update id="resetKey">
+        update app
+        <set>
+            app_secret=#{appSecret},updated_by=#{userName}
+        </set>
+        where id=#{appId}
+    </update>
 </mapper>

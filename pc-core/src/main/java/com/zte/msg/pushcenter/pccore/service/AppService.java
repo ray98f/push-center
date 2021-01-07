@@ -23,4 +23,7 @@ public interface AppService {
     void updateApp(App app);
 
     void insertApp(App app);
+
+    void resetKey(String userName, Integer appId);
+
 }
