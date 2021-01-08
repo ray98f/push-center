@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.zte.msg.pushcenter.pccore.dto.SignView;
+import com.alibaba.fastjson.JSON;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsMessageReqDTO;
 import lombok.extern.slf4j.Slf4j;
 
@@ -60,18 +60,28 @@ public class ObjectUtils {
     }
 
     /**
-     * 获取对象的所有属性值，返回一个对象数组
+     * 获取对象的所有属性值凭借字符串
      */
     public static String getFiledValues(Object o) {
         String[] fieldNames = getFiledName(o);
         StringBuilder stringBuilder = new StringBuilder();
         for (String fieldName : fieldNames) {
-            stringBuilder.append(getFieldValueByName(fieldName, o));
+            System.out.println(fieldName);
+            stringBuilder.append(null == getFieldValueByName(fieldName, o) ? "" : getFieldValueByName(fieldName, o));
         }
         return stringBuilder.toString();
     }
 
     public static void main(String[] args) {
+        SmsMessageReqDTO smsMessageReqDTO = new SmsMessageReqDTO();
+        Map<String, String> map = new HashMap<>();
+        map.put("aaa","chentong");
+        map.put("bbb","fengruipeng");
+        map.put("ccc","chenshengpu");
+        smsMessageReqDTO.setVars(map);
+        smsMessageReqDTO.setAppId(12);
+        smsMessageReqDTO.setTemplateId(3L);
+        System.out.println(JSON.toJSONString(smsMessageReqDTO));
 //        SignView signView = new SignView(new SmsMessageReqDTO(), TokenUtil.getTimestamp(),"");
 //        System.out.println(signView.toString());
     }

@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
  */
 @ApiModel
 @Data
-public class MailMessageReqDTO {
+public class MailMessageReqDTO extends PushReqDTO{
 
     /**
      * 收件人地址
