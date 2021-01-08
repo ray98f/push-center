@@ -2,6 +2,7 @@ package com.zte.msg.pushcenter.pccore.service;
 
 
 import com.zte.msg.pushcenter.pccore.dto.OpenApiTokenInfo;
+import com.zte.msg.pushcenter.pccore.dto.res.SecretKeyResDTO;
 import com.zte.msg.pushcenter.pccore.entity.SecretKey;
 
 import java.util.List;
@@ -15,4 +16,8 @@ import java.util.List;
  */
 public interface SecretService {
     String selectAppRole(String appKey);
+
+    String selectAppSecret(Integer appId);
+
+    SecretKeyResDTO selectSecretKey(Integer appId);
 }

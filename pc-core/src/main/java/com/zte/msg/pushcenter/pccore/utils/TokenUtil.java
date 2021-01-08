@@ -274,7 +274,7 @@ public class TokenUtil {
         long nowMillis = System.currentTimeMillis();
         Date now = new Date(nowMillis);
         JwtBuilder builder = Jwts.builder()
-                .setId(item.getUserName())
+                .setId(String.valueOf(item.getId()))
                 .setSubject(item.getUserName())
                 .claim("userRealName", item.getUserRealName())
                 .setIssuedAt(now)
@@ -361,6 +361,11 @@ public class TokenUtil {
     }
 
     public static void main(String[] args) throws Exception {
+        User user = new User();
+        user.setId(1L);
+        user.setUserName("frp");
+        user.setUserRealName("冯锐鹏");
+        System.out.println(createSimpleToken(user, 999999999));
 //        String str = "{'appKey':'zte16087894621166JEad','appSecret':'eab79b7b882e434dbcaa48d2e35820a3OmZrHEaZegbtfdKa'," +
 //                "'token':'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJzZHNkc2RzIiwic3ViIjoiUmF5bWFuIiwiYXBwS2V5IjoienRlMTYwODc4OTQ2MjExNjZKRWFkIiwiYXBwU2VjcmV0IjoiZWFiNzliN2I4ODJlNDM0ZGJjYWE0OGQyZTM1ODIwYTNPbVpySEVhWmVnYnRmZEthIiwicm9sZSI6IkFBQTogdHJ1ZSwgQkJCOiBmYWxzZSIsImlhdCI6MTYwODg1ODM2MywiZXhwIjoxNjA4ODY1NTYzfQ.06NepZ0f5zUd0EpO6oWfL7a3ern4eW5DWZlf7xi1dPA'}";
 //        String s = "25MQjSMQzL83qfVq8my3hSjDfaA+6p4CHm4FceEFzM9mGN2r4C8/RcNg0zdiLbfBFmhaUBsbmgCtJYPqtSfaEB+aDpmDtM/N3dRNT+i0fsZisU+rEb7PcMl/89YgsusMEGogJQjfwHHtjj3x/Ym9g1zXtlKt7jmg58akTNQyXF3IjuNDEs1TMjEKAsMY1RuFbggmljj90L73yXwZ1vT5ygTgUclCJoFy1bfpQ/V7WrtPXlo9AErIUsB4ic38MkAR3fpiIkCs4lHIVCFcIfnvGwM/XYW/H2frSUuCmhNuU4tAfUhE2VSEf9FMIglZyaw490HHr75JHaAtoMWRP3FciY8J9i2uFIT70SKAd6IMAekXWweZXPATtILHiHd+oBN9Neoy69wbOufkmDPcv3sSjeEb0kWBwuPRze8Zx0mfl3X/CYusCMofymx9dhbdxDsVBb9ypZnPEYE9QIIz+aPZdjneWohLLfAFaWLAFpigacIZXTUJtD6xQpzh8D0vAQ5a";
