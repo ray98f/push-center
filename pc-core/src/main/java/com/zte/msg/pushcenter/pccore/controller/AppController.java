@@ -3,8 +3,10 @@ package com.zte.msg.pushcenter.pccore.controller;
 import com.zte.msg.pushcenter.pccore.dto.DataResponse;
 import com.zte.msg.pushcenter.pccore.dto.PageResponse;
 import com.zte.msg.pushcenter.pccore.dto.req.AppListReqDTO;
+import com.zte.msg.pushcenter.pccore.dto.res.SecretKeyResDTO;
 import com.zte.msg.pushcenter.pccore.entity.App;
 import com.zte.msg.pushcenter.pccore.service.AppService;
+import com.zte.msg.pushcenter.pccore.service.SecretService;
 import com.zte.msg.pushcenter.pccore.utils.TokenUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Map;
 
 /**
  * description:
@@ -36,7 +39,7 @@ public class AppController {
     private AppService appService;
 
     @Resource
-    private HttpServletRequest request;
+    private SecretService secretService;
 
     /**
      * 服务列表获取
@@ -104,6 +107,17 @@ public class AppController {
         String userName = TokenUtil.getCurrentUserName();
         appService.resetKey(userName, appId);
         return DataResponse.success();
+    }
+
+    /**
+     * 根据应用Id获取应用密钥
+     *
+     * @return Map<String, Object>
+     */
+    @GetMapping("/app/secret")
+    @ApiOperation(value = "根据应用Id获取应用密钥")
+    public DataResponse<SecretKeyResDTO> selectAppSecret(@Valid @RequestParam @NotNull(message = "32000006") Integer appId){
+        return DataResponse.of(secretService.selectSecretKey(appId));
     }
 
 }
