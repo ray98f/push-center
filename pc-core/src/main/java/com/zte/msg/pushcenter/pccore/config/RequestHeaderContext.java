@@ -43,6 +43,10 @@ public class RequestHeaderContext {
             this.user = user;
             return this;
         }
+
+        public RequestHeaderContext build() {
+            return new RequestHeaderContext(this);
+        }
     }
 
 }

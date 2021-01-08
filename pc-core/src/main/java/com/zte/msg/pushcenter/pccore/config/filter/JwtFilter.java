@@ -48,9 +48,8 @@ public class JwtFilter implements Filter {
             switch (Objects.requireNonNull(tokenStatus)) {
                 //有效
                 case VALID:
-
                     SimpleTokenInfo simpleTokenInfo = TokenUtil.getSimpleTokenInfo(token);
-                    new RequestHeaderContext.RequestHeaderContextBuild().user(simpleTokenInfo);
+                    new RequestHeaderContext.RequestHeaderContextBuild().user(simpleTokenInfo).build();
                     httpRequest.setAttribute("tokenInfo", simpleTokenInfo);
                     chain.doFilter(httpRequest, httpResponse);
                     break;
