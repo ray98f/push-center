@@ -29,6 +29,8 @@ public class CodeJavac {
 
     private ScriptFileManager scriptFileManager;
 
+//    private static Map<String, PcClassLoader> classLoaderMap = new HashMap<>();
+
     @PostConstruct
     public void init() {
 
@@ -39,7 +41,7 @@ public class CodeJavac {
         }};
         String projectPath = PathUtil.getAppHomePath();
         System.out.println("projectPath : " + projectPath);
-        String classPath = String.format("%s/pc-script/target/pc-script-1.0.0.jar", projectPath);
+        String classPath = String.format("%s/pc-script/target/pc-script-1.0.0-jar-with-dependencies.jar", projectPath);
         List<String> options = new ArrayList<>();
         options.add("-classpath");
         options.add(classPath);
@@ -60,10 +62,15 @@ public class CodeJavac {
     }
 
     public AbstractScript getScriptClass(String scriptTag) {
+
+//        if (!classLoaderMap.containsKey(scriptTag)) {
         final Map<String, byte[]> allBuffers = scriptFileManager.getAllBuffers();
         final byte[] catBytes = allBuffers.get(scriptTag);
-        PcClassLoader pcClassLoader = new PcClassLoader(scriptTag, catBytes);
-        Class<?> catClass = pcClassLoader.findClass(scriptTag);
+
+//        PcClassLoader pcClassLoader = new PcClassLoader(scriptTag, catBytes);
+//        classLoaderMap.put(scriptTag, pcClassLoader);
+//        }
+        Class<?> catClass = PcClassLoader.getInstance().findClass(scriptTag, catBytes);
         Object obj = null;
         try {
             obj = catClass.newInstance();
