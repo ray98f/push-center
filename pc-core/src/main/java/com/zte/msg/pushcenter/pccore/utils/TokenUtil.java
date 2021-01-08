@@ -1,6 +1,7 @@
 package com.zte.msg.pushcenter.pccore.utils;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zte.msg.pushcenter.pccore.config.RequestHeaderContext;
 import com.zte.msg.pushcenter.pccore.dto.OpenApiTokenInfo;
 import com.zte.msg.pushcenter.pccore.dto.SimpleTokenInfo;
 import com.zte.msg.pushcenter.pccore.entity.User;
@@ -311,10 +312,6 @@ public class TokenUtil {
         );
     }
 
-    public static String getUserName() {
-        return getSimpleTokenInfo().getUserName();
-    }
-
     /**
      * Simple
      * 获取开放平台登录信息
@@ -334,6 +331,10 @@ public class TokenUtil {
             throw new CommonException(ErrorCode.AUTHORIZATION_CHECK_FAIL);
         }
         return simpleTokenInfo;
+    }
+
+    public static String getCurrentUserName() {
+        return RequestHeaderContext.getInstance().getUser().getUserName();
     }
 
     /**

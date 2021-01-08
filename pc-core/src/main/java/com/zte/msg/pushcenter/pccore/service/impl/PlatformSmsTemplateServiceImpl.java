@@ -69,9 +69,11 @@ public class PlatformSmsTemplateServiceImpl extends ServiceImpl<PlatformSmsTempl
 
     @Override
     public List<ProviderSmsTemplateResDTO> getProviderSmsTemplatesByProviderId(Long providerId) {
-
-        List<PlatformSmsTemplate> platformSmsTemplates = getBaseMapper().selectList(new QueryWrapper<PlatformSmsTemplate>()
-                .eq("provider_id", providerId));
+        QueryWrapper<PlatformSmsTemplate> wrapper = new QueryWrapper<>();
+        if (Objects.nonNull(providerId)) {
+            wrapper.eq("provider_id", providerId);
+        }
+        List<PlatformSmsTemplate> platformSmsTemplates = getBaseMapper().selectList(wrapper);
 
         List<ProviderSmsTemplateResDTO> list = new ArrayList<>(platformSmsTemplates.size());
         platformSmsTemplates.forEach(o -> {

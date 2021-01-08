@@ -140,9 +140,12 @@ public class TemplateController {
         return DataResponse.success();
     }
 
-    @GetMapping(value = "/provider/{providerId}")
-    @ApiOperation(value = "【消息平台配置】- 短信模版配置 - 获取消息平台短信模版列表（根据消息平台id）")
-    public DataResponse<List<ProviderSmsTemplateResDTO>> getProviderSmsTemplatesByProviderId(@PathVariable Long providerId) {
+    @GetMapping(value = "/provider")
+    @ApiOperation(value = "【消息平台配置】- 短信模版配置 - 获取消息平台短信模版列表")
+    public DataResponse<List<ProviderSmsTemplateResDTO>> getProviderSmsTemplatesByProviderId(@RequestParam(required = false)
+                                                                                             @ApiParam(value = "第三方消息平台id，不传的话查询全部") Long providerId) {
         return DataResponse.of(platformSmsTemplateService.getProviderSmsTemplatesByProviderId(providerId));
     }
+
+
 }

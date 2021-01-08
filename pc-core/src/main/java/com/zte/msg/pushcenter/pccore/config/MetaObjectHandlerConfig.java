@@ -25,9 +25,9 @@ public class MetaObjectHandlerConfig implements MetaObjectHandler {
         //创建时间默认当前时间
         setFieldValByName("createdAt", Instant.now(), metaObject);
         // TODO: 2021/1/6
-        setFieldValByName("createdBy", TokenUtil.getUserName(), metaObject);
+        setFieldValByName("createdBy", TokenUtil.getCurrentUserName(), metaObject);
 
-        setFieldValByName("updatedBy", TokenUtil.getUserName(), metaObject);
+        setFieldValByName("updatedBy", TokenUtil.getCurrentUserName(), metaObject);
         //更新时间默认当前时间
         setFieldValByName("updatedAt", Instant.now(), metaObject);
     }
@@ -35,7 +35,7 @@ public class MetaObjectHandlerConfig implements MetaObjectHandler {
     @Override
     public void updateFill(MetaObject metaObject) {
         // TODO: 2021/1/6
-        setFieldValByName("updateBy", TokenUtil.getUserName(), metaObject);
+        setFieldValByName("updateBy", TokenUtil.getCurrentUserName(), metaObject);
 
         setFieldValByName("updatedAt", Instant.now(), metaObject);
     }

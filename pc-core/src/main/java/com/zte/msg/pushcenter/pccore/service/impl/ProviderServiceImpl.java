@@ -9,6 +9,7 @@ import com.zte.msg.pushcenter.pccore.dto.res.ProviderResDTO;
 import com.zte.msg.pushcenter.pccore.entity.Provider;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
+import com.zte.msg.pushcenter.pccore.mapper.PlatformSmsTemplateMapper;
 import com.zte.msg.pushcenter.pccore.mapper.ProviderMapper;
 import com.zte.msg.pushcenter.pccore.service.ProviderService;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,6 +35,8 @@ import java.util.Objects;
 @Transactional(rollbackFor = Exception.class)
 public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> implements ProviderService {
 
+    @Resource
+    private PlatformSmsTemplateMapper platformSmsTemplateMapper;
 
     @Override
     public void addProvider(ProviderReqDTO providerReqDTO) {
@@ -65,6 +69,9 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
 
     @Override
     public void deleteProvider(Long[] providerIds) {
+
+        // TODO: 2021/1/7  删除时 需要判断provider下面是否有模版
+
         getBaseMapper().deleteBatchIds(Arrays.asList(providerIds));
     }
 
