@@ -1,5 +1,6 @@
 package com.zte.msg.pushcenter.pccore.config.filter;
 
+import com.zte.msg.pushcenter.pccore.config.RequestHeaderContext;
 import com.zte.msg.pushcenter.pccore.dto.SimpleTokenInfo;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.enums.TokenStatus;
@@ -47,7 +48,9 @@ public class JwtFilter implements Filter {
             switch (Objects.requireNonNull(tokenStatus)) {
                 //有效
                 case VALID:
-                    SimpleTokenInfo simpleTokenInfo = TokenUtil.getSimpleTokenInfo();
+
+                    SimpleTokenInfo simpleTokenInfo = TokenUtil.getSimpleTokenInfo(token);
+                    new RequestHeaderContext.RequestHeaderContextBuild().user(simpleTokenInfo);
                     httpRequest.setAttribute("tokenInfo", simpleTokenInfo);
                     chain.doFilter(httpRequest, httpResponse);
                     break;
@@ -55,7 +58,7 @@ public class JwtFilter implements Filter {
                 case EXPIRED:
                     request.setAttribute("filter.error", new CommonException(ErrorCode.AUTHORIZATION_IS_OVERDUE));
                     request.getRequestDispatcher("/error/exthrow").forward(request, response);
-                //无效
+                    //无效
                 default:
                     request.setAttribute("filter.error", new CommonException(ErrorCode.AUTHORIZATION_INVALID));
                     request.getRequestDispatcher("/error/exthrow").forward(request, response);

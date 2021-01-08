@@ -1,7 +1,6 @@
 package com.zte.msg.pushcenter.pccore.config;
 
-import com.alibaba.fastjson.JSONObject;
-import com.zte.msg.pushcenter.pccore.entity.User;
+import com.zte.msg.pushcenter.pccore.dto.SimpleTokenInfo;
 import lombok.Data;
 
 /**
@@ -16,7 +15,7 @@ public class RequestHeaderContext {
 
     private static final ThreadLocal<RequestHeaderContext> REQUEST_HEADER_CONTEXT_THREAD_LOCAL = new ThreadLocal<>();
 
-    private User user;
+    private SimpleTokenInfo user;
 
     public static RequestHeaderContext getInstance() {
         return REQUEST_HEADER_CONTEXT_THREAD_LOCAL.get();
@@ -31,22 +30,18 @@ public class RequestHeaderContext {
     }
 
     private RequestHeaderContext(RequestHeaderContextBuild requestHeaderContextBuild) {
-        this.user = JSONObject.parseObject(requestHeaderContextBuild.user, User.class);
+        this.user = requestHeaderContextBuild.user;
         setContext(this);
     }
 
     @Data
     public static class RequestHeaderContextBuild {
 
-        private String user;
+        private SimpleTokenInfo user;
 
-        public RequestHeaderContextBuild user(String user) {
+        public RequestHeaderContextBuild user(SimpleTokenInfo user) {
             this.user = user;
             return this;
-        }
-
-        public RequestHeaderContext build() {
-            return new RequestHeaderContext(this);
         }
     }
 

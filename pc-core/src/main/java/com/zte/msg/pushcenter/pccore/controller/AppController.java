@@ -2,7 +2,6 @@ package com.zte.msg.pushcenter.pccore.controller;
 
 import com.zte.msg.pushcenter.pccore.dto.DataResponse;
 import com.zte.msg.pushcenter.pccore.dto.PageResponse;
-import com.zte.msg.pushcenter.pccore.dto.SimpleTokenInfo;
 import com.zte.msg.pushcenter.pccore.dto.req.AppListReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.App;
 import com.zte.msg.pushcenter.pccore.service.AppService;
@@ -46,7 +45,7 @@ public class AppController {
      */
     @PostMapping("/app/list")
     @ApiOperation(value = "服务列表获取")
-    public PageResponse<App> listApp(@Valid @RequestBody AppListReqDTO appListReqDTO){
+    public PageResponse<App> listApp(@Valid @RequestBody AppListReqDTO appListReqDTO) {
         return PageResponse.of(appService.listApp(appListReqDTO));
     }
 
@@ -58,8 +57,8 @@ public class AppController {
      */
     @DeleteMapping("/app")
     @ApiOperation(value = "服务删除")
-    public <T> DataResponse<T> deleteApp(@Valid @RequestBody List<Integer> appIds){
-        String userName = TokenUtil.getSimpleTokenInfo().getUserName();
+    public <T> DataResponse<T> deleteApp(@Valid @RequestBody List<Integer> appIds) {
+        String userName = TokenUtil.getCurrentUserName();
         appService.deleteApp(appIds, userName);
         return DataResponse.success();
     }
@@ -72,8 +71,8 @@ public class AppController {
      */
     @PostMapping("/app")
     @ApiOperation(value = "服务修改")
-    public <T> DataResponse<T> updateApp(@RequestBody @Valid App app){
-        app.setUpdatedBy(TokenUtil.getSimpleTokenInfo().getUserName());
+    public <T> DataResponse<T> updateApp(@RequestBody @Valid App app) {
+        app.setUpdatedBy(TokenUtil.getCurrentUserName());
         appService.updateApp(app);
         return DataResponse.success();
     }
@@ -86,8 +85,8 @@ public class AppController {
      */
     @PutMapping("/app")
     @ApiOperation(value = "新增服务")
-    public <T> DataResponse<T> insertApp(@Valid @RequestBody App app){
-        String userName = TokenUtil.getSimpleTokenInfo().getUserName();
+    public <T> DataResponse<T> insertApp(@Valid @RequestBody App app) {
+        String userName = TokenUtil.getCurrentUserName();
         app.setCreatedBy(userName);
         app.setUpdatedBy(userName);
         appService.insertApp(app);
@@ -96,13 +95,14 @@ public class AppController {
 
     /**
      * 重置密钥
+     *
      * @return <T>
      */
     @PostMapping("/app/reset")
     @ApiOperation(value = "重置密钥")
-    public <T> DataResponse<T> resetKey(@Valid @RequestParam @NotNull(message = "32000006") Integer appId){
-        String userName = TokenUtil.getSimpleTokenInfo().getUserName();
-        appService.resetKey(userName,appId);
+    public <T> DataResponse<T> resetKey(@Valid @RequestParam @NotNull(message = "32000006") Integer appId) {
+        String userName = TokenUtil.getCurrentUserName();
+        appService.resetKey(userName, appId);
         return DataResponse.success();
     }
 
