@@ -262,7 +262,8 @@ public class TokenUtil {
      * @throws Exception Token校验失败
      */
     public static String createSimpleToken(User item) throws Exception {
-        return createSimpleToken(item, 60 * 60 * 2 * 1000); //默认token有效时间为2小时
+        //默认token有效时间为2小时
+        return createSimpleToken(item, 60 * 60 * 2 * 1000);
     }
 
     /**
