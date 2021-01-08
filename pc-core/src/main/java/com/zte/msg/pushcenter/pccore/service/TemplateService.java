@@ -8,6 +8,7 @@ import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateRelateProviderUpdateReqD
 import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.ProviderSmsTemplateResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.SmsTemplateDetailResDTO;
+import com.zte.msg.pushcenter.pccore.entity.SmsTemplate;
 
 import java.util.List;
 
@@ -59,5 +60,12 @@ public interface TemplateService {
                                                     Long templateId,
                                                     Integer status,
                                                     PageReqDTO pageReqDTO);
+
+    /**
+     * 全量查询模版列表
+     *
+     * @return
+     */
+    List<SmsTemplate> getTemplateList();
 
 }

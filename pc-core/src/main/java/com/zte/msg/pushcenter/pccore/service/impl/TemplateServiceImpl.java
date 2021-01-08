@@ -194,11 +194,13 @@ public class TemplateServiceImpl implements TemplateService {
             }
 
         });
-
-        Page<SmsTemplateDetailResDTO> res = new Page<>();
-        BeanUtils.copyProperties(smsTemplatePage, res);
         List<SmsTemplateDetailResDTO> list = new ArrayList<>(smsTemplateMap.values());
-        return res.setRecords(list);
+        return pageRes.setRecords(list);
+    }
+
+    @Override
+    public List<SmsTemplate> getTemplateList() {
+        return smsTemplateMapper.selectList(new QueryWrapper<>());
     }
 
 

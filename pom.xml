@@ -35,20 +35,30 @@
                 <artifactId>pc-core</artifactId>
                 <version>1.0.0</version>
             </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>1.2.75</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
-    <build>
-        <plugins>
-            <!-- maven 编译插件 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+<!--    <build>-->
+<!--        <plugins>-->
+<!--            &lt;!&ndash; maven 编译插件 &ndash;&gt;-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-compiler-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <source>${java.version}</source>-->
+<!--                    <target>${java.version}</target>-->
+<!--                    <executable>-->
+<!--                        -->
+<!--                    </executable>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
+<!--    </build>-->
 
 </project>
