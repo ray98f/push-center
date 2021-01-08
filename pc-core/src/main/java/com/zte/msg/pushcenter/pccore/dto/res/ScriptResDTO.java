@@ -1,6 +1,5 @@
 package com.zte.msg.pushcenter.pccore.dto.res;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -20,7 +19,6 @@ public class ScriptResDTO {
 
     private Long id;
 
-    @JsonProperty(value = "script_tag")
     @ApiModelProperty(value = "脚本唯一标识")
     private String scriptTag;
 

@@ -123,7 +123,7 @@ public class TemplateServiceImpl implements TemplateService {
             providerSmsTemplateResDTO.setContent(o.getContent());
             providerSmsTemplateResDTO.setSign(o.getSign());
             providerSmsTemplateResDTO.setRelationId(o.getRelationId());
-            providerSmsTemplateResDTO.setPTemplateId(o.getPTemplateId());
+            providerSmsTemplateResDTO.setId(o.getPTemplateId());
             providerSmsTemplateResDTO.setUpdatedAt(o.getUpdatedAt());
             providerSmsTemplateResDTO.setUpdatedBy(o.getUpdatedBy());
             resDTOList.add(providerSmsTemplateResDTO);

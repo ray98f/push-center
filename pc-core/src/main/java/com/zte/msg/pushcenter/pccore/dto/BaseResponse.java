@@ -1,6 +1,5 @@
 package com.zte.msg.pushcenter.pccore.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
@@ -25,7 +24,6 @@ public class BaseResponse implements Serializable {
 
     private String message;
 
-    @JsonProperty(value = "refer_info")
     private Object referInfo;
 
     public BaseResponse(AppStatus status) {

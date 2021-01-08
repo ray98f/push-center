@@ -1,6 +1,5 @@
 package com.zte.msg.pushcenter.pccore.dto.res;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.zte.msg.pushcenter.pccore.utils.AesUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -24,25 +23,20 @@ public class SmsConfigDetailResDTO {
     private String name;
 
     @ApiModelProperty(value = "基础配置表id")
-    @JsonProperty(value = "provider_id")
     private Long providerId;
 
     @ApiModelProperty(value = "描述")
     private String description;
 
     @ApiModelProperty(value = "第三方短信服务配置的appId")
-    @JsonProperty(value = "app_id")
     private String sAppId;
 
     @ApiModelProperty(value = "第三方短信服务配置的secretId")
-    @JsonProperty(value = "secret_id")
     private String secretId;
 
     @ApiModelProperty(value = "第三方短信服务配置的secretKey，需加密")
-    @JsonProperty(value = "secret_key")
     private String secretKey;
 
-    @JsonProperty(value = "provider_name")
     @ApiModelProperty(value = "供应商")
     private String providerName;
 

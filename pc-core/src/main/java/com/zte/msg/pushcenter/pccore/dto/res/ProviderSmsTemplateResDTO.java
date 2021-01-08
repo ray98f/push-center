@@ -1,6 +1,5 @@
 package com.zte.msg.pushcenter.pccore.dto.res;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -18,12 +17,11 @@ import java.sql.Timestamp;
 @ApiModel
 public class ProviderSmsTemplateResDTO {
 
-    @ApiModelProperty(value = "关联关系id")
-    @JsonProperty
-    private Long relationId;
-
     @ApiModelProperty(value = "第三方模版id")
-    private Long pTemplateId;
+    private Long id;
+
+    @ApiModelProperty(value = "关联关系id")
+    private Long relationId;
 
     @ApiModelProperty(value = "供应商短信模版编号")
     private String code;

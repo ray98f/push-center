@@ -31,20 +31,16 @@ public class SmsConfigReqDTO {
     private String description;
 
     @ApiModelProperty(value = "供应商id")
-    @JsonProperty(value = "provider_id")
     @NotNull(message = "32000006")
     private Long providerId;
 
     @ApiModelProperty(value = "第三方短信服务配置的appId")
-    @JsonProperty(value = "s_app_id")
     private String sAppId;
 
     @ApiModelProperty(value = "第三方短信服务配置的secretId")
-    @JsonProperty(value = "secret_id")
     private String secretId;
 
     @ApiModelProperty(value = "第三方短信服务配置的secretKey")
-    @JsonProperty(value = "secret_key")
     @NotNull(message = "32000006")
     private String secretKey;
 

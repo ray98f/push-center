@@ -1,6 +1,5 @@
 package com.zte.msg.pushcenter.pccore.dto.req;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -24,12 +23,10 @@ public class SmsMessageReqDTO extends PushReqDTO {
     @NotNull(message = "32000006")
     @Pattern(regexp = "\\s*|(((13[0-9])|(14[5,7,9])|(15([0-3]|[5-9]))|(166)|(17[0,1,3,5,6,7,8])|(18[0-9])|(19[8|9]))\\d{8}$)",
             message = "手机号码不合法")
-    @JsonProperty(value = "phone_num")
     private String[] phoneNum;
 
     @ApiModelProperty(value = "模版id", required = true)
     @NotNull(message = "32000006")
-    @JsonProperty(value = "template_id")
     private Long templateId;
 
     @ApiModelProperty(value = "模版变量键值对")

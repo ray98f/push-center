@@ -79,7 +79,7 @@ public class PlatformSmsTemplateServiceImpl extends ServiceImpl<PlatformSmsTempl
         platformSmsTemplates.forEach(o -> {
             ProviderSmsTemplateResDTO providerSmsTemplateResDTO = new ProviderSmsTemplateResDTO();
             BeanUtils.copyProperties(o, providerSmsTemplateResDTO);
-            providerSmsTemplateResDTO.setPTemplateId(o.getId());
+            providerSmsTemplateResDTO.setId(o.getId());
             list.add(providerSmsTemplateResDTO);
         });
 
