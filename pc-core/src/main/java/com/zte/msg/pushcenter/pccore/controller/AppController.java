@@ -98,7 +98,7 @@ public class AppController {
      *
      * @return <T>
      */
-    @PostMapping("/app/reset")
+    @GetMapping("/app/reset")
     @ApiOperation(value = "重置密钥")
     public <T> DataResponse<T> resetKey(@Valid @RequestParam @NotNull(message = "32000006") Integer appId) {
         String userName = TokenUtil.getCurrentUserName();
