@@ -3,7 +3,7 @@ package com.zte.msg.pushcenter.pccore.core.javac;
 import com.zte.msg.pushcenter.pccore.service.ScriptService;
 import com.zte.msg.pushcenter.pccore.utils.JavaCodecUtils;
 import com.zte.msg.pushcenter.pccore.utils.PathUtil;
-import com.zte.msg.pushcenter.pcscript.Script;
+import com.zte.msg.pushcenter.pcscript.inte.AbstractScript;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -59,7 +59,7 @@ public class CodeJavac {
         }
     }
 
-    public Script getScriptClass(String scriptTag) {
+    public AbstractScript getScriptClass(String scriptTag) {
         final Map<String, byte[]> allBuffers = scriptFileManager.getAllBuffers();
         final byte[] catBytes = allBuffers.get(scriptTag);
         PcClassLoader pcClassLoader = new PcClassLoader(scriptTag, catBytes);
@@ -70,7 +70,7 @@ public class CodeJavac {
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
-        return (Script) obj;
+        return (AbstractScript) obj;
     }
 
 }
