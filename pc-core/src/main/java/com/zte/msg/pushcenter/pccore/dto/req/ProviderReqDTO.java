@@ -34,6 +34,4 @@ public class ProviderReqDTO {
     @ApiModelProperty(value = "配置信息Json字符串")
     private String config;
 
-
-
 }

@@ -10,7 +10,7 @@ import lombok.Data;
  * @date 2021/1/6 14:34
  */
 @Data
-public class PlatformSmsTemplate extends BaseEntity {
+public class ProviderSmsTemplate extends BaseEntity {
 
     private String code;
 

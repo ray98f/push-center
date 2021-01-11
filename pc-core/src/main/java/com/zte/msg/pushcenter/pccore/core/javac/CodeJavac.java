@@ -33,7 +33,6 @@ public class CodeJavac {
     public static Map<String, byte[]> allBuffers;
 
     private PcClassLoader pcClassLoader;
-
     private JavaCompiler javaCompiler;
     private ScriptFileManager scriptFileManager;
     private StringWriter errorStringWriter;
@@ -41,7 +40,6 @@ public class CodeJavac {
 
     @PostConstruct
     public void init() {
-
         List<ScriptModel> scripts = providerService.getScripts();
         String projectPath = PathUtil.getAppHomePath();
         String classPath = String.format("%s/pc-script/target/pc-script-1.0.0-jar-with-dependencies.jar", projectPath);
@@ -52,11 +50,11 @@ public class CodeJavac {
         StandardJavaFileManager standardJavaFileManager = javaCompiler.getStandardFileManager(null, null, null);
         scriptFileManager = new ScriptFileManager(standardJavaFileManager);
         errorStringWriter = new StringWriter();
-        scripts.forEach(this::flush);
+        scripts.forEach(this::scriptFlush);
         allBuffers = scriptFileManager.getAllBuffers();
     }
 
-    public void flush(ScriptModel o) {
+    public void scriptFlush(ScriptModel o) {
 
         Iterable<? extends JavaFileObject> compilationUnits = new ArrayList<JavaFileObject>() {{
             add(new JavaSourceFromString(o.getScriptTag(), JavaCodecUtils.replaceCodeJavaName(o.getScriptContext(), o.getScriptTag())));

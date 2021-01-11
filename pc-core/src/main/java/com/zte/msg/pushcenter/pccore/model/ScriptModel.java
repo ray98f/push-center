@@ -16,4 +16,8 @@ public class ScriptModel {
 
     private String scriptContext;
 
+    public ScriptModel(String scriptTag, String scriptContext) {
+        this.scriptTag = scriptTag;
+        this.scriptContext = scriptContext;
+    }
 }

@@ -77,8 +77,11 @@ public class TemplateServiceImpl implements TemplateService {
         if (Objects.isNull(smsTemplateMapper.selectById(templateId))) {
             throw new CommonException(ErrorCode.SMS_TEMPLATE_NOT_EXIST);
         }
-        if (Objects.isNull(providerSmsTemplateRelateMapper.selectById(reqDTO.getPTemplateId()))) {
-            throw new CommonException(ErrorCode.SMS_CONFIG_NAME_EXIST);
+        if (Objects.nonNull(smsTemplateRelationMapper.selectOne(new QueryWrapper<SmsTemplateRelation>()
+                .eq("sms_template_id", templateId)
+                .eq("provider_template_id", reqDTO.getPTemplateId())))) {
+
+            throw new CommonException(ErrorCode.SMS_TEMPLATE_RELATION_ALREADY_EXIST);
         }
         SmsTemplateRelation relation = new SmsTemplateRelation();
         relation.setPriority(reqDTO.getPriority());
@@ -179,13 +182,15 @@ public class TemplateServiceImpl implements TemplateService {
             }
             if (null != o.getRelationId()) {
                 ProviderSmsTemplateResDTO providerSmsTemplateResDTO = new ProviderSmsTemplateResDTO();
+                providerSmsTemplateResDTO.setId(o.getPTemplateId());
                 providerSmsTemplateResDTO.setSign(o.getSign());
                 providerSmsTemplateResDTO.setContent(o.getPContent());
                 providerSmsTemplateResDTO.setCode(o.getCode());
                 providerSmsTemplateResDTO.setPriority(o.getPriority());
                 providerSmsTemplateResDTO.setRelationId(o.getRelationId());
                 providerSmsTemplateResDTO.setStatus(o.getPStatus());
-
+                providerSmsTemplateResDTO.setUpdatedBy(o.getUpdatedBy());
+                providerSmsTemplateResDTO.setUpdatedAt(o.getUpdatedAt());
                 if (StringUtils.isNotBlank(smsTemplateDetailResDTO.getProviders())
                         && StringUtils.isNotBlank(o.getProviderName())) {
                     smsTemplateDetailResDTO.setProviders(StringUtils.joinWith(",", smsTemplateDetailResDTO.getProviders(), o.getProviderName()));

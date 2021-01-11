@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+
 /**
  * description:
  *
@@ -14,8 +15,6 @@ import lombok.Data;
 @Data
 @ApiModel
 public class SmsTemplateRelateProviderReqDTO {
-
-
 
     @ApiModelProperty(value = "第三方消息平台短信模版id")
     private Long pTemplateId;

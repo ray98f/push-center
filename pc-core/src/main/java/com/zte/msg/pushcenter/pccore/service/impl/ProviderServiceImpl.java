@@ -9,17 +9,16 @@ import com.zte.msg.pushcenter.pccore.dto.res.ProviderResDTO;
 import com.zte.msg.pushcenter.pccore.entity.Provider;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
-import com.zte.msg.pushcenter.pccore.mapper.PlatformSmsTemplateMapper;
 import com.zte.msg.pushcenter.pccore.mapper.ProviderMapper;
 import com.zte.msg.pushcenter.pccore.model.ScriptModel;
 import com.zte.msg.pushcenter.pccore.model.SmsConfigDetailModel;
 import com.zte.msg.pushcenter.pccore.service.ProviderService;
+import com.zte.msg.pushcenter.pccore.utils.PushConfigUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,13 +36,14 @@ import java.util.Objects;
 @Transactional(rollbackFor = Exception.class)
 public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> implements ProviderService {
 
-    @Resource
-    private PlatformSmsTemplateMapper platformSmsTemplateMapper;
+//    @Resource
+//    private CodeJavac codeJavac;
 
     @Override
     public void addProvider(ProviderReqDTO providerReqDTO) {
 
         // TODO: 2021/1/6  新增供应商时，需要刷新缓存的配置信息
+
 
         Integer integer = getBaseMapper().selectCount(new QueryWrapper<Provider>()
                 .eq("provider_name", providerReqDTO.getProviderName())
@@ -53,7 +53,9 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
         }
         Provider provider = new Provider();
         BeanUtils.copyProperties(providerReqDTO, provider);
+        provider.setScriptTag(PushConfigUtils.getTag());
         getBaseMapper().insert(provider);
+//        codeJavac.scriptFlush(new ScriptModel(provider.getScriptTag(), provider.getScriptContext()));
     }
 
     @Override
