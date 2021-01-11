@@ -61,6 +61,7 @@ public class TemplateServiceImpl implements TemplateService {
     public void updateSmsTemplate(Long templateId, SmsTemplateReqDTO smsTemplateReqDTO) {
         SmsTemplate smsTemplate = new SmsTemplate();
         BeanUtils.copyProperties(smsTemplateReqDTO, smsTemplate);
+        smsTemplate.setId(templateId);
         smsTemplate.setParams(StringUtils.join(smsTemplateReqDTO.getParams(), ","));
         smsTemplateMapper.updateById(smsTemplate);
     }
