@@ -45,7 +45,7 @@ public interface ProviderMapper extends BaseMapper<Provider> {
             " pst.`code`, " +
             " pst.sign, " +
             " pst.content, " +
-            " pst.`status` platform_template_status, " +
+            " pst.`status` provider_template_status, " +
             " p.provider_name, " +
             " p.type, " +
             " p.script_tag, " +
