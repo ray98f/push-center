@@ -7,11 +7,12 @@
         <if test="appId!=null">
             and app_id=#{appId}
         </if>
-        <if test="appName!=null">
-            and app_name like "%"#{appName}"%"
-        </if>
         <if test="status!=null">
             and status=#{status}
+        </if>
+        group by id
+        <if test="appName!=null">
+            having GROUP_CONCAT("|",app_name,"|",to_pinyin(app_name),"|",pinyin(Num_char_extract(app_name,3)),"|",Num_char_extract(app_name,2),"|") like "%"#{appName}"%"
         </if>
     </select>
 
