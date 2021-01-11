@@ -9,7 +9,7 @@ import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateRelateProviderUpdateReqD
 import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.ProviderSmsTemplateResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.SmsTemplateDetailResDTO;
-import com.zte.msg.pushcenter.pccore.service.PlatformSmsTemplateService;
+import com.zte.msg.pushcenter.pccore.service.ProviderSmsTemplateService;
 import com.zte.msg.pushcenter.pccore.service.TemplateService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,7 +39,7 @@ public class TemplateController {
     private TemplateService templateService;
 
     @Resource
-    private PlatformSmsTemplateService platformSmsTemplateService;
+    private ProviderSmsTemplateService providerSmsTemplateService;
 
     @PostMapping(value = "/sms")
     @ApiOperation(value = "【短信模版】- 添加")
@@ -113,7 +113,7 @@ public class TemplateController {
     public <T> DataResponse<T> addSmsProviderTemplate(@PathVariable @ApiParam(value = "消息平台id") Long providerId,
                                                       @RequestBody @Valid ProviderSmsTemplateReqDTO smsTemplateReqDTO) {
 
-        platformSmsTemplateService.addSmsProviderTemplate(providerId, smsTemplateReqDTO);
+        providerSmsTemplateService.addSmsProviderTemplate(providerId, smsTemplateReqDTO);
         return DataResponse.success();
     }
 
@@ -123,7 +123,7 @@ public class TemplateController {
                                                       @PathVariable("providerSmsTemplateId") @ApiParam("消息平台短信模版id") Long providerSmsTemplateId,
                                                       @RequestBody @Valid ProviderSmsTemplateReqDTO smsTemplateReqDTO) {
 
-        platformSmsTemplateService.updateSmsProviderTemplate(providerId, providerSmsTemplateId, smsTemplateReqDTO);
+        providerSmsTemplateService.updateSmsProviderTemplate(providerId, providerSmsTemplateId, smsTemplateReqDTO);
 
         return DataResponse.success();
     }
@@ -135,7 +135,7 @@ public class TemplateController {
                                                          @PathVariable("providerSmsTemplateId")
                                                          @ApiParam("消息平台短信模版id") Long providerSmsTemplateId) {
 
-        platformSmsTemplateService.deleteSmsProviderTemplate(providerId, providerSmsTemplateId);
+        providerSmsTemplateService.deleteSmsProviderTemplate(providerId, providerSmsTemplateId);
 
         return DataResponse.success();
     }
@@ -144,7 +144,7 @@ public class TemplateController {
     @ApiOperation(value = "【消息平台配置】- 短信模版配置 - 获取消息平台短信模版列表")
     public DataResponse<List<ProviderSmsTemplateResDTO>> getProviderSmsTemplatesByProviderId(@RequestParam(required = false)
                                                                                              @ApiParam(value = "第三方消息平台id，不传的话查询全部") Long providerId) {
-        return DataResponse.of(platformSmsTemplateService.getProviderSmsTemplatesByProviderId(providerId));
+        return DataResponse.of(providerSmsTemplateService.getProviderSmsTemplatesByProviderId(providerId));
     }
 
 
