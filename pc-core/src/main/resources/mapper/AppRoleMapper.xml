@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zte.msg.pushcenter.pccore.mapper.AppRoleMapper">
-    <select id="listApp" resultType="com.zte.msg.pushcenter.pccore.dto.res.AppRoleResDTO">
+    <select id="selectApp" resultType="com.zte.msg.pushcenter.pccore.dto.res.AppRoleResDTO">
         SELECT distinct ar.app_id,a.app_name FROM app_role as ar
-        left join app as a on a.id=ar.app_id and a.flag=0 where ar.flag=0;
+        left join app as a on a.id=ar.app_id and a.flag=0 where ar.flag=0 and ar.app_id=#{appId};
     </select>
     
     <select id="selectAppMode" resultType="com.zte.msg.pushcenter.pccore.entity.AppRole">
@@ -12,8 +12,8 @@
     </select>
 
     <select id="selectTemplate" resultType="com.zte.msg.pushcenter.pccore.dto.res.TemplateResDTO">
-        select ar.id as app_role_id,ar.template_id as id,t.type,t.name,t.description,ar.status from app_role as ar
-        left join template as t on ar.template_id=t.id and t.flag=0 where ar.mode_id=#{modeId} and ar.flag=0
+        select ar.id as app_role_id,ar.template_id as id,t.content,ar.status from app_role as ar
+        left join sms_template as t on ar.template_id=t.id and t.flag=0 where ar.mode_id=#{modeId} and ar.flag=0
     </select>
 
     <insert id="editAppRole" parameterType="com.zte.msg.pushcenter.pccore.dto.res.AppRoleResDTO">
@@ -37,12 +37,10 @@
                         <if test="template.status!=null">#{template.status},</if>
                     </trim>
                     ON DUPLICATE KEY UPDATE
-                    <trim suffixOverrides=",">
-                        <if test="item.appId!=null">app_id=#{item.appId},</if>
-                        <if test="sendMode.modeId!=null">mode_id=#{sendMode.modeId},</if>
-                        <if test="template.id!=null">template_id=#{template.id},</if>
-                        <if test="template.status!=null">status=#{template.status},</if>
-                    </trim>
+                        app_id=#{item.appId},
+                        mode_id=#{sendMode.modeId},
+                        template_id=#{template.id},
+                        status=#{template.status}
                 </foreach>
             </foreach>
         </foreach>

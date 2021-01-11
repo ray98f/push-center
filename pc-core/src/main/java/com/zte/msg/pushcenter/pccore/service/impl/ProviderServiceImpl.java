@@ -105,6 +105,7 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
         }
         Page<Provider> providerPage = getBaseMapper().selectPage(pageReqDTO.of(), wrapper);
         Page<ProviderResDTO> dtoPage = new Page<>();
+        BeanUtils.copyProperties(providerPage, dtoPage);
         List<Provider> records = providerPage.getRecords();
         List<ProviderResDTO> list = new ArrayList<>(records.size());
         records.forEach(o -> {

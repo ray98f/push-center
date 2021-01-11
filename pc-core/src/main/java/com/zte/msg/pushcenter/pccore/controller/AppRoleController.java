@@ -39,8 +39,8 @@ public class AppRoleController {
      */
     @GetMapping("/appRole")
     @ApiOperation(value = "第三方服务权限列表获取")
-    public DataResponse<List<AppRoleResDTO>> listAppRole() {
-        return DataResponse.of(appRoleService.listAppRole());
+    public DataResponse<AppRoleResDTO> listAppRole(@Valid @RequestParam @NotNull(message = "32000006") Integer appId) {
+        return DataResponse.of(appRoleService.listAppRole(appId));
     }
 
     /**

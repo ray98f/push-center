@@ -1,17 +1,22 @@
 package com.zte.msg.pushcenter.pccore.service.impl;
 
 import com.zte.msg.pushcenter.pccore.dto.res.AppRoleResDTO;
+import com.zte.msg.pushcenter.pccore.dto.res.TemplateResDTO;
 import com.zte.msg.pushcenter.pccore.entity.AppRole;
 import com.zte.msg.pushcenter.pccore.entity.SendMode;
+import com.zte.msg.pushcenter.pccore.entity.SmsTemplate;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.AppRoleMapper;
 import com.zte.msg.pushcenter.pccore.service.AppRoleService;
+import com.zte.msg.pushcenter.pccore.service.TemplateService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,19 +34,44 @@ public class AppRoleServiceImpl implements AppRoleService {
     @Autowired
     private AppRoleMapper appRoleMapper;
 
+    @Autowired
+    private TemplateService templateService;
+
     @Override
-    public List<AppRoleResDTO> listAppRole() {
-        List<AppRoleResDTO> appRoleResDTOList = appRoleMapper.listApp();
-        if (null != appRoleResDTOList && !appRoleResDTOList.isEmpty()) {
-            log.info("服务列表查询成功");
-            for (AppRoleResDTO appRoleResDTO : appRoleResDTOList) {
-                List<AppRole> appRole = appRoleMapper.selectAppMode(appRoleResDTO.getAppId());
-                for (AppRole appRoleTemplate : appRole){
-                    appRoleTemplate.setTemplate(appRoleMapper.selectTemplate(appRoleTemplate.getModeId()));
+    public AppRoleResDTO listAppRole(Integer appId) {
+        AppRoleResDTO appRoleResDTO = appRoleMapper.selectApp(appId);
+        if (Objects.nonNull(appRoleResDTO)) {
+            log.info("服务查询成功");
+            List<AppRole> appRole = appRoleMapper.selectAppMode(appRoleResDTO.getAppId());
+            for (AppRole appRoleTemplate : appRole) {
+                if (appRoleTemplate.getModeId() == 1) {
+                    List<TemplateResDTO> templateResDTOList = appRoleMapper.selectTemplate(appRoleTemplate.getModeId());
+                    if (Objects.isNull(templateResDTOList) || 0 == templateResDTOList.size()){
+                        throw new CommonException(ErrorCode.RESOURCE_NOT_EXIST);
+                    }
+                    List<SmsTemplate> smsTemplateList = templateService.getTemplateList();
+                    if (Objects.isNull(smsTemplateList) || 0 == smsTemplateList.size()){
+                        throw new CommonException(ErrorCode.RESOURCE_NOT_EXIST);
+                    }
+                    List<TemplateResDTO> result = new ArrayList<>(templateResDTOList);
+                    if (templateResDTOList.size() < smsTemplateList.size()) {
+                        for (SmsTemplate smsTemplate : smsTemplateList) {
+                            for (TemplateResDTO templateResDTO : templateResDTOList) {
+                                if (!smsTemplate.getId().equals(templateResDTO.getId())) {
+                                    TemplateResDTO resDTO = new TemplateResDTO();
+                                    resDTO.setId(smsTemplate.getId());
+                                    resDTO.setContent(smsTemplate.getContent());
+                                    result.add(resDTO);
+                                }
+                            }
+                        }
+                        result.addAll(templateResDTOList);
+                    }
+                    appRoleTemplate.setTemplate(result);
                 }
-                appRoleResDTO.setSendMode(appRole);
             }
-            return appRoleResDTOList;
+            appRoleResDTO.setSendMode(appRole);
+            return appRoleResDTO;
         } else {
             throw new CommonException(ErrorCode.SELECT_EMPTY);
         }
