@@ -5,6 +5,7 @@ import com.zte.msg.pushcenter.pccore.core.pusher.msg.Message;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.utils.AesUtils;
+import com.zte.msg.pushcenter.pcscript.PcScript;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -58,8 +59,9 @@ public class MailPusher extends BasePusher {
     }
 
     @Override
-    protected void persist() {
+    protected void persist(Message message, PcScript.Res res) {
 
     }
+
 
 }

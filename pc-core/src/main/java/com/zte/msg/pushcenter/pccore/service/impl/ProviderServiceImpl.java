@@ -11,6 +11,7 @@ import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.PlatformSmsTemplateMapper;
 import com.zte.msg.pushcenter.pccore.mapper.ProviderMapper;
+import com.zte.msg.pushcenter.pccore.model.ScriptModel;
 import com.zte.msg.pushcenter.pccore.service.ProviderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -115,5 +116,10 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
         });
 
         return dtoPage.setRecords(list);
+    }
+
+    @Override
+    public List<ScriptModel> getScripts() {
+        return getBaseMapper().selectScripts();
     }
 }

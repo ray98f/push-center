@@ -3,7 +3,6 @@ package com.zte.msg.pushcenter.pccore.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.zte.msg.pushcenter.pccore.core.pusher.SmsPusher;
 import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsConfigReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.SmsConfigDetailResDTO;
@@ -11,6 +10,7 @@ import com.zte.msg.pushcenter.pccore.entity.SmsConfig;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.SmsMapper;
+import com.zte.msg.pushcenter.pccore.model.SmsConfigDetailModel;
 import com.zte.msg.pushcenter.pccore.service.SmsService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -77,7 +77,7 @@ public class SmsServiceImpl extends ServiceImpl<SmsMapper, SmsConfig> implements
     }
 
     @Override
-    public List<SmsPusher.ConfigDetail> selectAllSmsConfigForInit() {
+    public List<SmsConfigDetailModel> getAllSmsConfigForInit() {
         return getBaseMapper().selectAllSmsConfigForInit();
     }
 

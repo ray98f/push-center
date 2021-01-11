@@ -6,8 +6,6 @@ import com.zte.msg.pushcenter.pccore.dto.req.SmsHistoryReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.MailInfo;
 import com.zte.msg.pushcenter.pccore.entity.SmsInfo;
 
-import java.util.List;
-
 /**
  * description:
  *
@@ -20,4 +18,6 @@ public interface HistoryService {
     PageInfo<SmsInfo> listHistorySms(SmsHistoryReqDTO smsHistoryReqDTO);
 
     PageInfo<MailInfo> listHistoryMail(MailHistoryReqDTO mailHistoryReqDTO);
+
+    void addHistorySms(SmsInfo smsInfo);
 }

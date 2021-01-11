@@ -2,10 +2,10 @@ package com.zte.msg.pushcenter.pccore.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zte.msg.pushcenter.pccore.core.pusher.SmsPusher;
 import com.zte.msg.pushcenter.pccore.dto.res.SmsConfigDetailResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.SmsConfigResDTO;
 import com.zte.msg.pushcenter.pccore.entity.SmsConfig;
+import com.zte.msg.pushcenter.pccore.model.SmsConfigDetailModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -39,32 +39,31 @@ public interface SmsMapper extends BaseMapper<SmsConfig> {
     Page<SmsConfigDetailResDTO> selectByPage(Page<SmsConfigResDTO> page);
 
     @Select("SELECT " +
-            " t.type, " +
-            " t.id, " +
-            " t.`name`, " +
-            " pst.example, " +
-            " pst.s_template_id, " +
+            " str.sms_template_id, " +
+            " str.platform_template_id, " +
+            " str.priority, " +
+            " st.`status` template_status, " +
+            " pst.`code`, " +
             " pst.sign, " +
-            " pst.`order`, " +
-            " sc.s_app_id, " +
-            " sc.secret_id, " +
-            " sc.secret_key, " +
+            " pst.content, " +
+            " pst.`status` platform_template_status, " +
             " p.provider_name, " +
-            " s.script_tag " +
+            " p.type, " +
+            " p.script_tag, " +
+            " p.config  " +
             "FROM " +
-            " template t " +
-            " LEFT JOIN provider_sms_template pst ON t.id = pst.sms_template_id " +
-            " LEFT JOIN sms_config sc ON sc.id = pst.sms_config_id " +
+            " sms_template_relation str " +
+            " LEFT JOIN sms_template st ON str.sms_template_id = st.id " +
+            " LEFT JOIN platform_sms_template pst ON str.platform_template_id = pst.id " +
             " LEFT JOIN provider p ON pst.provider_id = p.id  " +
-            " LEFT JOIN script s ON s.provider_id = p.id " +
             "WHERE " +
-            " t.flag = 0  " +
+            " p.type = 1  " +
+            " AND str.flag = 0  " +
+            " AND st.flag = 0  " +
             " AND pst.flag = 0  " +
-            " AND sc.flag = 0  " +
-            " AND p.flag = 0 " +
-            " AND s.flag = 0"
+            " AND p.flag = 0 "
     )
-    List<SmsPusher.ConfigDetail> selectAllSmsConfigForInit();
+    List<SmsConfigDetailModel> selectAllSmsConfigForInit();
 
     @Select("SELECT " +
             " s.id, " +

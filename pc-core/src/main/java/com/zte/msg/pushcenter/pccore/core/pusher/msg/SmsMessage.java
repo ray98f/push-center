@@ -26,11 +26,24 @@ public class SmsMessage extends Message {
     private String[] phoneNum;
 
     /**
+     * 手机号码数组index
+     */
+    private int index;
+
+    private String content;
+
+    private String providerName;
+
+    /**
      * 短信模版id
      */
     private Long templateId;
 
-    private Integer appId;
+    private Long appId;
+
+    private String code;
+
+    private Timestamp transmitTime;
 
     private Map<String, String> vars;
 

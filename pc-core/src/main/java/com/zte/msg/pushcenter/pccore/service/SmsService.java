@@ -1,11 +1,11 @@
 package com.zte.msg.pushcenter.pccore.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zte.msg.pushcenter.pccore.core.pusher.SmsPusher;
 import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsConfigReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.SmsConfigDetailResDTO;
 import com.zte.msg.pushcenter.pccore.entity.SmsConfig;
+import com.zte.msg.pushcenter.pccore.model.SmsConfigDetailModel;
 
 import java.util.List;
 
@@ -35,5 +35,6 @@ public interface SmsService {
      *
      * @return
      */
-    List<SmsPusher.ConfigDetail> selectAllSmsConfigForInit();
+    List<SmsConfigDetailModel> getAllSmsConfigForInit();
+
 }

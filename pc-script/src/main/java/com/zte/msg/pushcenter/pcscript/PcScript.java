@@ -1,4 +1,4 @@
-package com.zte.msg.pushcenter.pcscript.inte;
+package com.zte.msg.pushcenter.pcscript;
 
 import java.util.Map;
 
@@ -9,11 +9,11 @@ import java.util.Map;
  * @version 1.0
  * @date 2020/12/31 9:46
  */
-public abstract class AbstractScript {
+public interface PcScript {
 
-    public abstract Res execute(Map<String, Object> params);
+    Res execute(Map<String, Object> params);
 
-    public static class Res {
+    class Res {
 
         private Integer code;
 

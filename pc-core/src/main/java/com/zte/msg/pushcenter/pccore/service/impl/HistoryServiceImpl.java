@@ -9,11 +9,13 @@ import com.zte.msg.pushcenter.pccore.entity.SmsInfo;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.HistoryMapper;
+import com.zte.msg.pushcenter.pccore.mapper.SmsInfoMapper;
 import com.zte.msg.pushcenter.pccore.service.HistoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -30,12 +32,15 @@ public class HistoryServiceImpl implements HistoryService {
     @Autowired
     private HistoryMapper historyMapper;
 
+    @Resource
+    private SmsInfoMapper smsInfoMapper;
+
     @Override
     public PageInfo<SmsInfo> listHistorySms(SmsHistoryReqDTO smsHistoryReqDTO) {
         if (null == smsHistoryReqDTO.getPage() || null == smsHistoryReqDTO.getSize()) {
             throw new CommonException(ErrorCode.PAGE_PARAM_EMPTY);
         }
-        if (0 >= smsHistoryReqDTO.getPage() || 0 >= smsHistoryReqDTO.getSize()){
+        if (0 >= smsHistoryReqDTO.getPage() || 0 >= smsHistoryReqDTO.getSize()) {
             throw new CommonException(ErrorCode.PAGE_PARAM_ERROR);
         }
         PageHelper.startPage(smsHistoryReqDTO.getPage().intValue(), smsHistoryReqDTO.getSize().intValue());
@@ -48,11 +53,16 @@ public class HistoryServiceImpl implements HistoryService {
         if (null == mailHistoryReqDTO.getPage() || null == mailHistoryReqDTO.getSize()) {
             throw new CommonException(ErrorCode.PAGE_PARAM_EMPTY);
         }
-        if (0 >= mailHistoryReqDTO.getPage() || 0 >= mailHistoryReqDTO.getSize()){
+        if (0 >= mailHistoryReqDTO.getPage() || 0 >= mailHistoryReqDTO.getSize()) {
             throw new CommonException(ErrorCode.PAGE_PARAM_ERROR);
         }
         PageHelper.startPage(mailHistoryReqDTO.getPage().intValue(), mailHistoryReqDTO.getSize().intValue());
         List<MailInfo> list = historyMapper.listHistoryMail(mailHistoryReqDTO);
         return new PageInfo<>(list);
+    }
+
+    @Override
+    public void addHistorySms(SmsInfo smsInfo) {
+        smsInfoMapper.insert(smsInfo);
     }
 }

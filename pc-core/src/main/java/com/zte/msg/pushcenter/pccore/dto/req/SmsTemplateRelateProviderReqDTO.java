@@ -15,6 +15,8 @@ import lombok.Data;
 @ApiModel
 public class SmsTemplateRelateProviderReqDTO {
 
+
+
     @ApiModelProperty(value = "第三方消息平台短信模版id")
     private Long pTemplateId;
 

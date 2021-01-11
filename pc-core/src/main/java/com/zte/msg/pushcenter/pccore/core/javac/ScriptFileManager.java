@@ -103,8 +103,9 @@ public class ScriptFileManager implements JavaFileManager {
     }
 
     @Override
-    public void flush() throws IOException {
-        // Do nothing
+    public void flush() {
+
+
     }
 
     @Override

@@ -4,7 +4,6 @@ import com.zte.msg.pushcenter.pccore.dto.DataResponse;
 import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.PageResponse;
 import com.zte.msg.pushcenter.pccore.dto.req.ProviderReqDTO;
-import com.zte.msg.pushcenter.pccore.dto.req.ProviderSmsTemplateReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.ProviderResDTO;
 import com.zte.msg.pushcenter.pccore.service.ProviderService;
 import io.swagger.annotations.Api;
@@ -66,7 +65,4 @@ public class ProviderController {
                                                      @Valid PageReqDTO pageReqDTO) {
         return PageResponse.of(providerService.getProviders(provider, type, status, pageReqDTO));
     }
-
-
-
 }

@@ -23,4 +23,5 @@ public interface HistoryMapper {
     List<SmsInfo> listHistorySms(SmsHistoryReqDTO smsHistoryReqDTO);
 
     List<MailInfo> listHistoryMail(MailHistoryReqDTO mailHistoryReqDTO);
+
 }

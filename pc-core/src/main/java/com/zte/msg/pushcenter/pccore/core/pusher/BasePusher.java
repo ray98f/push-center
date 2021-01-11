@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.zte.msg.pushcenter.pccore.core.javac.CodeJavac;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.Message;
 import com.zte.msg.pushcenter.pccore.dto.DataResponse;
+import com.zte.msg.pushcenter.pccore.service.HistoryService;
+import com.zte.msg.pushcenter.pcscript.PcScript;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -25,6 +27,9 @@ import javax.annotation.Resource;
 @Slf4j
 @Service
 public abstract class BasePusher {
+
+    @Resource
+    protected HistoryService historyService;
 
     @Resource
     private KafkaTemplate<String, String> kafkaTemplate;
@@ -62,7 +67,7 @@ public abstract class BasePusher {
      *
      * @param message
      */
-    protected void response(Message message, JSONObject res) {
+    protected void response(Message message, PcScript.Res res) {
         if (!message.getIsCallBack()) {
             return;
         }
@@ -78,5 +83,5 @@ public abstract class BasePusher {
      * 消息记录存库
      */
 //    @Scheduled(cron = "0 0/1 * * * ? ")
-    abstract protected void persist();
+    abstract protected void persist(Message message, PcScript.Res res);
 }

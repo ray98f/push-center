@@ -1,14 +1,14 @@
 package com.zte.msg.pushcenter.pccore.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.zte.msg.pushcenter.pccore.core.pusher.msg.SmsMessage;
+import com.zte.msg.pushcenter.pccore.mapper.AppMapper;
+import com.zte.msg.pushcenter.pcscript.PcScript;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.annotation.Resource;
 import java.sql.Timestamp;
-import java.util.Date;
 
 /**
  * description:
@@ -22,7 +22,7 @@ import java.util.Date;
 public class SmsInfo extends BaseEntity {
 
     @ApiModelProperty(value = "应用id")
-    private Integer appId;
+    private Long appId;
 
     @ApiModelProperty(value = "应用名称")
     private String appName;
@@ -53,4 +53,39 @@ public class SmsInfo extends BaseEntity {
 
     @ApiModelProperty(value = "状态时间")
     private Timestamp resultTime;
+
+
+    @Resource
+    private AppMapper appMapper;
+
+    public SmsInfo(SmsMessage message, PcScript.Res res) {
+        this.appId = message.getAppId();
+
+        this.appName = appMapper.selectAppName(this.appId);
+
+        this.phoneNum = message.getPhoneNum()[message.getIndex()];
+
+        this.transmitTime = message.getTransmitTime();
+
+        this.content = String.format(message.getContent()
+                .replaceAll("#.*?#", "%s")
+                .replaceAll("\\{.*?}", "%s"), message.getVars().values());
+
+        this.providerName = message.getProviderName();
+
+        this.templateId = message.getCode();
+
+        this.failCode = res.getCode();
+
+        this.failReason = res.getMessage();
+
+        // TODO: 2021/1/11
+//        this.resultTime =
+
+        if (res.getCode() == 0) {
+            this.result = 0;
+        } else {
+            this.result = 1;
+        }
+    }
 }

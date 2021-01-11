@@ -5,6 +5,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.ProviderReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.ProviderResDTO;
+import com.zte.msg.pushcenter.pccore.model.ScriptModel;
+
+import java.util.List;
 
 /**
  * description:
@@ -56,5 +59,7 @@ public interface ProviderService {
                                       Integer type,
                                       Integer status,
                                       PageReqDTO pageReqDTO);
+
+    List<ScriptModel> getScripts();
 
 }
