@@ -1,8 +1,8 @@
 package com.zte.msg.pushcenter.pccore.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.zte.msg.pushcenter.pccore.model.SmsTemplateRelationModel;
 import com.zte.msg.pushcenter.pccore.entity.SmsTemplateRelation;
+import com.zte.msg.pushcenter.pccore.model.SmsTemplateRelationModel;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -52,5 +52,33 @@ public interface SmsTemplateRelationMapper extends BaseMapper<SmsTemplateRelatio
     })
     List<SmsTemplateRelationModel> selectByTemplateIds(@Param("ids") List<Long> ids);
 
+
+    @Select("SELECT " +
+            " st.id, " +
+            " st.content, " +
+            " st.params, " +
+            " st.`status` s_status, " +
+            " st.updated_by, " +
+            " st.updated_at, " +
+            " str.id relation_id, " +
+            " str.priority, " +
+            " pst.`code`, " +
+            " pst.content p_content, " +
+            " pst.`status` p_status, " +
+            " pst.id p_template_id, " +
+            " pst.sign, " +
+            " p.provider_name  " +
+            "FROM " +
+            " platform_sms_template pst " +
+            " LEFT JOIN sms_template_relation str ON pst.id = str.platform_template_id " +
+            " LEFT JOIN sms_template st ON st.id = str.sms_template_id " +
+            " LEFT JOIN provider p ON p.id = pst.provider_id  " +
+            "WHERE " +
+            " pst.flag = 0  " +
+            " AND str.flag = 0  " +
+            " AND st.flag = 0  " +
+            " AND p.flag = 0 " +
+            " And st.id = #{id}")
+    List<SmsTemplateRelationModel> selectByTemplateId(@Param("id") Long id);
 
 }

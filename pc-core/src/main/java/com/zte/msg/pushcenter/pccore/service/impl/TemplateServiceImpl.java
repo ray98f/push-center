@@ -113,8 +113,11 @@ public class TemplateServiceImpl implements TemplateService {
     public List<ProviderSmsTemplateResDTO> getProviderSmsTemplatesByTemplateId(Long templateId) {
 
         List<SmsTemplateRelationModel> smsTemplateRelationModels =
-                smsTemplateRelationMapper.selectByTemplateIds(Collections.singletonList(templateId));
+                smsTemplateRelationMapper.selectByTemplateId(templateId);
         List<ProviderSmsTemplateResDTO> resDTOList = new ArrayList<>(smsTemplateRelationModels.size());
+        if (smsTemplateRelationModels.size() == 0) {
+            return resDTOList;
+        }
         smsTemplateRelationModels.forEach(o -> {
             ProviderSmsTemplateResDTO providerSmsTemplateResDTO = new ProviderSmsTemplateResDTO();
             providerSmsTemplateResDTO.setStatus(o.getPStatus());

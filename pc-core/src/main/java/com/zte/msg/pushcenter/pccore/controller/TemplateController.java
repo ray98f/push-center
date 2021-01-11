@@ -108,7 +108,7 @@ public class TemplateController {
         return DataResponse.of(templateService.getProviderSmsTemplatesByTemplateId(templateId));
     }
 
-    @PostMapping(value = "/provider/{providerId}")
+    @PostMapping(value = "/provider/sms/{providerId}")
     @ApiOperation(value = "【消息平台配置】- 短信模版配置 - 新增")
     public <T> DataResponse<T> addSmsProviderTemplate(@PathVariable @ApiParam(value = "消息平台id") Long providerId,
                                                       @RequestBody @Valid ProviderSmsTemplateReqDTO smsTemplateReqDTO) {
@@ -117,7 +117,7 @@ public class TemplateController {
         return DataResponse.success();
     }
 
-    @PutMapping(value = "/provider/{providerId}/{providerSmsTemplateId}")
+    @PutMapping(value = "/provider/sms/{providerId}/{providerSmsTemplateId}")
     @ApiOperation(value = "【消息平台配置】- 短信模版配置 - 修改")
     public <T> DataResponse<T> addSmsProviderTemplate(@PathVariable("providerId") @ApiParam("消息平台id") Long providerId,
                                                       @PathVariable("providerSmsTemplateId") @ApiParam("消息平台短信模版id") Long providerSmsTemplateId,
@@ -128,7 +128,7 @@ public class TemplateController {
         return DataResponse.success();
     }
 
-    @DeleteMapping(value = "/provider/{providerId}/{providerSmsTemplateId}")
+    @DeleteMapping(value = "/provider/sms/{providerId}/{providerSmsTemplateId}")
     @ApiOperation(value = "【消息平台配置】- 短信模版配置 - 删除")
     public <T> DataResponse<T> deleteSmsProviderTemplate(@PathVariable("providerId")
                                                          @ApiParam("消息平台id") Long providerId,
@@ -140,7 +140,7 @@ public class TemplateController {
         return DataResponse.success();
     }
 
-    @GetMapping(value = "/provider")
+    @GetMapping(value = "/provider/sms")
     @ApiOperation(value = "【消息平台配置】- 短信模版配置 - 获取消息平台短信模版列表")
     public DataResponse<List<ProviderSmsTemplateResDTO>> getProviderSmsTemplatesByProviderId(@RequestParam(required = false)
                                                                                              @ApiParam(value = "第三方消息平台id，不传的话查询全部") Long providerId) {
