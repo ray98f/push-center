@@ -8,6 +8,7 @@ import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateRelateProviderUpdateReqD
 import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.ProviderSmsTemplateResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.SmsTemplateDetailResDTO;
+import com.zte.msg.pushcenter.pccore.entity.ProviderSmsTemplate;
 import com.zte.msg.pushcenter.pccore.entity.SmsTemplate;
 import com.zte.msg.pushcenter.pccore.entity.SmsTemplateRelation;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
@@ -99,6 +100,9 @@ public class TemplateServiceImpl implements TemplateService {
         if (Objects.isNull(relation)) {
             throw new CommonException(ErrorCode.SMS_TEMPLATE_NOT_EXIST);
         }
+        ProviderSmsTemplate providerSmsTemplate = providerSmsTemplateRelateMapper.selectById(relation.getProviderTemplateId());
+        providerSmsTemplate.setStatus(reqDTO.getStatus());
+        providerSmsTemplateRelateMapper.updateById(providerSmsTemplate);
         relation.setId(reqDTO.getRelationId());
         relation.setPriority(reqDTO.getPriority());
         relation.setSmsTemplateId(templateId);
