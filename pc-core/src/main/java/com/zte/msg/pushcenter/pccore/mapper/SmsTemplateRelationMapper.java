@@ -42,7 +42,7 @@ public interface SmsTemplateRelationMapper extends BaseMapper<SmsTemplateRelatio
                     "FROM " +
                     " sms_template st " +
                     " LEFT JOIN sms_template_relation str ON st.id = str.sms_template_id " +
-                    " LEFT JOIN platform_sms_template pst ON pst.id = str.platform_template_id " +
+                    " LEFT JOIN provider_sms_template pst ON pst.id = str.provider_template_id " +
                     " LEFT JOIN provider p ON p.id = pst.provider_id " +
                     "WHERE st.id IN ",
             "<foreach collection = 'ids' item = 'id' open='(' separator=',' close=')'>",
@@ -69,8 +69,8 @@ public interface SmsTemplateRelationMapper extends BaseMapper<SmsTemplateRelatio
             " pst.sign, " +
             " p.provider_name  " +
             "FROM " +
-            " platform_sms_template pst " +
-            " LEFT JOIN sms_template_relation str ON pst.id = str.platform_template_id " +
+            " provider_sms_template pst " +
+            " LEFT JOIN sms_template_relation str ON pst.id = str.provider_template_id " +
             " LEFT JOIN sms_template st ON st.id = str.sms_template_id " +
             " LEFT JOIN provider p ON p.id = pst.provider_id  " +
             "WHERE " +

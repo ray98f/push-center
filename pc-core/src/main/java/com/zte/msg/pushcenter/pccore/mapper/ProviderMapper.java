@@ -39,7 +39,7 @@ public interface ProviderMapper extends BaseMapper<Provider> {
 
     @Select("SELECT " +
             " str.sms_template_id, " +
-            " str.platform_template_id, " +
+            " str.provider_template_id, " +
             " str.priority, " +
             " st.`status` template_status, " +
             " pst.`code`, " +
@@ -53,7 +53,7 @@ public interface ProviderMapper extends BaseMapper<Provider> {
             "FROM " +
             " sms_template_relation str " +
             " LEFT JOIN sms_template st ON str.sms_template_id = st.id " +
-            " LEFT JOIN platform_sms_template pst ON str.platform_template_id = pst.id " +
+            " LEFT JOIN provider_sms_template pst ON str.provider_template_id = pst.id " +
             " LEFT JOIN provider p ON pst.provider_id = p.id  " +
             "WHERE " +
             " p.type = 1  " +

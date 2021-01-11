@@ -14,7 +14,7 @@ public class SmsConfigDetailModel {
 
     private long smsTemplateId;
 
-    private long platformTemplateId;
+    private long providerTemplateId;
 
     private int priority;
 

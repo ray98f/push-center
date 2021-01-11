@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zte.msg.pushcenter.pccore.dto.req.ProviderSmsTemplateReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.ProviderSmsTemplateResDTO;
-import com.zte.msg.pushcenter.pccore.entity.PlatformSmsTemplate;
+import com.zte.msg.pushcenter.pccore.entity.ProviderSmsTemplate;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.PlatformSmsTemplateMapper;
@@ -26,7 +26,7 @@ import java.util.Objects;
  * @date 2021/1/7 15:56
  */
 @Service
-public class PlatformSmsTemplateServiceImpl extends ServiceImpl<PlatformSmsTemplateMapper, PlatformSmsTemplate>
+public class PlatformSmsTemplateServiceImpl extends ServiceImpl<PlatformSmsTemplateMapper, ProviderSmsTemplate>
         implements PlatformSmsTemplateService {
 
     @Resource
@@ -34,13 +34,13 @@ public class PlatformSmsTemplateServiceImpl extends ServiceImpl<PlatformSmsTempl
 
     @Override
     public void addSmsProviderTemplate(Long providerId, ProviderSmsTemplateReqDTO smsTemplateReqDTO) {
-        PlatformSmsTemplate platformSmsTemplate = new PlatformSmsTemplate();
-        platformSmsTemplate.setCode(smsTemplateReqDTO.getCode());
-        platformSmsTemplate.setContent(smsTemplateReqDTO.getContent());
-        platformSmsTemplate.setProviderId(providerId);
-        platformSmsTemplate.setSign(smsTemplateReqDTO.getSign());
-        platformSmsTemplate.setStatus(smsTemplateReqDTO.getStatus());
-        getBaseMapper().insert(platformSmsTemplate);
+        ProviderSmsTemplate providerSmsTemplate = new ProviderSmsTemplate();
+        providerSmsTemplate.setCode(smsTemplateReqDTO.getCode());
+        providerSmsTemplate.setContent(smsTemplateReqDTO.getContent());
+        providerSmsTemplate.setProviderId(providerId);
+        providerSmsTemplate.setSign(smsTemplateReqDTO.getSign());
+        providerSmsTemplate.setStatus(smsTemplateReqDTO.getStatus());
+        getBaseMapper().insert(providerSmsTemplate);
     }
 
     @Override
@@ -48,11 +48,11 @@ public class PlatformSmsTemplateServiceImpl extends ServiceImpl<PlatformSmsTempl
                                           Long providerSmsTemplateId,
                                           ProviderSmsTemplateReqDTO smsTemplateReqDTO) {
 
-        PlatformSmsTemplate platformSmsTemplate = new PlatformSmsTemplate();
-        BeanUtils.copyProperties(smsTemplateReqDTO, platformSmsTemplate);
-        platformSmsTemplate.setId(providerSmsTemplateId);
-        platformSmsTemplate.setProviderId(providerId);
-        getBaseMapper().updateById(platformSmsTemplate);
+        ProviderSmsTemplate providerSmsTemplate = new ProviderSmsTemplate();
+        BeanUtils.copyProperties(smsTemplateReqDTO, providerSmsTemplate);
+        providerSmsTemplate.setId(providerSmsTemplateId);
+        providerSmsTemplate.setProviderId(providerId);
+        getBaseMapper().updateById(providerSmsTemplate);
     }
 
     @Override
@@ -69,14 +69,14 @@ public class PlatformSmsTemplateServiceImpl extends ServiceImpl<PlatformSmsTempl
 
     @Override
     public List<ProviderSmsTemplateResDTO> getProviderSmsTemplatesByProviderId(Long providerId) {
-        QueryWrapper<PlatformSmsTemplate> wrapper = new QueryWrapper<>();
+        QueryWrapper<ProviderSmsTemplate> wrapper = new QueryWrapper<>();
         if (Objects.nonNull(providerId)) {
             wrapper.eq("provider_id", providerId);
         }
-        List<PlatformSmsTemplate> platformSmsTemplates = getBaseMapper().selectList(wrapper);
+        List<ProviderSmsTemplate> providerSmsTemplates = getBaseMapper().selectList(wrapper);
 
-        List<ProviderSmsTemplateResDTO> list = new ArrayList<>(platformSmsTemplates.size());
-        platformSmsTemplates.forEach(o -> {
+        List<ProviderSmsTemplateResDTO> list = new ArrayList<>(providerSmsTemplates.size());
+        providerSmsTemplates.forEach(o -> {
             ProviderSmsTemplateResDTO providerSmsTemplateResDTO = new ProviderSmsTemplateResDTO();
             BeanUtils.copyProperties(o, providerSmsTemplateResDTO);
             providerSmsTemplateResDTO.setId(o.getId());
