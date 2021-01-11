@@ -5,7 +5,7 @@ import com.zte.msg.pushcenter.pccore.core.pusher.msg.Message;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.SmsMessage;
 import com.zte.msg.pushcenter.pccore.entity.SmsInfo;
 import com.zte.msg.pushcenter.pccore.model.SmsConfigDetailModel;
-import com.zte.msg.pushcenter.pccore.service.SmsService;
+import com.zte.msg.pushcenter.pccore.service.ProviderService;
 import com.zte.msg.pushcenter.pccore.utils.MapUtils;
 import com.zte.msg.pushcenter.pcscript.PcScript;
 import lombok.Data;
@@ -33,7 +33,8 @@ import java.util.concurrent.CompletableFuture;
 public class SmsPusher extends BasePusher {
 
     @Resource
-    private SmsService smsService;
+    private ProviderService providerService;
+
     /**
      * 模版id作为key，order作为内部嵌套map的key
      */
@@ -44,7 +45,7 @@ public class SmsPusher extends BasePusher {
     @PostConstruct
     public void init() {
         log.info("==========initialize sms push config...==========");
-        List<SmsConfigDetailModel> configDetails = smsService.getAllSmsConfigForInit();
+        List<SmsConfigDetailModel> configDetails = providerService.getAllSmsConfigForInit();
         configDetails.forEach(o -> {
             ConfigDetail configDetail = new ConfigDetail();
             BeanUtils.copyProperties(o, configDetail);
@@ -83,7 +84,6 @@ public class SmsPusher extends BasePusher {
             smsMessage.setIndex(i);
             CompletableFuture.supplyAsync(() -> {
                 log.info("==========submit sms push task==========");
-
                 PcScript.Res res = null;
                 try {
                     Class<?> scriptClass = scriptManager.getScriptClass(configDetail.getScriptTag());

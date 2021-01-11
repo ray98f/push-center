@@ -1,10 +1,8 @@
 package com.zte.msg.pushcenter.pccore.dto.res;
 
-import com.zte.msg.pushcenter.pccore.utils.AesUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * description:
@@ -40,12 +38,4 @@ public class SmsConfigDetailResDTO {
     @ApiModelProperty(value = "供应商")
     private String providerName;
 
-    public void decrypt() {
-        if (StringUtils.isNotBlank(secretId)) {
-            secretId = AesUtils.decrypt(secretId);
-        }
-        if (StringUtils.isNotBlank(secretKey)) {
-            secretKey = AesUtils.decrypt(secretKey);
-        }
-    }
 }

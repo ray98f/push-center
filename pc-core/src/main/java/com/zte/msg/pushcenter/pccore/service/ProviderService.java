@@ -6,6 +6,7 @@ import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.ProviderReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.ProviderResDTO;
 import com.zte.msg.pushcenter.pccore.model.ScriptModel;
+import com.zte.msg.pushcenter.pccore.model.SmsConfigDetailModel;
 
 import java.util.List;
 
@@ -61,5 +62,7 @@ public interface ProviderService {
                                       PageReqDTO pageReqDTO);
 
     List<ScriptModel> getScripts();
+
+    List<SmsConfigDetailModel> getAllSmsConfigForInit();
 
 }
