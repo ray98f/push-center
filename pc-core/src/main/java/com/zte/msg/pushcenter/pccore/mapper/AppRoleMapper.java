@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface AppRoleMapper extends BaseMapper<AppRoleResDTO> {
 
-    List<AppRoleResDTO> listApp();
+    AppRoleResDTO selectApp(Integer appId);
 
     List<TemplateResDTO> selectTemplate(Integer modeId);
 

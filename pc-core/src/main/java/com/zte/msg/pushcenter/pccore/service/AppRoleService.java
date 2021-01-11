@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface AppRoleService {
 
-    List<AppRoleResDTO> listAppRole();
+    AppRoleResDTO listAppRole(Integer appId);
 
     void editAppRole(List<AppRoleResDTO> appRoleResDTOList);
 
