@@ -78,10 +78,14 @@ public class TemplateServiceImpl implements TemplateService {
         if (Objects.isNull(smsTemplateMapper.selectById(templateId))) {
             throw new CommonException(ErrorCode.SMS_TEMPLATE_NOT_EXIST);
         }
-        if (Objects.nonNull(smsTemplateRelationMapper.selectOne(new QueryWrapper<SmsTemplateRelation>()
+        if (smsTemplateRelationMapper.selectCount(new QueryWrapper<SmsTemplateRelation>()
                 .eq("sms_template_id", templateId)
-                .eq("provider_template_id", reqDTO.getPTemplateId())))) {
+                .eq("provider_template_id", reqDTO.getPTemplateId())) >= 1) {
 
+            throw new CommonException(ErrorCode.SMS_TEMPLATE_RELATION_ALREADY_EXIST);
+        }
+        if (smsTemplateRelationMapper.selectCount(new QueryWrapper<SmsTemplateRelation>()
+                .eq("priority", reqDTO.getPriority())) >= 0) {
             throw new CommonException(ErrorCode.SMS_TEMPLATE_RELATION_ALREADY_EXIST);
         }
         SmsTemplateRelation relation = new SmsTemplateRelation();
@@ -99,6 +103,10 @@ public class TemplateServiceImpl implements TemplateService {
         SmsTemplateRelation relation = smsTemplateRelationMapper.selectById(reqDTO.getRelationId());
         if (Objects.isNull(relation)) {
             throw new CommonException(ErrorCode.SMS_TEMPLATE_NOT_EXIST);
+        }
+        if (smsTemplateRelationMapper.selectCount(new QueryWrapper<SmsTemplateRelation>()
+                .eq("priority", reqDTO.getPriority())) >= 0) {
+            throw new CommonException(ErrorCode.SMS_TEMPLATE_RELATION_ALREADY_EXIST);
         }
         ProviderSmsTemplate providerSmsTemplate = providerSmsTemplateRelateMapper.selectById(relation.getProviderTemplateId());
         providerSmsTemplate.setStatus(reqDTO.getStatus());

@@ -104,6 +104,7 @@ public enum ErrorCode {
     SMS_PROVIDER_TEMPLATE_NOT_EXIST(32000025, "sms.provider.template.not.exist"),
     SMS_TEMPLATE_RELATION_NOT_EXIST(32000026, "sms.template.relation.not.exist"),
     SMS_TEMPLATE_RELATION_ALREADY_EXIST(32000027, "sms.template.relation.already.exist"),
+    SMS_TEMPLATE_RELATION_PRIORITY_EXIST(32000028, "sms.template.relation.priority.exist"),
 
     /**
      * App 32000030 - 32000039
