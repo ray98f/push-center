@@ -17,7 +17,7 @@ public interface AppRoleService {
 
     AppRoleResDTO listAppRole(Integer appId);
 
-    void editAppRole(List<AppRoleResDTO> appRoleResDTOList);
+    void editAppRole(AppRoleResDTO appRoleResDTO);
 
     List<SendMode> listSendMode();
 

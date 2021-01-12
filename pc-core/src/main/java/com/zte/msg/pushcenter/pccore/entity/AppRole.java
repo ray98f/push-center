@@ -8,9 +8,13 @@ import java.util.List;
 @Data
 public class AppRole extends SendMode {
 
+    private Integer appRoleId;
+
     private Integer modeId;
 
     private Integer appId;
+
+    private Integer modeStatus;
 
     private List<TemplateResDTO> template;
 

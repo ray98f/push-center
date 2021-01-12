@@ -5,7 +5,7 @@
     <select id="listApp" resultType="com.zte.msg.pushcenter.pccore.entity.App" parameterType="com.zte.msg.pushcenter.pccore.dto.req.AppListReqDTO">
         select * from app where flag=0
         <if test="appId!=null">
-            and app_id=#{appId}
+            and id=#{appId}
         </if>
         <if test="status!=null">
             and status=#{status}
@@ -39,12 +39,12 @@
                 </if>
             </trim>
         </set>
-        where id=#{id} where flag=0
+        where id=#{id} and flag=0
     </update>
 
     <insert id="insertApp" parameterType="com.zte.msg.pushcenter.pccore.entity.App">
-        insert into app(app_name, app_key, app_secret, created_by, updated_by)
-        value(#{appName},#{appKey},#{appSecret},#{createdBy},#{updatedBy});
+        insert into app(app_name, app_key, app_secret, status, created_by, updated_by)
+        value(#{appName},#{appKey},#{appSecret},#{status},#{createdBy},#{updatedBy});
     </insert>
 
     <select id="selectAppId" resultType="java.lang.Integer" parameterType="java.lang.String">

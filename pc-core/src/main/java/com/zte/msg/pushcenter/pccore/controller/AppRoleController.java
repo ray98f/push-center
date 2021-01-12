@@ -46,13 +46,13 @@ public class AppRoleController {
     /**
      * 编辑第三方服务权限（有则修改，无则新增）
      *
-     * @param appRoleResDTOList 第三方服务编辑参数
+     * @param appRoleResDTO 第三方服务编辑参数
      * @return <T>
      */
     @PostMapping("/appRole")
     @ApiOperation(value = "编辑第三方服务权限")
-    public <T> DataResponse<T> editAppRole(@RequestBody @Valid List<AppRoleResDTO> appRoleResDTOList){
-        appRoleService.editAppRole(appRoleResDTOList);
+    public <T> DataResponse<T> editAppRole(@RequestBody @Valid AppRoleResDTO appRoleResDTO){
+        appRoleService.editAppRole(appRoleResDTO);
         return DataResponse.success();
     }
 
