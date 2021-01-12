@@ -46,12 +46,19 @@ public class AppRoleServiceImpl implements AppRoleService {
             for (AppRole appRoleTemplate : appRole) {
                 if (appRoleTemplate.getModeId() == 1) {
                     List<TemplateResDTO> templateResDTOList = appRoleMapper.selectTemplate(appRoleTemplate.getModeId(), appId);
-                    if (Objects.isNull(templateResDTOList) || 0 == templateResDTOList.size()){
-                        throw new CommonException(ErrorCode.RESOURCE_NOT_EXIST);
-                    }
                     List<SmsTemplate> smsTemplateList = templateService.getTemplateList();
                     if (Objects.isNull(smsTemplateList) || 0 == smsTemplateList.size()){
                         throw new CommonException(ErrorCode.RESOURCE_NOT_EXIST);
+                    }
+                    if (Objects.isNull(templateResDTOList) || 0 == templateResDTOList.size()) {
+                        for (SmsTemplate smsTemplate : smsTemplateList) {
+                            TemplateResDTO resDTO = new TemplateResDTO();
+                            resDTO.setId(smsTemplate.getId());
+                            resDTO.setContent(smsTemplate.getContent());
+                            templateResDTOList.add(resDTO);
+                        }
+                        appRoleTemplate.setTemplate(templateResDTOList);
+                        continue;
                     }
                     List<TemplateResDTO> resultTemplateResDTOList = new ArrayList<>(templateResDTOList);
                     List<SmsTemplate> resultSmsTemplateList = new ArrayList<>(smsTemplateList);
