@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.ProviderReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.ProviderResDTO;
-import com.zte.msg.pushcenter.pccore.model.ScriptModel;
-import com.zte.msg.pushcenter.pccore.model.SmsConfigDetailModel;
+import com.zte.msg.pushcenter.pccore.entity.Provider;
+import com.zte.msg.pushcenter.pccore.model.SmsConfigModel;
 
 import java.util.List;
 
@@ -61,8 +61,12 @@ public interface ProviderService {
                                       Integer status,
                                       PageReqDTO pageReqDTO);
 
-    List<ScriptModel> getScripts();
 
-    List<SmsConfigDetailModel> getAllSmsConfigForInit();
+    List<SmsConfigModel> getAllSmsConfigForInit();
 
+    List<SmsConfigModel> getSmsConfigForFlush(Long[] templateId);
+
+    List<Provider> getProviderByType(Integer type);
+
+    List<SmsConfigModel> getSmsConfigForFlush(List<Provider> providers);
 }

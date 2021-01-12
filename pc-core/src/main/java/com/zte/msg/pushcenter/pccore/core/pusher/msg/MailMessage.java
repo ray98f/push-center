@@ -1,7 +1,7 @@
 package com.zte.msg.pushcenter.pccore.core.pusher.msg;
 
+import com.zte.msg.pushcenter.pccore.core.pusher.base.Message;
 import com.zte.msg.pushcenter.pccore.dto.req.MailMessageReqDTO;
-import com.zte.msg.pushcenter.pccore.utils.UidUtils;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
@@ -29,6 +29,12 @@ public class MailMessage extends Message {
 
     private String content;
 
+    private Long appId;
+
+    private Timestamp transmitTime;
+
+    private Long providerId;
+
     /**
      * 抄送地址
      */
@@ -36,8 +42,6 @@ public class MailMessage extends Message {
 
     public MailMessage build(MailMessageReqDTO reqDTO) {
         BeanUtils.copyProperties(reqDTO, this);
-        this.setMessageId(UidUtils.getInstance().nextId());
-        this.setCreateTime(new Timestamp(System.currentTimeMillis()));
         return this;
     }
 

@@ -1,5 +1,6 @@
 package com.zte.msg.pushcenter.pccore.core.pusher.msg;
 
+import com.zte.msg.pushcenter.pccore.core.pusher.base.Message;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsMessageReqDTO;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +50,6 @@ public class SmsMessage extends Message {
 
     public SmsMessage build(SmsMessageReqDTO reqDTO) {
         BeanUtils.copyProperties(reqDTO, this);
-        this.setCreateTime(new Timestamp(System.currentTimeMillis()));
         return this;
     }
 }

@@ -9,6 +9,7 @@ import com.zte.msg.pushcenter.pccore.entity.SmsInfo;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.HistoryMapper;
+import com.zte.msg.pushcenter.pccore.mapper.MailInfoMapper;
 import com.zte.msg.pushcenter.pccore.mapper.SmsInfoMapper;
 import com.zte.msg.pushcenter.pccore.service.HistoryService;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,9 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Resource
     private SmsInfoMapper smsInfoMapper;
+
+    @Resource
+    private MailInfoMapper mailInfoMapper;
 
     @Override
     public PageInfo<SmsInfo> listHistorySms(SmsHistoryReqDTO smsHistoryReqDTO) {
@@ -64,5 +68,10 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public void addHistorySms(SmsInfo smsInfo) {
         smsInfoMapper.insert(smsInfo);
+    }
+
+    @Override
+    public void addHistoryMail(MailInfo mailInfo) {
+        mailInfoMapper.insert(mailInfo);
     }
 }

@@ -1,9 +1,7 @@
-package com.zte.msg.pushcenter.pccore.core.pusher.msg;
+package com.zte.msg.pushcenter.pccore.core.pusher.base;
 
 import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import lombok.Data;
-
-import java.sql.Timestamp;
 
 /**
  * description:
@@ -21,11 +19,6 @@ public class Message {
     private Long messageId;
 
     /**
-     * 消息创建时间
-     */
-    private Timestamp createTime;
-
-    /**
      * 是否需要回调
      */
     private Boolean isCallBack;
@@ -35,6 +28,9 @@ public class Message {
      */
     private String callBackUrl;
 
+    /**
+     * 推送方式
+     */
     private PushMethods pushMethod;
 
 }

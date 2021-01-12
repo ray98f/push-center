@@ -1,10 +1,11 @@
-package com.zte.msg.pushcenter.pccore.core.pusher;
+package com.zte.msg.pushcenter.pccore.core.pusher.base;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zte.msg.pushcenter.pccore.core.javac.CodeJavac;
-import com.zte.msg.pushcenter.pccore.core.pusher.msg.Message;
 import com.zte.msg.pushcenter.pccore.dto.DataResponse;
+import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import com.zte.msg.pushcenter.pccore.service.HistoryService;
+import com.zte.msg.pushcenter.pccore.service.ProviderService;
 import com.zte.msg.pushcenter.pcscript.PcScript;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * description:
@@ -27,6 +31,9 @@ import javax.annotation.Resource;
 @Slf4j
 @Service
 public abstract class BasePusher {
+
+    @Resource
+    protected ProviderService providerService;
 
     @Resource
     protected HistoryService historyService;
@@ -50,22 +57,32 @@ public abstract class BasePusher {
     protected CodeJavac scriptManager;
 
     /**
+     * pushMethods作为外层map的key，templateId作为内层map的key，priority作为最内层嵌套map的key,
+     *
+     * 对于没有模板的推送方式 providerId作为第二、三层map的key
+     */
+    protected Map<PushMethods, Map<Long, TreeMap<Integer, Config>>> configMap = new HashMap<>();
+
+    /**
      * 提交推送
      *
-     * @param message
-     * @return
+     * @param message message
      */
     public final void submit(Message message) {
         kafkaTemplate.send(kafkaTopic, JSONObject.toJSONString(message));
     }
 
-
+    /**
+     * 推送
+     *
+     * @param message message
+     */
     public abstract void push(Message message);
 
     /**
      * 回调
      *
-     * @param message
+     * @param message message
      */
     protected void response(Message message, PcScript.Res res) {
         if (!message.getIsCallBack()) {
@@ -80,8 +97,15 @@ public abstract class BasePusher {
     }
 
     /**
-     * 消息记录存库
+     * 存库
+     *
+     * @param message message
+     * @param res     res
      */
-//    @Scheduled(cron = "0 0/1 * * * ? ")
     abstract protected void persist(Message message, PcScript.Res res);
+
+    /**
+     * 配置及模版初始化
+     */
+    abstract protected void init();
 }

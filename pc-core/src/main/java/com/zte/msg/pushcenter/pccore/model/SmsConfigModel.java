@@ -10,7 +10,7 @@ import lombok.Data;
  * @date 2021/1/11 9:39
  */
 @Data
-public class SmsConfigDetailModel {
+public class SmsConfigModel {
 
     private long smsTemplateId;
 

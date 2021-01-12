@@ -1,10 +1,14 @@
 package com.zte.msg.pushcenter.pccore.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.zte.msg.pushcenter.pccore.core.pusher.msg.MailMessage;
+import com.zte.msg.pushcenter.pccore.mapper.AppMapper;
+import com.zte.msg.pushcenter.pcscript.PcScript;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
+import javax.annotation.Resource;
 import java.sql.Timestamp;
 
 @Data
@@ -12,7 +16,7 @@ import java.sql.Timestamp;
 public class MailInfo extends BaseEntity {
 
     @ApiModelProperty(value = "应用id")
-    private Integer appId;
+    private Long appId;
 
     @ApiModelProperty(value = "应用名称")
     private String appName;
@@ -43,4 +47,25 @@ public class MailInfo extends BaseEntity {
 
     @ApiModelProperty(value = "错误消息")
     private String failReason;
+
+    @Resource
+    private AppMapper appMapper;
+
+
+    public MailInfo(MailMessage mailMessage, PcScript.Res res) {
+        this.appId = mailMessage.getAppId();
+        this.appName = appMapper.selectAppName(appId);
+        this.receiveAddress = StringUtils.join(mailMessage.getTo(), ",");
+        this.ccAddress = StringUtils.join(mailMessage.getCc(), ",");
+        this.mailTitle = mailMessage.getSubject();
+        this.mailBody = mailMessage.getContent();
+        // TODO: 2021/1/12
+        this.providerName = "网易";
+        this.transmitTime = mailMessage.getTransmitTime();
+        this.result = res.getCode();
+        if (res.getCode() != 0) {
+            this.failCode = res.getCode();
+            this.failReason = res.getMessage();
+        }
+    }
 }
