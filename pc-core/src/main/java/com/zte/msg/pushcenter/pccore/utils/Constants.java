@@ -1,5 +1,7 @@
 package com.zte.msg.pushcenter.pccore.utils;
 
+import java.util.regex.Pattern;
+
 /**
  * description:
  *
@@ -8,6 +10,12 @@ package com.zte.msg.pushcenter.pccore.utils;
  * @date 2020/12/14 16:52
  */
 public class Constants {
+
+    public static final Pattern SMS_CONTENT_PATTERN_1 = Pattern.compile("\\{(.*?)}");
+
+    public static final Pattern SMS_CONTENT_PATTERN_2 = Pattern.compile("#(.*?)#");
+
+
 
     public static final String AUTHORIZATION = "Authorization";
 

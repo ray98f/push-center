@@ -131,6 +131,10 @@ public class ScriptFileManager implements JavaFileManager {
         return ret;
     }
 
+    public void remove(String name) {
+        buffers.remove(name);
+    }
+
     @SuppressWarnings("unchecked")
     private <T> T invokeNamedMethodIfAvailable(final Location location, final String name) {
         final Method[] methods = fileManager.getClass().getDeclaredMethods();

@@ -3,6 +3,7 @@ package com.zte.msg.pushcenter.pccore.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zte.msg.pushcenter.pccore.core.Flusher;
 import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.ProviderReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.ProviderResDTO;
@@ -10,8 +11,7 @@ import com.zte.msg.pushcenter.pccore.entity.Provider;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.ProviderMapper;
-import com.zte.msg.pushcenter.pccore.model.ScriptModel;
-import com.zte.msg.pushcenter.pccore.model.SmsConfigDetailModel;
+import com.zte.msg.pushcenter.pccore.model.SmsConfigModel;
 import com.zte.msg.pushcenter.pccore.service.ProviderService;
 import com.zte.msg.pushcenter.pccore.utils.PushConfigUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -19,10 +19,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * description:
@@ -36,14 +38,11 @@ import java.util.Objects;
 @Transactional(rollbackFor = Exception.class)
 public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> implements ProviderService {
 
-//    @Resource
-//    private CodeJavac codeJavac;
+    @Resource
+    private Flusher flusher;
 
     @Override
     public void addProvider(ProviderReqDTO providerReqDTO) {
-
-        // TODO: 2021/1/6  新增供应商时，需要刷新缓存的配置信息
-
 
         Integer integer = getBaseMapper().selectCount(new QueryWrapper<Provider>()
                 .eq("provider_name", providerReqDTO.getProviderName())
@@ -55,7 +54,8 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
         BeanUtils.copyProperties(providerReqDTO, provider);
         provider.setScriptTag(PushConfigUtils.getTag());
         getBaseMapper().insert(provider);
-//        codeJavac.scriptFlush(new ScriptModel(provider.getScriptTag(), provider.getScriptContext()));
+        // 刷新配置
+        flusher.flush(provider);
     }
 
     @Override
@@ -69,14 +69,21 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
         BeanUtils.copyProperties(providerReqDTO, provider);
         provider.setId(providerId);
         getBaseMapper().updateById(provider);
+        // 刷新配置
+        flusher.flush(provider);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteProvider(Long[] providerIds) {
 
         // TODO: 2021/1/7  删除时 需要判断provider下面是否有模版
+        List<Long> ids = Arrays.asList(providerIds);
+        List<Provider> providers = getBaseMapper().selectBatchIds(ids);
+        // 刷新配置
+        flusher.flush(providers, true);
+        getBaseMapper().deleteBatchIds(ids);
 
-        getBaseMapper().deleteBatchIds(Arrays.asList(providerIds));
     }
 
     @Override
@@ -122,12 +129,19 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
     }
 
     @Override
-    public List<ScriptModel> getScripts() {
-        return getBaseMapper().selectScripts();
+    public List<SmsConfigModel> getAllSmsConfigForInit() {
+        return getBaseMapper().selectAllSmsConfigForInit();
     }
 
     @Override
-    public List<SmsConfigDetailModel> getAllSmsConfigForInit() {
-        return getBaseMapper().selectAllSmsConfigForInit();
+    public List<Provider> getProviderByType(Integer type) {
+        return getBaseMapper().selectList(new QueryWrapper<Provider>().eq("type", type));
+    }
+
+    @Override
+    public List<SmsConfigModel> getSmsConfigForFlush(List<Provider> providers) {
+
+        List<Long> providerIds = providers.stream().map(Provider::getId).collect(Collectors.toList());
+        return getBaseMapper().selectSmsConfigForFlushByProviderIds(providerIds);
     }
 }

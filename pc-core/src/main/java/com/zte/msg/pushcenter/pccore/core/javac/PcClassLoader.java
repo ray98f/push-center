@@ -16,28 +16,6 @@ public class PcClassLoader extends ClassLoader {
 
     private Hashtable<String, ClassInfo> classInfos = new Hashtable<>();
 
-//    private String fullyName;
-//
-//    private byte[] data;
-//
-//    public PcClassLoader() {
-//
-//    }
-//
-//    public PcClassLoader(String name, byte[] data) {
-//        this.fullyName = name;
-//        this.data = data;
-//    }
-
-    //    @Override
-//    protected Class<?> findClass(String name) {
-//        Class<?> loadedClass = findLoadedClass(fullyName);
-//        if (Objects.isNull(loadedClass)) {
-//            return defineClass(fullyName, data, 0, data.length);
-//        }
-//        return loadedClass;
-//    }
-
     @Override
     protected Class<?> findClass(String name) {
         if (!classInfos.containsKey(name)) {

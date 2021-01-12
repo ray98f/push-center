@@ -54,7 +54,6 @@ public class SmsInfo extends BaseEntity {
     @ApiModelProperty(value = "状态时间")
     private Timestamp resultTime;
 
-
     @Resource
     private AppMapper appMapper;
 
@@ -69,7 +68,7 @@ public class SmsInfo extends BaseEntity {
 
         this.content = String.format(message.getContent()
                 .replaceAll("#.*?#", "%s")
-                .replaceAll("\\{.*?}", "%s"), message.getVars().values());
+                .replaceAll("\\{.*?}", "%s"), message.getVars().values().toArray());
 
         this.providerName = message.getProviderName();
 
@@ -88,4 +87,5 @@ public class SmsInfo extends BaseEntity {
             this.result = 1;
         }
     }
+
 }

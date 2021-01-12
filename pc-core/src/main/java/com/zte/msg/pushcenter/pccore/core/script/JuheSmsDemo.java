@@ -1,3 +1,5 @@
+package com.zte.msg.pushcenter.pccore.core.script;
+
 import com.alibaba.fastjson.JSONObject;
 import com.zte.msg.pushcenter.pcscript.PcScript;
 

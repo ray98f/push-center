@@ -104,6 +104,8 @@ public enum ErrorCode {
     SMS_PROVIDER_TEMPLATE_NOT_EXIST(32000025, "sms.provider.template.not.exist"),
     SMS_TEMPLATE_RELATION_NOT_EXIST(32000026, "sms.template.relation.not.exist"),
     SMS_TEMPLATE_RELATION_ALREADY_EXIST(32000027, "sms.template.relation.already.exist"),
+    SMS_TEMPLATE_RELATION_PRIORITY_EXIST(32000028, "sms.template.relation.priority.exist"),
+    SMS_TEMPLATE_PARAMS_NOT_MATCH(32000028, "sms.template.params.not.match"),
 
     /**
      * App 32000030 - 32000039
@@ -123,11 +125,8 @@ public enum ErrorCode {
      * 鉴权 32000060 - 32000079
      */
     USER_NOT_EXIST(32000060, "user.not.exist"),
-
     LOGIN_PASSWORD_ERROR(32000061, "login.password.error"),
-
     USER_PWD_CHANGE_FAIL(32000062, "user.pwd.change.fail"),
-
     APP_ROLE_EDIT_ERROR(32000063, "app.role.edit.error"),
 
     /**
@@ -135,7 +134,7 @@ public enum ErrorCode {
      */
     PROVIDER_ALREADY_EXIST(32000080, "provider.already.exist"),
     PROVIDER_NOT_EXIST(32000081, "provider.not.exist"),
-
+    PROVIDER_TYPE_NOT_CORRECT(32000082, "provider.type.not.correct"),
     /**
      * 脚本 32000090- 32000099
      */
@@ -145,19 +144,18 @@ public enum ErrorCode {
     /**
      * OpenApi签名校验
      */
-    OPENAPI_VERIFY_FAIL(32000100,"openapi.verify.fail"),
+    OPENAPI_VERIFY_FAIL(32000100, "openapi.verify.fail"),
 
     /**
      * 查询分页
      */
-    PAGE_PARAM_EMPTY(32000110,"page.param.empty"),
-    PAGE_PARAM_ERROR(32000111,"page.param.error"),
+    PAGE_PARAM_EMPTY(32000110, "page.param.empty"),
+    PAGE_PARAM_ERROR(32000111, "page.param.error"),
 
     /**
      * 其他
      */
-    SECRET_RESET_ERROR(32100000,"secret.reset.error")
-    ;
+    SECRET_RESET_ERROR(32100000, "secret.reset.error");
 
     private Integer code;
 

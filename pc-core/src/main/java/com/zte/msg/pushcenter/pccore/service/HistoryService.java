@@ -20,4 +20,6 @@ public interface HistoryService {
     PageInfo<MailInfo> listHistoryMail(MailHistoryReqDTO mailHistoryReqDTO);
 
     void addHistorySms(SmsInfo smsInfo);
+
+    void addHistoryMail(MailInfo mailInfo);
 }

@@ -2,6 +2,7 @@ package com.zte.msg.pushcenter.pccore.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.zte.msg.pushcenter.pccore.core.pusher.SmsPusher;
 import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateRelateProviderReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateRelateProviderUpdateReqDTO;
@@ -40,6 +41,9 @@ import java.util.*;
 public class TemplateServiceImpl implements TemplateService {
 
     @Resource
+    private SmsPusher smsPusher;
+
+    @Resource
     private SmsTemplateMapper smsTemplateMapper;
 
     @Resource
@@ -56,6 +60,9 @@ public class TemplateServiceImpl implements TemplateService {
         BeanUtils.copyProperties(smsTemplateReqDTO, smsTemplate);
         smsTemplate.setParams(params);
         smsTemplateMapper.insert(smsTemplate);
+
+        // 新增模版时，刷新内存中的模板信息
+        smsPusher.flushConfig(smsTemplate.getId());
     }
 
     @Override
@@ -65,11 +72,17 @@ public class TemplateServiceImpl implements TemplateService {
         smsTemplate.setId(templateId);
         smsTemplate.setParams(StringUtils.join(smsTemplateReqDTO.getParams(), ","));
         smsTemplateMapper.updateById(smsTemplate);
+
+        // 更新模板时，刷新内存中的模板信息
+        smsPusher.flushConfig(templateId);
     }
 
     @Override
     public void deleteSmsTemplate(Long[] templateIds) {
         smsTemplateMapper.deleteBatchIds(Arrays.asList(templateIds));
+
+        // 删除模板时，刷新内存中的模板信息
+        smsPusher.flushConfig(templateIds, true);
     }
 
     @Override
@@ -78,10 +91,14 @@ public class TemplateServiceImpl implements TemplateService {
         if (Objects.isNull(smsTemplateMapper.selectById(templateId))) {
             throw new CommonException(ErrorCode.SMS_TEMPLATE_NOT_EXIST);
         }
-        if (Objects.nonNull(smsTemplateRelationMapper.selectOne(new QueryWrapper<SmsTemplateRelation>()
+        if (smsTemplateRelationMapper.selectCount(new QueryWrapper<SmsTemplateRelation>()
                 .eq("sms_template_id", templateId)
-                .eq("provider_template_id", reqDTO.getPTemplateId())))) {
+                .eq("provider_template_id", reqDTO.getPTemplateId())) >= 1) {
 
+            throw new CommonException(ErrorCode.SMS_TEMPLATE_RELATION_ALREADY_EXIST);
+        }
+        if (smsTemplateRelationMapper.selectCount(new QueryWrapper<SmsTemplateRelation>()
+                .eq("priority", reqDTO.getPriority())) >= 0) {
             throw new CommonException(ErrorCode.SMS_TEMPLATE_RELATION_ALREADY_EXIST);
         }
         SmsTemplateRelation relation = new SmsTemplateRelation();
@@ -89,6 +106,9 @@ public class TemplateServiceImpl implements TemplateService {
         relation.setProviderTemplateId(reqDTO.getPTemplateId());
         relation.setSmsTemplateId(templateId);
         smsTemplateRelationMapper.insert(relation);
+
+        // 关联模板时，刷新内存中的模板信息
+        smsPusher.flushConfig(templateId);
     }
 
     @Override
@@ -100,6 +120,10 @@ public class TemplateServiceImpl implements TemplateService {
         if (Objects.isNull(relation)) {
             throw new CommonException(ErrorCode.SMS_TEMPLATE_NOT_EXIST);
         }
+        if (smsTemplateRelationMapper.selectCount(new QueryWrapper<SmsTemplateRelation>()
+                .eq("priority", reqDTO.getPriority())) >= 0) {
+            throw new CommonException(ErrorCode.SMS_TEMPLATE_RELATION_ALREADY_EXIST);
+        }
         ProviderSmsTemplate providerSmsTemplate = providerSmsTemplateRelateMapper.selectById(relation.getProviderTemplateId());
         providerSmsTemplate.setStatus(reqDTO.getStatus());
         providerSmsTemplateRelateMapper.updateById(providerSmsTemplate);
@@ -107,6 +131,9 @@ public class TemplateServiceImpl implements TemplateService {
         relation.setPriority(reqDTO.getPriority());
         relation.setSmsTemplateId(templateId);
         smsTemplateRelationMapper.updateById(relation);
+
+        // 关联模板时，刷新内存中的模板信息
+        smsPusher.flushConfig(templateId);
     }
 
     @Override
@@ -115,6 +142,9 @@ public class TemplateServiceImpl implements TemplateService {
             throw new CommonException(ErrorCode.SMS_TEMPLATE_NOT_EXIST);
         }
         smsTemplateRelationMapper.deleteBatchIds(Arrays.asList(ids));
+
+        // 删除关联模板时，更新配置，
+        smsPusher.flushConfig(templateId);
     }
 
     @Override
@@ -165,6 +195,9 @@ public class TemplateServiceImpl implements TemplateService {
         BeanUtils.copyProperties(smsTemplatePage, pageRes);
         List<Long> templateIds = new ArrayList<>();
         Map<Long, SmsTemplateDetailResDTO> smsTemplateMap = new HashMap<>();
+        if (templates.size() == 0) {
+            return pageRes;
+        }
         templates.forEach(o -> {
             SmsTemplateDetailResDTO smsTemplateDetailResDTO = new SmsTemplateDetailResDTO();
             templateIds.add(o.getId());

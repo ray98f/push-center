@@ -15,14 +15,18 @@ import javax.validation.constraints.NotNull;
  */
 @ApiModel
 @Data
-public class MailMessageReqDTO extends PushReqDTO{
+public class MailMessageReqDTO extends PushReqDTO {
 
     /**
      * 收件人地址
      */
     @ApiModelProperty(value = "收件人地址")
-    @NotNull(message = "32000020")
+    @NotNull(message = "32000006")
     private String[] to;
+
+    @ApiModelProperty(value = "消息平台id")
+    @NotNull(message = "32000006")
+    private Long providerId;
 
     /**
      * 主题
@@ -41,4 +45,5 @@ public class MailMessageReqDTO extends PushReqDTO{
      */
     @ApiModelProperty(value = "抄送地址")
     private String[] cc;
+
 }
