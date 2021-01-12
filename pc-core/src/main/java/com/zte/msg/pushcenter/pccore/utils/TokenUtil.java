@@ -59,7 +59,7 @@ public class TokenUtil {
     public static String getUuId() {
         String uuid = UUID.randomUUID().toString();
         //去掉“-”符号
-        return uuid.replaceAll("-", "");
+        return uuid.replaceAll("-", Constants.EMPTY);
     }
 
     /**
@@ -87,7 +87,7 @@ public class TokenUtil {
     public static String getTimestamp() {
         Date date = new Date();
         long time = date.getTime();
-        return (time + "");
+        return (time + Constants.EMPTY);
     }
 
     /**
@@ -99,8 +99,10 @@ public class TokenUtil {
         StringBuffer string = new StringBuffer();
         String[] hex = unicode.split("\\\\u");
         for (int i = 1; i < hex.length; i++) {
-            int data = Integer.parseInt(hex[i], 16);// 转换出每一个代码点
-            string.append((char) data);// 追加成string
+            // 转换出每一个代码点
+            int data = Integer.parseInt(hex[i], 16);
+            // 追加成string
+            string.append((char) data);
         }
         return string.toString();
     }
@@ -110,8 +112,7 @@ public class TokenUtil {
      */
     private static SecretKey generalKey(String stringKey) {
         byte[] encodedKey = Base64.decodeBase64(stringKey);
-        SecretKey key = Keys.hmacShaKeyFor(encodedKey);
-        return key;
+        return Keys.hmacShaKeyFor(encodedKey);
     }
 
     /**
@@ -123,7 +124,8 @@ public class TokenUtil {
      * @throws Exception Token校验失败
      */
     public static String createOpenApiToken(OpenApiTokenInfo item) throws Exception {
-        return createOpenApiToken(item, 60 * 60 * 2 * 1000); //默认token有效时间为2小时
+        //默认token有效时间为2小时
+        return createOpenApiToken(item, 60 * 60 * 2 * 1000);
     }
 
     /**
@@ -160,7 +162,7 @@ public class TokenUtil {
      * @param js 前端发送请求时所附带的String格式的json文件
      */
     public static OpenApiTokenInfo parseOpenApiToken(String js) throws JwtException {
-        if (js == null || "".equals(js)) {
+        if (js == null || Constants.EMPTY.equals(js)) {
             return null;
         }
         JSONObject jsStr = JSONObject.parseObject(js);
@@ -209,7 +211,7 @@ public class TokenUtil {
             e.printStackTrace();
         }
         // 401
-        if (authCode == null || "".equals(authCode) || openApiTokenInfo == null) {
+        if (authCode == null || Constants.EMPTY.equals(authCode) || openApiTokenInfo == null) {
             throw new CommonException(ErrorCode.AUTHORIZATION_CHECK_FAIL);
         }
         return openApiTokenInfo;
@@ -226,12 +228,12 @@ public class TokenUtil {
         TokenStatus result;
         Claims claims;
         String js = AesUtils.decrypt(authorization);
-        if (js == null || "".equals(js)) {
+        if (js == null || Constants.EMPTY.equals(js)) {
             return null;
         }
         JSONObject jsStr = JSONObject.parseObject(js);
-        String token = jsStr.getString("token");
-        String appSecret = jsStr.getString("appSecret");
+        String token = jsStr.getString(Constants.TOKEN_STRING);
+        String appSecret = jsStr.getString(Constants.APP_SECRET_STRING);
         try {
             claims = Jwts.parser()
                     .setSigningKey(appSecret)
@@ -243,8 +245,8 @@ public class TokenUtil {
             } else {
                 result = TokenStatus.VALID;
             }
-            String role = secretService.selectAppRole((String) claims.get("appKey"));
-            if (!role.equals((String) claims.get("role"))) {
+            String role = secretService.selectAppRole((String) claims.get(Constants.APP_KEY_STRING));
+            if (!role.equals((String) claims.get(Constants.ROLE_STRING))) {
                 result = TokenStatus.INVALID;
             }
         } catch (Exception e) {
@@ -327,7 +329,7 @@ public class TokenUtil {
             e.printStackTrace();
         }
         // 401
-        if (token == null || "".equals(token) || simpleTokenInfo == null) {
+        if (token == null || Constants.EMPTY.equals(token) || simpleTokenInfo == null) {
             throw new CommonException(ErrorCode.AUTHORIZATION_CHECK_FAIL);
         }
         return simpleTokenInfo;
@@ -370,10 +372,6 @@ public class TokenUtil {
         user.setUserName("frp");
         user.setUserRealName("冯锐鹏");
         System.out.println(createSimpleToken(user, 999999999));
-        System.out.println(getTimestamp());
-        System.out.println(Long.parseLong(getTimestamp()) + 60 * 5 * 1000);
-        System.out.println(Long.valueOf(TokenUtil.getTimestamp()).compareTo(Long.parseLong(getTimestamp()) + 60 * 5) > 0);
-        System.out.println(System.currentTimeMillis());
     }
 
 

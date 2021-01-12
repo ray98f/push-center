@@ -28,4 +28,14 @@ public class Constants {
     public static final Integer NOT_RELATED = 0;
 
     public static final Integer ALREADY_RELATED = 1;
+
+    public static final String EMPTY = "";
+
+    public static final String ROLE_STRING = "role";
+
+    public static final String APP_KEY_STRING = "appKey";
+
+    public static final String APP_SECRET_STRING = "appSecret";
+
+    public static final String TOKEN_STRING = "token";
 }
