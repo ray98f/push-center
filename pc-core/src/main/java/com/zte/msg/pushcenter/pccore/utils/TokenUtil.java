@@ -39,13 +39,13 @@ public class TokenUtil {
      * @param number int 需要获得的UUID数量
      * @return String[] UUID数组
      */
-    public static String[] getUUID(int number) {
+    public static String[] getUuId(int number) {
         if (number < 1) {
             return null;
         }
         String[] retArray = new String[number];
         for (int i = 0; i < number; i++) {
-            retArray[i] = getUUID();
+            retArray[i] = getUuId();
         }
         return retArray;
     }
@@ -56,7 +56,7 @@ public class TokenUtil {
      *
      * @return String UUID
      */
-    public static String getUUID() {
+    public static String getUuId() {
         String uuid = UUID.randomUUID().toString();
         //去掉“-”符号
         return uuid.replaceAll("-", "");
@@ -160,19 +160,21 @@ public class TokenUtil {
      * @param js 前端发送请求时所附带的String格式的json文件
      */
     public static OpenApiTokenInfo parseOpenApiToken(String js) throws JwtException {
-        if (js == null || js.equals("")) return null;
+        if (js == null || "".equals(js)) {
+            return null;
+        }
         JSONObject jsStr = JSONObject.parseObject(js);
         String token = jsStr.getString("token");
         String appKey = jsStr.getString("appKey");
         String appSecret = jsStr.getString("appSecret");
-        return openApiParseToken_(token, new OpenApiTokenInfo(null, null, appKey, appSecret, null));
+        return openApiParseToken(token, new OpenApiTokenInfo(null, null, appKey, appSecret, null));
     }
 
     /**
      * OpenApi
      * 验证令牌，成功则返还令牌所携带的信息
      */
-    private static OpenApiTokenInfo openApiParseToken_(String token, OpenApiTokenInfo info) throws JwtException {
+    private static OpenApiTokenInfo openApiParseToken(String token, OpenApiTokenInfo info) throws JwtException {
         Jws<Claims> jws;
         try {
             jws = Jwts.parser()
@@ -196,18 +198,18 @@ public class TokenUtil {
      * OpenApi
      * 获取开放平台登录信息
      *
-     * @param auth_code
+     * @param authCode
      * @return
      */
-    public static OpenApiTokenInfo getOpenApiTokenInfo(String auth_code) {
+    public static OpenApiTokenInfo getOpenApiTokenInfo(String authCode) {
         OpenApiTokenInfo openApiTokenInfo = null;
         try {
-            openApiTokenInfo = parseOpenApiToken(AesUtils.decrypt(auth_code));
+            openApiTokenInfo = parseOpenApiToken(AesUtils.decrypt(authCode));
         } catch (JwtException e) {
             e.printStackTrace();
         }
         // 401
-        if (auth_code == null || auth_code.equals("") || openApiTokenInfo == null) {
+        if (authCode == null || "".equals(authCode) || openApiTokenInfo == null) {
             throw new CommonException(ErrorCode.AUTHORIZATION_CHECK_FAIL);
         }
         return openApiTokenInfo;
@@ -224,7 +226,9 @@ public class TokenUtil {
         TokenStatus result;
         Claims claims;
         String js = AesUtils.decrypt(authorization);
-        if (js == null || js.equals("")) return null;
+        if (js == null || "".equals(js)) {
+            return null;
+        }
         JSONObject jsStr = JSONObject.parseObject(js);
         String token = jsStr.getString("token");
         String appSecret = jsStr.getString("appSecret");
@@ -291,7 +295,7 @@ public class TokenUtil {
      * Simple
      * 验证令牌，成功则返还令牌所携带的信息
      */
-    private static SimpleTokenInfo simpleParseToken_(String token) throws JwtException {
+    private static SimpleTokenInfo simpleParseToken(String token) throws JwtException {
         Jws<Claims> jws;
         try {
             jws = Jwts.parser()
@@ -318,12 +322,12 @@ public class TokenUtil {
     public static SimpleTokenInfo getSimpleTokenInfo(String token) {
         SimpleTokenInfo simpleTokenInfo = null;
         try {
-            simpleTokenInfo = simpleParseToken_(token);
+            simpleTokenInfo = simpleParseToken(token);
         } catch (JwtException e) {
             e.printStackTrace();
         }
         // 401
-        if (token == null || token.equals("") || simpleTokenInfo == null) {
+        if (token == null || "".equals(token) || simpleTokenInfo == null) {
             throw new CommonException(ErrorCode.AUTHORIZATION_CHECK_FAIL);
         }
         return simpleTokenInfo;
@@ -366,29 +370,6 @@ public class TokenUtil {
         user.setUserName("frp");
         user.setUserRealName("冯锐鹏");
         System.out.println(createSimpleToken(user, 999999999));
-//        String str = "{'appKey':'zte16087894621166JEad','appSecret':'eab79b7b882e434dbcaa48d2e35820a3OmZrHEaZegbtfdKa'," +
-//                "'token':'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJzZHNkc2RzIiwic3ViIjoiUmF5bWFuIiwiYXBwS2V5IjoienRlMTYwODc4OTQ2MjExNjZKRWFkIiwiYXBwU2VjcmV0IjoiZWFiNzliN2I4ODJlNDM0ZGJjYWE0OGQyZTM1ODIwYTNPbVpySEVhWmVnYnRmZEthIiwicm9sZSI6IkFBQTogdHJ1ZSwgQkJCOiBmYWxzZSIsImlhdCI6MTYwODg1ODM2MywiZXhwIjoxNjA4ODY1NTYzfQ.06NepZ0f5zUd0EpO6oWfL7a3ern4eW5DWZlf7xi1dPA'}";
-//        String s = "25MQjSMQzL83qfVq8my3hSjDfaA+6p4CHm4FceEFzM9mGN2r4C8/RcNg0zdiLbfBFmhaUBsbmgCtJYPqtSfaEB+aDpmDtM/N3dRNT+i0fsZisU+rEb7PcMl/89YgsusMEGogJQjfwHHtjj3x/Ym9g1zXtlKt7jmg58akTNQyXF3IjuNDEs1TMjEKAsMY1RuFbggmljj90L73yXwZ1vT5ygTgUclCJoFy1bfpQ/V7WrtPXlo9AErIUsB4ic38MkAR3fpiIkCs4lHIVCFcIfnvGwM/XYW/H2frSUuCmhNuU4tAfUhE2VSEf9FMIglZyaw490HHr75JHaAtoMWRP3FciY8J9i2uFIT70SKAd6IMAekXWweZXPATtILHiHd+oBN9Neoy69wbOufkmDPcv3sSjeEb0kWBwuPRze8Zx0mfl3X/CYusCMofymx9dhbdxDsVBb9ypZnPEYE9QIIz+aPZdjneWohLLfAFaWLAFpigacIZXTUJtD6xQpzh8D0vAQ5a";
-//        System.out.println(s);
-//        TokenStatus tokenStatus = verifyOpenApiToken(s);
-//        System.out.println(tokenStatus);
-//        OpenApiTokenInfo tokenInfo = getOpenApiTokenInfo(s);
-//        System.out.println(tokenInfo.getAppName());
-//        String id = "sdsdsds", name = "Rayman", role = "AAA: true, BBB: false";
-//        TokenInfo it = new TokenInfo(id, name, "zte16087894621166JEad","eab79b7b882e434dbcaa48d2e35820a3OmZrHEaZegbtfdKa", role);
-//        String token = CreateOpenApiToken(it);
-//        System.out.println("JsonWebToken = " + token);
-//        System.out.println(TokenUtil.getUUID() + TokenUtil.getRandomString(16));
-//        String id = "sdsdsds", name = "Rayman", role = "AAA: true, BBB: false";
-//        SimpleTokenInfo sti = new SimpleTokenInfo(id, name, role);
-//        String token = createSimpleToken(sti);
-//        System.out.println(token);
-//        String str = "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJzZHNkc2RzIiwic3ViIjoiUmF5bWFuIiwidXNlclJvbGUiOiJBQUE6IHRydWUsIEJCQjogZmFsc2UiLCJpYXQiOjE2MDg4ODE1NDcsImV4cCI6MTYwODg4ODc0N30.tkNMmCvx9Y4KH2nDnQQyh0hFwDPCf_mY9C3P-UZi9Bs";
-//        TokenStatus status = verifySimpleToken(str);
-//        System.out.println(status);
-//        SimpleTokenInfo simpleTokenInfo = getSimpleTokenInfo(str);
-//        System.out.println(simpleTokenInfo.getUserRole());
-//        System.out.println("ZTE" + getUUID() + getRandomString(13));
         System.out.println(getTimestamp());
         System.out.println(Long.parseLong(getTimestamp()) + 60 * 5 * 1000);
         System.out.println(Long.valueOf(TokenUtil.getTimestamp()).compareTo(Long.parseLong(getTimestamp()) + 60 * 5) > 0);

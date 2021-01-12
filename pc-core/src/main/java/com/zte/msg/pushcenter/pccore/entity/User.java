@@ -2,6 +2,9 @@ package com.zte.msg.pushcenter.pccore.entity;
 
 import lombok.Data;
 
+/**
+ * @author frp
+ */
 @Data
 public class User extends BaseEntity{
 

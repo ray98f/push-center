@@ -10,13 +10,16 @@ import org.springframework.util.DigestUtils;
 import javax.annotation.Resource;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * @author frp
+ */
 @Slf4j
 public class SignUtils {
 
     @Resource
     private static SecretService secretService;
 
-    private static String MD5(String str) {
+    private static String md5(String str) {
         return DigestUtils.md5DigestAsHex(str.getBytes(StandardCharsets.UTF_8));
     }
 
@@ -29,7 +32,7 @@ public class SignUtils {
         String s = JSON.toJSONString(view) + appId + requestTime;
         String secret = secretService.selectAppSecret(appId);
         s = secret + s + secret;
-        if (sign.equals(MD5(s))) {
+        if (sign.equals(md5(s))) {
             log.info("签名校验通过");
         } else {
             log.error("OpenApi 签名校验失败");

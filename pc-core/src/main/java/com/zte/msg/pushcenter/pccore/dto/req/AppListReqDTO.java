@@ -4,6 +4,9 @@ import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+/**
+ * @author frp
+ */
 @Data
 public class AppListReqDTO extends PageReqDTO {
 

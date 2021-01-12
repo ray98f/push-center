@@ -5,6 +5,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * @author frp
+ */
 @Data
 public class AppRoleResDTO {
     private Integer appId;

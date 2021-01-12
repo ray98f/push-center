@@ -57,10 +57,12 @@ public class JwtFilter implements Filter {
                 case EXPIRED:
                     request.setAttribute("filter.error", new CommonException(ErrorCode.AUTHORIZATION_IS_OVERDUE));
                     request.getRequestDispatcher("/error/exthrow").forward(request, response);
-                    //无效
+                    break;
+                //无效
                 default:
                     request.setAttribute("filter.error", new CommonException(ErrorCode.AUTHORIZATION_INVALID));
                     request.getRequestDispatcher("/error/exthrow").forward(request, response);
+                    break;
             }
         }
     }

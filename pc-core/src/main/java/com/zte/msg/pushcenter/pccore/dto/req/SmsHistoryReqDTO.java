@@ -10,6 +10,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
+/**
+ * @author frp
+ */
 @Data
 @ApiModel
 public class SmsHistoryReqDTO extends PageReqDTO {

@@ -29,12 +29,12 @@ public class GetuiTest {
         String url = "https://openapi-smsp.getui.com/v1/sps/push_sms_list";
         URL urlObj = new URL(url);
         URLConnection con = urlObj.openConnection();
-        HttpURLConnection httpURLConnection = (HttpURLConnection) con;
+        HttpURLConnection httpUrlConnection = (HttpURLConnection) con;
 
         //http头部
-        httpURLConnection.setRequestMethod("POST");
-        httpURLConnection.setDoOutput(true);
-        httpURLConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+        httpUrlConnection.setRequestMethod("POST");
+        httpUrlConnection.setDoOutput(true);
+        httpUrlConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
 
         String appId = "";
         JSONObject requestDataObject = new JSONObject();
@@ -54,7 +54,7 @@ public class GetuiTest {
 
         //建立连接，将数据写入内存
         OutputStreamWriter out = new
-                OutputStreamWriter(httpURLConnection.getOutputStream());
+                OutputStreamWriter(httpUrlConnection.getOutputStream());
         out.write(requestDataObject.toString());
         out.flush();
         out.close();
@@ -63,7 +63,7 @@ public class GetuiTest {
 
         //将数据发送给服务端，并获取返回结果
         in = new BufferedReader(new
-                InputStreamReader(httpURLConnection.getInputStream()));
+                InputStreamReader(httpUrlConnection.getInputStream()));
         String line;
         while ((line = in.readLine()) != null) {
             result += line;
@@ -76,12 +76,12 @@ public class GetuiTest {
         String url = "https://openapi-smsp.getui.com/v1/sps/auth_sign";
         URL urlObj = new URL(url);
         URLConnection con = urlObj.openConnection();
-        HttpURLConnection httpURLConnection = (HttpURLConnection) con;
+        HttpURLConnection httpUrlConnection = (HttpURLConnection) con;
 
         //http头部
-        httpURLConnection.setRequestMethod("POST");
-        httpURLConnection.setDoOutput(true);
-        httpURLConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+        httpUrlConnection.setRequestMethod("POST");
+        httpUrlConnection.setDoOutput(true);
+        httpUrlConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
         long timestamp = System.currentTimeMillis();
 
         //将个推短信服务提供的app对应的appkey和masterSecret，可自行替换
@@ -98,7 +98,7 @@ public class GetuiTest {
 
         //建立连接，将数据写入内存
         OutputStreamWriter out = new
-                OutputStreamWriter(httpURLConnection.getOutputStream());
+                OutputStreamWriter(httpUrlConnection.getOutputStream());
         out.write(requestDataObject.toString());
         out.flush();
         out.close();
@@ -107,7 +107,7 @@ public class GetuiTest {
         String result = "";
 
         //将数据发送给服务端，并获取返回结果
-        in = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+        in = new BufferedReader(new InputStreamReader(httpUrlConnection.getInputStream()));
         String line;
         while ((line = in.readLine()) != null) {
             result += line;

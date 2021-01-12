@@ -10,6 +10,9 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+/**
+ * @author ct
+ */
 @EnableSwagger2
 @SpringBootApplication
 @EnableConfigurationProperties

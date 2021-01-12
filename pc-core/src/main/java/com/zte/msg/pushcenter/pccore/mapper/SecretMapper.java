@@ -8,6 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * @author frp
+ */
 @Repository
 public interface SecretMapper extends BaseMapper<SecretKey> {
 
