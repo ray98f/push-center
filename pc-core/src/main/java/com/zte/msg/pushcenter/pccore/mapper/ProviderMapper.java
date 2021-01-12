@@ -97,7 +97,7 @@ public interface ProviderMapper extends BaseMapper<Provider> {
             "</foreach>",
             "</script>"
     })
-    List<SmsConfigModel> selectSmsConfigForFlush(@Param("ids") Long[] ids);
+    List<SmsConfigModel> selectSmsConfigForFlush(@Param("ids") List<Long> ids);
 
     @Select({
             "<script>",

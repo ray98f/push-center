@@ -20,7 +20,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.util.*;
@@ -38,11 +37,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class SmsPusher extends BasePusher {
 
-
-    @PostConstruct
     @Override
     public void init() {
-        List<SmsConfigModel> configDetails = providerService.getAllSmsConfigForInit();
+        configMap.put(PushMethods.SMS, new HashMap<>());
+        List<SmsConfigModel> configDetails = providerMapper.selectAllSmsConfigForInit();
         buildAndFlush(configDetails);
         log.info("==========initialize sms config completed : {} ==========", configDetails.size());
     }
@@ -142,7 +140,8 @@ public class SmsPusher extends BasePusher {
     }
 
     public void flushConfig(List<Provider> providers, boolean remove) {
-        List<SmsConfigModel> smsConfigForFlush = providerService.getSmsConfigForFlush(providers);
+        List<SmsConfigModel> smsConfigForFlush = providerMapper.selectSmsConfigForFlush(providers
+                .stream().map(Provider::getId).collect(Collectors.toList()));
         if (!remove) {
             buildAndFlush(smsConfigForFlush);
         } else {
@@ -166,7 +165,7 @@ public class SmsPusher extends BasePusher {
 
     public void flushConfig(Long[] templateIds, boolean remove) {
         if (!remove) {
-            List<SmsConfigModel> smsConfigForFlush = providerService.getSmsConfigForFlush(templateIds);
+            List<SmsConfigModel> smsConfigForFlush = providerMapper.selectSmsConfigForFlush(Arrays.asList(templateIds));
             buildAndFlush(smsConfigForFlush);
         } else {
             removeConfig(templateIds);

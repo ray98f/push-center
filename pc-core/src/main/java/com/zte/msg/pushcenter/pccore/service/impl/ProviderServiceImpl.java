@@ -134,11 +134,6 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
     }
 
     @Override
-    public List<SmsConfigModel> getSmsConfigForFlush(Long[] templateIds) {
-        return getBaseMapper().selectSmsConfigForFlush(templateIds);
-    }
-
-    @Override
     public List<Provider> getProviderByType(Integer type) {
         return getBaseMapper().selectList(new QueryWrapper<Provider>().eq("type", type));
     }

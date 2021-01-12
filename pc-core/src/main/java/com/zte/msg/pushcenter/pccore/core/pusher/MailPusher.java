@@ -1,6 +1,7 @@
 package com.zte.msg.pushcenter.pccore.core.pusher;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zte.msg.pushcenter.pccore.core.pusher.base.BasePusher;
 import com.zte.msg.pushcenter.pccore.core.pusher.base.Config;
 import com.zte.msg.pushcenter.pccore.core.pusher.base.Message;
@@ -11,20 +12,17 @@ import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.service.HistoryService;
-import com.zte.msg.pushcenter.pccore.utils.AesUtils;
 import com.zte.msg.pushcenter.pcscript.PcScript;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import javax.mail.internet.MimeMessage;
 import java.sql.Timestamp;
-import java.util.List;
-import java.util.Objects;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -38,9 +36,6 @@ import java.util.concurrent.CompletableFuture;
 @Component
 public class MailPusher extends BasePusher {
 
-    @Value("${spring.mail.username}")
-    private String from;
-
     @Resource
     private HistoryService historyService;
 
@@ -52,15 +47,20 @@ public class MailPusher extends BasePusher {
             MailConfig config = (MailConfig) configMap.get(PushMethods.MAIL)
                     .get(mailMessage.getProviderId()).get(mailMessage.getProviderId().intValue());
             JavaMailSenderImpl mailSender = buildMailSender(config);
-            SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-            simpleMailMessage.setFrom(AesUtils.decrypt(from));
-            simpleMailMessage.setTo(mailMessage.getTo());
-            simpleMailMessage.setSubject(mailMessage.getSubject());
-            simpleMailMessage.setText(mailMessage.getContent());
-            if (!Objects.isNull(mailMessage.getCc()) && mailMessage.getCc().length > 0) {
-                simpleMailMessage.setCc(mailMessage.getCc());
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            try {
+                MimeMessageHelper simpleMailMessage = new MimeMessageHelper(mimeMessage, true);
+                simpleMailMessage.setFrom(config.getUsername());
+                simpleMailMessage.setTo(mailMessage.getTo());
+                simpleMailMessage.setSubject(mailMessage.getSubject());
+                simpleMailMessage.setText(mailMessage.getContent());
+                if (!Objects.isNull(mailMessage.getCc()) && mailMessage.getCc().length > 0) {
+                    simpleMailMessage.setCc(mailMessage.getCc());
+                }
+                mailSender.send(mimeMessage);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            mailSender.send(simpleMailMessage);
             mailMessage.setTransmitTime(new Timestamp(System.currentTimeMillis()));
             return new PcScript.Res(0, "发送成功");
         }, pushExecutor).exceptionally(e -> {
@@ -78,7 +78,8 @@ public class MailPusher extends BasePusher {
 
     @Override
     protected void init() {
-        List<Provider> providers = providerService.getProviderByType(PushMethods.MAIL.value());
+        configMap.put(PushMethods.MAIL, new HashMap<>());
+        List<Provider> providers = providerMapper.selectList(new QueryWrapper<Provider>().eq("type", PushMethods.MAIL.value()));
         providers.forEach(this::flushConfig);
         log.info("========== initialize sms config completed : {}  ========== ", providers.size());
     }
@@ -121,13 +122,17 @@ public class MailPusher extends BasePusher {
     }
 
     public JavaMailSenderImpl buildMailSender(MailConfig mailConfig) {
-        JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
-        javaMailSender.setProtocol(mailConfig.getProtocol());
-        javaMailSender.setHost(mailConfig.getHost());
-        javaMailSender.setPort(mailConfig.getPort());
-        javaMailSender.setUsername(AesUtils.decrypt(mailConfig.getUsername()));
-        javaMailSender.setPassword(AesUtils.decrypt(mailConfig.getPassword()));
-        return javaMailSender;
+        JavaMailSenderImpl jms = new JavaMailSenderImpl();
+        jms.setProtocol(mailConfig.getProtocol());
+        jms.setHost(mailConfig.getHost());
+        jms.setPort(mailConfig.getPort());
+        jms.setUsername(mailConfig.getUsername());
+        jms.setPassword(mailConfig.getPassword());
+        jms.setDefaultEncoding("Utf-8");
+        Properties p = new Properties();
+        p.setProperty("mail.smtp.auth", "true");
+        jms.setJavaMailProperties(p);
+        return jms;
     }
 
 }

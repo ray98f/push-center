@@ -22,8 +22,9 @@ public class PatternUtils {
         }
         Matcher matcher1 = Constants.SMS_CONTENT_PATTERN_2.matcher(content);
         while (matcher1.find()) {
-            params.add(matcher.group(1));
+            params.add(matcher1.group(1));
         }
         return params;
     }
+
 }

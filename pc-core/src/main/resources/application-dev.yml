@@ -14,28 +14,28 @@ spring:
       login-timeout: 5
       maximum-pool-size: 60
       minimum-idle: 10
-  mail:
-    default-encoding: UTF-8
-    host: smtp.163.com
-    username: KRApxf1xDB7Ff2awefRQupp6wAAMfHTvRY3U0zkvNho=
-    password: eIMY+mFbPkujWgFNf6uOlF16JX2etFhgtc+1q3itb84=
-    port: 465
-    properties:
-      mail:
-        display:
-          sendmail: zte-rail
-        smtp:
-          auth: true
-          ssl:
-            enable: true
-          starttls:
-            enable: true
-            required: true
-          socketFactory:
-            port: 465
-            class: javax.net.ssl.SSLSocketFactory
-    protocol: smtps
-    test-connection: true
+#  mail:
+#    default-encoding: UTF-8
+#    host: smtp.163.com
+#    username: KRApxf1xDB7Ff2awefRQupp6wAAMfHTvRY3U0zkvNho=
+#    password: eIMY+mFbPkujWgFNf6uOlF16JX2etFhgtc+1q3itb84=
+#    port: 465
+#    properties:
+#      mail:
+#        display:
+#          sendmail: zte-rail
+#        smtp:
+#          auth: true
+#          ssl:
+#            enable: true
+#          starttls:
+#            enable: true
+#            required: true
+#          socketFactory:
+#            port: 465
+#            class: javax.net.ssl.SSLSocketFactory
+#    protocol: smtps
+#    test-connection: true
   kafka:
     bootstrap-servers: localhost:9092
     consumer:

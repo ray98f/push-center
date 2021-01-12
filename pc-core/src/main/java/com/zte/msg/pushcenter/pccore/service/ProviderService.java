@@ -64,8 +64,6 @@ public interface ProviderService {
 
     List<SmsConfigModel> getAllSmsConfigForInit();
 
-    List<SmsConfigModel> getSmsConfigForFlush(Long[] templateId);
-
     List<Provider> getProviderByType(Integer type);
 
     List<SmsConfigModel> getSmsConfigForFlush(List<Provider> providers);
