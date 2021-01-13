@@ -59,4 +59,64 @@
         </if>
     </select>
 
+    <select id="listHistoryWechat" resultType="com.zte.msg.pushcenter.pccore.entity.WechatInfo" parameterType="com.zte.msg.pushcenter.pccore.dto.req.WechatHistoryReqDTO">
+        select * from wechat_info
+        <if test="appId!=null or wechatName!=null or startTime!=null or endTime!=null or result!=null">
+            <trim prefix="where " suffixOverrides="and">
+                <if test="appId!=null">
+                    app_id=#{appId} and
+                </if>
+                <if test="startTime!=null">
+                    transmit_time >= #{startTime} and
+                </if>
+                <if test="endTime!=null">
+                    #{endTime} >= transmit_time and
+                </if>
+                <if test="result!=null">
+                    result=#{result} and
+                </if>
+            </trim>
+        </if>
+        group by id
+        <if test="appName!=null or wechatName!=null">
+            <trim prefix="having " suffixOverrides="and">
+                <if test="wechatName!=null">
+                    GROUP_CONCAT("|",wechat_name,"|",to_pinyin(wechat_name),"|",pinyin(Num_char_extract(wechat_name,3)),"|",Num_char_extract(wechat_name,2),"|") like "%"#{wechatName}"%" and
+                </if>
+                <if test="appName!=null">
+                    GROUP_CONCAT("|",app_name,"|",to_pinyin(app_name),"|",pinyin(Num_char_extract(app_name,3)),"|",Num_char_extract(app_name,2),"|") like "%"#{appName}"%" and
+                </if>
+            </trim>
+        </if>
+    </select>
+
+    <select id="listHistoryApplication" resultType="com.zte.msg.pushcenter.pccore.entity.ApplicationInfo" parameterType="com.zte.msg.pushcenter.pccore.dto.req.ApplicationHistoryReqDTO">
+        select * from application_info
+        <if test="appId!=null or targetPlatform!=null or applicationName!=null or startTime!=null or endTime!=null or result!=null">
+            <trim prefix="where " suffixOverrides="and">
+                <if test="appId!=null">
+                    app_id=#{appId} and
+                </if>
+                <if test="targetPlatform!=null">
+                    target_platform=#{targetPlatform}
+                </if>
+                <if test="applicationName!=null">
+                    application_name=#{applicationName}
+                </if>
+                <if test="startTime!=null">
+                    transmit_time >= #{startTime} and
+                </if>
+                <if test="endTime!=null">
+                    #{endTime} >= transmit_time and
+                </if>
+                <if test="result!=null">
+                    result=#{result} and
+                </if>
+            </trim>
+        </if>
+        group by id
+        <if test="appName!=null">
+            having GROUP_CONCAT("|",app_name,"|",to_pinyin(app_name),"|",pinyin(Num_char_extract(app_name,3)),"|",Num_char_extract(app_name,2),"|") like "%"#{appName}"%"
+        </if>
+    </select>
 </mapper>
