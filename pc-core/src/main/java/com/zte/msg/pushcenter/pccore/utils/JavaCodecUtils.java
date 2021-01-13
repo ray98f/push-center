@@ -15,6 +15,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public class JavaCodecUtils {
 
 
+    public static final String JAR = ".jar";
+
     public static String getJarFiles(String jarPath) {
         File sourceFile = new File(jarPath);
         AtomicReference<String> jars = new AtomicReference<>("");
@@ -26,7 +28,7 @@ public class JavaCodecUtils {
                         return true;
                     } else {
                         String name = pathname.getName();
-                        if (name.endsWith(".jar")) {
+                        if (name.endsWith(JAR)) {
                             jars.set(jars + pathname.getPath() + ";");
                             return true;
                         }
@@ -39,6 +41,9 @@ public class JavaCodecUtils {
     }
 
     public static String replaceCodeJavaName(String code, String replacement) {
+        if (StringUtils.isBlank(code)){
+            return null;
+        }
         int start = code.indexOf("public class");
         String substring = StringUtils.substring(code, start, StringUtils.ordinalIndexOf(code, "{", 1));
         return code.replaceAll(StringUtils.substring(substring,

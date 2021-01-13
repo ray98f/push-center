@@ -16,6 +16,8 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 public class SignUtils {
 
+    public static final int SIGN_DEADLINE = 5 * 60 * 1000;
+
     @Resource
     private static SecretService secretService;
 
@@ -24,7 +26,7 @@ public class SignUtils {
     }
 
     public static void verify(Object view, Integer appId, String requestTime, String sign) {
-        if (Long.valueOf(TokenUtil.getTimestamp()).compareTo(Long.parseLong(requestTime) + 5 * 60 * 1000) > 0) {
+        if (Long.valueOf(TokenUtil.getTimestamp()).compareTo(Long.parseLong(requestTime) + SIGN_DEADLINE) > 0) {
             log.error("请求失效，请重新发起请求");
             throw new RuntimeException("请求失效，请重新发起请求");
         }

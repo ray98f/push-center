@@ -32,6 +32,8 @@ public class TencentSmsDemo implements PcScript {
     private final static Charset UTF8 = StandardCharsets.UTF_8;
 
     private final static String CT_JSON = "application/json";
+    public static final String CODE = "Code";
+    public static final String OK = "Ok";
 
     public static byte[] hmac256(byte[] key, String msg) throws Exception {
         Mac mac = Mac.getInstance("HmacSHA256");
@@ -170,7 +172,7 @@ public class TencentSmsDemo implements PcScript {
 
         JSONObject error = (JSONObject) innerMap.get("Error");
         if (null != error) {
-            String code = error.getString("Code");
+            String code = error.getString(CODE);
             ErrorCodes errorCodes = ErrorCodes.find(code);
             return new Res(errorCodes.pcCode, errorCodes.message);
         }
@@ -179,8 +181,8 @@ public class TencentSmsDemo implements PcScript {
 
         JSONArray sendStatusSet = (JSONArray) Response.get("SendStatusSet");
         JSONObject sendStatus = (JSONObject) sendStatusSet.get(0);
-        if (!sendStatus.get("Code").toString().equals("Ok")) {
-            String code = sendStatus.get("Code").toString();
+        if (!sendStatus.get(CODE).toString().equals(OK)) {
+            String code = sendStatus.get(CODE).toString();
             ErrorCodes errorCodes = ErrorCodes.find(code);
             return new Res(errorCodes.pcCode, errorCodes.message);
         }

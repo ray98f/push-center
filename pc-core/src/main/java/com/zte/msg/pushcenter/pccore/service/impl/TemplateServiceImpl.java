@@ -204,7 +204,7 @@ public class TemplateServiceImpl implements TemplateService {
         Page<SmsTemplateDetailResDTO> pageRes = new Page<>();
         BeanUtils.copyProperties(smsTemplatePage, pageRes);
         List<Long> templateIds = new ArrayList<>();
-        Map<Long, SmsTemplateDetailResDTO> smsTemplateMap = new HashMap<>();
+        Map<Long, SmsTemplateDetailResDTO> smsTemplateMap = new HashMap<>(16);
         if (templates.size() == 0) {
             return pageRes;
         }

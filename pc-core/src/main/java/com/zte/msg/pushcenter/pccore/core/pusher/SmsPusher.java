@@ -50,7 +50,7 @@ public class SmsPusher extends BasePusher {
 
     @Override
     public void init() {
-        configMap.put(PushMethods.SMS, new HashMap<>());
+        configMap.put(PushMethods.SMS, new HashMap<>(16));
         List<SmsConfigModel> configDetails = providerMapper.selectAllSmsConfigForInit();
         buildAndFlush(configDetails);
         log.info("==========initialize sms config completed : {} ==========", configDetails.size());
@@ -94,7 +94,7 @@ public class SmsPusher extends BasePusher {
         for (int i = 0; i < smsConfigDetail.getParams().size(); i++) {
             smsMessage.getVars().put(smsConfigDetail.getParams().get(i), smsMessage.getVars().remove(varsKeySet[i]));
         }
-        Map<String, Object> mapAll = new HashMap<>();
+        Map<String, Object> mapAll = new HashMap<>(16);
         mapAll.putAll(MapUtils.objectToMap(smsConfigDetail));
         mapAll.putAll(MapUtils.objectToMap(smsMessage));
         mapAll.putAll(smsConfigDetail.getConfig().getInnerMap());

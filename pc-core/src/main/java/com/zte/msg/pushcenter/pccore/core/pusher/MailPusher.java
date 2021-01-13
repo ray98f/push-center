@@ -83,7 +83,7 @@ public class MailPusher extends BasePusher {
 
     @Override
     protected void init() {
-        configMap.put(PushMethods.MAIL, new HashMap<>());
+        configMap.put(PushMethods.MAIL, new HashMap<>(16));
         List<Provider> providers = providerMapper.selectList(new QueryWrapper<Provider>().eq("type", PushMethods.MAIL.value()));
         providers.forEach(this::flushConfig);
         log.info("========== initialize sms config completed : {}  ========== ", providers.size());

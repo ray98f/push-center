@@ -46,7 +46,7 @@ public class LoginController {
         userService.selectUserInfo(user);
         String token = createSimpleToken(user);
         log.info("{} Token返回成功", user.getUserName());
-        Map<String, Object> data = new HashMap<>();
+        Map<String, Object> data = new HashMap<>(16);
         data.put("token", token);
         log.info("登陆成功");
         return DataResponse.of(data);

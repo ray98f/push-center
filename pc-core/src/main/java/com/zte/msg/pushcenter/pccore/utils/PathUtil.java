@@ -16,6 +16,8 @@ import java.nio.file.Paths;
  */
 public class PathUtil {
 
+    public static final String WIN = "win";
+
     /**
      * 获取应用的home目录。
      * 例如：/Users/fusu/d/group/alibaba/fusu-share
@@ -43,7 +45,7 @@ public class PathUtil {
 
         //windows环境和其他环境路径有差异
         String osName = System.getProperties().getProperty("os.name");
-        if (osName.toLowerCase().startsWith("win")) {
+        if (osName.toLowerCase().startsWith(WIN)) {
             //win环境下去掉file:/
             inputFilePath = inputFilePath.substring(inputFilePath.indexOf("/") + 1);
         }
