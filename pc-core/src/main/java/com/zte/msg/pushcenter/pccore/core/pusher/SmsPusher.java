@@ -5,6 +5,7 @@ import com.zte.msg.pushcenter.pccore.core.pusher.base.BasePusher;
 import com.zte.msg.pushcenter.pccore.core.pusher.base.Config;
 import com.zte.msg.pushcenter.pccore.core.pusher.base.Message;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.SmsMessage;
+import com.zte.msg.pushcenter.pccore.core.script.TencentSmsDemo;
 import com.zte.msg.pushcenter.pccore.entity.Provider;
 import com.zte.msg.pushcenter.pccore.entity.SmsInfo;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
@@ -16,6 +17,7 @@ import com.zte.msg.pushcenter.pccore.model.SmsInfoModel;
 import com.zte.msg.pushcenter.pccore.service.AppService;
 import com.zte.msg.pushcenter.pccore.utils.MapUtils;
 import com.zte.msg.pushcenter.pccore.utils.PatternUtils;
+import com.zte.msg.pushcenter.pcscript.ParamConstants;
 import com.zte.msg.pushcenter.pcscript.PcScript;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +26,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -63,6 +64,7 @@ public class SmsPusher extends BasePusher {
             smsConfig.setConfig(JSONObject.parseObject(o.getConfig()));
             flushConfig(smsConfig);
         });
+        log.info("==========update sms config completed, update count {} ==========", smsConfigModels.size());
     }
 
     private void flushConfig(SmsConfig o) {
@@ -98,16 +100,18 @@ public class SmsPusher extends BasePusher {
         mapAll.putAll(smsConfigDetail.getConfig().getInnerMap());
         for (int i = 0; i < smsMessage.getPhoneNum().length; i++) {
             String phoneNum = smsMessage.getPhoneNum()[i];
-            mapAll.put("phoneNum", phoneNum);
+            mapAll.put(ParamConstants.PHONE_NUM, phoneNum);
             smsMessage.setIndex(i);
             CompletableFuture.supplyAsync(() -> {
                 log.info("==========submit sms push task==========");
                 PcScript.Res res = null;
                 try {
-                    Class<?> scriptClass = scriptManager.getScriptClass(smsConfigDetail.getScriptTag());
-                    Method execute = scriptClass.getMethod("execute", Map.class);
-                    Object o = scriptClass.newInstance();
-                    res = (PcScript.Res) execute.invoke(o, mapAll);
+//                    Class<?> scriptClass = scriptManager.getScriptClass(smsConfigDetail.getScriptTag());
+//                    Method execute = scriptClass.getMethod("execute", Map.class);
+//                    Object o = scriptClass.newInstance();
+//                    res = (PcScript.Res) execute.invoke(o, mapAll);
+                    TencentSmsDemo tencentSmsDemo = new TencentSmsDemo();
+                    tencentSmsDemo.execute(mapAll);
                 } catch (Exception e) {
                     res = new PcScript.Res(1, "系统内部错误");
                     e.printStackTrace();

@@ -96,9 +96,11 @@ public class TemplateServiceImpl implements TemplateService {
             throw new CommonException(ErrorCode.SMS_TEMPLATE_RELATION_ALREADY_EXIST);
         }
         if (smsTemplateRelationMapper.selectCount(new QueryWrapper<SmsTemplateRelation>()
-                .eq("priority", reqDTO.getPriority())) >= 0) {
-            throw new CommonException(ErrorCode.SMS_TEMPLATE_RELATION_ALREADY_EXIST);
+                .eq("priority", reqDTO.getPriority())) >= 1) {
+            throw new CommonException(ErrorCode.SMS_TEMPLATE_RELATION_PRIORITY_EXIST);
         }
+        // TODO: 2021/1/13  参数列表数量匹配的才能关联
+
         SmsTemplateRelation relation = new SmsTemplateRelation();
         relation.setPriority(reqDTO.getPriority());
         relation.setProviderTemplateId(reqDTO.getPTemplateId());
