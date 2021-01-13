@@ -1,6 +1,6 @@
 package com.zte.msg.pushcenter.pccore.dto.res;
 
-import com.zte.msg.pushcenter.pccore.entity.SmsTemplate;
+import com.zte.msg.pushcenter.pccore.entity.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -10,8 +10,14 @@ import lombok.Data;
  */
 @Data
 @ApiModel
-public class TemplateResDTO extends SmsTemplate {
+public class WechatTemplateResDTO extends BaseEntity {
 
     @ApiModelProperty(value = "应用模板权限Id")
     private Integer appRoleId;
+
+    @ApiModelProperty(value = "微信公众号名称")
+    private String wechatName;
+
+    @ApiModelProperty(value = "模板启用状态")
+    private Integer status;
 }
