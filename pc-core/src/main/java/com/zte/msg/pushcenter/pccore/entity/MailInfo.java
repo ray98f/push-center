@@ -49,7 +49,6 @@ public class MailInfo extends BaseEntity {
     @ApiModelProperty(value = "错误消息")
     private String failReason;
 
-
     public MailInfo(MailMessage mailMessage, PcScript.Res res) {
         this.appId = mailMessage.getAppId();
         this.appName = mailMessage.getAppName();
@@ -66,4 +65,5 @@ public class MailInfo extends BaseEntity {
             this.failReason = res.getMessage();
         }
     }
+
 }

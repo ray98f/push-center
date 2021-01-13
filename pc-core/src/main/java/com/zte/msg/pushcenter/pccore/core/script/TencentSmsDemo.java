@@ -1,5 +1,5 @@
-package com.zte.msg.pushcenter.pccore.core.script;
-
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zte.msg.pushcenter.pcscript.ParamConstants;
 import com.zte.msg.pushcenter.pcscript.PcScript;
@@ -7,9 +7,9 @@ import com.zte.msg.pushcenter.pcscript.PcScript;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -17,7 +17,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.TreeMap;
 
 /**
  * description:
@@ -28,6 +27,8 @@ import java.util.TreeMap;
  */
 public class TencentSmsDemo implements PcScript {
 
+    public static final int DEF_CONN_TIMEOUT = 30000;
+    public static final int DEF_READ_TIMEOUT = 30000;
     private final static Charset UTF8 = StandardCharsets.UTF_8;
 
     private final static String CT_JSON = "application/json";
@@ -45,10 +46,10 @@ public class TencentSmsDemo implements PcScript {
         return DatatypeConverter.printHexBinary(d).toLowerCase();
     }
 
-    public String buildCurl(Map<String, Object> params) {
+    public String net(Map<String, Object> params) {
         String secretId = params.get(ParamConstants.SECRET_ID).toString();
         String secretKey = params.get(ParamConstants.SECRET_KEY).toString();
-        String curl = "";
+        StringBuilder res = new StringBuilder();
         try {
             String service = "sms";
             String host = "sms.tencentcloudapi.com";
@@ -67,6 +68,7 @@ public class TencentSmsDemo implements PcScript {
             String canonicalQueryString = "";
             String canonicalHeaders = "content-type:application/json\n" + "host:" + host + "\n";
             String signedHeaders = "content-type;host";
+
             String payload = buildPayload(params);
             String hashedRequestPayload = sha256Hex(payload);
             String canonicalRequest = httpRequestMethod + "\n" + canonicalUri + "\n" + canonicalQueryString + "\n"
@@ -83,104 +85,102 @@ public class TencentSmsDemo implements PcScript {
             // ************* 步骤 4：拼接 Authorization *************
             String authorization = algorithm + " " + "Credential=" + secretId + "/" + credentialScope + ", "
                     + "SignedHeaders=" + signedHeaders + ", " + "Signature=" + signature;
-            TreeMap<String, String> headers = new TreeMap<String, String>();
-            headers.put("Authorization", authorization);
-            headers.put("Content-Type", CT_JSON);
-            headers.put("Host", host);
-            headers.put("X-TC-Action", action);
-            headers.put("X-TC-Timestamp", timestamp);
-            headers.put("X-TC-Version", version);
-            StringBuilder sb = new StringBuilder();
-            sb.append("curl -X POST https://").append(host)
-                    .append(" -H \"Authorization: ").append(authorization).append("\"")
-                    .append(" -H \"Content-Type: application/json\"")
-                    .append(" -H \"Host: ").append(host).append("\"")
-                    .append(" -H \"X-TC-Action: ").append(action).append("\"")
-                    .append(" -H \"X-TC-Timestamp: ").append(timestamp).append("\"")
-                    .append(" -H \"X-TC-Version: ").append(version).append("\"")
-                    .append(" -H \"X-TC-Language: ").append("zh-CN").append("\"")
-                    .append(" -d '").append(payload).append("'");
-            curl = sb.toString();
+            HttpURLConnection conn = null;
+            BufferedReader reader;
+//            StringBuilder sb = new StringBuilder();
+//            sb.append("curl -X POST https://").append(host)
+//                    .append(" -H \"Authorization: ").append(authorization).append("\"")
+//                    .append(" -H \"Content-Type: application/json\"")
+//                    .append(" -H \"Host: ").append(host).append("\"")
+//                    .append(" -H \"X-TC-Action: ").append(action).append("\"")
+//                    .append(" -H \"X-TC-Timestamp: ").append(timestamp).append("\"")
+//                    .append(" -H \"X-TC-Version: ").append(version).append("\"")
+//                    .append(" -H \"X-TC-Language: ").append("zh-CN").append("\"")
+//                    .append(" -d '").append(payload).append("'");
+//            curl = sb.toString();
+            try {
+                URL url = new URL("https://" + host);
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("POST");
+                conn.setUseCaches(false);
+                conn.setDoOutput(true);
+                conn.setDoInput(true);
+                conn.setConnectTimeout(DEF_CONN_TIMEOUT);
+                conn.setReadTimeout(DEF_READ_TIMEOUT);
+                conn.setInstanceFollowRedirects(false);
+                conn.setRequestProperty("Authorization", authorization);
+                conn.setRequestProperty("Content-Type", CT_JSON);
+                conn.setRequestProperty("Host", host);
+                conn.setRequestProperty("X-TC-Action", action);
+                conn.setRequestProperty("X-TC-Timestamp", timestamp);
+                conn.setRequestProperty("X-TC-Version", version);
+                conn.setRequestProperty("X-TC-Language", "zh-CN");
+                conn.connect();
+
+                OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+                writer.write(payload);
+                writer.flush();
+
+                InputStream is = conn.getInputStream();
+                reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+                String strRead;
+                while ((strRead = reader.readLine()) != null) {
+                    res.append(strRead);
+                }
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (conn != null) {
+                    conn.disconnect();
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return curl;
+        return res.toString();
     }
 
     private String buildPayload(Map<String, Object> params) {
 
-        Payload payload = new Payload();
-        payload.setPhoneNumberSet(new String[]{"+86" + params.get(ParamConstants.PHONE_NUM).toString()});
-        payload.setSign(params.get(ParamConstants.SIGN).toString());
-        payload.setSmsSdkAppid(params.get(ParamConstants.APP_ID).toString());
-        payload.setTemplateID(params.get(ParamConstants.TEMPLATE_ID).toString());
         Map<String, String> vars = (Map<String, String>) params.get(ParamConstants.VARS);
-        payload.setTemplateParamSet(vars.values().toArray(new String[]{}));
-        return JSONObject.toJSONString(payload);
+        return "{\"PhoneNumberSet\":[\"+86" +
+                params.get(ParamConstants.PHONE_NUM).toString() +
+                "\"],\"TemplateParamSet\":" +
+                JSON.toJSONString(vars.values()) +
+                ",\"TemplateID\":\"" +
+                params.get(ParamConstants.TEMPLATE_ID).toString() +
+                "\",\"SmsSdkAppid\":\"" +
+                params.get(ParamConstants.APP_ID).toString() +
+                "\",\"Sign\":\"" +
+                params.get(ParamConstants.SIGN).toString() +
+                "\"}";
     }
 
-    static class Payload {
-        /**
-         * PhoneNumberSet : ["+8618349342711"]
-         * TemplateParamSet : ["152525"]
-         * TemplateID : 821098
-         * SmsSdkAppid : 1400465545
-         * Sign : 中兴轨道通讯
-         */
-        private String TemplateID;
-        private String SmsSdkAppid;
-        private String Sign;
-        private String[] PhoneNumberSet;
-        private String[] TemplateParamSet;
-
-        public void setTemplateID(String templateID) {
-            TemplateID = templateID;
-        }
-
-        public void setSmsSdkAppid(String smsSdkAppid) {
-            SmsSdkAppid = smsSdkAppid;
-        }
-
-        public void setSign(String sign) {
-            Sign = sign;
-        }
-
-        public void setPhoneNumberSet(String[] phoneNumberSet) {
-            PhoneNumberSet = phoneNumberSet;
-        }
-
-        public void setTemplateParamSet(String[] templateParamSet) {
-            TemplateParamSet = templateParamSet;
-        }
-    }
 
     @Override
     public Res execute(Map<String, Object> params) {
-        String curl = buildCurl(params);
-        System.out.println(curl);
-        ProcessBuilder process = new ProcessBuilder(curl.split(" "));
-        Process p;
-        JSONObject resObj = null;
-        try {
-            p = process.start();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            StringBuilder builder = new StringBuilder();
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                builder.append(line);
-                builder.append(System.getProperty("line.separator"));
-            }
-            resObj = JSONObject.parseObject(builder.toString());
-            System.out.println(resObj);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (resObj == null) {
+        String res = net(params);
+        System.out.println(res);
+        if (res == null || "".equals(res)) {
             return new Res(-1, "未知错误");
         }
-        String error = resObj.getString("Error");
-        if (null != error && !"".equals(error)) {
-            String code = JSONObject.parseObject(error).getString("Code");
+
+        Map<String, Object> innerMap = JSONObject.parseObject(res).getInnerMap();
+
+        JSONObject error = (JSONObject) innerMap.get("Error");
+        if (null != error) {
+            String code = error.getString("Code");
+            ErrorCodes errorCodes = ErrorCodes.find(code);
+            return new Res(errorCodes.pcCode, errorCodes.message);
+        }
+
+        JSONObject Response = (JSONObject) innerMap.get("Response");
+
+        JSONArray sendStatusSet = (JSONArray) Response.get("SendStatusSet");
+        JSONObject sendStatus = (JSONObject) sendStatusSet.get(0);
+        if (!sendStatus.get("Code").toString().equals("Ok")) {
+            String code = sendStatus.get("Code").toString();
             ErrorCodes errorCodes = ErrorCodes.find(code);
             return new Res(errorCodes.pcCode, errorCodes.message);
         }
