@@ -11,6 +11,7 @@ import com.zte.msg.pushcenter.pccore.entity.Provider;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
+import com.zte.msg.pushcenter.pccore.service.AppService;
 import com.zte.msg.pushcenter.pccore.service.HistoryService;
 import com.zte.msg.pushcenter.pcscript.PcScript;
 import lombok.Data;
@@ -35,6 +36,9 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 @Component
 public class MailPusher extends BasePusher {
+
+    @Resource
+    private AppService appService;
 
     @Resource
     private HistoryService historyService;
@@ -72,6 +76,7 @@ public class MailPusher extends BasePusher {
     @Override
     protected void persist(Message message, PcScript.Res res) {
         MailMessage mailMessage = (MailMessage) message;
+        mailMessage.setAppName(appService.getAppName(mailMessage.getAppId()));
         MailInfo mailInfo = new MailInfo(mailMessage, res);
         historyService.addHistoryMail(mailInfo);
     }
@@ -84,12 +89,13 @@ public class MailPusher extends BasePusher {
         log.info("========== initialize sms config completed : {}  ========== ", providers.size());
     }
 
-    public void flushConfig(List<Provider> providers) {
-        flushConfig(providers, false);
-    }
+//    public void flushConfig(List<Provider> providers) {
+//        flushConfig(providers, false);
+//    }
 
     public void flushConfig(List<Provider> providers, boolean remove) {
         providers.forEach(o -> flushConfig(o, remove));
+
     }
 
     public void flushConfig(Provider provider) {
@@ -104,6 +110,7 @@ public class MailPusher extends BasePusher {
             }
             treeMap.put(provider.getId().intValue(), JSONObject.parseObject(provider.getConfig(), MailConfig.class));
             configMap.get(PushMethods.MAIL).put(provider.getId(), treeMap);
+
         }
     }
 

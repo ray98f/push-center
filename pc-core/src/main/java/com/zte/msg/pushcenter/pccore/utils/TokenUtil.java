@@ -330,7 +330,13 @@ public class TokenUtil {
     }
 
     public static String getCurrentUserName() {
-        return RequestHeaderContext.getInstance().getUser().getUserName();
+        String userName;
+        try {
+            userName = RequestHeaderContext.getInstance().getUser().getUserName();
+        } catch (Exception e) {
+            userName = "";
+        }
+        return userName;
     }
 
     /**

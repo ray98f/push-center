@@ -26,4 +26,6 @@ public interface AppService {
 
     void resetKey(String userName, Integer appId);
 
+    String getAppName(Long appId);
+
 }

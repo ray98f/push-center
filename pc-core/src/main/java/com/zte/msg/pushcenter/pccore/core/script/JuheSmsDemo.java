@@ -1,8 +1,10 @@
-package com.zte.msg.pushcenter.pccore.core.script;
-
 import com.alibaba.fastjson.JSONObject;
 import com.zte.msg.pushcenter.pcscript.PcScript;
 
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Map;
 
 
@@ -14,18 +16,30 @@ public class JuheSmsDemo implements PcScript {
 
     @Override
     public Res execute(Map<String, Object> params) {
-        System.out.println("phoneNum :" + params.get("phoneNum") + "; templateId: " + params.get("templateId") + "; params size: " + params.size());
         StringBuilder var = new StringBuilder();
         Map<String, String> vars = (Map<String, String>) params.get("vars");
         vars.forEach((k, v) -> var.append("#").append(k).append("#").append("=").append(v).append("&"));
         String url = "http://v.juhe.cn/sms/send?";
         StringBuilder url1 = new StringBuilder(url);
+        String encode = var.toString();
+        try {
+            encode = URLEncoder.encode(encode, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         url1.append("mobile").append("=").append(params.get("phoneNum"))
-                .append("&").append("tpl_id").append("=").append(params.get("sTemplateId"))
-                .append("&").append("tpl_value").append("=").append(var.toString())
+                .append("&").append("tpl_id").append("=").append(params.get("code"))
+                .append("&").append("tpl_value").append("=").append(encode)
                 .append("&").append("key").append("=").append(params.get("secretKey"));
-
         return parseResponse(net(url1.toString(), "GET"));
+    }
+
+    public static void main(String[] args) {
+        try {
+            System.out.println(URLEncoder.encode("#code#=12522&#m#=5&", "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -35,49 +49,38 @@ public class JuheSmsDemo implements PcScript {
      * @throws Exception
      */
     public static String net(String strUrl, String method) {
-//        HttpURLConnection conn = null;
-//        BufferedReader reader = null;
-//        String rs = null;
-//        StringBuilder sb = new StringBuilder();
-//        try {
-//            strUrl = strUrl.replaceAll("#", URLEncoder.encode("#", "UTF-8"));
-//            System.out.println(strUrl);
-//            URL url = new URL(strUrl);
-//            conn = (HttpURLConnection) url.openConnection();
-//            conn.setRequestMethod(method);
-//            conn.setRequestProperty("User-agent", userAgent);
-//            conn.setUseCaches(false);
-//            conn.setConnectTimeout(DEF_CONN_TIMEOUT);
-//            conn.setReadTimeout(DEF_READ_TIMEOUT);
-//            conn.setInstanceFollowRedirects(false);
-//            conn.connect();
-//            InputStream is = conn.getInputStream();
-//            reader = new BufferedReader(new InputStreamReader(is, DEF_CHATSET));
-//            String strRead = null;
-//            while ((strRead = reader.readLine()) != null) {
-//                sb.append(strRead);
-//            }
-//            rs = sb.toString();
-//            reader.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } finally {
-//            if (conn != null) {
-//                conn.disconnect();
-//            }
-//        }
-
-//        return rs;
-        return "{\n" +
-                "        \t\"reason\":\"操作成功\",\n" +
-                "        \t\"result\":{\n" +
-                "        \t\t\"sid\":\"1428ADC382FEDE59\",\n" +
-                "        \t\t\"fee\":1,\n" +
-                "        \t\t\"count\":1\n" +
-                "        \t},\n" +
-                "        \t\"error_code\":0\n" +
-                "        }";
-
+        HttpURLConnection conn = null;
+        BufferedReader reader = null;
+        String rs = null;
+        StringBuilder sb = new StringBuilder();
+        try {
+            System.out.println(strUrl);
+            URL url = new URL(strUrl);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod(method);
+            conn.setRequestProperty("User-agent", userAgent);
+            conn.setUseCaches(false);
+            conn.setConnectTimeout(DEF_CONN_TIMEOUT);
+            conn.setReadTimeout(DEF_READ_TIMEOUT);
+            conn.setInstanceFollowRedirects(false);
+            conn.connect();
+            InputStream is = conn.getInputStream();
+            reader = new BufferedReader(new InputStreamReader(is, DEF_CHATSET));
+            String strRead = null;
+            while ((strRead = reader.readLine()) != null) {
+                sb.append(strRead);
+            }
+            rs = sb.toString();
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                conn.disconnect();
+            }
+        }
+        System.out.println(rs);
+        return rs;
     }
 
 
@@ -104,6 +107,8 @@ public class JuheSmsDemo implements PcScript {
         ERROR_TEMPLATE_ID("205402", 32100002, "错误的模版id"),
 
         NET_ERROR("205403", 32100003, "网络错误"),
+
+        TEMPLATE_VAR_NOR_FORMAT("205404", 32100006, "模版变量不符合规范"),
 
         EXCEED_LIMIT("205405", 32100004, "号码异常/同一号码发送次数过于频繁"),
 

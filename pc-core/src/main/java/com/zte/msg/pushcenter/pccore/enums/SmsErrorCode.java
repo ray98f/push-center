@@ -17,7 +17,9 @@ public enum SmsErrorCode {
 
     EXCEED_LIMIT(32100004, "同一号码发送次数过于频繁"),
 
-    AUTH_FAIL(32100005, "第三方服务鉴权失败");
+    AUTH_FAIL(32100005, "第三方服务鉴权失败"),
+
+    TEMPLATE_NOT_FORMAT(32100006, "模版变量不符合规范");
 
     private Integer code;
 

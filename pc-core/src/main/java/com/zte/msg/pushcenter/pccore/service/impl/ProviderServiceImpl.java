@@ -8,9 +8,14 @@ import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.ProviderReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.ProviderResDTO;
 import com.zte.msg.pushcenter.pccore.entity.Provider;
+import com.zte.msg.pushcenter.pccore.entity.ProviderSmsTemplate;
+import com.zte.msg.pushcenter.pccore.entity.SmsTemplateRelation;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
+import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.ProviderMapper;
+import com.zte.msg.pushcenter.pccore.mapper.ProviderSmsTemplateMapper;
+import com.zte.msg.pushcenter.pccore.mapper.SmsTemplateRelationMapper;
 import com.zte.msg.pushcenter.pccore.model.SmsConfigModel;
 import com.zte.msg.pushcenter.pccore.service.ProviderService;
 import com.zte.msg.pushcenter.pccore.utils.PushConfigUtils;
@@ -41,6 +46,12 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
     @Resource
     private Flusher flusher;
 
+    @Resource
+    private ProviderSmsTemplateMapper providerSmsTemplateMapper;
+
+    @Resource
+    private SmsTemplateRelationMapper smsTemplateRelationMapper;
+
     @Override
     public void addProvider(ProviderReqDTO providerReqDTO) {
 
@@ -52,7 +63,9 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
         }
         Provider provider = new Provider();
         BeanUtils.copyProperties(providerReqDTO, provider);
-        provider.setScriptTag(PushConfigUtils.getTag());
+        if (PushMethods.valueOf(providerReqDTO.getType()) != PushMethods.MAIL) {
+            provider.setScriptTag(PushConfigUtils.getTag());
+        }
         getBaseMapper().insert(provider);
         // 刷新配置
         flusher.flush(provider);
@@ -67,6 +80,9 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
         }
         Provider provider = new Provider();
         BeanUtils.copyProperties(providerReqDTO, provider);
+        if (PushMethods.valueOf(providerReqDTO.getType()) != PushMethods.MAIL) {
+            provider.setScriptTag(PushConfigUtils.getTag());
+        }
         provider.setId(providerId);
         getBaseMapper().updateById(provider);
         // 刷新配置
@@ -77,10 +93,22 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
     @Transactional(rollbackFor = Exception.class)
     public void deleteProvider(Long[] providerIds) {
 
-        // TODO: 2021/1/7  删除时 需要判断provider下面是否有模版
+        List<ProviderSmsTemplate> providerSmsTemplates = providerSmsTemplateMapper.selectList(new QueryWrapper<ProviderSmsTemplate>()
+                .in("provider_id", Arrays.asList(providerIds)));
+
+        List<Long> providerSmsTemplateIds = providerSmsTemplates.stream()
+                .map(ProviderSmsTemplate::getId).collect(Collectors.toList());
+        // 删除消息平台表中的模版
+        providerSmsTemplateMapper.deleteBatchIds(providerSmsTemplateIds);
+
+        // 删除短信关联映射表中的数据
+        smsTemplateRelationMapper.delete(new QueryWrapper<SmsTemplateRelation>()
+                .in("provider_template_id", providerSmsTemplateIds));
+
         List<Long> ids = Arrays.asList(providerIds);
         List<Provider> providers = getBaseMapper().selectBatchIds(ids);
-        // 刷新配置
+
+        // 刷新脚本和配置
         flusher.flush(providers, true);
         getBaseMapper().deleteBatchIds(ids);
 

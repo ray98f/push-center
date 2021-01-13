@@ -14,7 +14,7 @@ import com.zte.msg.pushcenter.pccore.entity.SmsTemplate;
 import com.zte.msg.pushcenter.pccore.entity.SmsTemplateRelation;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
-import com.zte.msg.pushcenter.pccore.mapper.PlatformSmsTemplateMapper;
+import com.zte.msg.pushcenter.pccore.mapper.ProviderSmsTemplateMapper;
 import com.zte.msg.pushcenter.pccore.mapper.SmsTemplateMapper;
 import com.zte.msg.pushcenter.pccore.mapper.SmsTemplateRelationMapper;
 import com.zte.msg.pushcenter.pccore.model.SmsTemplateRelationModel;
@@ -47,7 +47,7 @@ public class TemplateServiceImpl implements TemplateService {
     private SmsTemplateMapper smsTemplateMapper;
 
     @Resource
-    private PlatformSmsTemplateMapper providerSmsTemplateRelateMapper;
+    private ProviderSmsTemplateMapper providerSmsTemplateRelateMapper;
 
     @Resource
     private SmsTemplateRelationMapper smsTemplateRelationMapper;

@@ -18,6 +18,7 @@ import java.security.Key;
  */
 @Slf4j
 public class AesUtils {
+
     /**
      * 加密方式
      */

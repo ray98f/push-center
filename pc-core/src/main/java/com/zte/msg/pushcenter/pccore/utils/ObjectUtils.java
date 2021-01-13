@@ -1,15 +1,15 @@
 package com.zte.msg.pushcenter.pccore.utils;
 
+import com.alibaba.fastjson.JSON;
+import com.zte.msg.pushcenter.pccore.dto.req.SmsMessageReqDTO;
+import lombok.extern.slf4j.Slf4j;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.alibaba.fastjson.JSON;
-import com.zte.msg.pushcenter.pccore.dto.req.SmsMessageReqDTO;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class ObjectUtils {
@@ -79,7 +79,7 @@ public class ObjectUtils {
         map.put("bbb","fengruipeng");
         map.put("ccc","chenshengpu");
         smsMessageReqDTO.setVars(map);
-        smsMessageReqDTO.setAppId(12);
+        smsMessageReqDTO.setAppId(12L);
         smsMessageReqDTO.setTemplateId(3L);
         System.out.println(JSON.toJSONString(smsMessageReqDTO));
 //        SignView signView = new SignView(new SmsMessageReqDTO(), TokenUtil.getTimestamp(),"");

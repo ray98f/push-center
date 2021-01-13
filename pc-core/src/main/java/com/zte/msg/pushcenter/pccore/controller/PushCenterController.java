@@ -30,7 +30,7 @@ import java.util.Objects;
  * @date 2020/12/10 13:57
  */
 @RestController
-@RequestMapping("/api/openapi/v1/push")
+@RequestMapping("/api/open/v1/push")
 @Api(tags = "消息推送")
 @Validated
 public class PushCenterController {

@@ -28,7 +28,9 @@ public class JwtFilter implements Filter {
     /**
      * 排除拦截的请求
      */
-    private final String[] excludedPages = {"/api/v1/login", "/api/v1/openapi/token"};
+    private final String[] excludedPages = {"/api/v1/login",
+            "/api/v1/openapi/token"
+    };
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {

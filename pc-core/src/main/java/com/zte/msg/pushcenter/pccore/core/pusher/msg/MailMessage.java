@@ -31,6 +31,8 @@ public class MailMessage extends Message {
 
     private Long appId;
 
+    private String appName;
+
     private Timestamp transmitTime;
 
     private Long providerId;

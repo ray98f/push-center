@@ -1,14 +1,12 @@
 package com.zte.msg.pushcenter.pccore.entity;
 
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.MailMessage;
-import com.zte.msg.pushcenter.pccore.mapper.AppMapper;
 import com.zte.msg.pushcenter.pcscript.PcScript;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.annotation.Resource;
 import java.sql.Timestamp;
 
 @Data
@@ -48,13 +46,10 @@ public class MailInfo extends BaseEntity {
     @ApiModelProperty(value = "错误消息")
     private String failReason;
 
-    @Resource
-    private AppMapper appMapper;
-
 
     public MailInfo(MailMessage mailMessage, PcScript.Res res) {
         this.appId = mailMessage.getAppId();
-        this.appName = appMapper.selectAppName(appId);
+        this.appName = mailMessage.getAppName();
         this.receiveAddress = StringUtils.join(mailMessage.getTo(), ",");
         this.ccAddress = StringUtils.join(mailMessage.getCc(), ",");
         this.mailTitle = mailMessage.getSubject();

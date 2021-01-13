@@ -23,7 +23,7 @@ public class Constants {
 
     public static String ZTE_NAME = "zte";
 
-    public static final String OPENAPI_URL = "/api/openapi/v1/";
+    public static final String OPENAPI_URL = "/api/open/v1/";
 
     public static final Integer NOT_RELATED = 0;
 

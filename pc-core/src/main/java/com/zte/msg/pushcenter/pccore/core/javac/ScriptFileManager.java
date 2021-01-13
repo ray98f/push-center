@@ -33,6 +33,10 @@ public class ScriptFileManager implements JavaFileManager {
         return invokeNamedMethodIfAvailable(location, "inferModuleName");
     }
 
+    public StandardJavaFileManager getFileManager() {
+        return fileManager;
+    }
+
     @Override
     public ClassLoader getClassLoader(Location location) {
         return fileManager.getClassLoader(location);

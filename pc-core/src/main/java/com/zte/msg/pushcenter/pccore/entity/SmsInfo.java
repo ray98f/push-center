@@ -1,13 +1,9 @@
 package com.zte.msg.pushcenter.pccore.entity;
 
-import com.zte.msg.pushcenter.pccore.core.pusher.msg.SmsMessage;
-import com.zte.msg.pushcenter.pccore.mapper.AppMapper;
-import com.zte.msg.pushcenter.pcscript.PcScript;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.annotation.Resource;
 import java.sql.Timestamp;
 
 /**
@@ -40,7 +36,7 @@ public class SmsInfo extends BaseEntity {
     private String providerName;
 
     @ApiModelProperty(value = "模板id")
-    private String templateId;
+    private Long templateId;
 
     @ApiModelProperty(value = "发送状态")
     private Integer result;
@@ -54,38 +50,5 @@ public class SmsInfo extends BaseEntity {
     @ApiModelProperty(value = "状态时间")
     private Timestamp resultTime;
 
-    @Resource
-    private AppMapper appMapper;
-
-    public SmsInfo(SmsMessage message, PcScript.Res res) {
-        this.appId = message.getAppId();
-
-        this.appName = appMapper.selectAppName(this.appId);
-
-        this.phoneNum = message.getPhoneNum()[message.getIndex()];
-
-        this.transmitTime = message.getTransmitTime();
-
-        this.content = String.format(message.getContent()
-                .replaceAll("#.*?#", "%s")
-                .replaceAll("\\{.*?}", "%s"), message.getVars().values().toArray());
-
-        this.providerName = message.getProviderName();
-
-        this.templateId = message.getCode();
-
-        this.failCode = res.getCode();
-
-        this.failReason = res.getMessage();
-
-        // TODO: 2021/1/11
-//        this.resultTime =
-
-        if (res.getCode() == 0) {
-            this.result = 0;
-        } else {
-            this.result = 1;
-        }
-    }
 
 }

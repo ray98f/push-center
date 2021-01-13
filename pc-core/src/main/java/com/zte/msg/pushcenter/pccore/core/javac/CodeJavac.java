@@ -12,10 +12,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.tools.*;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * description:
@@ -59,43 +56,39 @@ public class CodeJavac {
     }
 
     public void scriptFlush(ScriptModel o, boolean remove) {
-        if (StringUtils.isAnyBlank(o.getScriptTag(), o.getScriptContext())) {
+        if (StringUtils.isBlank(o.getScriptTag()) | StringUtils.isBlank(o.getScriptContext())) {
             return;
         }
-        if (!remove) {
+        scriptFileManager.remove(o.getScriptTag());
+        if (!remove && allBuffers.containsKey(o.getScriptTag())) {
+            getTask(Collections.singletonList(o));
+        }
+        allBuffers = scriptFileManager.getAllBuffers();
+        log.info("========== compilation script : {} ==========", allBuffers.size());
+    }
+
+    private void getTask(List<ScriptModel> scriptModels) {
+        scriptModels.forEach(o -> {
             Iterable<? extends JavaFileObject> compilationUnits = new ArrayList<JavaFileObject>() {{
                 add(new JavaSourceFromString(o.getScriptTag(), JavaCodecUtils.replaceCodeJavaName(o.getScriptContext(), o.getScriptTag())));
             }};
-            getTask(compilationUnits);
-        } else {
-            scriptFileManager.remove(o.getScriptTag());
-        }
-        allBuffers = scriptFileManager.getAllBuffers();
-    }
-
-    private void getTask(Iterable<? extends JavaFileObject> compilationUnits) {
-        boolean ok = javaCompiler.getTask(errorStringWriter, scriptFileManager, diagnostic -> {
-            if (diagnostic.getKind() == Diagnostic.Kind.ERROR) {
-                errorStringWriter.append(diagnostic.toString());
+            boolean ok = javaCompiler.getTask(errorStringWriter, scriptFileManager, diagnostic -> {
+                if (diagnostic.getKind() == Diagnostic.Kind.ERROR) {
+                    errorStringWriter.append(diagnostic.toString());
+                }
+            }, options, null, compilationUnits).call();
+            if (!ok) {
+                String errorMessage = errorStringWriter.toString();
+                log.error("Compile Error:{}" + errorMessage);
             }
-        }, options, null, compilationUnits).call();
-        if (!ok) {
-            String errorMessage = errorStringWriter.toString();
-            log.error("Compile Error:{}" + errorMessage);
-        }
+        });
+        allBuffers = scriptFileManager.getAllBuffers();
+        log.info("========== compilation script : {} ==========", allBuffers.size());
     }
 
     public void scriptFlush(List<ScriptModel> scripts, boolean remove) {
         if (!remove) {
-            Iterable<? extends JavaFileObject> compilationUnits = new ArrayList<JavaFileObject>() {{
-                scripts.forEach(o -> {
-                    if (!StringUtils.isAnyBlank(o.getScriptContext(), o.getScriptTag())) {
-                        add(new JavaSourceFromString(o.getScriptTag(),
-                                JavaCodecUtils.replaceCodeJavaName(o.getScriptContext(), o.getScriptTag())));
-                    }
-                });
-            }};
-            getTask(compilationUnits);
+            getTask(scripts);
         } else {
             scripts.forEach(o -> scriptFileManager.remove(o.getScriptTag()));
         }

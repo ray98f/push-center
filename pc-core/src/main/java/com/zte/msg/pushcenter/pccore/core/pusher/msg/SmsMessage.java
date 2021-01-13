@@ -46,6 +46,8 @@ public class SmsMessage extends Message {
 
     private Timestamp transmitTime;
 
+    private String appName;
+
     private Map<String, String> vars;
 
     public SmsMessage build(SmsMessageReqDTO reqDTO) {

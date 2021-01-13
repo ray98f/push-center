@@ -18,7 +18,7 @@ import java.sql.Timestamp;
 @ApiModel
 public class ProviderSmsTemplateResDTO {
 
-    @ApiModelProperty(value = "第三方模版id")
+    @ApiModelProperty(value = "消息平台模版id")
     private Long id;
 
     @ApiModelProperty(value = "关联关系id")

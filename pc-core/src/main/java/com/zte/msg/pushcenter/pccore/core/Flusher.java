@@ -6,6 +6,7 @@ import com.zte.msg.pushcenter.pccore.core.pusher.SmsPusher;
 import com.zte.msg.pushcenter.pccore.entity.Provider;
 import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import com.zte.msg.pushcenter.pccore.model.ScriptModel;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -20,6 +21,7 @@ import java.util.List;
  * @date 2021/1/12 14:23
  */
 @Component
+@Slf4j
 public class Flusher {
 
     @Resource
@@ -47,8 +49,13 @@ public class Flusher {
             scriptModels.add(scriptModel);
         });
         codeJavac.scriptFlush(scriptModels, remove);
-
         providers.forEach(o -> flushConfig(o, remove));
+        if (!remove) {
+            log.info("========== update mail config completed, update count: {} ==========", providers.size());
+        }
+        if (remove) {
+            log.info("========== delete mail config completed, delete count: {} ==========", providers.size());
+        }
     }
 
     private void flushConfig(Provider provider, boolean remove) {
@@ -60,6 +67,7 @@ public class Flusher {
                 break;
             case MAIL:
                 mailPusher.flushConfig(provider, remove);
+
                 break;
             case WECHAT:
                 // TODO: 2021/1/12

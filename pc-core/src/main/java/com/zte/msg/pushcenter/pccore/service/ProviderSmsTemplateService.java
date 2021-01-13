@@ -28,7 +28,8 @@ public interface ProviderSmsTemplateService {
                                    ProviderSmsTemplateReqDTO smsTemplateReqDTO);
 
     void deleteSmsProviderTemplate(Long providerId,
-                                   Long providerSmsTemplateId);
+                                   Long[] providerSmsTemplateIds);
 
     List<ProviderSmsTemplateResDTO> getProviderSmsTemplatesByProviderId(Long providerId);
+
 }

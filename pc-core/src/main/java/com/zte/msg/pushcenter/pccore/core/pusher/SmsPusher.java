@@ -10,7 +10,10 @@ import com.zte.msg.pushcenter.pccore.entity.SmsInfo;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
+import com.zte.msg.pushcenter.pccore.mapper.ProviderSmsTemplateMapper;
 import com.zte.msg.pushcenter.pccore.model.SmsConfigModel;
+import com.zte.msg.pushcenter.pccore.model.SmsInfoModel;
+import com.zte.msg.pushcenter.pccore.service.AppService;
 import com.zte.msg.pushcenter.pccore.utils.MapUtils;
 import com.zte.msg.pushcenter.pccore.utils.PatternUtils;
 import com.zte.msg.pushcenter.pcscript.PcScript;
@@ -20,6 +23,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.util.*;
@@ -36,6 +40,12 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class SmsPusher extends BasePusher {
+
+    @Resource
+    private AppService appService;
+
+    @Resource
+    private ProviderSmsTemplateMapper providerSmsTemplateMapper;
 
     @Override
     public void init() {
@@ -119,12 +129,17 @@ public class SmsPusher extends BasePusher {
     @Override
     @Transactional(rollbackFor = Exception.class)
     protected void persist(Message message, PcScript.Res res) {
-
-        SmsMessage smsMessage = (SmsMessage) message;
-        SmsInfo smsInfo = new SmsInfo(smsMessage, res);
-        historyService.addHistorySms(smsInfo);
+        try {
+            SmsMessage smsMessage = (SmsMessage) message;
+            smsMessage.setAppName(appService.getAppName(smsMessage.getAppId()));
+            SmsInfoModel smsInfoModel = new SmsInfoModel(smsMessage, res);
+            SmsInfo smsInfo = new SmsInfo();
+            BeanUtils.copyProperties(smsInfoModel, smsInfo);
+            historyService.addHistorySms(smsInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         System.out.println("========== Sms message persist ==========");
-
     }
 
     public void flushConfig(Provider provider) {
@@ -140,7 +155,7 @@ public class SmsPusher extends BasePusher {
     }
 
     public void flushConfig(List<Provider> providers, boolean remove) {
-        List<SmsConfigModel> smsConfigForFlush = providerMapper.selectSmsConfigForFlush(providers
+        List<SmsConfigModel> smsConfigForFlush = providerMapper.selectSmsConfigForFlushByProviderIds(providers
                 .stream().map(Provider::getId).collect(Collectors.toList()));
         if (!remove) {
             buildAndFlush(smsConfigForFlush);

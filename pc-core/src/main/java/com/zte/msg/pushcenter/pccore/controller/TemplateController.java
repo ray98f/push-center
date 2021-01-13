@@ -128,14 +128,14 @@ public class TemplateController {
         return DataResponse.success();
     }
 
-    @DeleteMapping(value = "/provider/sms/{providerId}/{providerSmsTemplateId}")
+    @DeleteMapping(value = "/provider/sms/{providerId}")
     @ApiOperation(value = "【消息平台配置】- 短信模版配置 - 删除")
     public <T> DataResponse<T> deleteSmsProviderTemplate(@PathVariable("providerId")
                                                          @ApiParam("消息平台id") Long providerId,
-                                                         @PathVariable("providerSmsTemplateId")
-                                                         @ApiParam("消息平台短信模版id") Long providerSmsTemplateId) {
+                                                         @RequestParam
+                                                         @ApiParam("消息平台短信模版id") Long[] providerSmsTemplateIds) {
 
-        providerSmsTemplateService.deleteSmsProviderTemplate(providerId, providerSmsTemplateId);
+        providerSmsTemplateService.deleteSmsProviderTemplate(providerId, providerSmsTemplateIds);
 
         return DataResponse.success();
     }

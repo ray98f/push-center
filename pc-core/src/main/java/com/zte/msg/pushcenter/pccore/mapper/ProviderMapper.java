@@ -29,13 +29,14 @@ public interface ProviderMapper extends BaseMapper<Provider> {
             " script_tag, " +
             " script_context  " +
             "FROM " +
-            " provider  " +
+            " provider p " +
             "WHERE " +
             " flag = 0  " +
             " AND ISNULL( script_tag ) = 0  " +
             " AND LENGTH( trim( script_tag ) ) > 0  " +
             " AND ISNULL( script_context ) = 0  " +
-            " AND LENGTH( trim( script_context ) ) >0")
+            " AND LENGTH( trim( script_context ) ) >0" +
+            " AND p.flag = 0 ")
     List<ScriptModel> selectScripts();
 
     @Select("SELECT " +

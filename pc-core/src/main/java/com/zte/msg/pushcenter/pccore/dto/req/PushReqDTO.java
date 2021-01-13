@@ -23,7 +23,7 @@ public class PushReqDTO {
 
     @ApiModelProperty(value = "调用者id", required = true)
     @NotNull(message = "32000006")
-    private Integer appId;
+    private Long appId;
 
     @ApiModelProperty(value = "是否需要回调, true or false")
     @NotNull(message = "32000006")

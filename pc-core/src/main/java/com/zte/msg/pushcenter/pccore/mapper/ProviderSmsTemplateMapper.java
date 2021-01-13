@@ -10,7 +10,7 @@ import com.zte.msg.pushcenter.pccore.entity.ProviderSmsTemplate;
  * @version 1.0
  * @date 2021/1/6 14:56
  */
-public interface PlatformSmsTemplateMapper extends BaseMapper<ProviderSmsTemplate> {
+public interface ProviderSmsTemplateMapper extends BaseMapper<ProviderSmsTemplate> {
 
 
 }

@@ -48,7 +48,7 @@ public class ProviderController {
 
     @DeleteMapping
     @ApiOperation(value = "【消息平台配置】- 删除")
-    public <T> DataResponse<T> deleteProvider(@PathVariable Long[] ids) {
+    public <T> DataResponse<T> deleteProvider(@RequestParam Long[] ids) {
         providerService.deleteProvider(ids);
         return DataResponse.success();
     }

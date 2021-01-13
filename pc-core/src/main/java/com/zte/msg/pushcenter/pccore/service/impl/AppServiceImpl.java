@@ -4,7 +4,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zte.msg.pushcenter.pccore.dto.req.AppListReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.App;
-import com.zte.msg.pushcenter.pccore.entity.SecretKey;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.AppMapper;
@@ -122,6 +121,11 @@ public class AppServiceImpl implements AppService {
             log.error("重置密钥失败");
             throw new CommonException(ErrorCode.SECRET_RESET_ERROR);
         }
+    }
+
+    @Override
+    public String getAppName(Long appId) {
+        return appMapper.selectAppName(appId);
     }
 
 }

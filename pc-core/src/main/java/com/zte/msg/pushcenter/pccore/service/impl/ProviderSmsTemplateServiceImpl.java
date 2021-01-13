@@ -5,16 +5,20 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zte.msg.pushcenter.pccore.dto.req.ProviderSmsTemplateReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.ProviderSmsTemplateResDTO;
 import com.zte.msg.pushcenter.pccore.entity.ProviderSmsTemplate;
+import com.zte.msg.pushcenter.pccore.entity.SmsTemplateRelation;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
-import com.zte.msg.pushcenter.pccore.mapper.PlatformSmsTemplateMapper;
+import com.zte.msg.pushcenter.pccore.mapper.ProviderSmsTemplateMapper;
+import com.zte.msg.pushcenter.pccore.mapper.SmsTemplateRelationMapper;
 import com.zte.msg.pushcenter.pccore.service.ProviderService;
 import com.zte.msg.pushcenter.pccore.service.ProviderSmsTemplateService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,11 +30,14 @@ import java.util.Objects;
  * @date 2021/1/7 15:56
  */
 @Service
-public class ProviderSmsTemplateServiceImpl extends ServiceImpl<PlatformSmsTemplateMapper, ProviderSmsTemplate>
+public class ProviderSmsTemplateServiceImpl extends ServiceImpl<ProviderSmsTemplateMapper, ProviderSmsTemplate>
         implements ProviderSmsTemplateService {
 
     @Resource
     private ProviderService providerService;
+
+    @Resource
+    private SmsTemplateRelationMapper smsTemplateRelationMapper;
 
     @Override
     public void addSmsProviderTemplate(Long providerId, ProviderSmsTemplateReqDTO smsTemplateReqDTO) {
@@ -56,15 +63,17 @@ public class ProviderSmsTemplateServiceImpl extends ServiceImpl<PlatformSmsTempl
     }
 
     @Override
-    public void deleteSmsProviderTemplate(Long providerId, Long providerSmsTemplateId) {
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteSmsProviderTemplate(Long providerId, Long[] providerSmsTemplateIds) {
 
+        List<Long> pstIds = Arrays.asList(providerSmsTemplateIds);
         if (Objects.isNull(providerService.getProviderById(providerId))) {
             throw new CommonException(ErrorCode.PROVIDER_NOT_EXIST);
         }
-        if (Objects.isNull(getBaseMapper().selectById(providerSmsTemplateId))) {
-            throw new CommonException(ErrorCode.SMS_TEMPLATE_NOT_EXIST);
-        }
-        getBaseMapper().deleteById(providerSmsTemplateId);
+        getBaseMapper().deleteBatchIds(pstIds);
+        // 删除该消息平台模版和消息中心模版关联关系
+        pstIds.forEach(o -> smsTemplateRelationMapper.delete(new QueryWrapper<SmsTemplateRelation>()
+                .eq("provider_template_id", o)));
     }
 
     @Override
