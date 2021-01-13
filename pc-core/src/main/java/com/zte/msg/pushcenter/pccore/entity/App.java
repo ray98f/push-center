@@ -3,6 +3,9 @@ package com.zte.msg.pushcenter.pccore.entity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+/**
+ * @author frp
+ */
 @Data
 public class App extends BaseEntity{
 

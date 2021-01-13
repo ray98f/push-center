@@ -2,10 +2,14 @@ package com.zte.msg.pushcenter.pccore.controller;
 
 import com.zte.msg.pushcenter.pccore.dto.DataResponse;
 import com.zte.msg.pushcenter.pccore.dto.PageResponse;
+import com.zte.msg.pushcenter.pccore.dto.req.ApplicationHistoryReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.MailHistoryReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsHistoryReqDTO;
+import com.zte.msg.pushcenter.pccore.dto.req.WechatHistoryReqDTO;
+import com.zte.msg.pushcenter.pccore.entity.ApplicationInfo;
 import com.zte.msg.pushcenter.pccore.entity.MailInfo;
 import com.zte.msg.pushcenter.pccore.entity.SmsInfo;
+import com.zte.msg.pushcenter.pccore.entity.WechatInfo;
 import com.zte.msg.pushcenter.pccore.service.HistoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,5 +47,15 @@ public class HistoryController {
         return PageResponse.of(historyService.listHistoryMail(mailHistoryReqDTO));
     }
 
+    @PostMapping("/wechat")
+    @ApiOperation(value = "查询微信公众号发送历史")
+    public PageResponse<WechatInfo> listHistoryWechat(@Valid @RequestBody WechatHistoryReqDTO wechatHistoryReqDTO){
+        return PageResponse.of(historyService.listHistoryWechat(wechatHistoryReqDTO));
+    }
 
+    @PostMapping("/application")
+    @ApiOperation(value = "查询App应用发送历史")
+    public PageResponse<ApplicationInfo> listHistoryApplication(@Valid @RequestBody ApplicationHistoryReqDTO applicationHistoryReqDTO){
+        return PageResponse.of(historyService.listHistoryApplication(applicationHistoryReqDTO));
+    }
 }

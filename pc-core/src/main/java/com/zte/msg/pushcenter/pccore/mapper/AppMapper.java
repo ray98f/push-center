@@ -10,6 +10,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * @author frp
+ */
 @Mapper
 @Repository
 public interface AppMapper extends BaseMapper<App> {

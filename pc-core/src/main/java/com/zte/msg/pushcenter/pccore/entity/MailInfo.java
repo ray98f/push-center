@@ -9,6 +9,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.sql.Timestamp;
 
+/**
+ * @author frp
+ */
 @Data
 @ApiModel
 public class MailInfo extends BaseEntity {

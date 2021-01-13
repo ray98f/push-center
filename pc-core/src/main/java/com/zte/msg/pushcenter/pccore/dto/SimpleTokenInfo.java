@@ -2,6 +2,9 @@ package com.zte.msg.pushcenter.pccore.dto;
 
 import lombok.Data;
 
+/**
+ * @author frp
+ */
 @Data
 public class SimpleTokenInfo {
     private String userId;

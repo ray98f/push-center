@@ -2,28 +2,27 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zte.msg.pushcenter.pccore.mapper.AppRoleMapper">
     <select id="selectApp" resultType="com.zte.msg.pushcenter.pccore.dto.res.AppRoleResDTO">
-        SELECT distinct ar.app_id,a.app_name FROM app_role as ar
-        left join app as a on a.id=ar.app_id and a.flag=0 where ar.flag=0 and ar.app_id=#{appId};
+        SELECT id as app_id,app_name FROM app where flag=0 and id=#{appId};
     </select>
     
     <select id="selectAppMode" resultType="com.zte.msg.pushcenter.pccore.entity.AppRole">
-        SELECT distinct ar.mode_id,r.mode_name FROM app_role as ar
-        left join send_mode as r on r.id=ar.mode_id and r.flag=0 where ar.app_id=#{appId} and ar.flag=0;
+        SELECT distinct r.id as mode_id,if(count(ar.id)>1,null,ar.id) as app_role_id,r.mode_name,if(min(ar.status) is null,1,ar.status) as mode_status FROM send_mode as r
+        left join app_role as ar on r.id=ar.mode_id and r.flag=0 and ar.flag=0 and ar.app_id=#{appId} group by r.id
     </select>
 
     <select id="selectTemplate" resultType="com.zte.msg.pushcenter.pccore.dto.res.TemplateResDTO">
         select ar.id as app_role_id,ar.template_id as id,t.content,ar.status from app_role as ar
-        left join sms_template as t on ar.template_id=t.id and t.flag=0 where ar.mode_id=#{modeId} and ar.flag=0
+        left join sms_template as t on ar.template_id=t.id and t.flag=0 where ar.mode_id=#{modeId} and ar.app_id=#{appId} and ar.flag=0
     </select>
 
     <insert id="editAppRole" parameterType="com.zte.msg.pushcenter.pccore.dto.res.AppRoleResDTO">
-        <foreach collection="list" item="item" index="index" separator=";">
-            <foreach collection="item.sendMode" index="index" item="sendMode" separator=";">
+        <foreach collection="sendMode" index="index" item="sendMode" separator=";">
+            <if test="sendMode.modeId==1">
                 <foreach collection="sendMode.template" item="template" index="index" separator=";">
                     insert into app_role
                     <trim prefix="(" suffix=")" suffixOverrides=",">
                         <if test="template.appRoleId!=null">id,</if>
-                        <if test="item.appId!=null">app_id,</if>
+                        <if test="appId!=null">app_id,</if>
                         <if test="sendMode.modeId!=null">mode_id,</if>
                         <if test="template.id!=null">template_id,</if>
                         <if test="template.status!=null">status,</if>
@@ -31,18 +30,38 @@
                     values
                     <trim prefix="(" suffix=")" suffixOverrides=",">
                         <if test="template.appRoleId!=null">#{template.appRoleId},</if>
-                        <if test="item.appId!=null">#{item.appId},</if>
+                        <if test="appId!=null">#{appId},</if>
                         <if test="sendMode.modeId!=null">#{sendMode.modeId},</if>
                         <if test="template.id!=null">#{template.id},</if>
                         <if test="template.status!=null">#{template.status},</if>
                     </trim>
                     ON DUPLICATE KEY UPDATE
-                        app_id=#{item.appId},
-                        mode_id=#{sendMode.modeId},
-                        template_id=#{template.id},
-                        status=#{template.status}
+                    app_id=#{appId},
+                    mode_id=#{sendMode.modeId},
+                    template_id=#{template.id},
+                    status=#{template.status}
                 </foreach>
-            </foreach>
+            </if>
+            <if test="sendMode.modeId!=1">
+                insert into app_role
+                <trim prefix="(" suffix=")" suffixOverrides=",">
+                    <if test="sendMode.appRoleId!=null">id,</if>
+                    <if test="appId!=null">app_id,</if>
+                    <if test="sendMode.modeId!=null">mode_id,</if>
+                    <if test="sendMode.modeStatus!=null">status,</if>
+                </trim>
+                values
+                <trim prefix="(" suffix=")" suffixOverrides=",">
+                    <if test="sendMode.appRoleId!=null">#{sendMode.appRoleId},</if>
+                    <if test="appId!=null">#{appId},</if>
+                    <if test="sendMode.modeId!=null">#{sendMode.modeId},</if>
+                    <if test="sendMode.modeStatus!=null">#{sendMode.modeStatus},</if>
+                </trim>
+                ON DUPLICATE KEY UPDATE
+                app_id=#{appId},
+                mode_id=#{sendMode.modeId},
+                status=#{sendMode.modeStatus}
+            </if>
         </foreach>
     </insert>
 

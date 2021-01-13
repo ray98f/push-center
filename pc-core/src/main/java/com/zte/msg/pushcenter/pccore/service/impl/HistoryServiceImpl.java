@@ -2,10 +2,14 @@ package com.zte.msg.pushcenter.pccore.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.zte.msg.pushcenter.pccore.dto.req.ApplicationHistoryReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.MailHistoryReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsHistoryReqDTO;
+import com.zte.msg.pushcenter.pccore.dto.req.WechatHistoryReqDTO;
+import com.zte.msg.pushcenter.pccore.entity.ApplicationInfo;
 import com.zte.msg.pushcenter.pccore.entity.MailInfo;
 import com.zte.msg.pushcenter.pccore.entity.SmsInfo;
+import com.zte.msg.pushcenter.pccore.entity.WechatInfo;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.HistoryMapper;
@@ -74,4 +78,32 @@ public class HistoryServiceImpl implements HistoryService {
     public void addHistoryMail(MailInfo mailInfo) {
         mailInfoMapper.insert(mailInfo);
     }
+
+    @Override
+    public PageInfo<WechatInfo> listHistoryWechat(WechatHistoryReqDTO wechatHistoryReqDTO){
+        if (null == wechatHistoryReqDTO.getPage() || null == wechatHistoryReqDTO.getSize()) {
+            throw new CommonException(ErrorCode.PAGE_PARAM_EMPTY);
+        }
+        if (0 >= wechatHistoryReqDTO.getPage() || 0 >= wechatHistoryReqDTO.getSize()) {
+            throw new CommonException(ErrorCode.PAGE_PARAM_ERROR);
+        }
+        PageHelper.startPage(wechatHistoryReqDTO.getPage().intValue(), wechatHistoryReqDTO.getSize().intValue());
+
+        //TODO 接口完成
+        return new PageInfo<>(historyMapper.listHistoryWechat(wechatHistoryReqDTO));
+    }
+
+    @Override
+    public PageInfo<ApplicationInfo> listHistoryApplication(ApplicationHistoryReqDTO applicationHistoryReqDTO){
+        if (null == applicationHistoryReqDTO.getPage() || null == applicationHistoryReqDTO.getSize()) {
+            throw new CommonException(ErrorCode.PAGE_PARAM_EMPTY);
+        }
+        if (0 >= applicationHistoryReqDTO.getPage() || 0 >= applicationHistoryReqDTO.getSize()) {
+            throw new CommonException(ErrorCode.PAGE_PARAM_ERROR);
+        }
+        PageHelper.startPage(applicationHistoryReqDTO.getPage().intValue(), applicationHistoryReqDTO.getSize().intValue());
+        List<ApplicationInfo> list = historyMapper.listHistoryApplication(applicationHistoryReqDTO);
+        return new PageInfo<>(list);
+    }
+
 }

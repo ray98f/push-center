@@ -6,6 +6,9 @@ import com.zte.msg.pushcenter.pccore.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+/**
+ * @author frp
+ */
 @Mapper
 @Repository
 public interface UserMapper extends BaseMapper<User> {

@@ -40,34 +40,46 @@ public class AppRoleServiceImpl implements AppRoleService {
     @Override
     public AppRoleResDTO listAppRole(Integer appId) {
         AppRoleResDTO appRoleResDTO = appRoleMapper.selectApp(appId);
-        if (Objects.nonNull(appRoleResDTO)) {
+        if (Objects.nonNull(appId)) {
             log.info("服务查询成功");
-            List<AppRole> appRole = appRoleMapper.selectAppMode(appRoleResDTO.getAppId());
+            List<AppRole> appRole = appRoleMapper.selectAppMode(appId);
             for (AppRole appRoleTemplate : appRole) {
                 if (appRoleTemplate.getModeId() == 1) {
-                    List<TemplateResDTO> templateResDTOList = appRoleMapper.selectTemplate(appRoleTemplate.getModeId());
-                    if (Objects.isNull(templateResDTOList) || 0 == templateResDTOList.size()){
-                        throw new CommonException(ErrorCode.RESOURCE_NOT_EXIST);
-                    }
+                    List<TemplateResDTO> templateResDTOList = appRoleMapper.selectTemplate(appRoleTemplate.getModeId(), appId);
                     List<SmsTemplate> smsTemplateList = templateService.getTemplateList();
                     if (Objects.isNull(smsTemplateList) || 0 == smsTemplateList.size()){
                         throw new CommonException(ErrorCode.RESOURCE_NOT_EXIST);
                     }
-                    List<TemplateResDTO> result = new ArrayList<>(templateResDTOList);
+                    if (Objects.isNull(templateResDTOList) || 0 == templateResDTOList.size()) {
+                        for (SmsTemplate smsTemplate : smsTemplateList) {
+                            TemplateResDTO resDTO = new TemplateResDTO();
+                            resDTO.setId(smsTemplate.getId());
+                            resDTO.setContent(smsTemplate.getContent());
+                            templateResDTOList.add(resDTO);
+                        }
+                        appRoleTemplate.setTemplate(templateResDTOList);
+                        continue;
+                    }
+                    List<TemplateResDTO> resultTemplateResDTOList = new ArrayList<>(templateResDTOList);
+                    List<SmsTemplate> resultSmsTemplateList = new ArrayList<>(smsTemplateList);
                     if (templateResDTOList.size() < smsTemplateList.size()) {
                         for (SmsTemplate smsTemplate : smsTemplateList) {
                             for (TemplateResDTO templateResDTO : templateResDTOList) {
-                                if (!smsTemplate.getId().equals(templateResDTO.getId())) {
-                                    TemplateResDTO resDTO = new TemplateResDTO();
-                                    resDTO.setId(smsTemplate.getId());
-                                    resDTO.setContent(smsTemplate.getContent());
-                                    result.add(resDTO);
+                                if (smsTemplate.getId().equals(templateResDTO.getId())) {
+                                    resultSmsTemplateList.remove(smsTemplate);
                                 }
                             }
                         }
-                        result.addAll(templateResDTOList);
+                        if (resultSmsTemplateList.size() > 0){
+                            for (SmsTemplate resultSmsTemplate : resultSmsTemplateList){
+                                TemplateResDTO resDTO = new TemplateResDTO();
+                                resDTO.setId(resultSmsTemplate.getId());
+                                resDTO.setContent(resultSmsTemplate.getContent());
+                                resultTemplateResDTOList.add(resDTO);
+                            }
+                        }
                     }
-                    appRoleTemplate.setTemplate(result);
+                    appRoleTemplate.setTemplate(resultTemplateResDTOList);
                 }
             }
             appRoleResDTO.setSendMode(appRole);
@@ -78,12 +90,12 @@ public class AppRoleServiceImpl implements AppRoleService {
     }
 
     @Override
-    public void editAppRole(List<AppRoleResDTO> appRoleResDTOList) {
-        if (null == appRoleResDTOList || appRoleResDTOList.isEmpty()) {
+    public void editAppRole(AppRoleResDTO appRoleResDTO) {
+        if (Objects.isNull(appRoleResDTO)) {
             log.error("app权限修改参数返回为空");
             throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
         }
-        int result = appRoleMapper.editAppRole(appRoleResDTOList);
+        int result = appRoleMapper.editAppRole(appRoleResDTO);
         if (result > 0) {
             log.info("编辑app权限成功");
         } else {

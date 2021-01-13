@@ -97,7 +97,7 @@ public class AppServiceImpl implements AppService {
             throw new CommonException(ErrorCode.DATA_EXIST);
         }
         app.setAppKey(Constants.ZTE_NAME + TokenUtil.getTimestamp() + TokenUtil.getRandomString(5));
-        app.setAppSecret(TokenUtil.getUUID() + TokenUtil.getRandomString(16));
+        app.setAppSecret(TokenUtil.getUuId() + TokenUtil.getRandomString(16));
         int result = appMapper.insertApp(app);
         if (result > 0) {
             log.info("服务权限成功");
@@ -113,7 +113,7 @@ public class AppServiceImpl implements AppService {
             log.error("服务Id为空");
             throw new CommonException(ErrorCode.ENUM_VALUE_ERROR);
         }
-        String appSecret = TokenUtil.getUUID() + TokenUtil.getRandomString(16);
+        String appSecret = TokenUtil.getUuId() + TokenUtil.getRandomString(16);
         int result = appMapper.resetKey(appSecret, userName, appId);
         if (result > 0) {
             log.info("重置密钥成功");

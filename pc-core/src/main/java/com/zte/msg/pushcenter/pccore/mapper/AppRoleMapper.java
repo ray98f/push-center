@@ -10,17 +10,20 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * @author frp
+ */
 @Mapper
 @Repository
 public interface AppRoleMapper extends BaseMapper<AppRoleResDTO> {
 
     AppRoleResDTO selectApp(Integer appId);
 
-    List<TemplateResDTO> selectTemplate(Integer modeId);
+    List<TemplateResDTO> selectTemplate(Integer modeId, Integer appId);
 
     List<AppRole> selectAppMode(Integer appId);
 
-    int editAppRole(List<AppRoleResDTO> appRoleResDTOList);
+    int editAppRole(AppRoleResDTO appRoleResDTO);
 
     List<SendMode> listSendMode();
 
