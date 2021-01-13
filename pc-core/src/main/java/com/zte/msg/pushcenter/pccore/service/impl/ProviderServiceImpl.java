@@ -109,7 +109,7 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
         List<Provider> providers = getBaseMapper().selectBatchIds(ids);
 
         // 刷新脚本和配置
-        flusher.flush(providers, true);
+        flusher.flush(true, providers.toArray(new Provider[]{}));
         getBaseMapper().deleteBatchIds(ids);
 
     }

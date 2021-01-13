@@ -159,10 +159,12 @@ public class SmsPusher extends BasePusher {
                 .stream().map(Provider::getId).collect(Collectors.toList()));
         if (!remove) {
             buildAndFlush(smsConfigForFlush);
+            log.info("========== update sms config completed, update count: {} ==========", providers.size());
         } else {
             removeConfig(smsConfigForFlush.stream()
                     .map(SmsConfigModel::getSmsTemplateId)
                     .collect(Collectors.toList()).toArray(new Long[]{}));
+            log.info("========== delete sms config completed, delete count: {} ==========", providers.size());
         }
     }
 

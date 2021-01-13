@@ -33,6 +33,8 @@ import java.util.Objects;
 public class ProviderSmsTemplateServiceImpl extends ServiceImpl<ProviderSmsTemplateMapper, ProviderSmsTemplate>
         implements ProviderSmsTemplateService {
 
+
+
     @Resource
     private ProviderService providerService;
 
@@ -48,6 +50,8 @@ public class ProviderSmsTemplateServiceImpl extends ServiceImpl<ProviderSmsTempl
         providerSmsTemplate.setSign(smsTemplateReqDTO.getSign());
         providerSmsTemplate.setStatus(smsTemplateReqDTO.getStatus());
         getBaseMapper().insert(providerSmsTemplate);
+
+
     }
 
     @Override

@@ -5,7 +5,6 @@ import com.zte.msg.pushcenter.pccore.model.ScriptModel;
 import com.zte.msg.pushcenter.pccore.utils.JavaCodecUtils;
 import com.zte.msg.pushcenter.pccore.utils.PathUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -48,23 +47,7 @@ public class CodeJavac {
         StandardJavaFileManager standardJavaFileManager = javaCompiler.getStandardFileManager(null, null, null);
         scriptFileManager = new ScriptFileManager(standardJavaFileManager);
         errorStringWriter = new StringWriter();
-        scriptFlush(scripts);
-    }
-
-    public void scriptFlush(List<ScriptModel> scripts) {
-        scriptFlush(scripts, false);
-    }
-
-    public void scriptFlush(ScriptModel o, boolean remove) {
-        if (StringUtils.isBlank(o.getScriptTag()) | StringUtils.isBlank(o.getScriptContext())) {
-            return;
-        }
-        scriptFileManager.remove(o.getScriptTag());
-        if (!remove && allBuffers.containsKey(o.getScriptTag())) {
-            getTask(Collections.singletonList(o));
-        }
-        allBuffers = scriptFileManager.getAllBuffers();
-        log.info("========== compilation script : {} ==========", allBuffers.size());
+        getTask(scripts);
     }
 
     private void getTask(List<ScriptModel> scriptModels) {
@@ -83,19 +66,22 @@ public class CodeJavac {
             }
         });
         allBuffers = scriptFileManager.getAllBuffers();
-        log.info("========== compilation script : {} ==========", allBuffers.size());
+        log.info("========== all compilation script : {} ==========", allBuffers.size());
     }
 
-    public void scriptFlush(List<ScriptModel> scripts, boolean remove) {
+    public void scriptFlush(boolean remove, ScriptModel... scripts) {
+        List<ScriptModel> scriptModels = Arrays.asList(scripts);
         if (!remove) {
-            getTask(scripts);
+            getTask(scriptModels);
+            log.info("========== update script completed, update count: {} ==========", scripts.length);
         } else {
-            scripts.forEach(o -> scriptFileManager.remove(o.getScriptTag()));
+            scriptModels.forEach(o -> scriptFileManager.remove(o.getScriptTag()));
+            log.info("========== delete script completed, delete count: {} ==========", scripts.length);
         }
     }
 
-    public void scriptFlush(ScriptModel o) {
-        scriptFlush(o, false);
+    public void scriptFlush(ScriptModel... o) {
+        scriptFlush(false, o);
     }
 
     public Class<?> getScriptClass(String scriptTag) {

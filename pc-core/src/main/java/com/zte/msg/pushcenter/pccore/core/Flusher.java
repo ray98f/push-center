@@ -10,8 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * description:
@@ -33,53 +35,34 @@ public class Flusher {
     @Resource
     private CodeJavac codeJavac;
 
-    public void flush(Provider provider) {
-        flush(provider, false);
+    public void flush(Provider... providers) {
+        flush(false, providers);
     }
 
-    public void flush(Provider provider, boolean remove) {
-        codeJavac.scriptFlush(new ScriptModel(provider.getScriptTag(), provider.getScriptContext()), remove);
-        flushConfig(provider, remove);
+    public void flush(boolean remove, Provider... providers) {
+        codeJavac.scriptFlush(remove, Arrays.stream(providers)
+                .map(o -> new ScriptModel(o.getScriptTag(), o.getScriptContext()))
+                .collect(Collectors.toList())
+                .toArray(new ScriptModel[]{}));
+        flushConfig(Arrays.asList(providers), remove);
     }
 
-    public void flush(List<Provider> providers, boolean remove) {
-        List<ScriptModel> scriptModels = new ArrayList<>(providers.size());
-        providers.forEach(o -> {
-            ScriptModel scriptModel = new ScriptModel(o.getScriptTag(), o.getScriptContext());
-            scriptModels.add(scriptModel);
+    private void flushConfig(List<Provider> providers, boolean remove) {
+        Map<Integer, List<Provider>> providerType = providers.stream().collect(Collectors.groupingBy(Provider::getType));
+        providerType.keySet().forEach(o -> {
+            switch (PushMethods.valueOf(o)) {
+                case SMS:
+                    smsPusher.flushConfig(providerType.get(o), remove);
+                    break;
+                case MAIL:
+                    mailPusher.flushConfig(providerType.get(o), remove);
+                    break;
+                case APP:
+                    // TODO: 2021/1/13
+                case WECHAT:
+                    // TODO: 2021/1/13
+                default:
+            }
         });
-        codeJavac.scriptFlush(scriptModels, remove);
-        providers.forEach(o -> flushConfig(o, remove));
-        if (!remove) {
-            log.info("========== update mail config completed, update count: {} ==========", providers.size());
-        }
-        if (remove) {
-            log.info("========== delete mail config completed, delete count: {} ==========", providers.size());
-        }
-    }
-
-    private void flushConfig(Provider provider, boolean remove) {
-        switch (PushMethods.valueOf(provider.getType())) {
-            case UNKNOWN:
-                break;
-            case APP:
-                // TODO: 2021/1/12
-                break;
-            case MAIL:
-                mailPusher.flushConfig(provider, remove);
-
-                break;
-            case WECHAT:
-                // TODO: 2021/1/12
-                break;
-            case SMS:
-                smsPusher.flushConfig(provider, remove);
-                break;
-            default:
-        }
-    }
-
-    public void configFlush(List<Provider> providers) {
-        flush(providers, false);
     }
 }

@@ -34,14 +34,6 @@ public class JuheSmsDemo implements PcScript {
         return parseResponse(net(url1.toString(), "GET"));
     }
 
-    public static void main(String[] args) {
-        try {
-            System.out.println(URLEncoder.encode("#code#=12522&#m#=5&", "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-    }
-
     /**
      * @param strUrl 请求地址
      * @param method 请求方法

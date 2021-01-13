@@ -89,12 +89,17 @@ public class MailPusher extends BasePusher {
         log.info("========== initialize sms config completed : {}  ========== ", providers.size());
     }
 
-//    public void flushConfig(List<Provider> providers) {
-//        flushConfig(providers, false);
-//    }
+    public void flushConfig(List<Provider> providers) {
+        flushConfig(providers, false);
+    }
 
     public void flushConfig(List<Provider> providers, boolean remove) {
         providers.forEach(o -> flushConfig(o, remove));
+        if (!remove) {
+            log.info("========== update sms config completed, update count: {} ==========", providers.size());
+        } else {
+            log.info("========== delete sms config completed, delete count: {} ==========", providers.size());
+        }
 
     }
 
