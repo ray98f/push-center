@@ -2,6 +2,7 @@ package com.zte.msg.pushcenter.pccore.service.impl;
 
 import com.zte.msg.pushcenter.pccore.dto.res.AppRoleResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.TemplateResDTO;
+import com.zte.msg.pushcenter.pccore.dto.res.WechatTemplateResDTO;
 import com.zte.msg.pushcenter.pccore.entity.AppRole;
 import com.zte.msg.pushcenter.pccore.entity.SendMode;
 import com.zte.msg.pushcenter.pccore.entity.SmsTemplate;
@@ -45,9 +46,9 @@ public class AppRoleServiceImpl implements AppRoleService {
             List<AppRole> appRole = appRoleMapper.selectAppMode(appId);
             for (AppRole appRoleTemplate : appRole) {
                 if (appRoleTemplate.getModeId() == 1) {
-                    List<TemplateResDTO> templateResDTOList = appRoleMapper.selectTemplate(appRoleTemplate.getModeId(), appId);
+                    List<TemplateResDTO> templateResDTOList = appRoleMapper.selectSmsTemplate(appRoleTemplate.getModeId(), appId);
                     List<SmsTemplate> smsTemplateList = templateService.getTemplateList();
-                    if (Objects.isNull(smsTemplateList) || 0 == smsTemplateList.size()){
+                    if (Objects.isNull(smsTemplateList) || 0 == smsTemplateList.size()) {
                         throw new CommonException(ErrorCode.RESOURCE_NOT_EXIST);
                     }
                     if (Objects.isNull(templateResDTOList) || 0 == templateResDTOList.size()) {
@@ -57,7 +58,7 @@ public class AppRoleServiceImpl implements AppRoleService {
                             resDTO.setContent(smsTemplate.getContent());
                             templateResDTOList.add(resDTO);
                         }
-                        appRoleTemplate.setTemplate(templateResDTOList);
+                        appRoleTemplate.setSmsTemplate(templateResDTOList);
                         continue;
                     }
                     List<TemplateResDTO> resultTemplateResDTOList = new ArrayList<>(templateResDTOList);
@@ -70,8 +71,8 @@ public class AppRoleServiceImpl implements AppRoleService {
                                 }
                             }
                         }
-                        if (resultSmsTemplateList.size() > 0){
-                            for (SmsTemplate resultSmsTemplate : resultSmsTemplateList){
+                        if (resultSmsTemplateList.size() > 0) {
+                            for (SmsTemplate resultSmsTemplate : resultSmsTemplateList) {
                                 TemplateResDTO resDTO = new TemplateResDTO();
                                 resDTO.setId(resultSmsTemplate.getId());
                                 resDTO.setContent(resultSmsTemplate.getContent());
@@ -79,7 +80,15 @@ public class AppRoleServiceImpl implements AppRoleService {
                             }
                         }
                     }
-                    appRoleTemplate.setTemplate(resultTemplateResDTOList);
+                    appRoleTemplate.setSmsTemplate(resultTemplateResDTOList);
+                }
+                if (appRoleTemplate.getModeId() == 4) {
+                    List<WechatTemplateResDTO> wechatTemplateResDTOList = appRoleMapper.selectWechatTemplate(appId);
+                    if (Objects.isNull(wechatTemplateResDTOList) || 0 == wechatTemplateResDTOList.size()) {
+                        appRoleTemplate.setWechatTemplate(null);
+                        continue;
+                    }
+                    appRoleTemplate.setWechatTemplate(wechatTemplateResDTOList);
                 }
             }
             appRoleResDTO.setSendMode(appRole);

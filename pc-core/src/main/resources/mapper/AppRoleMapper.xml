@@ -10,39 +10,69 @@
         left join app_role as ar on r.id=ar.mode_id and r.flag=0 and ar.flag=0 and ar.app_id=#{appId} group by r.id
     </select>
 
-    <select id="selectTemplate" resultType="com.zte.msg.pushcenter.pccore.dto.res.TemplateResDTO">
-        select ar.id as app_role_id,ar.template_id as id,t.content,ar.status from app_role as ar
-        left join sms_template as t on ar.template_id=t.id and t.flag=0 where ar.mode_id=#{modeId} and ar.app_id=#{appId} and ar.flag=0
+    <select id="selectSmsTemplate" resultType="com.zte.msg.pushcenter.pccore.dto.res.TemplateResDTO">
+        select ar.id as app_role_id,ar.sms_template_id as id,t.content,ar.status from app_role as ar
+        left join sms_template as t on ar.sms_template_id=t.id and t.flag=0 where ar.mode_id=#{modeId} and ar.app_id=#{appId} and ar.flag=0
+    </select>
+
+    <select id="selectWechatTemplate" resultType="com.zte.msg.pushcenter.pccore.dto.res.WechatTemplateResDTO">
+        SELECT p.id,ar.id as app_role_id,p.provider_name as wechat_name,ar.status FROM app_role as ar
+        left join provider as p on ar.wechat_id=p.id and p.flag=0 and ar.mode_id=4 where ar.app_id=#{appId} and p.type=4 and ar.flag=0;
     </select>
 
     <insert id="editAppRole" parameterType="com.zte.msg.pushcenter.pccore.dto.res.AppRoleResDTO">
         <foreach collection="sendMode" index="index" item="sendMode" separator=";">
             <if test="sendMode.modeId==1">
-                <foreach collection="sendMode.template" item="template" index="index" separator=";">
+                <foreach collection="sendMode.smsTemplate" item="smsTemplate" index="index" separator=";">
                     insert into app_role
                     <trim prefix="(" suffix=")" suffixOverrides=",">
-                        <if test="template.appRoleId!=null">id,</if>
+                        <if test="smsTemplate.appRoleId!=null">id,</if>
                         <if test="appId!=null">app_id,</if>
                         <if test="sendMode.modeId!=null">mode_id,</if>
-                        <if test="template.id!=null">template_id,</if>
-                        <if test="template.status!=null">status,</if>
+                        <if test="smsTemplate.id!=null">sms_template_id,</if>
+                        <if test="smsTemplate.status!=null">status,</if>
                     </trim>
                     values
                     <trim prefix="(" suffix=")" suffixOverrides=",">
-                        <if test="template.appRoleId!=null">#{template.appRoleId},</if>
+                        <if test="smsTemplate.appRoleId!=null">#{smsTemplate.appRoleId},</if>
                         <if test="appId!=null">#{appId},</if>
                         <if test="sendMode.modeId!=null">#{sendMode.modeId},</if>
-                        <if test="template.id!=null">#{template.id},</if>
-                        <if test="template.status!=null">#{template.status},</if>
+                        <if test="smsTemplate.id!=null">#{smsTemplate.id},</if>
+                        <if test="smsTemplate.status!=null">#{smsTemplate.status},</if>
                     </trim>
                     ON DUPLICATE KEY UPDATE
                     app_id=#{appId},
                     mode_id=#{sendMode.modeId},
-                    template_id=#{template.id},
-                    status=#{template.status}
+                    sms_template_id=#{smsTemplate.id},
+                    status=#{smsTemplate.status}
                 </foreach>
             </if>
-            <if test="sendMode.modeId!=1">
+            <if test="sendMode.modeId==4">
+                <foreach collection="sendMode.wechatTemplate" item="wechatTemplate" index="index" separator=";">
+                    insert into app_role
+                    <trim prefix="(" suffix=")" suffixOverrides=",">
+                        <if test="wechatTemplate.appRoleId!=null">id,</if>
+                        <if test="appId!=null">app_id,</if>
+                        <if test="sendMode.modeId!=null">mode_id,</if>
+                        <if test="wechatTemplate.id!=null">wechat_id,</if>
+                        <if test="wechatTemplate.status!=null">status,</if>
+                    </trim>
+                    values
+                    <trim prefix="(" suffix=")" suffixOverrides=",">
+                        <if test="wechatTemplate.appRoleId!=null">#{wechatTemplate.appRoleId},</if>
+                        <if test="appId!=null">#{appId},</if>
+                        <if test="sendMode.modeId!=null">#{sendMode.modeId},</if>
+                        <if test="wechatTemplate.id!=null">#{wechatTemplate.id},</if>
+                        <if test="wechatTemplate.status!=null">#{wechatTemplate.status},</if>
+                    </trim>
+                    ON DUPLICATE KEY UPDATE
+                    app_id=#{appId},
+                    mode_id=#{sendMode.modeId},
+                    wechat_id=#{wechatTemplate.id},
+                    status=#{wechatTemplate.status}
+                </foreach>
+            </if>
+            <if test="sendMode.modeId!=1 and sendMode.modeId!=4">
                 insert into app_role
                 <trim prefix="(" suffix=")" suffixOverrides=",">
                     <if test="sendMode.appRoleId!=null">id,</if>
