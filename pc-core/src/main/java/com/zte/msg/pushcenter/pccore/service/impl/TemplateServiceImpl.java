@@ -20,6 +20,8 @@ import com.zte.msg.pushcenter.pccore.mapper.SmsTemplateMapper;
 import com.zte.msg.pushcenter.pccore.mapper.SmsTemplateRelationMapper;
 import com.zte.msg.pushcenter.pccore.model.SmsTemplateRelationModel;
 import com.zte.msg.pushcenter.pccore.service.TemplateService;
+import com.zte.msg.pushcenter.pccore.utils.Constants;
+import com.zte.msg.pushcenter.pccore.utils.PatternUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -47,11 +49,12 @@ public class TemplateServiceImpl implements TemplateService {
     @Resource
     private Flusher flusher;
 
+
     @Resource
     private SmsTemplateMapper smsTemplateMapper;
 
     @Resource
-    private ProviderSmsTemplateMapper providerSmsTemplateRelateMapper;
+    private ProviderSmsTemplateMapper providerSmsTemplateMapper;
 
     @Resource
     private SmsTemplateRelationMapper smsTemplateRelationMapper;
@@ -59,7 +62,10 @@ public class TemplateServiceImpl implements TemplateService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addSmsTemplate(SmsTemplateReqDTO smsTemplateReqDTO) {
-        String params = StringUtils.join(smsTemplateReqDTO.getParams(), ",");
+        if (PatternUtils.getParams(smsTemplateReqDTO.getContent()).size() != smsTemplateReqDTO.getParams().length) {
+            throw new CommonException(ErrorCode.SMS_TEMPLATE_PARAMS_NOT_MATCH);
+        }
+        String params = StringUtils.join(smsTemplateReqDTO.getParams(), Constants.COMMA_EN);
         SmsTemplate smsTemplate = new SmsTemplate();
         BeanUtils.copyProperties(smsTemplateReqDTO, smsTemplate);
         smsTemplate.setParams(params);
@@ -87,7 +93,8 @@ public class TemplateServiceImpl implements TemplateService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addProviderSmsTemplateRelate(Long templateId, SmsTemplateRelateProviderReqDTO reqDTO) {
-        if (Objects.isNull(smsTemplateMapper.selectById(templateId))) {
+        SmsTemplate smsTemplate = smsTemplateMapper.selectById(templateId);
+        if (Objects.isNull(smsTemplate)) {
             throw new CommonException(ErrorCode.SMS_TEMPLATE_NOT_EXIST);
         }
         if (smsTemplateRelationMapper.selectCount(new QueryWrapper<SmsTemplateRelation>()
@@ -100,7 +107,10 @@ public class TemplateServiceImpl implements TemplateService {
             throw new CommonException(ErrorCode.SMS_TEMPLATE_RELATION_PRIORITY_EXIST);
         }
         // TODO: 2021/1/13  参数列表数量匹配的才能关联
-
+        ProviderSmsTemplate providerSmsTemplate = providerSmsTemplateMapper.selectById(reqDTO.getPTemplateId());
+        if (PatternUtils.getParams(providerSmsTemplate.getContent()).size() != smsTemplate.getParams().split(Constants.COMMA_EN).length) {
+            throw new CommonException(ErrorCode.SMS_TEMPLATE_PARAMS_NOT_MATCH);
+        }
         SmsTemplateRelation relation = new SmsTemplateRelation();
         relation.setPriority(reqDTO.getPriority());
         relation.setProviderTemplateId(reqDTO.getPTemplateId());
@@ -124,9 +134,9 @@ public class TemplateServiceImpl implements TemplateService {
                 .eq("priority", reqDTO.getPriority())) >= 0) {
             throw new CommonException(ErrorCode.SMS_TEMPLATE_RELATION_ALREADY_EXIST);
         }
-        ProviderSmsTemplate providerSmsTemplate = providerSmsTemplateRelateMapper.selectById(relation.getProviderTemplateId());
+        ProviderSmsTemplate providerSmsTemplate = providerSmsTemplateMapper.selectById(relation.getProviderTemplateId());
         providerSmsTemplate.setStatus(reqDTO.getStatus());
-        providerSmsTemplateRelateMapper.updateById(providerSmsTemplate);
+        providerSmsTemplateMapper.updateById(providerSmsTemplate);
         relation.setId(reqDTO.getRelationId());
         relation.setPriority(reqDTO.getPriority());
         relation.setSmsTemplateId(templateId);

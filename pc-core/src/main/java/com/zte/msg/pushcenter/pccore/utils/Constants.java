@@ -15,8 +15,6 @@ public class Constants {
 
     public static final Pattern SMS_CONTENT_PATTERN_2 = Pattern.compile("#(.*?)#");
 
-
-
     public static final String AUTHORIZATION = "Authorization";
 
     public static int DATA_NOT_DELETED = 0;
@@ -30,6 +28,8 @@ public class Constants {
     public static final Integer ALREADY_RELATED = 1;
 
     public static final String EMPTY = "";
+
+    public static final String COMMA_EN = ",";
 
     public static final String ROLE_STRING = "role";
 
