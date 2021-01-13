@@ -15,7 +15,7 @@
         left join sms_template as t on ar.sms_template_id=t.id and t.flag=0 where ar.mode_id=#{modeId} and ar.app_id=#{appId} and ar.flag=0
     </select>
 
-    <select id="selectWechatTemplate" resultType="com.zte.msg.pushcenter.pccore.dto.res.WechatTemplateResDTO">
+    <select id="selectWechatTemplate" resultType="com.zte.msg.pushcenter.pccore.dto.res.WeChatTemplateRoleResDTO">
         SELECT p.id,ar.id as app_role_id,p.provider_name as wechat_name,ar.status FROM app_role as ar
         left join provider as p on ar.wechat_id=p.id and p.flag=0 and ar.mode_id=4 where ar.app_id=#{appId} and p.type=4 and ar.flag=0;
     </select>

@@ -6,6 +6,7 @@ import com.zte.msg.pushcenter.pccore.core.pusher.msg.SmsMessage;
 import com.zte.msg.pushcenter.pccore.dto.DataResponse;
 import com.zte.msg.pushcenter.pccore.dto.req.MailMessageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsMessageReqDTO;
+import com.zte.msg.pushcenter.pccore.dto.req.WeChatMessageReqDTO;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
@@ -59,6 +60,14 @@ public class PushCenterController {
         MailMessage mailMessage = new MailMessage().build(reqDTO);
         mailMessage.setPushMethod(PushMethods.MAIL);
         pushCenterService.pushMail(mailMessage);
+        return DataResponse.success();
+    }
+
+    @PostMapping(value = "/wechat")
+    @ApiOperation(value = "公众号消息推送")
+    public <T> DataResponse<T> pushWeChat(@Valid @RequestBody WeChatMessageReqDTO reqDTO) {
+
+        // TODO: 2021/1/13
         return DataResponse.success();
     }
 

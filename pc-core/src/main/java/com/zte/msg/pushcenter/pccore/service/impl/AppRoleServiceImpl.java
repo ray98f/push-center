@@ -2,7 +2,7 @@ package com.zte.msg.pushcenter.pccore.service.impl;
 
 import com.zte.msg.pushcenter.pccore.dto.res.AppRoleResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.TemplateResDTO;
-import com.zte.msg.pushcenter.pccore.dto.res.WechatTemplateResDTO;
+import com.zte.msg.pushcenter.pccore.dto.res.WeChatTemplateRoleResDTO;
 import com.zte.msg.pushcenter.pccore.entity.AppRole;
 import com.zte.msg.pushcenter.pccore.entity.SendMode;
 import com.zte.msg.pushcenter.pccore.entity.SmsTemplate;
@@ -13,7 +13,6 @@ import com.zte.msg.pushcenter.pccore.service.AppRoleService;
 import com.zte.msg.pushcenter.pccore.service.TemplateService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -83,12 +82,12 @@ public class AppRoleServiceImpl implements AppRoleService {
                     appRoleTemplate.setSmsTemplate(resultTemplateResDTOList);
                 }
                 if (appRoleTemplate.getModeId() == 4) {
-                    List<WechatTemplateResDTO> wechatTemplateResDTOList = appRoleMapper.selectWechatTemplate(appId);
-                    if (Objects.isNull(wechatTemplateResDTOList) || 0 == wechatTemplateResDTOList.size()) {
+                    List<WeChatTemplateRoleResDTO> weChatTemplateRoleResDTOList = appRoleMapper.selectWechatTemplate(appId);
+                    if (Objects.isNull(weChatTemplateRoleResDTOList) || 0 == weChatTemplateRoleResDTOList.size()) {
                         appRoleTemplate.setWechatTemplate(null);
                         continue;
                     }
-                    appRoleTemplate.setWechatTemplate(wechatTemplateResDTOList);
+                    appRoleTemplate.setWechatTemplate(weChatTemplateRoleResDTOList);
                 }
             }
             appRoleResDTO.setSendMode(appRole);

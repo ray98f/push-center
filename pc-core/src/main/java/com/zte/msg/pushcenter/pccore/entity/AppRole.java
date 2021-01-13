@@ -1,7 +1,7 @@
 package com.zte.msg.pushcenter.pccore.entity;
 
 import com.zte.msg.pushcenter.pccore.dto.res.TemplateResDTO;
-import com.zte.msg.pushcenter.pccore.dto.res.WechatTemplateResDTO;
+import com.zte.msg.pushcenter.pccore.dto.res.WeChatTemplateRoleResDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -28,7 +28,7 @@ public class AppRole extends SendMode {
     private Integer modeStatus;
 
     @ApiModelProperty(value = "微信公众号模板信息")
-    private List<WechatTemplateResDTO> wechatTemplate;
+    private List<WeChatTemplateRoleResDTO> wechatTemplate;
 
     @ApiModelProperty(value = "短信模板信息")
     private List<TemplateResDTO> smsTemplate;

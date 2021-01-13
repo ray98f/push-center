@@ -3,7 +3,7 @@ package com.zte.msg.pushcenter.pccore.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zte.msg.pushcenter.pccore.dto.res.AppRoleResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.TemplateResDTO;
-import com.zte.msg.pushcenter.pccore.dto.res.WechatTemplateResDTO;
+import com.zte.msg.pushcenter.pccore.dto.res.WeChatTemplateRoleResDTO;
 import com.zte.msg.pushcenter.pccore.entity.AppRole;
 import com.zte.msg.pushcenter.pccore.entity.SendMode;
 import org.apache.ibatis.annotations.Mapper;
@@ -22,7 +22,7 @@ public interface AppRoleMapper extends BaseMapper<AppRoleResDTO> {
 
     List<TemplateResDTO> selectSmsTemplate(Integer modeId, Integer appId);
 
-    List<WechatTemplateResDTO> selectWechatTemplate(Integer appId);
+    List<WeChatTemplateRoleResDTO> selectWechatTemplate(Integer appId);
 
     List<AppRole> selectAppMode(Integer appId);
 

@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * description:
  *
@@ -15,6 +17,14 @@ import lombok.Data;
 @ApiModel
 @Data
 public class WeChatMessageReqDTO extends PushReqDTO {
+
+    @ApiModelProperty(value = "OpenID", required = true)
+    @NotNull(message = "32000006")
+    private String openId;
+
+    @ApiModelProperty(value = "公众号providerId")
+    @NotNull(message = "32000006")
+    private String providerId;
 
     /**
      * 公众号appId

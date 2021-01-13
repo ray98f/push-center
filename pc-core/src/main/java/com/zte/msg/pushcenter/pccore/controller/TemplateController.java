@@ -3,12 +3,10 @@ package com.zte.msg.pushcenter.pccore.controller;
 import com.zte.msg.pushcenter.pccore.dto.DataResponse;
 import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.PageResponse;
-import com.zte.msg.pushcenter.pccore.dto.req.ProviderSmsTemplateReqDTO;
-import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateRelateProviderReqDTO;
-import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateRelateProviderUpdateReqDTO;
-import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateReqDTO;
+import com.zte.msg.pushcenter.pccore.dto.req.*;
 import com.zte.msg.pushcenter.pccore.dto.res.ProviderSmsTemplateResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.SmsTemplateDetailResDTO;
+import com.zte.msg.pushcenter.pccore.dto.res.WeChatTemplateResDTO;
 import com.zte.msg.pushcenter.pccore.service.ProviderSmsTemplateService;
 import com.zte.msg.pushcenter.pccore.service.TemplateService;
 import io.swagger.annotations.Api;
@@ -147,5 +145,34 @@ public class TemplateController {
         return DataResponse.of(providerSmsTemplateService.getProviderSmsTemplatesByProviderId(providerId));
     }
 
+    @PostMapping(value = "/provider/wechat")
+    @ApiOperation(value = "【微信公众号模版】- 新增")
+    public <T> DataResponse<T> addWeChatTemplate(@RequestBody WeChatTemplateReqDTO reqDTO) {
+        // TODO: 2021/1/13
+        return DataResponse.success();
+    }
+
+    @PutMapping(value = "/provider/wechat")
+    @ApiOperation(value = "【微信公众号模版】- 修改")
+    public <T> DataResponse<T> updateWeChatTemplate(@RequestBody WeChatTemplateReqDTO reqDTO) {
+        // TODO: 2021/1/13
+        return DataResponse.success();
+    }
+
+    @GetMapping(value = "/provider/wechat")
+    @ApiOperation(value = "【微信公众号模版】- 查看详情")
+    public DataResponse<WeChatTemplateResDTO> getWeChatTemplate(@RequestParam Long templateId) {
+
+        // TODO: 2021/1/13
+        return null;
+    }
+
+    @DeleteMapping(value = "/provider/wechat")
+    @ApiOperation(value = "【微信公众号模版】- 查看详情")
+    public <T> DataResponse<T> deleteWeChatTemplates(@RequestBody Long[] ids) {
+
+        // TODO: 2021/1/13
+        return DataResponse.success();
+    }
 
 }
