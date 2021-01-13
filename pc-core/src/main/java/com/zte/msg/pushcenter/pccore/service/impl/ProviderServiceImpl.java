@@ -23,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -96,14 +97,15 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
         List<ProviderSmsTemplate> providerSmsTemplates = providerSmsTemplateMapper.selectList(new QueryWrapper<ProviderSmsTemplate>()
                 .in("provider_id", Arrays.asList(providerIds)));
 
-        List<Long> providerSmsTemplateIds = providerSmsTemplates.stream()
-                .map(ProviderSmsTemplate::getId).collect(Collectors.toList());
-        // 删除消息平台表中的模版
-        providerSmsTemplateMapper.deleteBatchIds(providerSmsTemplateIds);
-
-        // 删除短信关联映射表中的数据
-        smsTemplateRelationMapper.delete(new QueryWrapper<SmsTemplateRelation>()
-                .in("provider_template_id", providerSmsTemplateIds));
+        if (!CollectionUtils.isEmpty(providerSmsTemplates)) {
+            List<Long> providerSmsTemplateIds = providerSmsTemplates.stream()
+                    .map(ProviderSmsTemplate::getId).collect(Collectors.toList());
+            // 删除消息平台表中的模版
+            providerSmsTemplateMapper.deleteBatchIds(providerSmsTemplateIds);
+            // 删除短信关联映射表中的数据
+            smsTemplateRelationMapper.delete(new QueryWrapper<SmsTemplateRelation>()
+                    .in("provider_template_id", providerSmsTemplateIds));
+        }
 
         List<Long> ids = Arrays.asList(providerIds);
         List<Provider> providers = getBaseMapper().selectBatchIds(ids);
@@ -124,6 +126,11 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
             return providerResDTO;
         }
         return null;
+    }
+
+    @Override
+    public List<SmsConfigModel> getAllSmsConfigForInit() {
+        return getBaseMapper().selectAllSmsConfigForInit();
     }
 
     @Override
@@ -154,11 +161,6 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
         });
 
         return dtoPage.setRecords(list);
-    }
-
-    @Override
-    public List<SmsConfigModel> getAllSmsConfigForInit() {
-        return getBaseMapper().selectAllSmsConfigForInit();
     }
 
     @Override
