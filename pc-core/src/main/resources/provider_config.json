@@ -40,3 +40,37 @@
   "config": "{\n\t\"secretKey\":\"f7d9458d592713b8cff52a3cd9939fcb\"\n}",
   "description": "聚合短信"
 }
+
+{
+  "id": 12,
+  "content": "您的验证码是#a#，有效期#b#分钟",
+  "params": "a,b",
+  "providers": "聚合,腾讯云",
+  "status": 1,
+  "updatedBy": "ct",
+  "updatedAt": 1610355603000,
+  "providerSmsTemplates": [
+    {
+      "id": 6,
+      "relationId": 3,
+      "code": "227510",
+      "sign": "中轨技术",
+      "content": "您的验证码是#code#，有效期#m#分钟",
+      "status": 1,
+      "priority": 3,
+      "updatedBy": "ct",
+      "updatedAt": 1610355603000
+    },
+    {
+      "id": 8,
+      "relationId": 9,
+      "code": "821098",
+      "sign": "中兴轨道通讯",
+      "content": "验证码为：{1}，您正在登录，若非本人操作，请勿泄露。",
+      "status": 1,
+      "priority": 18,
+      "updatedBy": "ct",
+      "updatedAt": 1610355603000
+    }
+  ]
+}

@@ -33,6 +33,9 @@ import java.util.Objects;
 @RestControllerAdvice(annotations = {RestController.class, Controller.class})
 public class DefaultControllerAdvice {
 
+    public static final int THREE = 3;
+    public static final int TWO = 2;
+    public static final int ONE = 1;
     @Autowired
     private MessageSource messageSource;
 
@@ -63,15 +66,15 @@ public class DefaultControllerAdvice {
             String field = fieldError.getField();
             if (null != arguments) {
                 String message = null;
-                if (arguments.length >= 3) {
+                if (arguments.length >= THREE) {
                     message = messageSource.getMessage(ErrorCode.messageOf(code),
-                            new Object[]{field, arguments[2], arguments[1]}, locale);
+                            new Object[]{field, arguments[TWO], arguments[ONE]}, locale);
                 }
-                if (arguments.length == 2) {
+                if (arguments.length == TWO) {
                     message = messageSource.getMessage(ErrorCode.messageOf(code),
-                            new Object[]{field, arguments[1]}, locale);
+                            new Object[]{field, arguments[ONE]}, locale);
                 }
-                if (arguments.length == 1) {
+                if (arguments.length == ONE) {
                     message = messageSource.getMessage(ErrorCode.messageOf(code),
                             new Object[]{field}, locale);
                 }
@@ -88,7 +91,7 @@ public class DefaultControllerAdvice {
         Locale locale = LocaleContextHolder.getLocale();
         ConstraintViolation<?> violation = e.getConstraintViolations().stream().findFirst().get();
         Integer code = Integer.valueOf(violation.getMessageTemplate());
-        String field = e.getMessage().split(":")[0].split("\\.")[1];
+        String field = e.getMessage().split(":")[0].split("\\.")[ONE];
         String message = messageSource.getMessage(ErrorCode.messageOf(code),
                 new Object[]{field}, locale);
         return new BaseResponse().code(code).message(message);

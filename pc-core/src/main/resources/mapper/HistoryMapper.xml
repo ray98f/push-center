@@ -98,10 +98,10 @@
                     app_id=#{appId} and
                 </if>
                 <if test="targetPlatform!=null">
-                    target_platform=#{targetPlatform}
+                    target_platform=#{targetPlatform} and
                 </if>
                 <if test="applicationName!=null">
-                    application_name=#{applicationName}
+                    application_name=#{applicationName} and
                 </if>
                 <if test="startTime!=null">
                     transmit_time >= #{startTime} and

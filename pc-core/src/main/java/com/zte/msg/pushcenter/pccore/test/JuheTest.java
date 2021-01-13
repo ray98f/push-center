@@ -20,6 +20,9 @@ public class JuheTest {
     public static final String DEF_CHARSET = "UTF-8";
     public static final int DEF_CONN_TIMEOUT = 30000;
     public static final int DEF_READ_TIMEOUT = 30000;
+    public static final String ERROR_CODE = "error_code";
+    public static final String GET = "GET";
+    public static final String POST = "POST";
     public static String userAgent =
             "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.66 Safari/537.36";
 
@@ -38,12 +41,12 @@ public class JuheTest {
         //应用APPKEY(应用详细页查询)
         params.put("key", "f7d9458d592713b8cff52a3cd9939fcb");
         try {
-            result = net(url, params, "GET");
+            result = net(url, params, GET);
             JSONObject object = JSONObject.parseObject(result);
-            if (object.getInteger("error_code") == 0) {
+            if (object.getInteger(ERROR_CODE) == 0) {
                 System.out.println(object.get("result"));
             } else {
-                System.out.println(object.get("error_code") + ":" + object.get("reason"));
+                System.out.println(object.get(ERROR_CODE) + ":" + object.get("reason"));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,15 +70,15 @@ public class JuheTest {
         String rs = null;
         try {
             StringBuffer sb = new StringBuffer();
-            if (method == null || "GET".equals(method)) {
+            if (method == null || GET.equals(method)) {
                 strUrl = strUrl + "?" + urlencode(params);
             }
             URL url = new URL(strUrl);
             conn = (HttpURLConnection) url.openConnection();
-            if (method == null || "GET".equals(method)) {
-                conn.setRequestMethod("GET");
+            if (method == null || GET.equals(method)) {
+                conn.setRequestMethod(GET);
             } else {
-                conn.setRequestMethod("POST");
+                conn.setRequestMethod(POST);
                 conn.setDoOutput(true);
             }
             conn.setRequestProperty("User-agent", userAgent);
@@ -84,7 +87,7 @@ public class JuheTest {
             conn.setReadTimeout(DEF_READ_TIMEOUT);
             conn.setInstanceFollowRedirects(false);
             conn.connect();
-            if (params != null && "POST".equals(method)) {
+            if (params != null && POST.equals(method)) {
                 try {
                     DataOutputStream out = new DataOutputStream(conn.getOutputStream());
                     out.writeBytes(urlencode(params));

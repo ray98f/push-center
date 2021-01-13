@@ -20,7 +20,7 @@ public class MapUtils {
         if (obj == null) {
             return null;
         }
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>(16);
         Field[] declaredFields = obj.getClass().getDeclaredFields();
         for (Field field : declaredFields) {
             field.setAccessible(true);

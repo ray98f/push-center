@@ -50,7 +50,7 @@ public class ObjectUtils {
         List<Map<String, Object>> list = new ArrayList<>();
         Map<String, Object> infoMap = null;
         for (Field field : fields) {
-            infoMap = new HashMap<>();
+            infoMap = new HashMap<>(16);
             infoMap.put("type", field.getType().toString());
             infoMap.put("name", field.getName());
             infoMap.put("value", getFieldValueByName(field.getName(), o));
@@ -74,7 +74,7 @@ public class ObjectUtils {
 
     public static void main(String[] args) {
         SmsMessageReqDTO smsMessageReqDTO = new SmsMessageReqDTO();
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>(16);
         map.put("aaa","chentong");
         map.put("bbb","fengruipeng");
         map.put("ccc","chenshengpu");

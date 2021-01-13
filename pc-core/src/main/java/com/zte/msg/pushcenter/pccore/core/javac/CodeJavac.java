@@ -5,6 +5,7 @@ import com.zte.msg.pushcenter.pccore.model.ScriptModel;
 import com.zte.msg.pushcenter.pccore.utils.JavaCodecUtils;
 import com.zte.msg.pushcenter.pccore.utils.PathUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -52,18 +53,21 @@ public class CodeJavac {
 
     private void getTask(List<ScriptModel> scriptModels) {
         scriptModels.forEach(o -> {
-            Iterable<? extends JavaFileObject> compilationUnits = new ArrayList<JavaFileObject>() {{
-                add(new JavaSourceFromString(o.getScriptTag(), JavaCodecUtils.replaceCodeJavaName(o.getScriptContext(), o.getScriptTag())));
-            }};
-            boolean ok = javaCompiler.getTask(errorStringWriter, scriptFileManager, diagnostic -> {
-                if (diagnostic.getKind() == Diagnostic.Kind.ERROR) {
-                    errorStringWriter.append(diagnostic.toString());
+            if (StringUtils.isNotBlank(o.getScriptContext()) && StringUtils.isNotBlank(o.getScriptTag())) {
+                Iterable<? extends JavaFileObject> compilationUnits = new ArrayList<JavaFileObject>() {{
+                    add(new JavaSourceFromString(o.getScriptTag(), JavaCodecUtils.replaceCodeJavaName(o.getScriptContext(), o.getScriptTag())));
+                }};
+                boolean ok = javaCompiler.getTask(errorStringWriter, scriptFileManager, diagnostic -> {
+                    if (diagnostic.getKind() == Diagnostic.Kind.ERROR) {
+                        errorStringWriter.append(diagnostic.toString());
+                    }
+                }, options, null, compilationUnits).call();
+                if (!ok) {
+                    String errorMessage = errorStringWriter.toString();
+                    log.error("Compile Error:{}" + errorMessage);
                 }
-            }, options, null, compilationUnits).call();
-            if (!ok) {
-                String errorMessage = errorStringWriter.toString();
-                log.error("Compile Error:{}" + errorMessage);
             }
+
         });
         allBuffers = scriptFileManager.getAllBuffers();
         log.info("========== all compilation script : {} ==========", allBuffers.size());

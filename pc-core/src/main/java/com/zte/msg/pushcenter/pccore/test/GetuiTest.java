@@ -41,7 +41,7 @@ public class GetuiTest {
         requestDataObject.put("appId", appId);
         requestDataObject.put("authToken", "9e46cf0fac0bd94b01c6396db8700f6b5c988cd4e51eaff94f1cefec50ad17c9");
         requestDataObject.put("smsTemplateId", "000001");
-        Map<String, String> param = new HashMap<String, String>();
+        Map<String, String> param = new HashMap<String, String>(16);
         param.put("name", "***");
         param.put("code", "***");
         requestDataObject.put("smsParam", param);
