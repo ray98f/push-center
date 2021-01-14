@@ -62,7 +62,9 @@ public interface ProviderMapper extends BaseMapper<Provider> {
             " AND str.flag = 0  " +
             " AND st.flag = 0  " +
             " AND pst.flag = 0  " +
-            " AND p.flag = 0 "
+            " AND p.flag = 0 " +
+            " AND pst.status = 1" +
+            " AND st.status = 1 "
     )
     List<SmsConfigModel> selectAllSmsConfigForInit();
 
@@ -92,6 +94,8 @@ public interface ProviderMapper extends BaseMapper<Provider> {
                     " AND st.flag = 0  " +
                     " AND pst.flag = 0  " +
                     " AND p.flag = 0 " +
+                    " AND pst.status = 1" +
+                    " AND st.status = 1 " +
                     " AND st.id IN " +
                     "<foreach collection = 'ids' item = 'id' open='(' separator=',' close=')'>",
             " #{id} ",
@@ -126,6 +130,8 @@ public interface ProviderMapper extends BaseMapper<Provider> {
                     " AND st.flag = 0  " +
                     " AND pst.flag = 0  " +
                     " AND p.flag = 0 " +
+                    " AND pst.status = 1" +
+                    " AND st.status = 1 " +
                     " AND p.id IN " +
                     "<foreach collection = 'ids' item = 'id' open='(' separator=',' close=')'>",
             " #{id} ",

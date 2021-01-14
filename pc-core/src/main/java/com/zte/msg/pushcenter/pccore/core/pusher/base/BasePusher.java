@@ -110,4 +110,5 @@ public abstract class BasePusher {
      */
     @PostConstruct
     abstract protected void init();
+
 }

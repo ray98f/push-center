@@ -173,7 +173,7 @@ public class TemplateController {
         return DataResponse.success();
     }
 
-    @GetMapping("/provider/wechat/page")
+    @GetMapping(value = "/provider/wechat/page")
     @ApiOperation(value = "【微信公众号模版】- 分页查询")
     public DataResponse<WeChatTemplateResDTO> getWeChatTemplates(@Valid PageReqDTO page,
                                                                  @RequestParam(required = false) @ApiParam(value = "模版id") Long templateId,
@@ -183,5 +183,6 @@ public class TemplateController {
         templateService.getWeChatTemplates(page, templateId, providerName, status);
         return DataResponse.success();
     }
+
 
 }
