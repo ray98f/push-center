@@ -15,15 +15,15 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @ApiModel
-public class WeChatTemplateReqDTO {
+public class WeChatTemplateUpdateReqDTO {
+
+    @ApiModelProperty(value = "模版id")
+    @NotNull(message = "32000006")
+    private Long id;
 
     @ApiModelProperty(required = true, value = "消息平台id")
     @NotNull(message = "32000006")
     private Long providerId;
-
-    @ApiModelProperty(required = true, value = "消息平台名称")
-    @NotNull(message = "32000006")
-    private String providerName;
 
     @ApiModelProperty(required = true, value = "公众号模板id")
     @NotNull(message = "32000006")

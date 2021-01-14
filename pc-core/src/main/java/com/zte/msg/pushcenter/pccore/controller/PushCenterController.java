@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.MailMessage;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.SmsMessage;
 import com.zte.msg.pushcenter.pccore.dto.DataResponse;
+import com.zte.msg.pushcenter.pccore.dto.req.AppMessageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.MailMessageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsMessageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.WeChatMessageReqDTO;
@@ -71,4 +72,10 @@ public class PushCenterController {
         return DataResponse.success();
     }
 
+    @PostMapping(value = "/app")
+    @ApiOperation(value = "APP消息推送")
+    public <T> DataResponse<T> pushApp(@Valid @RequestBody AppMessageReqDTO reqDTO) {
+
+        return DataResponse.success();
+    }
 }

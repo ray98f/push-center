@@ -3,11 +3,10 @@ package com.zte.msg.pushcenter.pccore.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
-import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateRelateProviderReqDTO;
-import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateRelateProviderUpdateReqDTO;
-import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateReqDTO;
+import com.zte.msg.pushcenter.pccore.dto.req.*;
 import com.zte.msg.pushcenter.pccore.dto.res.ProviderSmsTemplateResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.SmsTemplateDetailResDTO;
+import com.zte.msg.pushcenter.pccore.dto.res.WeChatTemplateResDTO;
 import com.zte.msg.pushcenter.pccore.entity.SmsTemplate;
 
 import java.util.List;
@@ -68,4 +67,16 @@ public interface TemplateService {
      */
     List<SmsTemplate> getTemplateList();
 
+    void addWeChatTemplate(WeChatTemplateReqDTO reqDTO);
+
+    void updateWeChatTemplate(WeChatTemplateUpdateReqDTO reqDTO);
+
+    WeChatTemplateResDTO getWeChatTemplate(Long templateId);
+
+    void deleteWeChatTemplates(Long[] ids);
+
+    Page<WeChatTemplateResDTO> getWeChatTemplates(PageReqDTO page,
+                                                  Long templateId,
+                                                  String providerName,
+                                                  Integer status);
 }

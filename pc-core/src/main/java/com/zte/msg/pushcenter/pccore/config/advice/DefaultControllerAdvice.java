@@ -46,6 +46,10 @@ public class DefaultControllerAdvice {
         String message = messageSource.getMessage(e.getMessage(),
                 null, locale);
         log.error(message);
+        if (!Objects.isNull(e.getParams())) {
+            message = messageSource.getMessage(ErrorCode.messageOf(e.getCode()),
+                    new Object[]{e.getParams()}, locale);
+        }
         return new BaseResponse().code(e.getCode()).message(message);
     }
 

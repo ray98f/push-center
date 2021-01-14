@@ -7,7 +7,7 @@ import com.zte.msg.pushcenter.pccore.dto.req.WechatHistoryReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.ApplicationInfo;
 import com.zte.msg.pushcenter.pccore.entity.MailInfo;
 import com.zte.msg.pushcenter.pccore.entity.SmsInfo;
-import com.zte.msg.pushcenter.pccore.entity.WechatInfo;
+import com.zte.msg.pushcenter.pccore.entity.WeChatInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -28,7 +28,7 @@ public interface HistoryMapper {
 
     List<MailInfo> listHistoryMail(MailHistoryReqDTO mailHistoryReqDTO);
 
-    List<WechatInfo> listHistoryWechat(WechatHistoryReqDTO wechatHistoryReqDTO);
+    List<WeChatInfo> listHistoryWechat(WechatHistoryReqDTO wechatHistoryReqDTO);
 
     List<ApplicationInfo> listHistoryApplication(ApplicationHistoryReqDTO applicationHistoryReqDTO);
 

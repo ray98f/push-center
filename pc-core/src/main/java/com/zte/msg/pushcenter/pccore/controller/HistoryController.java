@@ -1,6 +1,5 @@
 package com.zte.msg.pushcenter.pccore.controller;
 
-import com.zte.msg.pushcenter.pccore.dto.DataResponse;
 import com.zte.msg.pushcenter.pccore.dto.PageResponse;
 import com.zte.msg.pushcenter.pccore.dto.req.ApplicationHistoryReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.MailHistoryReqDTO;
@@ -9,12 +8,15 @@ import com.zte.msg.pushcenter.pccore.dto.req.WechatHistoryReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.ApplicationInfo;
 import com.zte.msg.pushcenter.pccore.entity.MailInfo;
 import com.zte.msg.pushcenter.pccore.entity.SmsInfo;
-import com.zte.msg.pushcenter.pccore.entity.WechatInfo;
+import com.zte.msg.pushcenter.pccore.entity.WeChatInfo;
 import com.zte.msg.pushcenter.pccore.service.HistoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -49,7 +51,7 @@ public class HistoryController {
 
     @PostMapping("/wechat")
     @ApiOperation(value = "查询微信公众号发送历史")
-    public PageResponse<WechatInfo> listHistoryWechat(@Valid @RequestBody WechatHistoryReqDTO wechatHistoryReqDTO){
+    public PageResponse<WeChatInfo> listHistoryWechat(@Valid @RequestBody WechatHistoryReqDTO wechatHistoryReqDTO){
         return PageResponse.of(historyService.listHistoryWechat(wechatHistoryReqDTO));
     }
 

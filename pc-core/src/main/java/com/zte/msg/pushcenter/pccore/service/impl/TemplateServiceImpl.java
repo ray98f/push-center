@@ -2,22 +2,22 @@ package com.zte.msg.pushcenter.pccore.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zte.msg.pushcenter.pccore.core.Flusher;
 import com.zte.msg.pushcenter.pccore.core.pusher.SmsPusher;
 import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
-import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateRelateProviderReqDTO;
-import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateRelateProviderUpdateReqDTO;
-import com.zte.msg.pushcenter.pccore.dto.req.SmsTemplateReqDTO;
+import com.zte.msg.pushcenter.pccore.dto.req.*;
 import com.zte.msg.pushcenter.pccore.dto.res.ProviderSmsTemplateResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.SmsTemplateDetailResDTO;
+import com.zte.msg.pushcenter.pccore.dto.res.WeChatTemplateResDTO;
 import com.zte.msg.pushcenter.pccore.entity.ProviderSmsTemplate;
 import com.zte.msg.pushcenter.pccore.entity.SmsTemplate;
 import com.zte.msg.pushcenter.pccore.entity.SmsTemplateRelation;
+import com.zte.msg.pushcenter.pccore.entity.WeChatTemplate;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.ProviderSmsTemplateMapper;
 import com.zte.msg.pushcenter.pccore.mapper.SmsTemplateMapper;
 import com.zte.msg.pushcenter.pccore.mapper.SmsTemplateRelationMapper;
+import com.zte.msg.pushcenter.pccore.mapper.WeChatTemplateMapper;
 import com.zte.msg.pushcenter.pccore.model.SmsTemplateRelationModel;
 import com.zte.msg.pushcenter.pccore.service.TemplateService;
 import com.zte.msg.pushcenter.pccore.utils.Constants;
@@ -27,6 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -47,10 +48,6 @@ public class TemplateServiceImpl implements TemplateService {
     private SmsPusher smsPusher;
 
     @Resource
-    private Flusher flusher;
-
-
-    @Resource
     private SmsTemplateMapper smsTemplateMapper;
 
     @Resource
@@ -58,6 +55,9 @@ public class TemplateServiceImpl implements TemplateService {
 
     @Resource
     private SmsTemplateRelationMapper smsTemplateRelationMapper;
+
+    @Resource
+    private WeChatTemplateMapper weChatTemplateMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -106,7 +106,6 @@ public class TemplateServiceImpl implements TemplateService {
                 .eq("priority", reqDTO.getPriority())) >= 1) {
             throw new CommonException(ErrorCode.SMS_TEMPLATE_RELATION_PRIORITY_EXIST);
         }
-        // TODO: 2021/1/13  参数列表数量匹配的才能关联
         ProviderSmsTemplate providerSmsTemplate = providerSmsTemplateMapper.selectById(reqDTO.getPTemplateId());
         if (PatternUtils.getParams(providerSmsTemplate.getContent()).size() != smsTemplate.getParams().split(Constants.COMMA_EN).length) {
             throw new CommonException(ErrorCode.SMS_TEMPLATE_PARAMS_NOT_MATCH);
@@ -257,6 +256,79 @@ public class TemplateServiceImpl implements TemplateService {
     @Override
     public List<SmsTemplate> getTemplateList() {
         return smsTemplateMapper.selectList(new QueryWrapper<>());
+    }
+
+    @Override
+    public void addWeChatTemplate(WeChatTemplateReqDTO reqDTO) {
+
+        if (Objects.isNull(providerSmsTemplateMapper.selectById(reqDTO.getProviderId()))) {
+            throw new CommonException(ErrorCode.PROVIDER_NOT_EXIST);
+        }
+        WeChatTemplate weChatTemplate = new WeChatTemplate();
+        BeanUtils.copyProperties(weChatTemplate, reqDTO);
+        if (!Objects.isNull(weChatTemplate.getId())) {
+            weChatTemplate.setId(null);
+        }
+        weChatTemplateMapper.insert(weChatTemplate);
+    }
+
+    @Override
+    public void updateWeChatTemplate(WeChatTemplateUpdateReqDTO reqDTO) {
+        if (Objects.isNull(providerSmsTemplateMapper.selectById(reqDTO.getProviderId()))) {
+            throw new CommonException(ErrorCode.PROVIDER_NOT_EXIST);
+        }
+        WeChatTemplate weChatTemplate = new WeChatTemplate();
+        BeanUtils.copyProperties(weChatTemplate, reqDTO);
+        weChatTemplateMapper.updateById(weChatTemplate);
+    }
+
+    @Override
+    public WeChatTemplateResDTO getWeChatTemplate(Long templateId) {
+
+        WeChatTemplate weChatTemplate = weChatTemplateMapper.selectById(templateId);
+        WeChatTemplateResDTO weChatTemplateResDTO = new WeChatTemplateResDTO();
+        BeanUtils.copyProperties(weChatTemplate, weChatTemplateResDTO);
+        return weChatTemplateResDTO;
+    }
+
+    @Override
+    public void deleteWeChatTemplates(Long[] ids) {
+
+        if (ids.length == 0) {
+            return;
+        }
+        weChatTemplateMapper.deleteBatchIds(Arrays.asList(ids));
+    }
+
+    @Override
+    public Page<WeChatTemplateResDTO> getWeChatTemplates(PageReqDTO page,
+                                                         Long templateId,
+                                                         String providerName,
+                                                         Integer status) {
+        QueryWrapper<WeChatTemplate> wrapper = new QueryWrapper<>();
+        if (!Objects.isNull(templateId)) {
+            wrapper.eq("id", templateId);
+        }
+        if (!Objects.isNull(providerName)) {
+            wrapper.like("provider_name", providerName);
+        }
+        if (!Objects.isNull(status)) {
+            wrapper.eq("status", status);
+        }
+        Page<WeChatTemplate> result = weChatTemplateMapper.selectPage(page.of(), wrapper);
+        List<WeChatTemplate> records = result.getRecords();
+        Page<WeChatTemplateResDTO> resPage = new Page<>();
+        BeanUtils.copyProperties(result, resPage);
+        if (CollectionUtils.isEmpty(records)) {
+            return resPage;
+        }
+        List<WeChatTemplateResDTO> resList = new ArrayList<>(records.size());
+        records.forEach(o -> {
+            WeChatTemplateResDTO resDTO = new WeChatTemplateResDTO();
+            BeanUtils.copyProperties(o, resDTO);
+            resList.add(resDTO);
+        });
+        return resPage.setRecords(resList);
     }
 
 

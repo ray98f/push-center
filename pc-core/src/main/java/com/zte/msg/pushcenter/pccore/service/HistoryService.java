@@ -8,7 +8,7 @@ import com.zte.msg.pushcenter.pccore.dto.req.WechatHistoryReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.ApplicationInfo;
 import com.zte.msg.pushcenter.pccore.entity.MailInfo;
 import com.zte.msg.pushcenter.pccore.entity.SmsInfo;
-import com.zte.msg.pushcenter.pccore.entity.WechatInfo;
+import com.zte.msg.pushcenter.pccore.entity.WeChatInfo;
 
 /**
  * description:
@@ -27,7 +27,7 @@ public interface HistoryService {
 
     void addHistoryMail(MailInfo mailInfo);
 
-    PageInfo<WechatInfo> listHistoryWechat(WechatHistoryReqDTO wechatHistoryReqDTO);
+    PageInfo<WeChatInfo> listHistoryWechat(WechatHistoryReqDTO wechatHistoryReqDTO);
 
     PageInfo<ApplicationInfo> listHistoryApplication(ApplicationHistoryReqDTO applicationHistoryReqDTO);
 }

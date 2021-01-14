@@ -15,7 +15,7 @@ import java.sql.Timestamp;
  */
 @Data
 @ApiModel
-public class WechatInfo extends BaseEntity {
+public class WeChatInfo extends BaseEntity {
 
     @ApiModelProperty(value = "应用id")
     private Long appId;
@@ -24,7 +24,7 @@ public class WechatInfo extends BaseEntity {
     private String appName;
 
     @ApiModelProperty(value = "公众号名称")
-    private String wechatName;
+    private String weChatName;
 
     @ApiModelProperty(value = "OpenID")
     private String openId;

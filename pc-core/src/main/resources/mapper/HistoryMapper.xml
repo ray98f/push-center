@@ -59,7 +59,7 @@
         </if>
     </select>
 
-    <select id="listHistoryWechat" resultType="com.zte.msg.pushcenter.pccore.entity.WechatInfo" parameterType="com.zte.msg.pushcenter.pccore.dto.req.WechatHistoryReqDTO">
+    <select id="listHistoryWechat" resultType="com.zte.msg.pushcenter.pccore.entity.WeChatInfo" parameterType="com.zte.msg.pushcenter.pccore.dto.req.WechatHistoryReqDTO">
         select * from wechat_info
         <if test="appId!=null or wechatName!=null or startTime!=null or endTime!=null or result!=null">
             <trim prefix="where " suffixOverrides="and">

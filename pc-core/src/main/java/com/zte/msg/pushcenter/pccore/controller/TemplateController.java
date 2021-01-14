@@ -148,30 +148,39 @@ public class TemplateController {
     @PostMapping(value = "/provider/wechat")
     @ApiOperation(value = "【微信公众号模版】- 新增")
     public <T> DataResponse<T> addWeChatTemplate(@RequestBody WeChatTemplateReqDTO reqDTO) {
-        // TODO: 2021/1/13
+        templateService.addWeChatTemplate(reqDTO);
         return DataResponse.success();
     }
 
     @PutMapping(value = "/provider/wechat")
     @ApiOperation(value = "【微信公众号模版】- 修改")
-    public <T> DataResponse<T> updateWeChatTemplate(@RequestBody WeChatTemplateReqDTO reqDTO) {
-        // TODO: 2021/1/13
+    public <T> DataResponse<T> updateWeChatTemplate(@RequestBody WeChatTemplateUpdateReqDTO reqDTO) {
+        templateService.updateWeChatTemplate(reqDTO);
         return DataResponse.success();
     }
 
     @GetMapping(value = "/provider/wechat")
     @ApiOperation(value = "【微信公众号模版】- 查看详情")
-    public DataResponse<WeChatTemplateResDTO> getWeChatTemplate(@RequestParam Long templateId) {
-
-        // TODO: 2021/1/13
-        return null;
+    public DataResponse<WeChatTemplateResDTO> getWeChatTemplate(@RequestParam @ApiParam(required = true) Long templateId) {
+        return DataResponse.of(templateService.getWeChatTemplate(templateId));
     }
 
     @DeleteMapping(value = "/provider/wechat")
-    @ApiOperation(value = "【微信公众号模版】- 查看详情")
+    @ApiOperation(value = "【微信公众号模版】- 批量删除")
     public <T> DataResponse<T> deleteWeChatTemplates(@RequestBody Long[] ids) {
 
-        // TODO: 2021/1/13
+        templateService.deleteWeChatTemplates(ids);
+        return DataResponse.success();
+    }
+
+    @GetMapping("/provider/wechat/page")
+    @ApiOperation(value = "【微信公众号模版】- 分页查询")
+    public DataResponse<WeChatTemplateResDTO> getWeChatTemplates(@Valid PageReqDTO page,
+                                                                 @RequestParam(required = false) @ApiParam(value = "模版id") Long templateId,
+                                                                 @RequestParam(required = false) @ApiParam(value = "消息平台模糊查询字段") String providerName,
+                                                                 @RequestParam(required = false) @ApiParam(value = "启用状态") Integer status) {
+
+        templateService.getWeChatTemplates(page, templateId, providerName, status);
         return DataResponse.success();
     }
 

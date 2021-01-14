@@ -1,6 +1,5 @@
 package com.zte.msg.pushcenter.pccore.dto.req;
 
-import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -18,7 +17,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class WeChatMessageReqDTO extends PushReqDTO {
 
-    @ApiModelProperty(value = "OpenID", required = true)
+    @ApiModelProperty(value = "接收者OpenId", required = true)
     @NotNull(message = "32000006")
     private String openId;
 
@@ -26,47 +25,18 @@ public class WeChatMessageReqDTO extends PushReqDTO {
     @NotNull(message = "32000006")
     private String providerId;
 
-    /**
-     * 公众号appId
-     */
-    @ApiModelProperty(value = "公众号appId", required = true)
-    private String weChatAppId;
-
-    /**
-     * 公众号secret
-     */
-    @ApiModelProperty(value = "公众号secret", required = true)
-    private String appSecret;
-
-    /**
-     * 接口配置里的EncodingAESKey值
-     */
-    @ApiModelProperty(value = "公众号配置里的EncodingAESKey值", required = true)
-    private String aesKey;
-
-    /**
-     * 公众号配置的token
-     */
-    @ApiModelProperty(value = "公众号配置的token", required = true)
-    private String appToken;
-
-    /**
-     * 目标用户微信
-     */
-    @ApiModelProperty(value = "目标用户微信", required = true)
-    private String targetWeChatId;
-
-    /**
-     * 模版id
-     */
     @ApiModelProperty(value = "模版id", required = true)
     private String templateId;
 
-    /**
-     * 参数
-     */
-    @ApiModelProperty(value = "模版参数")
-    private JSONObject var;
+    @ApiModelProperty(value = "所需跳转到的小程序appid")
+    @NotNull(message = "32000006")
+    private String appletAppId;
 
+    @ApiModelProperty(value = "模板数据", required = true)
+    @NotNull(message = "32000006")
+    private String data;
+
+    @ApiModelProperty(value = "小程序数据")
+    private String appletData;
 
 }

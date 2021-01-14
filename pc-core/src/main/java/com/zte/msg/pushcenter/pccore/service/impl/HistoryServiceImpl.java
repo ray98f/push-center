@@ -9,7 +9,7 @@ import com.zte.msg.pushcenter.pccore.dto.req.WechatHistoryReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.ApplicationInfo;
 import com.zte.msg.pushcenter.pccore.entity.MailInfo;
 import com.zte.msg.pushcenter.pccore.entity.SmsInfo;
-import com.zte.msg.pushcenter.pccore.entity.WechatInfo;
+import com.zte.msg.pushcenter.pccore.entity.WeChatInfo;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.HistoryMapper;
@@ -80,7 +80,7 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public PageInfo<WechatInfo> listHistoryWechat(WechatHistoryReqDTO wechatHistoryReqDTO){
+    public PageInfo<WeChatInfo> listHistoryWechat(WechatHistoryReqDTO wechatHistoryReqDTO){
         if (null == wechatHistoryReqDTO.getPage() || null == wechatHistoryReqDTO.getSize()) {
             throw new CommonException(ErrorCode.PAGE_PARAM_EMPTY);
         }
