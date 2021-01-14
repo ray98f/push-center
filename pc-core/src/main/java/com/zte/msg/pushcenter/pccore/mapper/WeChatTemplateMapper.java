@@ -2,7 +2,12 @@ package com.zte.msg.pushcenter.pccore.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zte.msg.pushcenter.pccore.entity.WeChatTemplate;
+import com.zte.msg.pushcenter.pccore.model.WxConfigModel;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * description:
@@ -13,4 +18,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface WeChatTemplateMapper extends BaseMapper<WeChatTemplate> {
+
+    @Select("")
+    List<WxConfigModel> selectWxConfigs(@Param("ids") List<Long> ids);
 }
