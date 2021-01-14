@@ -267,72 +267,31 @@ CREATE TABLE `user`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '管理平台用户' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Function structure for fristPinyin
--- ----------------------------
-DROP FUNCTION IF EXISTS `fristPinyin`;
-delimiter ;;
-CREATE DEFINER=`root`@`%` FUNCTION `fristPinyin`(P_NAME VARCHAR(255)) RETURNS varchar(255) CHARSET utf8
-BEGIN
-    DECLARE V_RETURN VARCHAR(255);
-    SET V_RETURN = ELT(INTERVAL(CONV(HEX(left(CONVERT(P_NAME USING gbk),1)),16,10),
-        0xB0A1,0xB0C5,0xB2C1,0xB4EE,0xB6EA,0xB7A2,0xB8C1,0xB9FE,0xBBF7,
-        0xBFA6,0xC0AC,0xC2E8,0xC4C3,0xC5B6,0xC5BE,0xC6DA,0xC8BB,
-        0xC8F6,0xCBFA,0xCDDA,0xCEF4,0xD1B9,0xD4D1),
-    'a','b','c','d','e','f','g','h','j','k','l','m','n','o','p','q','r','s','t','w','x','y','z');
-RETURN V_RETURN;
-END
-;;
-delimiter ;
-
--- ----------------------------
--- Function structure for pinyin
--- ----------------------------
-DROP FUNCTION IF EXISTS `pinyin`;
-delimiter ;;
-CREATE DEFINER=`root`@`%` FUNCTION `pinyin`(P_NAME VARCHAR(255)) RETURNS varchar(255) CHARSET utf8
-BEGIN
-    DECLARE V_COMPARE VARCHAR(255);
-    DECLARE V_RETURN VARCHAR(255);
-    DECLARE I INT;
-    SET I = 1;
-    SET V_RETURN = '';
-    while I < LENGTH(P_NAME) do
-        SET V_COMPARE = SUBSTR(P_NAME, I, 1);
-        IF (V_COMPARE != '') THEN
-            #SET V_RETURN = CONCAT(V_RETURN, ',', V_COMPARE);
-            SET V_RETURN = CONCAT(V_RETURN, fristPinyin(V_COMPARE));
-            #SET V_RETURN = fristPinyin(V_COMPARE);
-        END IF;
-        SET I = I + 1;
-    end while;
-
-    IF (ISNULL(V_RETURN) or V_RETURN = '') THEN
-        SET V_RETURN = P_NAME;
-    END IF;
-
-    RETURN V_RETURN;
-END
-;;
-delimiter ;
-
--- ----------------------------
 -- Function structure for to_pinyin
 -- ----------------------------
-DROP FUNCTION IF EXISTS `to_pinyin`;
-delimiter ;;
-CREATE DEFINER=`root`@`%` FUNCTION `to_pinyin`(NAME VARCHAR(255) CHARSET gbk) RETURNS varchar(255) CHARSET gbk
+-- 建立汉字转换拼音函数
+DROP FUNCTION IF EXISTS to_pinyin;
+DELIMITER $
+CREATE FUNCTION to_pinyin(NAME VARCHAR(255) CHARSET gbk)
+    RETURNS VARCHAR(255) CHARSET gbk
 BEGIN
     DECLARE mycode INT;
     DECLARE tmp_lcode VARCHAR(2) CHARSET gbk;
     DECLARE lcode INT;
+
     DECLARE tmp_rcode VARCHAR(2) CHARSET gbk;
     DECLARE rcode INT;
+
     DECLARE mypy VARCHAR(255) CHARSET gbk DEFAULT '';
     DECLARE lp INT;
+
     SET mycode = 0;
     SET lp = 1;
+
     SET NAME = HEX(NAME);
+
     WHILE lp < LENGTH(NAME) DO
+
         SET tmp_lcode = SUBSTRING(NAME, lp, 2);
         SET lcode = CAST(ASCII(UNHEX(tmp_lcode)) AS UNSIGNED);
         SET tmp_rcode = SUBSTRING(NAME, lp + 2, 2);
@@ -347,8 +306,116 @@ ELSE
 END IF;
 END WHILE;
 RETURN LOWER(mypy);
-END
-;;
-delimiter ;
+END;
+$
+DELIMITER ;
+-- ----------------------------
+-- Function structure for fristPinyin
+-- ----------------------------
+DROP FUNCTION IF EXISTS `fristPinyin`;
+DELIMITER $
+CREATE FUNCTION `fristPinyin`(P_NAME VARCHAR(255)) RETURNS varchar(255) CHARSET utf8
+BEGIN
+    DECLARE V_RETURN VARCHAR(255);
+    SET V_RETURN = ELT(INTERVAL(CONV(HEX(left(CONVERT(P_NAME USING gbk),1)),16,10),
+        0xB0A1,0xB0C5,0xB2C1,0xB4EE,0xB6EA,0xB7A2,0xB8C1,0xB9FE,0xBBF7,
+        0xBFA6,0xC0AC,0xC2E8,0xC4C3,0xC5B6,0xC5BE,0xC6DA,0xC8BB,
+        0xC8F6,0xCBFA,0xCDDA,0xCEF4,0xD1B9,0xD4D1),
+    'A','B','C','D','E','F','G','H','J','K','L','M','N','O','P','Q','R','S','T','W','X','Y','Z');
+    IF (ISNULL(V_RETURN) or V_RETURN = '') THEN
+        SET V_RETURN = P_NAME;
+END IF;
+RETURN V_RETURN;
+END;
+$
+DELIMITER ;
+
+-- ----------------------------
+-- Function structure for pinyin
+-- ----------------------------
+DROP FUNCTION IF EXISTS `pinyin`;;
+DELIMITER $
+CREATE FUNCTION `pinyin`(P_NAME VARCHAR(255)) RETURNS varchar(255) CHARSET utf8
+BEGIN
+    DECLARE V_COMPARE VARCHAR(255);
+    DECLARE V_RETURN VARCHAR(255);
+    DECLARE I INT;
+    SET I = 1;
+    SET V_RETURN = '';
+    while I <= char_length(P_NAME) do
+        SET V_COMPARE = SUBSTR(P_NAME, I, 1);
+        IF (V_COMPARE != '') THEN
+            #SET V_RETURN = CONCAT(V_RETURN, ',', V_COMPARE);
+            SET V_RETURN = CONCAT(V_RETURN, fristPinyin(V_COMPARE));
+            #SET V_RETURN = fristPinyin(V_COMPARE);
+END IF;
+        SET I = I + 1;
+end while;
+
+    IF (ISNULL(V_RETURN) or V_RETURN = '') THEN
+        SET V_RETURN = P_NAME;
+END IF;
+
+RETURN V_RETURN;
+END;
+$
+DELIMITER ;
+
+-- ----------------------------
+-- Function structure for Num_char_extract
+-- ----------------------------
+DELIMITER $$
+
+DROP FUNCTION IF EXISTS `Num_char_extract`$$
+
+CREATE FUNCTION `Num_char_extract`(Varstring VARCHAR(100)CHARSET utf8, flag INT) RETURNS VARCHAR(50) CHARSET utf8
+BEGIN
+	DECLARE len INT DEFAULT 0;
+	DECLARE Tmp VARCHAR(100) DEFAULT '';
+	SET len=CHAR_LENGTH(Varstring);
+	IF flag = 0
+	THEN
+		WHILE len > 0 DO
+		IF MID(Varstring,len,1)REGEXP'[0-9]' THEN
+		SET Tmp=CONCAT(Tmp,MID(Varstring,len,1));
+END IF;
+		SET len = len - 1;
+END WHILE;
+	ELSEIF flag=1
+	THEN
+		WHILE len > 0 DO
+		IF (MID(Varstring,len,1)REGEXP '[a-zA-Z]')
+		THEN
+		SET Tmp=CONCAT(Tmp,MID(Varstring,len,1));
+END IF;
+		SET len = len - 1;
+END WHILE;
+	ELSEIF flag=2
+	THEN
+		WHILE len > 0 DO
+		IF ( (MID(Varstring,len,1)REGEXP'[0-9]')
+		OR (MID(Varstring,len,1)REGEXP '[a-zA-Z]') )
+		THEN
+		SET Tmp=CONCAT(Tmp,MID(Varstring,len,1));
+END IF;
+		SET len = len - 1;
+END WHILE;
+	ELSEIF flag=3
+	THEN
+		WHILE len > 0 DO
+		IF NOT (MID(Varstring,len,1)REGEXP '^[u0391-uFFE5]')
+		THEN
+		SET Tmp=CONCAT(Tmp,MID(Varstring,len,1));
+END IF;
+		SET len = len - 1;
+END WHILE;
+ELSE
+		SET Tmp = 'Error: The second paramter should be in (0,1,2,3)';
+RETURN Tmp;
+END IF;
+RETURN REVERSE(Tmp);
+END$$
+
+DELIMITER ;
 
 SET FOREIGN_KEY_CHECKS = 1;

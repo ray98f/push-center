@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zte.msg.pushcenter.pccore.mapper.StatisticsMapper">
+    <select id="statisticsType" resultType="com.zte.msg.pushcenter.pccore.dto.res.TypeStatisticsResDTO">
+        <foreach collection="typeArray" item="type" index="index" separator=" UNION ALL">
+            select #{type} as type,
+            count(case when result=0 then 1 end) as success_num,
+            count(case when result=1 then 1 end) as fail_num,
+            count(*) as total_num,
+            min(response_time) as min_response_time,
+            max(response_time) as max_response_time,
+            avg(if(response_time is null,0,response_time)) as avg_response_time
+            from
+            <if test="type == '邮件'">mail_info</if>
+            <if test="type == '短信'">sms_info</if>
+            <if test="type == '公众号'">wechat_info</if>
+            <if test="type == 'App'">application_info</if>
+            <trim prefix="where " suffixOverrides="and">
+                <if test="statisticsReqDTO.startTime!=null">
+                    transmit_time >= #{statisticsReqDTO.startTime} and
+                </if>
+                <if test="statisticsReqDTO.endTime!=null">
+                    #{statisticsReqDTO.endTime} >= transmit_time and
+                </if>
+            </trim>
+        </foreach>
+    </select>
+
+    <select id="statisticsAppAndCondition" resultType="com.zte.msg.pushcenter.pccore.dto.res.AppStatisticsResDTO">
+        <if test="conditionStatisticsReqDTO.appId!=null or conditionStatisticsReqDTO.appName!=null">
+            select r.app_name,
+            sum(case when r.type='短信' then 1 end) as sms_send_num,
+            sum(case when r.type='App' then 1 end) as app_send_num,
+            sum(case when r.type='邮件' then 1 end) as mail_send_num,
+            sum(case when r.type='公众号' then 1 end) as wechat_send_num,
+            sum(case when r.type is not null then 1 end) as total_num,
+            sum(case when result=0 then 1 end) as success_num,
+            sum(case when result=1 then 1 end) as fail_num,
+            min(response_time) as min_response_time,
+            max(response_time) as max_response_time,
+            avg(if(response_time is null,0,response_time)) as avg_response_time
+            from
+            (select '短信' as type,app_id,app_name,result,response_time,transmit_time from sms_info
+            UNION ALL
+            select 'App' as type,app_id,app_name,result,response_time,transmit_time from application_info
+            UNION ALL
+            select '邮件' as type,app_id,app_name,result,response_time,transmit_time from mail_info
+            UNION ALL
+            select '公众号' as type,app_id,app_name,result,response_time,transmit_time from wechat_info) as r
+            <trim prefix="where " suffixOverrides="and">
+                <if test="conditionStatisticsReqDTO.appId!=null">
+                    r.app_id=#{conditionStatisticsReqDTO.appId} and
+                </if>
+                <if test="conditionStatisticsReqDTO.type!=null">
+                    r.type=#{conditionStatisticsReqDTO.type} and
+                </if>
+                <if test="conditionStatisticsReqDTO.startTime!=null">
+                    r.transmit_time >= #{conditionStatisticsReqDTO.startTime} and
+                </if>
+                <if test="conditionStatisticsReqDTO.endTime!=null">
+                    #{conditionStatisticsReqDTO.endTime} >= r.transmit_time and
+                </if>
+            </trim>
+            <if test="conditionStatisticsReqDTO.appName!=null">
+                having GROUP_CONCAT("|",r.app_name,"|",to_pinyin(r.app_name),"|",pinyin(Num_char_extract(r.app_name,3)),"|",Num_char_extract(r.app_name,2),"|") like "%"#{conditionStatisticsReqDTO.appName}"%"
+            </if>
+        </if>
+        <if test="conditionStatisticsReqDTO.appId==null and conditionStatisticsReqDTO.appName==null">
+            <foreach collection="appList" index="index" item="app" separator=" UNION ALL">
+                select r.app_name,
+                sum(case when r.type='短信' then 1 end) as sms_send_num,
+                sum(case when r.type='App' then 1 end) as app_send_num,
+                sum(case when r.type='邮件' then 1 end) as mail_send_num,
+                sum(case when r.type='公众号' then 1 end) as wechat_send_num,
+                sum(case when r.type is not null then 1 end) as total_num,
+                sum(case when result=0 then 1 end) as success_num,
+                sum(case when result=1 then 1 end) as fail_num,
+                min(response_time) as min_response_time,
+                max(response_time) as max_response_time,
+                avg(if(response_time is null,0,response_time)) as avg_response_time
+                from
+                (select '短信' as type,app_id,app_name,result,response_time,transmit_time from sms_info
+                UNION ALL
+                select 'App' as type,app_id,app_name,result,response_time,transmit_time from application_info
+                UNION ALL
+                select '邮件' as type,app_id,app_name,result,response_time,transmit_time from mail_info
+                UNION ALL
+                select '公众号' as type,app_id,app_name,result,response_time,transmit_time from wechat_info) as r
+                <trim prefix="where " suffixOverrides="and">
+                    <if test="app.id!=null">
+                        r.app_id=#{app.id} and
+                    </if>
+                    <if test="app.appName!=null">
+                        r.app_name=#{app.appName} and
+                    </if>
+                    <if test="conditionStatisticsReqDTO.type!=null">
+                        r.type=#{conditionStatisticsReqDTO.type} and
+                    </if>
+                    <if test="conditionStatisticsReqDTO.startTime!=null">
+                        r.transmit_time >= #{conditionStatisticsReqDTO.startTime} and
+                    </if>
+                    <if test="conditionStatisticsReqDTO.endTime!=null">
+                        #{conditionStatisticsReqDTO.endTime} >= r.transmit_time and
+                    </if>
+                </trim>
+            </foreach>
+        </if>
+    </select>
+
+    <select id="statisticsPlatform" resultType="com.zte.msg.pushcenter.pccore.dto.res.ProviderStatisticsResDTO" parameterType="com.zte.msg.pushcenter.pccore.dto.req.StatisticsReqDTO">
+        select r.provider_name,count(case when r.result=0 then 1 end) as success_num,
+        count(case when r.result=1 then 1 end) as fail_num,
+        count(*) as total_num,
+        min(r.response_time) as min_response_time,
+        max(r.response_time) as max_response_time,
+        avg(if(r.response_time is null,0,r.response_time)) as avg_response_time from
+        (select app_id,app_name,result,response_time,transmit_time,provider_name from sms_info
+        UNION ALL
+        select app_id,app_name,result,response_time,transmit_time,provider_name from application_info
+        UNION ALL
+        select app_id,app_name,result,response_time,transmit_time,provider_name from mail_info
+        UNION ALL
+        select app_id,app_name,result,response_time,transmit_time,wechat_name as provider_name from wechat_info) as r
+        <trim prefix="where " suffixOverrides="and">
+            <if test="startTime!=null">
+                transmit_time >= #{startTime} and
+            </if>
+            <if test="endTime!=null">
+                #{endTime} >= transmit_time and
+            </if>
+        </trim>
+        group by r.provider_name
+    </select>
+</mapper>
