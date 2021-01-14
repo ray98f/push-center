@@ -49,6 +49,22 @@ public class MailInfo extends BaseEntity {
     @ApiModelProperty(value = "错误消息")
     private String failReason;
 
+    public MailInfo(){}
+
+    public MailInfo(Long appId, String appName, String receiveAddress, String ccAddress, String mailTitle, String mailBody, String providerName, Timestamp transmitTime, Integer result, Integer failCode, String failReason) {
+        this.appId = appId;
+        this.appName = appName;
+        this.receiveAddress = receiveAddress;
+        this.ccAddress = ccAddress;
+        this.mailTitle = mailTitle;
+        this.mailBody = mailBody;
+        this.providerName = providerName;
+        this.transmitTime = transmitTime;
+        this.result = result;
+        this.failCode = failCode;
+        this.failReason = failReason;
+    }
+
     public MailInfo(MailMessage mailMessage, PcScript.Res res) {
         this.appId = mailMessage.getAppId();
         this.appName = mailMessage.getAppName();
