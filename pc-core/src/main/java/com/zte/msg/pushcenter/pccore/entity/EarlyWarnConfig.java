@@ -19,26 +19,26 @@ public class EarlyWarnConfig extends BaseEntity{
     private Long interval;
 
     @ApiModelProperty(value = "处置人员")
-    private Integer userId;
+    private String userId;
 
     @ApiModelProperty(value = "短信模板")
     private Integer smsTemplateId;
 
     @ApiModelProperty(value = "邮件标题")
-    private Integer mailTitle;
+    private String mailTitle;
 
     @ApiModelProperty(value = "邮件内容")
-    private Integer mailBody;
+    private String mailBody;
 
     @ApiModelProperty(value = "公众号id")
     private Integer wechatId;
 
     @ApiModelProperty(value = "公众号名称")
-    private Integer wechatName;
+    private String wechatName;
 
     @ApiModelProperty(value = "公众号模板id")
     private Integer wechatTemplateId;
 
     @ApiModelProperty(value = "AppId")
-    private Integer applicationId;
+    private String applicationId;
 }

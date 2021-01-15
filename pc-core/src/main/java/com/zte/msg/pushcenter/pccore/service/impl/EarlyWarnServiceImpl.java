@@ -31,13 +31,13 @@ public class EarlyWarnServiceImpl implements EarlyWarnService {
     private EarlyWarnMapper earlyWarnMapper;
 
     @Override
-    public void insertEarlyWarnConfig(EarlyWarnConfig earlyWarnConfig) {
+    public void editEarlyWarnConfig(EarlyWarnConfig earlyWarnConfig) {
         if (Objects.isNull(earlyWarnConfig)) {
             throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
         }
-        int result = earlyWarnMapper.insertEarlyWarnConfig(earlyWarnConfig);
+        int result = earlyWarnMapper.editEarlyWarnConfig(earlyWarnConfig);
         if (result > 0) {
-            log.info("预警配置新增成功");
+            log.info("预警配置编辑成功");
         } else {
             throw new CommonException(ErrorCode.INSERT_ERROR);
         }
@@ -54,5 +54,15 @@ public class EarlyWarnServiceImpl implements EarlyWarnService {
         PageHelper.startPage(statisticsReqDTO.getPage().intValue(), statisticsReqDTO.getSize().intValue());
         List<EarlyWarnInfo> list = earlyWarnMapper.listEarlyWarnInfo(statisticsReqDTO);
         return new PageInfo<>(list);
+    }
+
+    @Override
+    public EarlyWarnConfig selectEarlyWarnConfig(){
+        EarlyWarnConfig earlyWarnConfig = earlyWarnMapper.selectEarlyWarnConfig();
+        if (Objects.isNull(earlyWarnConfig)){
+            log.warn("预警配置不存在，请先创建");
+        }
+        log.info("查看预警配置成功");
+        return earlyWarnConfig;
     }
 }

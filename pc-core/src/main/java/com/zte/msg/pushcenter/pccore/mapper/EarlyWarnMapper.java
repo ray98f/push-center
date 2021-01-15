@@ -16,7 +16,9 @@ import java.util.List;
 @Repository
 public interface EarlyWarnMapper extends BaseMapper<EarlyWarnConfig> {
 
-    int insertEarlyWarnConfig(EarlyWarnConfig earlyWarnConfig);
+    int editEarlyWarnConfig(EarlyWarnConfig earlyWarnConfig);
 
     List<EarlyWarnInfo> listEarlyWarnInfo(StatisticsReqDTO statisticsReqDTO);
+
+    EarlyWarnConfig selectEarlyWarnConfig();
 }

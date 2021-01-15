@@ -1,11 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zte.msg.pushcenter.pccore.mapper.EarlyWarnMapper">
-    <insert id="insertEarlyWarnConfig" parameterType="com.zte.msg.pushcenter.pccore.entity.EarlyWarnConfig">
-        insert into (cycle, threshold, interval, user_id, sms_template_id, mail_title, mail_body, wechat_id,
-        wechat_name, wechat_template_id, application_id, created_by, updated_by)
-        value (#{cycle}, #{threshold}, #{interval}, #{userId}, #{smsTemplateId}, #{mailTitle}, #{mailBody},
-        #{wechatId}, #{wechatName}, #{wechatTemplateId}, #{applicationId}, #{createdBy}, #{updatedBy})
+    <insert id="editEarlyWarnConfig" parameterType="com.zte.msg.pushcenter.pccore.entity.EarlyWarnConfig">
+        insert into early_warn_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id!=null">id,</if>
+            <if test="cycle!=null">cycle,</if>
+            <if test="threshold!=null">threshold,</if>
+            <if test="interval!=null">interval,</if>
+            <if test="userId!=null">user_id,</if>
+            <if test="smsTemplateId!=null">sms_template_id,</if>
+            <if test="mailTitle!=null">mail_title,</if>
+            <if test="mailBody!=null">mail_body,</if>
+            <if test="wechatId!=null">wechat_id,</if>
+            <if test="wechatName!=null">wechat_name,</if>
+            <if test="wechatTemplateId!=null">wechat_template_id,</if>
+            <if test="applicationId!=null">application_id,</if>
+            <if test="createdBy!=null">created_by,</if>
+            <if test="updatedBy!=null">updated_by,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id!=null">#{id},</if>
+            <if test="cycle!=null">#{cycle},</if>
+            <if test="threshold!=null">#{threshold},</if>
+            <if test="interval!=null">#{interval},</if>
+            <if test="userId!=null">#{userId},</if>
+            <if test="smsTemplateId!=null">#{smsTemplateId},</if>
+            <if test="mailTitle!=null">#{mailTitle},</if>
+            <if test="mailBody!=null">#{mailBody},</if>
+            <if test="wechatId!=null">#{wechatId},</if>
+            <if test="wechatName!=null">#{wechatName},</if>
+            <if test="wechatTemplateId!=null">#{wechatTemplateId},</if>
+            <if test="applicationId!=null">#{applicationId},</if>
+            <if test="createdBy!=null">#{createdBy},</if>
+            <if test="updatedBy!=null">#{updatedBy},</if>
+        </trim>
+        ON DUPLICATE KEY UPDATE
+        <trim suffixOverrides=",">
+            <if test="cycle!=null">cycle=#{cycle},</if>
+            <if test="threshold!=null">threshold=#{threshold},</if>
+            <if test="interval!=null">interval=#{interval},</if>
+            <if test="userId!=null">user_id=#{userId},</if>
+            <if test="smsTemplateId!=null">sms_template_id=#{smsTemplateId},</if>
+            <if test="mailTitle!=null">mail_title=#{mailTitle},</if>
+            <if test="mailBody!=null">mail_body=#{mailBody},</if>
+            <if test="wechatId!=null">wechat_id=#{wechatId},</if>
+            <if test="wechatName!=null">wechat_name=#{wechatName},</if>
+            <if test="wechatTemplateId!=null">wechat_template_id=#{wechatTemplateId},</if>
+            <if test="applicationId!=null">application_id=#{applicationId},</if>
+            <if test="updatedBy!=null">updated_by=#{updatedBy},</if>
+        </trim>
     </insert>
 
     <select id="listEarlyWarnInfo" resultType="com.zte.msg.pushcenter.pccore.entity.EarlyWarnInfo" parameterType="com.zte.msg.pushcenter.pccore.dto.req.StatisticsReqDTO">
@@ -18,5 +63,9 @@
                 #{endTime} >= time and
             </if>
         </trim>
+    </select>
+
+    <select id="selectEarlyWarnConfig" resultType="com.zte.msg.pushcenter.pccore.entity.EarlyWarnConfig">
+        select * from early_warn_config where flag=0
     </select>
 </mapper>

@@ -5,8 +5,6 @@ import com.zte.msg.pushcenter.pccore.dto.req.StatisticsReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.EarlyWarnConfig;
 import com.zte.msg.pushcenter.pccore.entity.EarlyWarnInfo;
 
-import java.util.List;
-
 /**
  * description:
  *
@@ -16,8 +14,10 @@ import java.util.List;
  */
 public interface EarlyWarnService {
 
-    void insertEarlyWarnConfig(EarlyWarnConfig earlyWarnConfig);
+    void editEarlyWarnConfig(EarlyWarnConfig earlyWarnConfig);
 
     PageInfo<EarlyWarnInfo> listEarlyWarnInfo(StatisticsReqDTO statisticsReqDTO);
+
+    EarlyWarnConfig selectEarlyWarnConfig();
 
 }
