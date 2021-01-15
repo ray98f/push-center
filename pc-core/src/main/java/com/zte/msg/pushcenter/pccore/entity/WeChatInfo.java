@@ -1,5 +1,7 @@
 package com.zte.msg.pushcenter.pccore.entity;
 
+import com.zte.msg.pushcenter.pccore.core.pusher.msg.WeChatMessage;
+import com.zte.msg.pushcenter.pcscript.PcScript;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -38,6 +40,8 @@ public class WeChatInfo extends BaseEntity {
     @ApiModelProperty(value = "跳转URL")
     private String skipUrl;
 
+    private Integer delay;
+
     @ApiModelProperty(value = "小程序数据")
     private String appletData;
 
@@ -52,4 +56,43 @@ public class WeChatInfo extends BaseEntity {
 
     @ApiModelProperty(value = "错误消息")
     private String failReason;
+
+    public WeChatInfo() {
+    }
+
+    public WeChatInfo(Long appId, String appName, String weChatName, String openId, String templateId,
+                      String templateData, String skipUrl, String appletData, Timestamp transmitTime,
+                      Integer result, Integer failCode, String failReason) {
+        this.appId = appId;
+        this.appName = appName;
+        this.weChatName = weChatName;
+        this.openId = openId;
+        this.templateId = templateId;
+        this.templateData = templateData;
+        this.skipUrl = skipUrl;
+        this.appletData = appletData;
+        this.transmitTime = transmitTime;
+        this.result = result;
+        this.failCode = failCode;
+        this.failReason = failReason;
+    }
+
+    public WeChatInfo(WeChatMessage message, PcScript.Res res) {
+        this.appId = message.getAppId();
+        this.appName = message.getAppName();
+        this.weChatName = message.getProviderName();
+        this.openId = message.getOpenId();
+        this.templateId = message.getTemplateId();
+        this.templateData = message.getData();
+        this.skipUrl = message.getSkipUrl();
+        this.appletData = message.getAppletData();
+        this.transmitTime = message.getTransmitTime();
+        if (res.getCode() == 0) {
+            this.result = 0;
+        } else {
+            this.result = 1;
+        }
+        this.failCode = res.getCode();
+        this.failReason = res.getMessage();
+    }
 }

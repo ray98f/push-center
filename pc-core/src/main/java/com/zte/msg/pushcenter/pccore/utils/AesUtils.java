@@ -1,6 +1,5 @@
 package com.zte.msg.pushcenter.pccore.utils;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 
@@ -18,7 +17,6 @@ import java.security.Key;
  * @version 1.0
  * @date 2020/12/14 15:18
  */
-@SuppressFBWarnings("DM_DEFAULT_ENCODING")
 @Slf4j
 public class AesUtils {
 

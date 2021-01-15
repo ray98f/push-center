@@ -27,6 +27,8 @@ public interface HistoryService {
 
     void addHistoryMail(MailInfo mailInfo);
 
+    void addHistoryWeChat(WeChatInfo weChatInfo);
+
     PageInfo<WeChatInfo> listHistoryWechat(WechatHistoryReqDTO wechatHistoryReqDTO);
 
     PageInfo<ApplicationInfo> listHistoryApplication(ApplicationHistoryReqDTO applicationHistoryReqDTO);

@@ -17,6 +17,8 @@ public class WeChatTemplate extends BaseEntity {
 
     private Long providerId;
 
+    private String providerName;
+
     @TableField(value = "wechat_template_id")
     private String weChatTemplateId;
 

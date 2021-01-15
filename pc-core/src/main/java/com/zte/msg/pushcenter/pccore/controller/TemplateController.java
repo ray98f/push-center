@@ -147,7 +147,7 @@ public class TemplateController {
 
     @PostMapping(value = "/provider/wechat")
     @ApiOperation(value = "【微信公众号模版】- 新增")
-    public <T> DataResponse<T> addWeChatTemplate(@RequestBody WeChatTemplateReqDTO reqDTO) {
+    public <T> DataResponse<T> addWeChatTemplate(@RequestBody @Valid WeChatTemplateReqDTO reqDTO) {
         templateService.addWeChatTemplate(reqDTO);
         return DataResponse.success();
     }

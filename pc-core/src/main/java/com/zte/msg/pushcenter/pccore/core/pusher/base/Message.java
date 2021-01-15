@@ -3,6 +3,8 @@ package com.zte.msg.pushcenter.pccore.core.pusher.base;
 import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import lombok.Data;
 
+import java.sql.Timestamp;
+
 /**
  * description:
  *
@@ -34,5 +36,15 @@ public class Message {
      * 推送方式
      */
     private PushMethods pushMethod;
+
+    private Integer delay;
+
+    private Long providerId;
+
+    private String appName;
+
+    private String providerName;
+
+    private Timestamp transmitTime;
 
 }

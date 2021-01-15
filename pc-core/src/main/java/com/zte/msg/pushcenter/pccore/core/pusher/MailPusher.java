@@ -14,7 +14,6 @@ import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.service.AppService;
 import com.zte.msg.pushcenter.pccore.service.HistoryService;
 import com.zte.msg.pushcenter.pcscript.PcScript;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -34,7 +33,6 @@ import java.util.concurrent.CompletableFuture;
  * @version 1.0
  * @date 2020/12/11 9:34
  */
-@SuppressFBWarnings("BC_UNCONFIRMED_CAST")
 @Slf4j
 @Component
 public class MailPusher extends BasePusher {
@@ -54,6 +52,7 @@ public class MailPusher extends BasePusher {
                     .get(mailMessage.getProviderId()).get(mailMessage.getProviderId().intValue());
             JavaMailSenderImpl mailSender = buildMailSender(config);
             MimeMessage mimeMessage = mailSender.createMimeMessage();
+            long start = System.currentTimeMillis();
             try {
                 MimeMessageHelper simpleMailMessage = new MimeMessageHelper(mimeMessage, true);
                 simpleMailMessage.setFrom(config.getUsername());
@@ -64,10 +63,12 @@ public class MailPusher extends BasePusher {
                     simpleMailMessage.setCc(mailMessage.getCc());
                 }
                 mailSender.send(mimeMessage);
+                int delay = (int) (System.currentTimeMillis() - start);
+                mailMessage.setDelay(delay);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            mailMessage.setTransmitTime(new Timestamp(System.currentTimeMillis()));
+            mailMessage.setTransmitTime(new Timestamp(start));
             return new PcScript.Res(0, "发送成功");
         }, pushExecutor).exceptionally(e -> {
             log.error("Error while send a mail message: {}", e.getMessage());
@@ -117,7 +118,7 @@ public class MailPusher extends BasePusher {
             }
             treeMap.put(provider.getId().intValue(), JSONObject.parseObject(provider.getConfig(), MailConfig.class));
             configMap.get(PushMethods.MAIL).put(provider.getId(), treeMap);
-        }else {
+        } else {
             configMap.get(PushMethods.MAIL).remove(provider.getId());
         }
     }

@@ -17,8 +17,6 @@ public class WeChatMessage extends Message {
 
     private String openId;
 
-    private Long providerId;
-
     private String templateId;
 
     private String appletAppId;
@@ -28,8 +26,6 @@ public class WeChatMessage extends Message {
     private String appletData;
 
     private String skipUrl;
-
-    private String appName;
 
     public WeChatMessage build(WeChatMessageReqDTO reqDTO) {
         BeanUtils.copyProperties(reqDTO, this);

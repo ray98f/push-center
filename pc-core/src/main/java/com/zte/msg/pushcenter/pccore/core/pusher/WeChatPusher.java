@@ -7,6 +7,7 @@ import com.zte.msg.pushcenter.pccore.core.pusher.base.Config;
 import com.zte.msg.pushcenter.pccore.core.pusher.base.Message;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.WeChatMessage;
 import com.zte.msg.pushcenter.pccore.entity.Provider;
+import com.zte.msg.pushcenter.pccore.entity.WeChatInfo;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -59,7 +61,7 @@ public class WeChatPusher extends BasePusher {
     /**
      * key为公众号的AppId
      */
-    private Map<String, AccessToken> accessTokens = new HashMap<>();
+    private final Map<String, AccessToken> accessTokens = new HashMap<>();
 
     @Override
     public void push(Message message) {
@@ -67,10 +69,14 @@ public class WeChatPusher extends BasePusher {
         CompletableFuture.supplyAsync(() -> {
             WxConfig config = (WxConfig) configMap.get(PushMethods.WECHAT)
                     .get(weChatMessage.getProviderId()).get(weChatMessage.getProviderId().intValue());
+            weChatMessage.setProviderName(config.getProviderName());
+            weChatMessage.setTransmitTime(new Timestamp(System.currentTimeMillis()));
             String accessKey = getAccessKey(config);
             Req req = new Req(weChatMessage, config);
+            long start = System.currentTimeMillis();
             Res body = restTemplate.exchange(WECHAT_PUSH_URL, HttpMethod.POST, new HttpEntity<>(req), Res.class, accessKey).getBody();
-
+            int delay = (int) (System.currentTimeMillis() - start);
+            weChatMessage.setDelay(delay);
             if (Objects.isNull(body)) {
                 log.error("Fail to fetch the response while push wechat message, May caused by net error.");
                 throw new CommonException(ErrorCode.WECHAT_PUSH_ERROR, "net work error");
@@ -87,7 +93,6 @@ public class WeChatPusher extends BasePusher {
             persist(weChatMessage, o);
         }, resExecutor);
     }
-
 
     private String getAccessKey(WxConfig wxConfig) {
         long now = System.currentTimeMillis();
@@ -110,10 +115,8 @@ public class WeChatPusher extends BasePusher {
     protected void persist(Message message, PcScript.Res res) {
         WeChatMessage weChatMessage = (WeChatMessage) message;
         weChatMessage.setAppName(appService.getAppName(weChatMessage.getAppId()));
-//        WeChatInfoModel weChatInfoModel = new WeChatInfoModel(weChatMessage, res);
-//        SmsInfo smsInfo = new SmsInfo();
-//        BeanUtils.copyProperties(smsInfoModel, smsInfo);
-//        historyService.addHistorySms(smsInfo);
+        WeChatInfo weChatInfo = new WeChatInfo(weChatMessage, res);
+        historyService.addHistoryWeChat(weChatInfo);
     }
 
     @Override
@@ -142,6 +145,8 @@ public class WeChatPusher extends BasePusher {
     protected static class WxConfig implements Config {
 
         private Long providerId;
+
+        private String providerName;
 
         private String weChatTemplateId;
 

@@ -15,6 +15,7 @@ import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.HistoryMapper;
 import com.zte.msg.pushcenter.pccore.mapper.MailInfoMapper;
 import com.zte.msg.pushcenter.pccore.mapper.SmsInfoMapper;
+import com.zte.msg.pushcenter.pccore.mapper.WeChatInfoMapper;
 import com.zte.msg.pushcenter.pccore.service.HistoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,8 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Resource
     private MailInfoMapper mailInfoMapper;
+
+    private WeChatInfoMapper weChatInfoMapper;
 
     @Override
     public PageInfo<SmsInfo> listHistorySms(SmsHistoryReqDTO smsHistoryReqDTO) {
@@ -80,7 +83,12 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public PageInfo<WeChatInfo> listHistoryWechat(WechatHistoryReqDTO wechatHistoryReqDTO){
+    public void addHistoryWeChat(WeChatInfo weChatInfo) {
+        weChatInfoMapper.insert(weChatInfo);
+    }
+
+    @Override
+    public PageInfo<WeChatInfo> listHistoryWechat(WechatHistoryReqDTO wechatHistoryReqDTO) {
         if (null == wechatHistoryReqDTO.getPage() || null == wechatHistoryReqDTO.getSize()) {
             throw new CommonException(ErrorCode.PAGE_PARAM_EMPTY);
         }
@@ -94,7 +102,7 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public PageInfo<ApplicationInfo> listHistoryApplication(ApplicationHistoryReqDTO applicationHistoryReqDTO){
+    public PageInfo<ApplicationInfo> listHistoryApplication(ApplicationHistoryReqDTO applicationHistoryReqDTO) {
         if (null == applicationHistoryReqDTO.getPage() || null == applicationHistoryReqDTO.getSize()) {
             throw new CommonException(ErrorCode.PAGE_PARAM_EMPTY);
         }

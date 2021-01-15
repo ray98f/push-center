@@ -8,16 +8,10 @@ import com.zte.msg.pushcenter.pccore.dto.req.*;
 import com.zte.msg.pushcenter.pccore.dto.res.ProviderSmsTemplateResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.SmsTemplateDetailResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.WeChatTemplateResDTO;
-import com.zte.msg.pushcenter.pccore.entity.ProviderSmsTemplate;
-import com.zte.msg.pushcenter.pccore.entity.SmsTemplate;
-import com.zte.msg.pushcenter.pccore.entity.SmsTemplateRelation;
-import com.zte.msg.pushcenter.pccore.entity.WeChatTemplate;
+import com.zte.msg.pushcenter.pccore.entity.*;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
-import com.zte.msg.pushcenter.pccore.mapper.ProviderSmsTemplateMapper;
-import com.zte.msg.pushcenter.pccore.mapper.SmsTemplateMapper;
-import com.zte.msg.pushcenter.pccore.mapper.SmsTemplateRelationMapper;
-import com.zte.msg.pushcenter.pccore.mapper.WeChatTemplateMapper;
+import com.zte.msg.pushcenter.pccore.mapper.*;
 import com.zte.msg.pushcenter.pccore.model.SmsTemplateRelationModel;
 import com.zte.msg.pushcenter.pccore.service.TemplateService;
 import com.zte.msg.pushcenter.pccore.utils.Constants;
@@ -58,6 +52,9 @@ public class TemplateServiceImpl implements TemplateService {
 
     @Resource
     private WeChatTemplateMapper weChatTemplateMapper;
+
+    @Resource
+    private ProviderMapper providerMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -261,24 +258,21 @@ public class TemplateServiceImpl implements TemplateService {
     @Override
     public void addWeChatTemplate(WeChatTemplateReqDTO reqDTO) {
 
-        if (Objects.isNull(providerSmsTemplateMapper.selectById(reqDTO.getProviderId()))) {
+        if (Objects.isNull(providerMapper.selectById(reqDTO.getProviderId()))) {
             throw new CommonException(ErrorCode.PROVIDER_NOT_EXIST);
         }
         WeChatTemplate weChatTemplate = new WeChatTemplate();
-        BeanUtils.copyProperties(weChatTemplate, reqDTO);
-        if (!Objects.isNull(weChatTemplate.getId())) {
-            weChatTemplate.setId(null);
-        }
+        BeanUtils.copyProperties(reqDTO, weChatTemplate);
         weChatTemplateMapper.insert(weChatTemplate);
     }
 
     @Override
     public void updateWeChatTemplate(WeChatTemplateUpdateReqDTO reqDTO) {
-        if (Objects.isNull(providerSmsTemplateMapper.selectById(reqDTO.getProviderId()))) {
+        if (Objects.isNull(providerMapper.selectById(reqDTO.getProviderId()))) {
             throw new CommonException(ErrorCode.PROVIDER_NOT_EXIST);
         }
         WeChatTemplate weChatTemplate = new WeChatTemplate();
-        BeanUtils.copyProperties(weChatTemplate, reqDTO);
+        BeanUtils.copyProperties(reqDTO, weChatTemplate);
         weChatTemplateMapper.updateById(weChatTemplate);
     }
 

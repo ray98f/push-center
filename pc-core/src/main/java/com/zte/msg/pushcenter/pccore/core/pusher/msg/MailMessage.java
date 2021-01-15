@@ -6,8 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.beans.BeanUtils;
 
-import java.sql.Timestamp;
-
 /**
  * description:
  *
@@ -30,12 +28,6 @@ public class MailMessage extends Message {
     private String subject;
 
     private String content;
-
-    private String appName;
-
-    private Timestamp transmitTime;
-
-    private Long providerId;
 
     /**
      * 抄送地址

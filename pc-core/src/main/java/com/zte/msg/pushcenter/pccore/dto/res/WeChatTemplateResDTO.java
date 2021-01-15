@@ -16,6 +16,8 @@ import lombok.Data;
 @ApiModel
 public class WeChatTemplateResDTO extends BaseResDTO {
 
+    private Long providerId;
+
     @ApiModelProperty(value = "消息平台名称")
     private String providerName;
 

@@ -12,13 +12,11 @@ import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.SmsTemplateRelationMapper;
 import com.zte.msg.pushcenter.pccore.model.SmsConfigModel;
-import com.zte.msg.pushcenter.pccore.model.SmsInfoModel;
 import com.zte.msg.pushcenter.pccore.service.AppService;
 import com.zte.msg.pushcenter.pccore.utils.MapUtils;
 import com.zte.msg.pushcenter.pccore.utils.PatternUtils;
 import com.zte.msg.pushcenter.pcscript.ParamConstants;
 import com.zte.msg.pushcenter.pcscript.PcScript;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -39,7 +37,6 @@ import java.util.stream.Collectors;
  * @version 1.0
  * @date 2020/12/11 9:14
  */
-@SuppressFBWarnings("BC_UNCONFIRMED_CAST")
 @Service
 @Slf4j
 public class SmsPusher extends BasePusher {
@@ -49,6 +46,7 @@ public class SmsPusher extends BasePusher {
 
     @Resource
     private SmsTemplateRelationMapper smsTemplateRelationMapper;
+
     @Override
     public void init() {
         configMap.put(PushMethods.SMS, new HashMap<>(16));
@@ -110,7 +108,10 @@ public class SmsPusher extends BasePusher {
                     Class<?> scriptClass = scriptManager.getScriptClass(smsConfigDetail.getScriptTag());
                     Method execute = scriptClass.getMethod("execute", Map.class);
                     Object o = scriptClass.newInstance();
+                    long start = System.currentTimeMillis();
                     res = (PcScript.Res) execute.invoke(o, mapAll);
+                    int delay = (int) (System.currentTimeMillis() - start);
+                    smsMessage.setDelay(delay);
                 } catch (Exception e) {
                     res = new PcScript.Res(1, "系统内部错误");
                     e.printStackTrace();
@@ -135,9 +136,7 @@ public class SmsPusher extends BasePusher {
         try {
             SmsMessage smsMessage = (SmsMessage) message;
             smsMessage.setAppName(appService.getAppName(smsMessage.getAppId()));
-            SmsInfoModel smsInfoModel = new SmsInfoModel(smsMessage, res);
-            SmsInfo smsInfo = new SmsInfo();
-            BeanUtils.copyProperties(smsInfoModel, smsInfo);
+            SmsInfo smsInfo = new SmsInfo(smsMessage, res);
             historyService.addHistorySms(smsInfo);
         } catch (Exception e) {
             e.printStackTrace();

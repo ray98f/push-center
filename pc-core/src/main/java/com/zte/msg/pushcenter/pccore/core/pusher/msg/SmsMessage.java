@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 
-import java.sql.Timestamp;
 import java.util.Map;
 
 
@@ -33,18 +32,12 @@ public class SmsMessage extends Message {
 
     private String content;
 
-    private String providerName;
-
     /**
      * 短信模版id
      */
     private Long templateId;
 
     private String code;
-
-    private Timestamp transmitTime;
-
-    private String appName;
 
     private Map<String, String> vars;
 
