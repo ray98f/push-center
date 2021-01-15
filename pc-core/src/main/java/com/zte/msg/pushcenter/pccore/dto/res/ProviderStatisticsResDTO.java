@@ -13,4 +13,7 @@ public class ProviderStatisticsResDTO extends StatisticsResDTO{
 
     @ApiModelProperty(value = "消息平台名称")
     private String providerName;
+
+    @ApiModelProperty(value = "准确率")
+    private Double accuracy;
 }

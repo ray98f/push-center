@@ -17,28 +17,28 @@ public class JavaCodecUtils {
 
     public static final String JAR = ".jar";
 
-    public static String getJarFiles(String jarPath) {
-        File sourceFile = new File(jarPath);
-        AtomicReference<String> jars = new AtomicReference<>("");
-        if (sourceFile.exists()) {
-            if (sourceFile.isDirectory()) {
-
-                File[] files = sourceFile.listFiles(pathname -> {
-                    if (pathname.isDirectory()) {
-                        return true;
-                    } else {
-                        String name = pathname.getName();
-                        if (name.endsWith(JAR)) {
-                            jars.set(jars + pathname.getPath() + ";");
-                            return true;
-                        }
-                        return false;
-                    }
-                });
-            }
-        }
-        return jars.get();
-    }
+//    public static String getJarFiles(String jarPath) {
+//        File sourceFile = new File(jarPath);
+//        AtomicReference<String> jars = new AtomicReference<>("");
+//        if (sourceFile.exists()) {
+//            if (sourceFile.isDirectory()) {
+//
+//                File[] files = sourceFile.listFiles(pathname -> {
+//                    if (pathname.isDirectory()) {
+//                        return true;
+//                    } else {
+//                        String name = pathname.getName();
+//                        if (name.endsWith(JAR)) {
+//                            jars.set(jars + pathname.getPath() + ";");
+//                            return true;
+//                        }
+//                        return false;
+//                    }
+//                });
+//            }
+//        }
+//        return jars.get();
+//    }
 
     public static String replaceCodeJavaName(String code, String replacement) {
         if (StringUtils.isBlank(code)){

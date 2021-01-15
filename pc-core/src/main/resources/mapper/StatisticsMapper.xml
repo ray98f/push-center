@@ -7,9 +7,9 @@
             count(case when result=0 then 1 end) as success_num,
             count(case when result=1 then 1 end) as fail_num,
             count(*) as total_num,
-            min(response_time) as min_response_time,
-            max(response_time) as max_response_time,
-            avg(if(response_time is null,0,response_time)) as avg_response_time
+            ifnull(min(response_time),0) as min_response_time,
+            ifnull(max(response_time),0) as max_response_time,
+            avg(ifnull(response_time,0)) as avg_response_time
             from
             <if test="type == '邮件'">mail_info</if>
             <if test="type == '短信'">sms_info</if>
@@ -29,16 +29,16 @@
     <select id="statisticsAppAndCondition" resultType="com.zte.msg.pushcenter.pccore.dto.res.AppStatisticsResDTO">
         <if test="conditionStatisticsReqDTO.appId!=null or conditionStatisticsReqDTO.appName!=null">
             select r.app_name,
-            sum(case when r.type='短信' then 1 end) as sms_send_num,
-            sum(case when r.type='App' then 1 end) as app_send_num,
-            sum(case when r.type='邮件' then 1 end) as mail_send_num,
-            sum(case when r.type='公众号' then 1 end) as wechat_send_num,
-            sum(case when r.type is not null then 1 end) as total_num,
-            sum(case when result=0 then 1 end) as success_num,
-            sum(case when result=1 then 1 end) as fail_num,
-            min(response_time) as min_response_time,
-            max(response_time) as max_response_time,
-            avg(if(response_time is null,0,response_time)) as avg_response_time
+            ifnull(sum(case when r.type='短信' then 1 end),0) as sms_send_num,
+            ifnull(sum(case when r.type='App' then 1 end),0) as app_send_num,
+            ifnull(sum(case when r.type='邮件' then 1 end),0) as mail_send_num,
+            ifnull(sum(case when r.type='公众号' then 1 end),0) as wechat_send_num,
+            ifnull(sum(case when r.type is not null then 1 end),0) as total_num,
+            ifnull(sum(case when result=0 then 1 end),0) as success_num,
+            ifnull(sum(case when result=1 then 1 end),0) as fail_num,
+            ifnull(min(response_time),0) as min_response_time,
+            ifnull(max(response_time),0) as max_response_time,
+            avg(ifnull(response_time,0)) as avg_response_time
             from
             (select '短信' as type,app_id,app_name,result,response_time,transmit_time from sms_info
             UNION ALL
@@ -68,16 +68,16 @@
         <if test="conditionStatisticsReqDTO.appId==null and conditionStatisticsReqDTO.appName==null">
             <foreach collection="appList" index="index" item="app" separator=" UNION ALL">
                 select r.app_name,
-                sum(case when r.type='短信' then 1 end) as sms_send_num,
-                sum(case when r.type='App' then 1 end) as app_send_num,
-                sum(case when r.type='邮件' then 1 end) as mail_send_num,
-                sum(case when r.type='公众号' then 1 end) as wechat_send_num,
-                sum(case when r.type is not null then 1 end) as total_num,
-                sum(case when result=0 then 1 end) as success_num,
-                sum(case when result=1 then 1 end) as fail_num,
-                min(response_time) as min_response_time,
-                max(response_time) as max_response_time,
-                avg(if(response_time is null,0,response_time)) as avg_response_time
+                ifnull(sum(case when r.type='短信' then 1 end),0) as sms_send_num,
+                ifnull(sum(case when r.type='App' then 1 end),0) as app_send_num,
+                ifnull(sum(case when r.type='邮件' then 1 end),0) as mail_send_num,
+                ifnull(sum(case when r.type='公众号' then 1 end),0) as wechat_send_num,
+                ifnull(sum(case when r.type is not null then 1 end),0) as total_num,
+                ifnull(sum(case when result=0 then 1 end),0) as success_num,
+                ifnull(sum(case when result=1 then 1 end),0) as fail_num,
+                ifnull(min(response_time),0) as min_response_time,
+                ifnull(max(response_time),0) as max_response_time,
+                avg(ifnull(response_time,0)) as avg_response_time
                 from
                 (select '短信' as type,app_id,app_name,result,response_time,transmit_time from sms_info
                 UNION ALL
@@ -108,12 +108,14 @@
     </select>
 
     <select id="statisticsPlatform" resultType="com.zte.msg.pushcenter.pccore.dto.res.ProviderStatisticsResDTO" parameterType="com.zte.msg.pushcenter.pccore.dto.req.StatisticsReqDTO">
-        select r.provider_name,count(case when r.result=0 then 1 end) as success_num,
+        select r.provider_name,
+        count(case when r.result=0 then 1 end) as success_num,
         count(case when r.result=1 then 1 end) as fail_num,
         count(*) as total_num,
-        min(r.response_time) as min_response_time,
-        max(r.response_time) as max_response_time,
-        avg(if(r.response_time is null,0,r.response_time)) as avg_response_time from
+        ROUND(count(case when r.result=0 then 1 end) / count(*) * 100, 2) as accuracy,
+        ifnull(min(response_time),0) as min_response_time,
+        ifnull(max(response_time),0) as max_response_time,
+        avg(ifnull(response_time,0)) as avg_response_time from
         (select app_id,app_name,result,response_time,transmit_time,provider_name from sms_info
         UNION ALL
         select app_id,app_name,result,response_time,transmit_time,provider_name from application_info

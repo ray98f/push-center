@@ -34,7 +34,7 @@ public enum SmsErrorCode {
         return code;
     }
 
-    public void setCode(Integer code) {
+    protected void setCode(Integer code) {
         this.code = code;
     }
 
@@ -42,7 +42,7 @@ public enum SmsErrorCode {
         return message;
     }
 
-    public void setMessage(String message) {
+    protected void setMessage(String message) {
         this.message = message;
     }
 }

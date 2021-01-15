@@ -63,7 +63,7 @@ public class TencentSmsDemo implements PcScript {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             // 注意时区，否则容易出错
             sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-            String date = sdf.format(new Date(Long.valueOf(timestamp + "000")));
+            String date = sdf.format(new Date(Long.parseLong(timestamp + "000")));
             // ************* 步骤 1：拼接规范请求串 *************
             String httpRequestMethod = "POST";
             String canonicalUri = "/";
@@ -130,6 +130,7 @@ public class TencentSmsDemo implements PcScript {
                     res.append(strRead);
                 }
                 reader.close();
+                writer.close();
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
@@ -177,9 +178,9 @@ public class TencentSmsDemo implements PcScript {
             return new Res(errorCodes.pcCode, errorCodes.message);
         }
 
-        JSONObject Response = (JSONObject) innerMap.get("Response");
+        JSONObject response = (JSONObject) innerMap.get("Response");
 
-        JSONArray sendStatusSet = (JSONArray) Response.get("SendStatusSet");
+        JSONArray sendStatusSet = (JSONArray) response.get("SendStatusSet");
         JSONObject sendStatus = (JSONObject) sendStatusSet.get(0);
         if (!sendStatus.get(CODE).toString().equals(OK)) {
             String code = sendStatus.get(CODE).toString();

@@ -1,5 +1,8 @@
 package com.zte.msg.pushcenter.pccore.utils;
 
+import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
+import com.zte.msg.pushcenter.pccore.exception.CommonException;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
@@ -16,6 +19,7 @@ import java.util.UUID;
  * @version 1.0
  * @date 2020/12/29 16:41
  */
+@SuppressFBWarnings("DM_DEFAULT_ENCODING")
 public class FileUtil {
 
     public static String readStringFromFile(String path) {
@@ -50,7 +54,10 @@ public class FileUtil {
     private static void deleteFile(File... files) {
         for (File file : files) {
             if (file.exists()) {
-                file.delete();
+                boolean res = file.delete();
+                if (!res) {
+                    throw new CommonException(ErrorCode.FILE_DELETE_ERROR);
+                }
             }
         }
     }

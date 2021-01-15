@@ -18,6 +18,7 @@ import com.zte.msg.pushcenter.pccore.utils.MapUtils;
 import com.zte.msg.pushcenter.pccore.utils.PatternUtils;
 import com.zte.msg.pushcenter.pcscript.ParamConstants;
 import com.zte.msg.pushcenter.pcscript.PcScript;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -38,6 +39,7 @@ import java.util.stream.Collectors;
  * @version 1.0
  * @date 2020/12/11 9:14
  */
+@SuppressFBWarnings("BC_UNCONFIRMED_CAST")
 @Service
 @Slf4j
 public class SmsPusher extends BasePusher {

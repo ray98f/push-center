@@ -46,7 +46,6 @@ public class ObjectUtils {
      */
     private static List<Map<String, Object>> getFiledsInfo(Object o) {
         Field[] fields = o.getClass().getDeclaredFields();
-        String[] fieldNames = new String[fields.length];
         List<Map<String, Object>> list = new ArrayList<>();
         Map<String, Object> infoMap = null;
         for (Field field : fields) {

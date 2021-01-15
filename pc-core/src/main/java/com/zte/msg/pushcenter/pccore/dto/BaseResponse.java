@@ -14,7 +14,7 @@ import java.io.Serializable;
  */
 @ApiModel
 @Data
-public class BaseResponse implements Serializable {
+public class BaseResponse {
 
     private static final BaseResponse SUCCESS;
 
