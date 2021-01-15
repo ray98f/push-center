@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zte.msg.pushcenter.pccore.mapper.EarlyWarnMapper">
+    <insert id="insertEarlyWarnConfig" parameterType="com.zte.msg.pushcenter.pccore.entity.EarlyWarnConfig">
+        insert into (cycle, threshold, interval, user_id, sms_template_id, mail_title, mail_body, wechat_id,
+        wechat_name, wechat_template_id, application_id, created_by, updated_by)
+        value (#{cycle}, #{threshold}, #{interval}, #{userId}, #{smsTemplateId}, #{mailTitle}, #{mailBody},
+        #{wechatId}, #{wechatName}, #{wechatTemplateId}, #{applicationId}, #{createdBy}, #{updatedBy})
+    </insert>
+
+    <select id="listEarlyWarnInfo" resultType="com.zte.msg.pushcenter.pccore.entity.EarlyWarnInfo" parameterType="com.zte.msg.pushcenter.pccore.dto.req.StatisticsReqDTO">
+        select * from early_warn_info
+        <trim prefix="where " suffixOverrides="and">
+            <if test="startTime!=null">
+                transmit_time >= #{startTime} and
+            </if>
+            <if test="endTime!=null">
+                #{endTime} >= transmit_time and
+            </if>
+        </trim>
+    </select>
+</mapper>

@@ -6,6 +6,8 @@ import com.zte.msg.pushcenter.pccore.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author frp
  */
@@ -19,4 +21,6 @@ public interface UserMapper extends BaseMapper<User> {
     int changePwd(PasswordReqDTO passwordReqDTO);
 
     int deleteUser(String userName);
+
+    List<User> listUser();
 }

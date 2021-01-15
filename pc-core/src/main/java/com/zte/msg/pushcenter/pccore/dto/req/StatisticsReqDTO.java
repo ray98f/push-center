@@ -1,6 +1,7 @@
 package com.zte.msg.pushcenter.pccore.dto.req;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.util.Date;
  */
 @Data
 @ApiModel
-public class StatisticsReqDTO {
+public class StatisticsReqDTO extends PageReqDTO {
 
     @ApiModelProperty(value = "搜索开始时间")
     @DateTimeFormat(pattern = "yyyy-MM-DD HH:mm:ss")

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * description:
@@ -67,5 +68,14 @@ public class UserController {
     public <T> DataResponse<T> deleteUser(@Valid String userName) {
         userService.deleteUser(userName);
         return DataResponse.success();
+    }
+
+    /**
+     * 获取所有用户
+     */
+    @GetMapping("/user")
+    @ApiOperation(value = "获取所有用户")
+    public DataResponse<List<User>> listUser(){
+        return DataResponse.of(userService.listUser());
     }
 }

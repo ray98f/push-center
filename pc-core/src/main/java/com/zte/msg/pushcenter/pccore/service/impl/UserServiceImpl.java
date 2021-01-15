@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -99,5 +100,14 @@ public class UserServiceImpl implements UserService {
             log.error("用户删除失败");
             throw new CommonException(ErrorCode.DELETE_ERROR);
         }
+    }
+
+    @Override
+    public List<User> listUser() {
+        List<User> list = userMapper.listUser();
+        if (null == list || list.isEmpty()) {
+            throw new CommonException(ErrorCode.RESOURCE_NOT_EXIST);
+        }
+        return list;
     }
 }

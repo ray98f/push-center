@@ -24,4 +24,8 @@
     <update id="deleteUser" parameterType="java.lang.String">
         update user set flag=1 where user_name=#{userName} and flag=0
     </update>
+
+    <select id="listUser" resultType="com.zte.msg.pushcenter.pccore.entity.User">
+        select * from user
+    </select>
 </mapper>

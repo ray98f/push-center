@@ -3,6 +3,8 @@ package com.zte.msg.pushcenter.pccore.service;
 import com.zte.msg.pushcenter.pccore.dto.req.PasswordReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.User;
 
+import java.util.List;
+
 /**
  * description:
  *
@@ -18,4 +20,6 @@ public interface UserService {
     void changePwd(PasswordReqDTO passwordReqDTO);
 
     void deleteUser(String userName);
+
+    List<User> listUser();
 }
