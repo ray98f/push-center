@@ -3,6 +3,7 @@ package com.zte.msg.pushcenter.pccore.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.MailMessage;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.SmsMessage;
+import com.zte.msg.pushcenter.pccore.core.pusher.msg.WeChatMessage;
 import com.zte.msg.pushcenter.pccore.dto.DataResponse;
 import com.zte.msg.pushcenter.pccore.dto.req.AppMessageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.MailMessageReqDTO;
@@ -68,7 +69,9 @@ public class PushCenterController {
     @ApiOperation(value = "公众号消息推送")
     public <T> DataResponse<T> pushWeChat(@Valid @RequestBody WeChatMessageReqDTO reqDTO) {
 
-        // TODO: 2021/1/13
+        WeChatMessage weChatMessage = new WeChatMessage().build(reqDTO);
+        weChatMessage.setPushMethod(PushMethods.WECHAT);
+        pushCenterService.pushWechat(weChatMessage);
         return DataResponse.success();
     }
 

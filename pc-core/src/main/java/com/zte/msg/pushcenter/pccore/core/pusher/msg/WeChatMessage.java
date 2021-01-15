@@ -1,63 +1,38 @@
-package com.zte.msg.pushcenter.pccore.core.pusher.msg;//package com.zte.msg.pushcenter.core.pusher.msg;
-//
-//import com.alibaba.fastjson.JSONObject;
-//import com.zte.msg.pushcenter.dto.req.WeChatMessageReqDTO;
-//import com.zte.msg.pushcenter.utils.UidUtils;
-//import lombok.Data;
-//import org.springframework.beans.BeanUtils;
-//
-//import java.sql.Timestamp;
-//
-///**
-// * description:
-// *
-// * @author chentong
-// * @version 1.0
-// * @date 2020/12/15 10:27
-// */
-//@Data
-//public class WeChatMessage extends Message {
-//
-//
-//    /**
-//     * 公众号appId
-//     */
-//    private String weChatAppId;
-//
-//    /**
-//     * 公众号secret
-//     */
-//    private String appSecret;
-//
-//    /**
-//     * 接口配置里的EncodingAESKey值
-//     */
-//    private String aesKey;
-//
-//    /**
-//     * 公众号配置的token
-//     */
-//    private String appToken;
-//
-//    /**
-//     * 目标用户微信
-//     */
-//    private String targetWeChatId;
-//
-//    /**
-//     * 模版id
-//     */
-//    private String templateId;
-//
-//    /**
-//     * 参数
-//     */
-//    private JSONObject var;
-//
-//    public WeChatMessage build(WeChatMessageReqDTO reqDTO) {
-//        BeanUtils.copyProperties(reqDTO, this);
-//        this.setMessageId(UidUtils.getInstance().nextId());
-//        this.setCreateTime(new Timestamp(System.currentTimeMillis()));
-//        return this;
-//    }
-//}
+package com.zte.msg.pushcenter.pccore.core.pusher.msg;
+
+import com.zte.msg.pushcenter.pccore.core.pusher.base.Message;
+import com.zte.msg.pushcenter.pccore.dto.req.WeChatMessageReqDTO;
+import lombok.Data;
+import org.springframework.beans.BeanUtils;
+
+/**
+ * description:
+ *
+ * @author chentong
+ * @version 1.0
+ * @date 2020/12/15 10:27
+ */
+@Data
+public class WeChatMessage extends Message {
+
+    private String openId;
+
+    private Long providerId;
+
+    private String templateId;
+
+    private String appletAppId;
+
+    private String data;
+
+    private String appletData;
+
+    private String skipUrl;
+
+    private String appName;
+
+    public WeChatMessage build(WeChatMessageReqDTO reqDTO) {
+        BeanUtils.copyProperties(reqDTO, this);
+        return this;
+    }
+}

@@ -3,10 +3,12 @@ package com.zte.msg.pushcenter.pccore.core;
 import com.zte.msg.pushcenter.pccore.core.javac.CodeJavac;
 import com.zte.msg.pushcenter.pccore.core.pusher.MailPusher;
 import com.zte.msg.pushcenter.pccore.core.pusher.SmsPusher;
+import com.zte.msg.pushcenter.pccore.core.pusher.WeChatPusher;
 import com.zte.msg.pushcenter.pccore.entity.Provider;
 import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import com.zte.msg.pushcenter.pccore.model.ScriptModel;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -33,6 +35,9 @@ public class Flusher {
     private MailPusher mailPusher;
 
     @Resource
+    private WeChatPusher weChatPusher;
+
+    @Resource
     private CodeJavac codeJavac;
 
     public void flush(Provider... providers) {
@@ -41,9 +46,8 @@ public class Flusher {
 
     public void flush(boolean remove, Provider... providers) {
         codeJavac.scriptFlush(remove, Arrays.stream(providers)
-                .map(o -> new ScriptModel(o.getScriptTag(), o.getScriptContext()))
-                .collect(Collectors.toList())
-                .toArray(new ScriptModel[]{}));
+                .filter(o -> (StringUtils.isNotBlank(o.getScriptTag()) && StringUtils.isNotBlank(o.getScriptContext())))
+                .map(o -> new ScriptModel(o.getScriptTag(), o.getScriptContext())).collect(Collectors.toList()));
         flushConfig(Arrays.asList(providers), remove);
     }
 
@@ -60,7 +64,8 @@ public class Flusher {
                 case APP:
                     // TODO: 2021/1/13
                 case WECHAT:
-                    // TODO: 2021/1/13
+                    weChatPusher.flushConfig(providerType.get(o), remove);
+                    break;
                 default:
             }
         });

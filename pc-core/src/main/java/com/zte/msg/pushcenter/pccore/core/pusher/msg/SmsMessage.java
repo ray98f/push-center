@@ -40,8 +40,6 @@ public class SmsMessage extends Message {
      */
     private Long templateId;
 
-    private Long appId;
-
     private String code;
 
     private Timestamp transmitTime;

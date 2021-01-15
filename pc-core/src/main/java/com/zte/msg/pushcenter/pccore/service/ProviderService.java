@@ -5,10 +5,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.ProviderReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.ProviderResDTO;
-import com.zte.msg.pushcenter.pccore.entity.Provider;
-import com.zte.msg.pushcenter.pccore.model.SmsConfigModel;
-
-import java.util.List;
 
 /**
  * description:
@@ -62,9 +58,4 @@ public interface ProviderService {
                                       PageReqDTO pageReqDTO);
 
 
-    List<SmsConfigModel> getAllSmsConfigForInit();
-
-    List<Provider> getProviderByType(Integer type);
-
-    List<SmsConfigModel> getSmsConfigForFlush(List<Provider> providers);
 }

@@ -85,7 +85,7 @@ public class MailPusher extends BasePusher {
     protected void init() {
         configMap.put(PushMethods.MAIL, new HashMap<>(16));
         List<Provider> providers = providerMapper.selectList(new QueryWrapper<Provider>().eq("type", PushMethods.MAIL.value()));
-        providers.forEach(this::flushConfig);
+        flushConfig(providers);
         log.info("========== initialize sms config completed : {}  ========== ", providers.size());
     }
 
@@ -115,7 +115,8 @@ public class MailPusher extends BasePusher {
             }
             treeMap.put(provider.getId().intValue(), JSONObject.parseObject(provider.getConfig(), MailConfig.class));
             configMap.get(PushMethods.MAIL).put(provider.getId(), treeMap);
-
+        }else {
+            configMap.get(PushMethods.MAIL).remove(provider.getId());
         }
     }
 

@@ -23,12 +23,12 @@
   "scriptContext": "",
   "type": 2
 }
-909e77c55ff246b5a4122830dffaf887
+
 // 微信
 {
-  "config": "{}",
-  "description": "网易邮箱-ct",
-  "providerName": "网易",
+  "config": "{\n    \"appId\": \"wx407c4efe6666887b\",\n    \"appSecret\": \"909e77c55ff246b5a4122830dffaf887\"\n}",
+  "description": "中兴温州轨道通讯-微信公众号",
+  "providerName": "中兴温州轨道通讯",
   "scriptContext": "",
-  "type": 2
+  "type": 4
 }

@@ -24,4 +24,10 @@ public class WxConfigModel {
 
     private String content;
 
+    private String scriptTag;
+
+    private String scriptContext;
+
+    private String config;
+
 }

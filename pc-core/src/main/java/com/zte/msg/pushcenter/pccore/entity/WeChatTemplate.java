@@ -1,6 +1,7 @@
 package com.zte.msg.pushcenter.pccore.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
@@ -11,6 +12,7 @@ import lombok.Data;
  * @date 2021/1/14 10:34
  */
 @Data
+@TableName("wechat_template")
 public class WeChatTemplate extends BaseEntity {
 
     private Long providerId;

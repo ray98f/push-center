@@ -16,10 +16,10 @@ import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.ProviderMapper;
 import com.zte.msg.pushcenter.pccore.mapper.ProviderSmsTemplateMapper;
 import com.zte.msg.pushcenter.pccore.mapper.SmsTemplateRelationMapper;
-import com.zte.msg.pushcenter.pccore.model.SmsConfigModel;
 import com.zte.msg.pushcenter.pccore.service.ProviderService;
 import com.zte.msg.pushcenter.pccore.utils.PushConfigUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,7 +64,7 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
         }
         Provider provider = new Provider();
         BeanUtils.copyProperties(providerReqDTO, provider);
-        if (PushMethods.valueOf(providerReqDTO.getType()) != PushMethods.MAIL) {
+        if (PushMethods.valueOf(providerReqDTO.getType()) != PushMethods.MAIL && StringUtils.isNotBlank(providerReqDTO.getScriptContext())) {
             provider.setScriptTag(PushConfigUtils.getTag());
         }
         getBaseMapper().insert(provider);
@@ -129,11 +129,6 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
     }
 
     @Override
-    public List<SmsConfigModel> getAllSmsConfigForInit() {
-        return getBaseMapper().selectAllSmsConfigForInit();
-    }
-
-    @Override
     public Page<ProviderResDTO> getProviders(String provider,
                                              Integer type,
                                              Integer status,
@@ -163,15 +158,4 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
         return dtoPage.setRecords(list);
     }
 
-    @Override
-    public List<Provider> getProviderByType(Integer type) {
-        return getBaseMapper().selectList(new QueryWrapper<Provider>().eq("type", type));
-    }
-
-    @Override
-    public List<SmsConfigModel> getSmsConfigForFlush(List<Provider> providers) {
-
-        List<Long> providerIds = providers.stream().map(Provider::getId).collect(Collectors.toList());
-        return getBaseMapper().selectSmsConfigForFlushByProviderIds(providerIds);
-    }
 }

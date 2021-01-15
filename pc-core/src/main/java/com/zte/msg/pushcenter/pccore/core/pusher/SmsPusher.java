@@ -10,7 +10,7 @@ import com.zte.msg.pushcenter.pccore.entity.SmsInfo;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
-import com.zte.msg.pushcenter.pccore.mapper.ProviderSmsTemplateMapper;
+import com.zte.msg.pushcenter.pccore.mapper.SmsTemplateRelationMapper;
 import com.zte.msg.pushcenter.pccore.model.SmsConfigModel;
 import com.zte.msg.pushcenter.pccore.model.SmsInfoModel;
 import com.zte.msg.pushcenter.pccore.service.AppService;
@@ -46,12 +46,11 @@ public class SmsPusher extends BasePusher {
     private AppService appService;
 
     @Resource
-    private ProviderSmsTemplateMapper providerSmsTemplateMapper;
-
+    private SmsTemplateRelationMapper smsTemplateRelationMapper;
     @Override
     public void init() {
         configMap.put(PushMethods.SMS, new HashMap<>(16));
-        List<SmsConfigModel> configDetails = providerMapper.selectAllSmsConfigForInit();
+        List<SmsConfigModel> configDetails = smsTemplateRelationMapper.selectAllSmsConfigForInit();
         buildAndFlush(configDetails);
         log.info("==========initialize sms config completed : {} ==========", configDetails.size());
     }
@@ -157,7 +156,7 @@ public class SmsPusher extends BasePusher {
     }
 
     public void flushConfig(List<Provider> providers, boolean remove) {
-        List<SmsConfigModel> smsConfigForFlush = providerMapper.selectSmsConfigForFlushByProviderIds(providers
+        List<SmsConfigModel> smsConfigForFlush = smsTemplateRelationMapper.selectSmsConfigForFlushByProviderIds(providers
                 .stream().map(Provider::getId).collect(Collectors.toList()));
         if (!remove) {
             buildAndFlush(smsConfigForFlush);
@@ -183,7 +182,7 @@ public class SmsPusher extends BasePusher {
 
     public void flushConfig(Long[] templateIds, boolean remove) {
         if (!remove) {
-            List<SmsConfigModel> smsConfigForFlush = providerMapper.selectSmsConfigForFlush(Arrays.asList(templateIds));
+            List<SmsConfigModel> smsConfigForFlush = smsTemplateRelationMapper.selectSmsConfigForFlush(Arrays.asList(templateIds));
             buildAndFlush(smsConfigForFlush);
         } else {
             removeConfig(templateIds);
@@ -218,8 +217,6 @@ public class SmsPusher extends BasePusher {
         private int platformTemplateStatus;
 
         private String providerName;
-
-        private int type;
 
         private String scriptTag;
 

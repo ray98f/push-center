@@ -30,8 +30,6 @@ public class SmsConfigModel {
 
     private String providerName;
 
-    private int type;
-
     private String scriptTag;
 
     private String config;

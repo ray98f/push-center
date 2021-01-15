@@ -58,9 +58,15 @@ public abstract class BasePusher {
     protected CodeJavac scriptManager;
 
     /**
-     * pushMethods作为外层map的key，templateId作为内层map的key，priority作为最内层嵌套map的key,
-     * <p>
-     * 对于没有模板的推送方式 providerId作为第二、三层map的key
+     * pushMethods作为外层map的key
+     *
+     * 短信：templateId作为内层map的key，priority作为最内层嵌套map的key,
+     *
+     * 郵件：providerId作为内部两层嵌套map的key
+     *
+     * 微信：providerId作为内部两层嵌套的key
+     *
+     *
      */
     protected Map<PushMethods, Map<Long, TreeMap<Integer, Config>>> configMap = new HashMap<>();
 

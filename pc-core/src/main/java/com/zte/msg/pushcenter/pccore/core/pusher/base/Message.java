@@ -18,6 +18,8 @@ public class Message {
      */
     private Long messageId;
 
+    private Long appId;
+
     /**
      * 是否需要回调
      */

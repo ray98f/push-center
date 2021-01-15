@@ -29,8 +29,6 @@ public class MailMessage extends Message {
 
     private String content;
 
-    private Long appId;
-
     private String appName;
 
     private Timestamp transmitTime;

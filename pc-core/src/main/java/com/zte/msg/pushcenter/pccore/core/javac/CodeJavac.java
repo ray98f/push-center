@@ -73,18 +73,17 @@ public class CodeJavac {
         log.info("========== all compilation script : {} ==========", allBuffers.size());
     }
 
-    public void scriptFlush(boolean remove, ScriptModel... scripts) {
-        List<ScriptModel> scriptModels = Arrays.asList(scripts);
+    public void scriptFlush(boolean remove, List<ScriptModel> scripts) {
         if (!remove) {
-            getTask(scriptModels);
-            log.info("========== update script completed, update count: {} ==========", scripts.length);
+            getTask(scripts);
+            log.info("========== update script completed, update count: {} ==========", scripts.size());
         } else {
-            scriptModels.forEach(o -> scriptFileManager.remove(o.getScriptTag()));
-            log.info("========== delete script completed, delete count: {} ==========", scripts.length);
+            scripts.forEach(o -> scriptFileManager.remove(o.getScriptTag()));
+            log.info("========== delete script completed, delete count: {} ==========", scripts.size());
         }
     }
 
-    public void scriptFlush(ScriptModel... o) {
+    public void scriptFlush(List<ScriptModel> o) {
         scriptFlush(false, o);
     }
 

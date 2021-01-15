@@ -2,6 +2,7 @@ package com.zte.msg.pushcenter.pccore.service;
 
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.MailMessage;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.SmsMessage;
+import com.zte.msg.pushcenter.pccore.core.pusher.msg.WeChatMessage;
 
 /**
  * description:
@@ -15,4 +16,6 @@ public interface PushCenterService {
     void pushSms(SmsMessage smsMessage);
 
     void pushMail(MailMessage mailMessage);
+
+    void pushWechat(WeChatMessage weChatMessage);
 }
