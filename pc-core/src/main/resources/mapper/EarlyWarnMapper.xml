@@ -12,10 +12,10 @@
         select * from early_warn_info
         <trim prefix="where " suffixOverrides="and">
             <if test="startTime!=null">
-                transmit_time >= #{startTime} and
+                time >= #{startTime} and
             </if>
             <if test="endTime!=null">
-                #{endTime} >= transmit_time and
+                #{endTime} >= time and
             </if>
         </trim>
     </select>
