@@ -21,11 +21,11 @@ public class StatisticsResDTO {
     private Long failNum;
 
     @ApiModelProperty(value = "平均响应时长")
-    private Double avgResponseTime;
+    private Double avgDelayTime;
 
     @ApiModelProperty(value = "最小相应时长")
-    private Double minResponseTime;
+    private Double minDelayTime;
 
     @ApiModelProperty(value = "最大响应时长")
-    private Double maxResponseTime;
+    private Double maxDelayTime;
 }

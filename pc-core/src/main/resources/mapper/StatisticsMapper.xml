@@ -7,9 +7,9 @@
             count(case when result=0 then 1 end) as success_num,
             count(case when result=1 then 1 end) as fail_num,
             count(*) as total_num,
-            ifnull(min(response_time),0) as min_response_time,
-            ifnull(max(response_time),0) as max_response_time,
-            avg(ifnull(response_time,0)) as avg_response_time
+            ifnull(min(delay_time),0) as min_delay_time,
+            ifnull(max(delay_time),0) as max_delay_time,
+            avg(ifnull(delay_time,0)) as avg_delay_time
             from
             <if test="type == '邮件'">mail_info</if>
             <if test="type == '短信'">sms_info</if>
@@ -36,17 +36,17 @@
             ifnull(sum(case when r.type is not null then 1 end),0) as total_num,
             ifnull(sum(case when result=0 then 1 end),0) as success_num,
             ifnull(sum(case when result=1 then 1 end),0) as fail_num,
-            ifnull(min(response_time),0) as min_response_time,
-            ifnull(max(response_time),0) as max_response_time,
-            avg(ifnull(response_time,0)) as avg_response_time
+            ifnull(min(delay_time),0) as min_delay_time,
+            ifnull(max(delay_time),0) as max_delay_time,
+            avg(ifnull(delay_time,0)) as avg_delay_time
             from
-            (select '短信' as type,app_id,app_name,result,response_time,transmit_time from sms_info
+            (select '短信' as type,app_id,app_name,result,delay_time,transmit_time from sms_info
             UNION ALL
-            select 'App' as type,app_id,app_name,result,response_time,transmit_time from application_info
+            select 'App' as type,app_id,app_name,result,delay_time,transmit_time from application_info
             UNION ALL
-            select '邮件' as type,app_id,app_name,result,response_time,transmit_time from mail_info
+            select '邮件' as type,app_id,app_name,result,delay_time,transmit_time from mail_info
             UNION ALL
-            select '公众号' as type,app_id,app_name,result,response_time,transmit_time from wechat_info) as r
+            select '公众号' as type,app_id,app_name,result,delay_time,transmit_time from wechat_info) as r
             <trim prefix="where " suffixOverrides="and">
                 <if test="conditionStatisticsReqDTO.appId!=null">
                     r.app_id=#{conditionStatisticsReqDTO.appId} and
@@ -75,17 +75,17 @@
                 ifnull(sum(case when r.type is not null then 1 end),0) as total_num,
                 ifnull(sum(case when result=0 then 1 end),0) as success_num,
                 ifnull(sum(case when result=1 then 1 end),0) as fail_num,
-                ifnull(min(response_time),0) as min_response_time,
-                ifnull(max(response_time),0) as max_response_time,
-                avg(ifnull(response_time,0)) as avg_response_time
+                ifnull(min(delay_time),0) as min_delay_time,
+                ifnull(max(delay_time),0) as max_delay_time,
+                avg(ifnull(delay_time,0)) as avg_delay_time
                 from
-                (select '短信' as type,app_id,app_name,result,response_time,transmit_time from sms_info
+                (select '短信' as type,app_id,app_name,result,delay_time,transmit_time from sms_info
                 UNION ALL
-                select 'App' as type,app_id,app_name,result,response_time,transmit_time from application_info
+                select 'App' as type,app_id,app_name,result,delay_time,transmit_time from application_info
                 UNION ALL
-                select '邮件' as type,app_id,app_name,result,response_time,transmit_time from mail_info
+                select '邮件' as type,app_id,app_name,result,delay_time,transmit_time from mail_info
                 UNION ALL
-                select '公众号' as type,app_id,app_name,result,response_time,transmit_time from wechat_info) as r
+                select '公众号' as type,app_id,app_name,result,delay_time,transmit_time from wechat_info) as r
                 <trim prefix="where " suffixOverrides="and">
                     <if test="app.id!=null">
                         r.app_id=#{app.id} and
@@ -113,16 +113,16 @@
         count(case when r.result=1 then 1 end) as fail_num,
         count(*) as total_num,
         ROUND(count(case when r.result=0 then 1 end) / count(*) * 100, 2) as accuracy,
-        ifnull(min(response_time),0) as min_response_time,
-        ifnull(max(response_time),0) as max_response_time,
-        avg(ifnull(response_time,0)) as avg_response_time from
-        (select app_id,app_name,result,response_time,transmit_time,provider_name from sms_info
+        ifnull(min(delay_time),0) as min_delay_time,
+        ifnull(max(delay_time),0) as max_delay_time,
+        avg(ifnull(delay_time,0)) as avg_delay_time from
+        (select app_id,app_name,result,delay_time,transmit_time,provider_name from sms_info
         UNION ALL
-        select app_id,app_name,result,response_time,transmit_time,provider_name from application_info
+        select app_id,app_name,result,delay_time,transmit_time,provider_name from application_info
         UNION ALL
-        select app_id,app_name,result,response_time,transmit_time,provider_name from mail_info
+        select app_id,app_name,result,delay_time,transmit_time,provider_name from mail_info
         UNION ALL
-        select app_id,app_name,result,response_time,transmit_time,wechat_name as provider_name from wechat_info) as r
+        select app_id,app_name,result,delay_time,transmit_time,wechat_name as provider_name from wechat_info) as r
         <trim prefix="where " suffixOverrides="and">
             <if test="startTime!=null">
                 transmit_time >= #{startTime} and
