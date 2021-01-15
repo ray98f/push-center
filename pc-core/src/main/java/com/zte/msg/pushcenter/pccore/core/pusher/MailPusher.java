@@ -14,6 +14,7 @@ import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.service.AppService;
 import com.zte.msg.pushcenter.pccore.service.HistoryService;
 import com.zte.msg.pushcenter.pcscript.PcScript;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -33,6 +34,7 @@ import java.util.concurrent.CompletableFuture;
  * @version 1.0
  * @date 2020/12/11 9:34
  */
+@SuppressFBWarnings("BC_UNCONFIRMED_CAST")
 @Slf4j
 @Component
 public class MailPusher extends BasePusher {

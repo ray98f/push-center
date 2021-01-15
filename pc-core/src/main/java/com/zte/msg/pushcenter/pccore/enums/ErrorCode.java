@@ -155,7 +155,8 @@ public enum ErrorCode {
     /**
      * 其他
      */
-    SECRET_RESET_ERROR(32100000, "secret.reset.error");
+    SECRET_RESET_ERROR(32100000, "secret.reset.error"),
+    FILE_DELETE_ERROR(32100001, "file.delete.error");
 
     private Integer code;
 

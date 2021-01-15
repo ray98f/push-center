@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * @version 1.0
  * @date 2020/4/22 9:37
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ApiModel
 public class PageResponse<T> extends BaseResponse {

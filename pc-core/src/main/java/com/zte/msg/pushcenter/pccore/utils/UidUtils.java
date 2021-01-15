@@ -32,46 +32,46 @@ public class UidUtils {
     /**
      * 开始时间截 (2020-12-01 00:00:00)
      */
-    private final long twEpoch = 1606752000000L;
+    private static final long TW_EPOCH = 1606752000000L;
 
     /**
      * 机器id所占的位数
      */
-    private final long workerIdBits = 5L;
+    private static final long WORKER_ID_BITS = 5L;
 
     /**
      * 数据标识id所占的位数
      */
-    private final long dataCenterIdBits = 5L;
+    private static final long DATA_CENTER_ID_BITS = 5L;
 
     /**
      * 支持的最大机器id，结果是31 (这个移位算法可以很快的计算出几位二进制数所能表示的最大十进制数)
      */
-    private final long maxWorkerId = -1L ^ (-1L << workerIdBits);
+    private static final long MAX_WORKER_ID = ~(-1L << WORKER_ID_BITS);
     /**
      * 支持的最大数据标识id，结果是31
      */
-    private final long maxDataCenterId = -1L ^ (-1L << dataCenterIdBits);
+    private static final long MAX_DATA_CENTER_ID = ~(-1L << DATA_CENTER_ID_BITS);
     /**
      * 序列在id中占的位数
      */
-    private final long sequenceBits = 12L;
+    private static final long SEQUENCE_BITS = 12L;
     /**
      * 机器ID向左移12位
      */
-    private final long workerIdShift = sequenceBits;
+    private static final long WORKER_ID_SHIFT = SEQUENCE_BITS;
     /**
      * 数据标识id向左移17位(12+5)
      */
-    private final long dataCenterIdShift = sequenceBits + workerIdBits;
+    private static final long DATA_CENTER_ID_SHIFT = SEQUENCE_BITS + WORKER_ID_BITS;
     /**
      * 时间截向左移22位(5+5+12)
      */
-    private final long timestampLeftShift = sequenceBits + workerIdBits + dataCenterIdBits;
+    private static final long TIMESTAMP_LEFT_SHIFT = SEQUENCE_BITS + WORKER_ID_BITS + DATA_CENTER_ID_BITS;
     /**
      * 生成序列的掩码，这里为4095 (0b111111111111=0xfff=4095)
      */
-    private final long sequenceMask = -1L ^ (-1L << sequenceBits);
+    private static final long SEQUENCE_MASK = ~(-1L << SEQUENCE_BITS);
     /**
      * 工作机器ID(0~31)
      */
@@ -96,11 +96,11 @@ public class UidUtils {
      * @param dataCenterId 数据中心ID (0~31)
      */
     public UidUtils(long workerId, long dataCenterId) {
-        if (workerId > maxWorkerId || workerId < 0) {
-            throw new IllegalArgumentException(String.format("worker Id can't be greater than %d or less than 0", maxWorkerId));
+        if (workerId > MAX_WORKER_ID || workerId < 0) {
+            throw new IllegalArgumentException(String.format("worker Id can't be greater than %d or less than 0", MAX_WORKER_ID));
         }
-        if (dataCenterId > maxDataCenterId || dataCenterId < 0) {
-            throw new IllegalArgumentException(String.format("datacenter Id can't be greater than %d or less than 0", maxDataCenterId));
+        if (dataCenterId > MAX_DATA_CENTER_ID || dataCenterId < 0) {
+            throw new IllegalArgumentException(String.format("datacenter Id can't be greater than %d or less than 0", MAX_DATA_CENTER_ID));
         }
         this.workerId = workerId;
         this.dataCenterId = dataCenterId;
@@ -120,7 +120,7 @@ public class UidUtils {
         }
         //如果是同一时间生成的，则进行毫秒内序列
         if (lastTimestamp == timestamp) {
-            sequence = (sequence + 1) & sequenceMask;
+            sequence = (sequence + 1) & SEQUENCE_MASK;
             //毫秒内序列溢出
             if (sequence == 0) {
                 //阻塞到下一个毫秒,获得新的时间戳
@@ -134,9 +134,9 @@ public class UidUtils {
         //上次生成ID的时间截
         lastTimestamp = timestamp;
         //移位并通过或运算拼到一起组成64位的ID
-        return ((timestamp - twEpoch) << timestampLeftShift)
-                | (dataCenterId << dataCenterIdShift)
-                | (workerId << workerIdShift)
+        return ((timestamp - TW_EPOCH) << TIMESTAMP_LEFT_SHIFT)
+                | (dataCenterId << DATA_CENTER_ID_SHIFT)
+                | (workerId << WORKER_ID_SHIFT)
                 | sequence;
     }
 

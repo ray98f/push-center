@@ -3,6 +3,7 @@ package com.zte.msg.pushcenter.pccore.utils;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -117,7 +118,7 @@ public class PathUtil {
 
         //Read File Content
         try {
-            return new String(Files.readAllBytes(file.toPath()));
+            return new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
         } catch (Throwable throwable) {
             return null;
         }

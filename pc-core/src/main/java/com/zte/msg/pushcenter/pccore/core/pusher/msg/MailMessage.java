@@ -3,6 +3,7 @@ package com.zte.msg.pushcenter.pccore.core.pusher.msg;
 import com.zte.msg.pushcenter.pccore.core.pusher.base.Message;
 import com.zte.msg.pushcenter.pccore.dto.req.MailMessageReqDTO;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.beans.BeanUtils;
 
 import java.sql.Timestamp;
@@ -14,6 +15,7 @@ import java.sql.Timestamp;
  * @version 1.0
  * @date 2020/12/14 14:16
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class MailMessage extends Message {
 

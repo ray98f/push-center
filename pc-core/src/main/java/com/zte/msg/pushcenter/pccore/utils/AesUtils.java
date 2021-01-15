@@ -1,11 +1,13 @@
 package com.zte.msg.pushcenter.pccore.utils;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.security.AlgorithmParameters;
 import java.security.Key;
 
@@ -16,6 +18,7 @@ import java.security.Key;
  * @version 1.0
  * @date 2020/12/14 15:18
  */
+@SuppressFBWarnings("DM_DEFAULT_ENCODING")
 @Slf4j
 public class AesUtils {
 
@@ -59,7 +62,7 @@ public class AesUtils {
             byte[] result = cipher.doFinal(dataByte);
 
             //解密后转成字符串
-            data = new String(result);
+            data = new String(result, StandardCharsets.UTF_8);
         } catch (Exception e) {
             log.error("Error when decrypt : {}", e.getMessage());
         }
