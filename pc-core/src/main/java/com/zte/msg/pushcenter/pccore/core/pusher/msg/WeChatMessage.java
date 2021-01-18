@@ -17,9 +17,7 @@ public class WeChatMessage extends Message {
 
     private String openId;
 
-    private String templateId;
-
-    private String appletAppId;
+    private Long templateId;
 
     private String data;
 

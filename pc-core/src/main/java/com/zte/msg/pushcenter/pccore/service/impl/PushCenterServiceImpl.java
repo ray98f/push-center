@@ -1,8 +1,11 @@
 package com.zte.msg.pushcenter.pccore.service.impl;
 
+import com.zte.msg.pushcenter.pccore.core.pusher.AppPusher;
 import com.zte.msg.pushcenter.pccore.core.pusher.MailPusher;
 import com.zte.msg.pushcenter.pccore.core.pusher.SmsPusher;
 import com.zte.msg.pushcenter.pccore.core.pusher.WeChatPusher;
+import com.zte.msg.pushcenter.pccore.core.pusher.base.Message;
+import com.zte.msg.pushcenter.pccore.core.pusher.msg.AppMessage;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.MailMessage;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.SmsMessage;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.WeChatMessage;
@@ -39,6 +42,9 @@ public class PushCenterServiceImpl implements PushCenterService {
     private WeChatPusher weChatPusher;
 
     @Resource
+    private AppPusher appPusher;
+
+    @Resource
     private ProviderService providerService;
 
     @Override
@@ -48,21 +54,26 @@ public class PushCenterServiceImpl implements PushCenterService {
 
     @Override
     public void pushMail(MailMessage mailMessage) {
-        checkProviderType(mailMessage.getProviderId());
+        checkProviderType(mailMessage, mailMessage.getProviderId());
         mailPusher.submit(mailMessage);
     }
 
     @Override
     public void pushWechat(WeChatMessage weChatMessage) {
-        checkProviderType(weChatMessage.getProviderId());
+        checkProviderType(weChatMessage, weChatMessage.getProviderId());
         weChatPusher.submit(weChatMessage);
     }
 
+    @Override
+    public void pushApp(AppMessage appMessage) {
+        checkProviderType(appMessage, appMessage.getProviderId());
+        appPusher.submit(appMessage);
+    }
 
 
-    private void checkProviderType(Long providerId) {
+    private void checkProviderType(Message message, Long providerId) {
         ProviderResDTO providerById = providerService.getProviderById(providerId);
-        if (PushMethods.valueOf(providerById.getType()) != PushMethods.MAIL) {
+        if (PushMethods.valueOf(providerById.getType()) != message.getPushMethod()) {
             throw new CommonException(ErrorCode.PROVIDER_TYPE_NOT_CORRECT);
         }
     }

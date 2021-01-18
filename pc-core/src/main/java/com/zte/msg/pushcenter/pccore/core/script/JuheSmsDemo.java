@@ -77,18 +77,8 @@ public class JuheSmsDemo implements PcScript {
 
 
     private Res parseResponse(String res) {
-//        {
-//        	"reason":"操作成功",
-//        	"result":{
-//        		"sid":"1428ADC382FEDE59",
-//        		"fee":1,
-//        		"count":1
-//        	},
-//        	"error_code":0
-//        }
         JSONObject resObj = JSONObject.parseObject(res);
         ErrorCodes errorCode = ErrorCodes.find(resObj.getString("error_code"));
-
         return new Res(errorCode.getPcCode(), resObj.getString("reason"));
     }
 

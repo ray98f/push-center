@@ -44,6 +44,13 @@ public class MailPusher extends BasePusher {
     private HistoryService historyService;
 
     @Override
+    protected void init() {
+        configMap.put(PushMethods.MAIL, new HashMap<>(16));
+        List<Provider> providers = providerMapper.selectList(new QueryWrapper<Provider>().eq("type", PushMethods.MAIL.value()));
+        flushConfig(providers);
+    }
+
+    @Override
     public void push(Message message) {
         MailMessage mailMessage = (MailMessage) message;
         CompletableFuture.supplyAsync(() -> {
@@ -84,14 +91,6 @@ public class MailPusher extends BasePusher {
         historyService.addHistoryMail(mailInfo);
     }
 
-    @Override
-    protected void init() {
-        configMap.put(PushMethods.MAIL, new HashMap<>(16));
-        List<Provider> providers = providerMapper.selectList(new QueryWrapper<Provider>().eq("type", PushMethods.MAIL.value()));
-        flushConfig(providers);
-        log.info("========== initialize sms config completed : {}  ========== ", providers.size());
-    }
-
     public void flushConfig(List<Provider> providers) {
         flushConfig(providers, false);
     }
@@ -99,9 +98,9 @@ public class MailPusher extends BasePusher {
     public void flushConfig(List<Provider> providers, boolean remove) {
         providers.forEach(o -> flushConfig(o, remove));
         if (!remove) {
-            log.info("========== update sms config completed, update count: {} ==========", providers.size());
+            log.info("========== update mail config completed, update count: {} ==========", providers.size());
         } else {
-            log.info("========== delete sms config completed, delete count: {} ==========", providers.size());
+            log.info("========== delete mail config completed, delete count: {} ==========", providers.size());
         }
 
     }

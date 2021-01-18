@@ -52,7 +52,6 @@ public class SmsPusher extends BasePusher {
         configMap.put(PushMethods.SMS, new HashMap<>(16));
         List<SmsConfigModel> configDetails = smsTemplateRelationMapper.selectAllSmsConfigForInit();
         buildAndFlush(configDetails);
-        log.info("==========initialize sms config completed : {} ==========", configDetails.size());
     }
 
     private void buildAndFlush(List<SmsConfigModel> smsConfigModels) {
@@ -113,7 +112,6 @@ public class SmsPusher extends BasePusher {
                     int delay = (int) (System.currentTimeMillis() - start);
                     smsMessage.setDelay(delay);
                 } catch (Exception e) {
-                    res = new PcScript.Res(1, "系统内部错误");
                     e.printStackTrace();
                 }
                 return res;
@@ -164,7 +162,7 @@ public class SmsPusher extends BasePusher {
         } else {
             removeConfig(smsConfigForFlush.stream()
                     .map(SmsConfigModel::getSmsTemplateId)
-                    .collect(Collectors.toList()).toArray(new Long[]{}));
+                    .toArray(Long[]::new));
             log.info("========== delete sms config completed, delete count: {} ==========", providers.size());
         }
     }

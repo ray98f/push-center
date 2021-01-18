@@ -29,6 +29,8 @@ public interface HistoryService {
 
     void addHistoryWeChat(WeChatInfo weChatInfo);
 
+    void addApplicationInfo(ApplicationInfo applicationInfo);
+
     PageInfo<WeChatInfo> listHistoryWechat(WechatHistoryReqDTO wechatHistoryReqDTO);
 
     PageInfo<ApplicationInfo> listHistoryApplication(ApplicationHistoryReqDTO applicationHistoryReqDTO);

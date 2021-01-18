@@ -1,5 +1,7 @@
 package com.zte.msg.pushcenter.pccore.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.WeChatMessage;
 import com.zte.msg.pushcenter.pcscript.PcScript;
 import io.swagger.annotations.ApiModel;
@@ -17,6 +19,7 @@ import java.sql.Timestamp;
  */
 @Data
 @ApiModel
+@TableName(value = "wechat_info")
 public class WeChatInfo extends BaseEntity {
 
     @ApiModelProperty(value = "应用id")
@@ -26,13 +29,14 @@ public class WeChatInfo extends BaseEntity {
     private String appName;
 
     @ApiModelProperty(value = "公众号名称")
+    @TableField(value = "wechat_name")
     private String weChatName;
 
     @ApiModelProperty(value = "OpenID")
     private String openId;
 
     @ApiModelProperty(value = "模板id")
-    private String templateId;
+    private Long templateId;
 
     @ApiModelProperty(value = "模板数据")
     private String templateData;
@@ -60,7 +64,7 @@ public class WeChatInfo extends BaseEntity {
     public WeChatInfo() {
     }
 
-    public WeChatInfo(Long appId, String appName, String weChatName, String openId, String templateId,
+    public WeChatInfo(Long appId, String appName, String weChatName, String openId, Long templateId,
                       String templateData, String skipUrl, String appletData, Timestamp transmitTime,
                       Integer result, Integer failCode, String failReason) {
         this.appId = appId;

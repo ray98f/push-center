@@ -1,6 +1,7 @@
 package com.zte.msg.pushcenter.pccore.core;
 
 import com.zte.msg.pushcenter.pccore.core.javac.CodeJavac;
+import com.zte.msg.pushcenter.pccore.core.pusher.AppPusher;
 import com.zte.msg.pushcenter.pccore.core.pusher.MailPusher;
 import com.zte.msg.pushcenter.pccore.core.pusher.SmsPusher;
 import com.zte.msg.pushcenter.pccore.core.pusher.WeChatPusher;
@@ -35,6 +36,9 @@ public class Flusher {
     private MailPusher mailPusher;
 
     @Resource
+    private AppPusher appPusher;
+
+    @Resource
     private WeChatPusher weChatPusher;
 
     @Resource
@@ -62,7 +66,8 @@ public class Flusher {
                     mailPusher.flushConfig(providerType.get(o), remove);
                     break;
                 case APP:
-                    // TODO: 2021/1/13
+                    appPusher.flushConfig(providerType.get(o), remove);
+                    break;
                 case WECHAT:
                     weChatPusher.flushConfig(providerType.get(o), remove);
                     break;

@@ -1,9 +1,11 @@
 package com.zte.msg.pushcenter.pccore.kafka;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zte.msg.pushcenter.pccore.core.pusher.AppPusher;
 import com.zte.msg.pushcenter.pccore.core.pusher.MailPusher;
 import com.zte.msg.pushcenter.pccore.core.pusher.SmsPusher;
 import com.zte.msg.pushcenter.pccore.core.pusher.WeChatPusher;
+import com.zte.msg.pushcenter.pccore.core.pusher.msg.AppMessage;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.MailMessage;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.SmsMessage;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.WeChatMessage;
@@ -31,6 +33,9 @@ public class KafkaConsumer extends BaseConsumer {
     private MailPusher mailPusher;
 
     @Resource
+    private AppPusher appPusher;
+
+    @Resource
     private WeChatPusher weChatPusher;
 
     @Override
@@ -43,7 +48,7 @@ public class KafkaConsumer extends BaseConsumer {
                 smsPusher.push(message.toJavaObject(SmsMessage.class));
                 break;
             case APP:
-                // TODO: 2021/1/14
+                appPusher.push(message.toJavaObject(AppMessage.class));
                 break;
             case MAIL:
                 mailPusher.push(message.toJavaObject(MailMessage.class));

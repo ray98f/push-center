@@ -1,6 +1,8 @@
 package com.zte.msg.pushcenter.pccore.core.pusher;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.annotation.JSONField;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.zte.msg.pushcenter.pccore.core.pusher.base.BasePusher;
 import com.zte.msg.pushcenter.pccore.core.pusher.base.Config;
@@ -8,15 +10,18 @@ import com.zte.msg.pushcenter.pccore.core.pusher.base.Message;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.WeChatMessage;
 import com.zte.msg.pushcenter.pccore.entity.Provider;
 import com.zte.msg.pushcenter.pccore.entity.WeChatInfo;
+import com.zte.msg.pushcenter.pccore.entity.WechatAccessToken;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.WeChatTemplateMapper;
 import com.zte.msg.pushcenter.pccore.model.WxConfigModel;
 import com.zte.msg.pushcenter.pccore.service.AppService;
+import com.zte.msg.pushcenter.pccore.service.WechatAccessTokenService;
 import com.zte.msg.pushcenter.pcscript.PcScript;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -41,6 +46,9 @@ import java.util.stream.Collectors;
 public class WeChatPusher extends BasePusher {
 
     @Resource
+    private WechatAccessTokenService wechatAccessTokenService;
+
+    @Resource
     private AppService appService;
 
     @Resource
@@ -55,7 +63,9 @@ public class WeChatPusher extends BasePusher {
     private static final String WECHAT_PUSH_URL =
             "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={1}";
 
-    // token过期时间，腾讯为7200s，这里设置为7100s，防止因网络延迟导致访问时携带已过期token
+    /**
+     * token过期时间，腾讯为7200s，这里设置为7100s，防止因网络延迟导致访问时携带已过期token
+     */
     private static final long ACCESS_TOKEN_EXPIRE = 7100000;
 
     /**
@@ -64,17 +74,32 @@ public class WeChatPusher extends BasePusher {
     private final Map<String, AccessToken> accessTokens = new HashMap<>();
 
     @Override
+    protected void init() {
+        configMap.put(PushMethods.WECHAT, new HashMap<>(16));
+        List<WxConfigModel> wxConfigModels = weChatTemplateMapper.selectWxConfigsForInit();
+        buildAndFlush(wxConfigModels);
+
+        List<WechatAccessToken> wechatAccessTokens = wechatAccessTokenService.getBaseMapper()
+                .selectList(new QueryWrapper<>());
+        accessTokens.putAll(wechatAccessTokens.stream().map(o -> {
+            AccessToken accessToken = new AccessToken();
+            BeanUtils.copyProperties(o, accessToken);
+            return accessToken;
+        }).collect(Collectors.toMap(AccessToken::getAppId, o -> o)));
+    }
+
+    @Override
     public void push(Message message) {
         WeChatMessage weChatMessage = (WeChatMessage) message;
         CompletableFuture.supplyAsync(() -> {
             WxConfig config = (WxConfig) configMap.get(PushMethods.WECHAT)
-                    .get(weChatMessage.getProviderId()).get(weChatMessage.getProviderId().intValue());
+                    .get(weChatMessage.getTemplateId()).get(weChatMessage.getTemplateId().intValue());
             weChatMessage.setProviderName(config.getProviderName());
             weChatMessage.setTransmitTime(new Timestamp(System.currentTimeMillis()));
             String accessKey = getAccessKey(config);
             Req req = new Req(weChatMessage, config);
             long start = System.currentTimeMillis();
-            Res body = restTemplate.exchange(WECHAT_PUSH_URL, HttpMethod.POST, new HttpEntity<>(req), Res.class, accessKey).getBody();
+            Res body = restTemplate.exchange(WECHAT_PUSH_URL, HttpMethod.POST, new HttpEntity<>(JSONObject.toJSON(req)), Res.class, accessKey).getBody();
             int delay = (int) (System.currentTimeMillis() - start);
             weChatMessage.setDelay(delay);
             if (Objects.isNull(body)) {
@@ -99,32 +124,36 @@ public class WeChatPusher extends BasePusher {
         AccessToken accessToken = accessTokens.get(wxConfig.getAppId());
         if (Objects.isNull(accessToken) || accessToken.getExpire() < now) {
             accessToken = restTemplate.getForObject(ACCESS_TOKEN_URL, AccessToken.class, wxConfig.getAppId(), wxConfig.getAppSecret());
-            if (Objects.nonNull(accessToken)) {
+            if (Objects.nonNull(accessToken) && StringUtils.isNotBlank(accessToken.getAccessToken())) {
                 accessToken.setExpire(now + ACCESS_TOKEN_EXPIRE);
+                accessToken.setAppId(wxConfig.getAppId());
+                log.info("inset a new access token: {}", accessToken.getAccessToken());
             } else {
                 log.error("WeChar access token request fail : {}", wxConfig.getAppId());
                 throw new CommonException(-1, "WeChar access token request fail");
             }
+            WechatAccessToken wechatAccessToken = new WechatAccessToken();
+            wechatAccessToken.setAccessToken(accessToken.getAccessToken());
+            wechatAccessToken.setExpire(accessToken.getExpire());
+            wechatAccessToken.setAppId(accessToken.getAppId());
+
+            wechatAccessTokenService.saveOrUpdate(wechatAccessToken, new QueryWrapper<WechatAccessToken>()
+                    .eq("app_id", accessToken.getAppId()));
+            accessTokens.put(wxConfig.getAppId(), accessToken);
         }
-        accessTokens.put(wxConfig.getAppId(), accessToken);
         return accessToken.getAccessToken();
     }
 
-
     @Override
     protected void persist(Message message, PcScript.Res res) {
-        WeChatMessage weChatMessage = (WeChatMessage) message;
-        weChatMessage.setAppName(appService.getAppName(weChatMessage.getAppId()));
-        WeChatInfo weChatInfo = new WeChatInfo(weChatMessage, res);
-        historyService.addHistoryWeChat(weChatInfo);
-    }
-
-    @Override
-    protected void init() {
-        configMap.put(PushMethods.WECHAT, new HashMap<>(16));
-        List<WxConfigModel> wxConfigModels = weChatTemplateMapper.selectWxConfigsForInit();
-        buildAndFlush(wxConfigModels);
-        log.info("========== initialize wechat config completed : {}  ========== ", wxConfigModels.size());
+        try {
+            WeChatMessage weChatMessage = (WeChatMessage) message;
+            weChatMessage.setAppName(appService.getAppName(weChatMessage.getAppId()));
+            WeChatInfo weChatInfo = new WeChatInfo(weChatMessage, res);
+            historyService.addHistoryWeChat(weChatInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void buildAndFlush(List<WxConfigModel> wxConfigModels) {
@@ -140,44 +169,14 @@ public class WeChatPusher extends BasePusher {
         log.info("==========update wechat config completed, update count {} ==========", wxConfigModels.size());
     }
 
-
-    @Data
-    protected static class WxConfig implements Config {
-
-        private Long providerId;
-
-        private String providerName;
-
-        private String weChatTemplateId;
-
-        private String title;
-
-        private String content;
-
-        private String appId;
-
-        private String appSecret;
-
-    }
-
-    @Data
-    private static class AccessToken {
-
-        // 过期的具体时间
-        private Long expire;
-
-        private String accessToken;
-    }
-
     private void flushConfig(WxConfig wxConfig) {
-        TreeMap<Integer, Config> treeMap = configMap.get(PushMethods.WECHAT).get(wxConfig.getProviderId());
+        TreeMap<Integer, Config> treeMap = configMap.get(PushMethods.WECHAT).get(wxConfig.getTemplateId());
         if (Objects.isNull(treeMap)) {
             treeMap = new TreeMap<>();
         }
-        treeMap.put(wxConfig.getProviderId().intValue(), wxConfig);
-        configMap.get(PushMethods.WECHAT).put(wxConfig.getProviderId(), treeMap);
+        treeMap.put(wxConfig.getTemplateId().intValue(), wxConfig);
+        configMap.get(PushMethods.WECHAT).put(wxConfig.getTemplateId(), treeMap);
     }
-
 
     public void flushConfig(List<Provider> providers) {
         flushConfig(providers, false);
@@ -189,6 +188,7 @@ public class WeChatPusher extends BasePusher {
         if (!remove) {
             buildAndFlush(wxConfigModels);
         } else {
+            removeConfig(wxConfigModels.stream().map(WxConfigModel::getTemplateId).toArray(Long[]::new));
             log.info("========== delete wechat config completed, delete count: {} ==========", providers.size());
         }
     }
@@ -203,25 +203,88 @@ public class WeChatPusher extends BasePusher {
         flushConfig(Collections.singletonList(provider), remove);
     }
 
+    public void flushConfig(Long templateId) {
+        flushConfig(templateId, false);
+    }
+
+    public void flushConfig(Long templateId, boolean remove) {
+        flushConfig(new Long[]{templateId}, remove);
+    }
+
+    public void flushConfig(Long[] templateIds) {
+        flushConfig(templateIds, false);
+    }
+
+    public void flushConfig(Long[] templateIds, boolean remove) {
+        if (!remove) {
+            List<WxConfigModel> wxConfigModels = weChatTemplateMapper.selectSmsConfigForFlushByTemplateIds(Arrays.asList(templateIds));
+            buildAndFlush(wxConfigModels);
+        } else {
+            removeConfig(templateIds);
+        }
+    }
+
+    private void removeConfig(Long[] templateIds) {
+        for (Long templateId : templateIds) {
+            configMap.get(PushMethods.WECHAT).remove(templateId);
+        }
+    }
+
+
+    @Data
+    protected static class WxConfig implements Config {
+
+        private Long providerId;
+
+        private String providerName;
+
+        private Long templateId;
+
+        private String wechatTemplateId;
+
+        private String title;
+
+        private String content;
+
+        private String appId;
+
+        private String appSecret;
+
+    }
+
+    @Data
+    private static class AccessToken {
+
+        private String appId;
+
+        // 过期的具体时间
+        @JsonProperty("expires_in")
+        private Long expire;
+
+        @JsonProperty("access_token")
+        private String accessToken;
+    }
+
     @Data
     private static class Req {
 
         public Req(WeChatMessage message, WxConfig config) {
             this.miniProgram = new MiniProgramDTO();
             this.toUser = message.getOpenId();
-            this.templateId = message.getTemplateId();
+            this.templateId = config.getWechatTemplateId();
             this.url = message.getSkipUrl();
-            this.data = message.getData();
-            this.miniProgram.setAppId(config.getAppId());
+            this.data = JSONObject.parseObject(message.getData());
+//            this.miniProgram.setAppId(config.getAppId());
         }
 
-        @JsonProperty("touser")
+        @JSONField(name = "touser")
         private String toUser;
+        @JSONField(name = "template_id")
         private String templateId;
         private String url;
-        @JsonProperty("miniprogram")
+        @JSONField(name = "miniprogram")
         private MiniProgramDTO miniProgram;
-        private String data;
+        private JSONObject data;
 
         @Data
         public static class MiniProgramDTO {

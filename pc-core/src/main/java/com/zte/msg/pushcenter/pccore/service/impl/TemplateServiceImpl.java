@@ -3,6 +3,7 @@ package com.zte.msg.pushcenter.pccore.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zte.msg.pushcenter.pccore.core.pusher.SmsPusher;
+import com.zte.msg.pushcenter.pccore.core.pusher.WeChatPusher;
 import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.*;
 import com.zte.msg.pushcenter.pccore.dto.res.ProviderSmsTemplateResDTO;
@@ -40,6 +41,9 @@ public class TemplateServiceImpl implements TemplateService {
 
     @Resource
     private SmsPusher smsPusher;
+
+    @Resource
+    private WeChatPusher weChatPusher;
 
     @Resource
     private SmsTemplateMapper smsTemplateMapper;
@@ -264,6 +268,7 @@ public class TemplateServiceImpl implements TemplateService {
         WeChatTemplate weChatTemplate = new WeChatTemplate();
         BeanUtils.copyProperties(reqDTO, weChatTemplate);
         weChatTemplateMapper.insert(weChatTemplate);
+        weChatPusher.flushConfig(weChatTemplate.getId());
     }
 
     @Override
@@ -274,6 +279,7 @@ public class TemplateServiceImpl implements TemplateService {
         WeChatTemplate weChatTemplate = new WeChatTemplate();
         BeanUtils.copyProperties(reqDTO, weChatTemplate);
         weChatTemplateMapper.updateById(weChatTemplate);
+        weChatPusher.flushConfig(weChatTemplate.getId());
     }
 
     @Override
@@ -292,6 +298,8 @@ public class TemplateServiceImpl implements TemplateService {
             return;
         }
         weChatTemplateMapper.deleteBatchIds(Arrays.asList(ids));
+
+        weChatPusher.flushConfig(ids, true);
     }
 
     @Override

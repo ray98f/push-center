@@ -12,10 +12,7 @@ import com.zte.msg.pushcenter.pccore.entity.SmsInfo;
 import com.zte.msg.pushcenter.pccore.entity.WeChatInfo;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
-import com.zte.msg.pushcenter.pccore.mapper.HistoryMapper;
-import com.zte.msg.pushcenter.pccore.mapper.MailInfoMapper;
-import com.zte.msg.pushcenter.pccore.mapper.SmsInfoMapper;
-import com.zte.msg.pushcenter.pccore.mapper.WeChatInfoMapper;
+import com.zte.msg.pushcenter.pccore.mapper.*;
 import com.zte.msg.pushcenter.pccore.service.HistoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +41,11 @@ public class HistoryServiceImpl implements HistoryService {
     @Resource
     private MailInfoMapper mailInfoMapper;
 
+    @Resource
     private WeChatInfoMapper weChatInfoMapper;
+
+    @Resource
+    private ApplicationInfoMapper applicationInfoMapper;
 
     @Override
     public PageInfo<SmsInfo> listHistorySms(SmsHistoryReqDTO smsHistoryReqDTO) {
@@ -85,6 +86,11 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public void addHistoryWeChat(WeChatInfo weChatInfo) {
         weChatInfoMapper.insert(weChatInfo);
+    }
+
+    @Override
+    public void addApplicationInfo(ApplicationInfo applicationInfo) {
+        applicationInfoMapper.insert(applicationInfo);
     }
 
     @Override

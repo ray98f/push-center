@@ -1,5 +1,7 @@
 package com.zte.msg.pushcenter.pccore.entity;
 
+import com.zte.msg.pushcenter.pccore.core.pusher.msg.AppMessage;
+import com.zte.msg.pushcenter.pcscript.PcScript;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -20,7 +22,7 @@ public class ApplicationInfo extends BaseEntity {
     private String appName;
 
     @ApiModelProperty(value = "目标平台")
-    private String targetPlatform;
+    private Integer targetPlatform;
 
     @ApiModelProperty(value = "推送目标（App名称）")
     private String applicationName;
@@ -37,6 +39,8 @@ public class ApplicationInfo extends BaseEntity {
     @ApiModelProperty(value = "发送平台")
     private String providerName;
 
+    private Integer delay;
+
     @ApiModelProperty(value = "发送状态")
     private Integer result;
 
@@ -45,4 +49,43 @@ public class ApplicationInfo extends BaseEntity {
 
     @ApiModelProperty(value = "错误消息")
     private String failReason;
+
+    public ApplicationInfo() {
+    }
+
+    public ApplicationInfo(Long appId, String appName, Integer targetPlatform, String applicationName, String title,
+                           String content, Timestamp transmitTime, String providerName, Integer result, Integer failCode,
+                           String failReason, Integer delay) {
+        this.appId = appId;
+        this.appName = appName;
+        this.targetPlatform = targetPlatform;
+        this.applicationName = applicationName;
+        this.title = title;
+        this.content = content;
+        this.transmitTime = transmitTime;
+        this.providerName = providerName;
+        this.result = result;
+        this.failCode = failCode;
+        this.failReason = failReason;
+        this.delay = delay;
+    }
+
+    public ApplicationInfo(AppMessage appMessage, PcScript.Res res) {
+        this.appId = appMessage.getAppId();
+        this.appName = appMessage.getAppName();
+        this.targetPlatform = appMessage.getTargetPlatform();
+        this.applicationName = appMessage.getProviderName();
+        this.title = appMessage.getTitle();
+        this.content = appMessage.getContent();
+        this.transmitTime = appMessage.getTransmitTime();
+        this.providerName = appMessage.getProviderName();
+        this.delay = appMessage.getDelay();
+        if (res.getCode() != 0) {
+            this.result = 1;
+        } else {
+            this.result = 0;
+        }
+        this.failCode = res.getCode();
+        this.failReason = res.getMessage();
+    }
 }

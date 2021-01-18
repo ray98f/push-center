@@ -5,6 +5,7 @@ import com.zte.msg.pushcenter.pccore.core.javac.CodeJavac;
 import com.zte.msg.pushcenter.pccore.dto.DataResponse;
 import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import com.zte.msg.pushcenter.pccore.mapper.ProviderMapper;
+import com.zte.msg.pushcenter.pccore.service.AppService;
 import com.zte.msg.pushcenter.pccore.service.HistoryService;
 import com.zte.msg.pushcenter.pcscript.PcScript;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,9 @@ import java.util.TreeMap;
 public abstract class BasePusher {
 
     @Resource
+    protected AppService appService;
+
+    @Resource
     protected ProviderMapper providerMapper;
 
     @Resource
@@ -59,14 +63,14 @@ public abstract class BasePusher {
 
     /**
      * pushMethods作为外层map的key
-     *
+     * <p>
      * 短信：templateId作为内层map的key，priority作为最内层嵌套map的key,
-     *
+     * <p>
      * 郵件：providerId作为内部两层嵌套map的key
+     * <p>
+     * 微信：templateId作为内部两层嵌套的key
      *
-     * 微信：providerId作为内部两层嵌套的key
-     *
-     *
+     * APP: providerId作为内部两层嵌套map的key
      */
     protected Map<PushMethods, Map<Long, TreeMap<Integer, Config>>> configMap = new HashMap<>();
 

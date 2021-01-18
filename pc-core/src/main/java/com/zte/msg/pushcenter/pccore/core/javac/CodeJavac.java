@@ -49,6 +49,7 @@ public class CodeJavac {
         scriptFileManager = new ScriptFileManager(standardJavaFileManager);
         errorStringWriter = new StringWriter();
         getTask(scripts);
+        log.info("========== all compilation script : {} ==========", scripts.size());
     }
 
     private void getTask(List<ScriptModel> scriptModels) {
@@ -70,7 +71,6 @@ public class CodeJavac {
 
         });
         allBuffers = scriptFileManager.getAllBuffers();
-        log.info("========== all compilation script : {} ==========", allBuffers.size());
     }
 
     public void scriptFlush(boolean remove, List<ScriptModel> scripts) {
