@@ -5,27 +5,101 @@
         select * from user where user_name=#{userName}
     </select>
 
-    <insert id="insertUser" parameterType="com.zte.msg.pushcenter.pccore.entity.User">
+    <insert id="insertUser">
         insert into user(user_name, password,created_by,updated_by
-        <if test="userRealName!=null" >
+        <if test="user.userRealName!=null" >
             , user_real_name
         </if>
-        ) value(#{userName},#{password},"admin","admin"
-        <if test="userRealName!=null">
-            ,#{userRealName}
+        <if test="user.phone!=null" >
+            , phone
+        </if>
+        <if test="user.mail!=null" >
+            , mail
+        </if>
+        <if test="user.status!=null" >
+            , status
+        </if>
+        <if test="user.roleId!=null" >
+            , role_id
+        </if>
+        <if test="user.remark!=null" >
+            , remark
+        </if>
+        ) value(#{user.userName},#{user.password},#{doName},#{doName}
+        <if test="user.userRealName!=null">
+            ,#{user.userRealName}
+        </if>
+        <if test="user.phone!=null" >
+            , #{user.phone}
+        </if>
+        <if test="user.mail!=null" >
+            , #{user.mail}
+        </if>
+        <if test="user.status!=null" >
+            , #{user.status}
+        </if>
+        <if test="user.roleId!=null" >
+            , #{user.roleId}
+        </if>
+        <if test="user.remark!=null" >
+            , #{user.remark}
         </if>
         )
     </insert>
 
     <update id="changePwd" parameterType="com.zte.msg.pushcenter.pccore.dto.req.PasswordReqDTO">
-        update user set password=#{newPwd} where user_name=#{userName} and password=#{oldPwd}
+        update user set password=#{passwordReqDTO.newPwd},updated_by=#{updateBy}
+        where user_name=#{passwordReqDTO.userName} and password=#{passwordReqDTO.oldPwd}
     </update>
 
-    <update id="deleteUser" parameterType="java.lang.String">
-        update user set flag=1 where user_name=#{userName} and flag=0
+    <update id="resetPwd">
+        update user set password=#{password},updated_by=#{updateBy} where id=#{id}
     </update>
 
-    <select id="listUser" resultType="com.zte.msg.pushcenter.pccore.entity.User">
-        select * from user
+    <update id="editUser">
+        update user
+        <set>
+            <if test="userReqDTO.userRealName!=null">
+                user_real_name=#{userReqDTO.userRealName},
+            </if>
+            <if test="userReqDTO.phone!=null">
+                phone=#{userReqDTO.phone},
+            </if>
+            <if test="userReqDTO.mail!=null">
+                mail=#{userReqDTO.mail},
+            </if>
+            <if test="userReqDTO.status!=null">
+                status=#{userReqDTO.status},
+            </if>
+            <if test="userReqDTO.roleId!=null">
+                role_id=#{userReqDTO.roleId},
+            </if>
+            <if test="userReqDTO.remark!=null">
+                remark=#{userReqDTO.remark},
+            </if>
+            updated_by=#{updateBy}
+        </set>
+        where id=#{userReqDTO.userId}
+    </update>
+
+    <update id="deleteUser">
+        <foreach collection="list" index="index" item="id" separator=";">
+            update user set flag=1 where id=#{id} and flag=0
+        </foreach>
+    </update>
+
+    <select id="listAllUser" resultType="com.zte.msg.pushcenter.pccore.entity.User">
+        select * from user where flag=0
+    </select>
+
+    <select id="listUser" parameterType="com.zte.msg.pushcenter.pccore.dto.req.UserReqDTO" resultType="com.zte.msg.pushcenter.pccore.entity.User">
+        select * from user where flag=0
+        <if test="status!=null">
+            and status=#{status}
+        </if>
+        group by id
+        <if test="userRealName!=null">
+            having GROUP_CONCAT("|",user_real_name,"|",to_pinyin(user_real_name),"|",pinyin(user_real_name),"|") like "%"#{userRealName}"%"
+        </if>
     </select>
 </mapper>
