@@ -37,27 +37,51 @@ public class HistoryController {
     @Resource
     private HistoryService historyService;
 
+    /**
+     * 分页查询短信发送历史
+     *
+     * @param smsHistoryReqDTO 短信历史信息
+     * @return PageInfo<SmsInfo>
+     */
     @PostMapping("/sms")
-    @ApiOperation(value = "查询短信发送历史")
-    public PageResponse<SmsInfo> listHistorySms(@Valid @RequestBody SmsHistoryReqDTO smsHistoryReqDTO){
+    @ApiOperation(value = "分页查询短信发送历史")
+    public PageResponse<SmsInfo> listHistorySms(@Valid @RequestBody SmsHistoryReqDTO smsHistoryReqDTO) {
         return PageResponse.of(historyService.listHistorySms(smsHistoryReqDTO));
     }
 
+    /**
+     * 分页查询邮件发送历史
+     *
+     * @param mailHistoryReqDTO 邮件历史信息
+     * @return PageInfo<MailInfo>
+     */
     @PostMapping("/mail")
-    @ApiOperation(value = "查询邮件发送历史")
-    public PageResponse<MailInfo> listHistoryMail(@Valid @RequestBody MailHistoryReqDTO mailHistoryReqDTO){
+    @ApiOperation(value = "分页查询邮件发送历史")
+    public PageResponse<MailInfo> listHistoryMail(@Valid @RequestBody MailHistoryReqDTO mailHistoryReqDTO) {
         return PageResponse.of(historyService.listHistoryMail(mailHistoryReqDTO));
     }
 
+    /**
+     * 分页查询微信公众号发送历史
+     *
+     * @param wechatHistoryReqDTO 公众号历史信息
+     * @return PageInfo<WeChatInfo>
+     */
     @PostMapping("/wechat")
-    @ApiOperation(value = "查询微信公众号发送历史")
-    public PageResponse<WeChatInfo> listHistoryWechat(@Valid @RequestBody WechatHistoryReqDTO wechatHistoryReqDTO){
+    @ApiOperation(value = "分页查询微信公众号发送历史")
+    public PageResponse<WeChatInfo> listHistoryWechat(@Valid @RequestBody WechatHistoryReqDTO wechatHistoryReqDTO) {
         return PageResponse.of(historyService.listHistoryWechat(wechatHistoryReqDTO));
     }
 
+    /**
+     * 分页查询App应用发送历史
+     *
+     * @param applicationHistoryReqDTO app历史信息
+     * @return PageInfo<ApplicationInfo>
+     */
     @PostMapping("/application")
-    @ApiOperation(value = "查询App应用发送历史")
-    public PageResponse<ApplicationInfo> listHistoryApplication(@Valid @RequestBody ApplicationHistoryReqDTO applicationHistoryReqDTO){
+    @ApiOperation(value = "分页查询App应用发送历史")
+    public PageResponse<ApplicationInfo> listHistoryApplication(@Valid @RequestBody ApplicationHistoryReqDTO applicationHistoryReqDTO) {
         return PageResponse.of(historyService.listHistoryApplication(applicationHistoryReqDTO));
     }
 }

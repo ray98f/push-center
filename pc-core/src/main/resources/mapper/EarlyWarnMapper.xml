@@ -5,9 +5,9 @@
         insert into early_warn_config
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id!=null">id,</if>
-            <if test="cycle!=null">cycle,</if>
+            <if test="alarmCycle!=null">alarm_cycle,</if>
             <if test="threshold!=null">threshold,</if>
-            <if test="interval!=null">interval,</if>
+            <if test="alarmInterval!=null">alarm_interval,</if>
             <if test="userId!=null">user_id,</if>
             <if test="smsTemplateId!=null">sms_template_id,</if>
             <if test="mailTitle!=null">mail_title,</if>
@@ -22,9 +22,9 @@
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id!=null">#{id},</if>
-            <if test="cycle!=null">#{cycle},</if>
+            <if test="alarmCycle!=null">#{alarmCycle},</if>
             <if test="threshold!=null">#{threshold},</if>
-            <if test="interval!=null">#{interval},</if>
+            <if test="alarmInterval!=null">#{alarmInterval},</if>
             <if test="userId!=null">#{userId},</if>
             <if test="smsTemplateId!=null">#{smsTemplateId},</if>
             <if test="mailTitle!=null">#{mailTitle},</if>
@@ -38,9 +38,9 @@
         </trim>
         ON DUPLICATE KEY UPDATE
         <trim suffixOverrides=",">
-            <if test="cycle!=null">cycle=#{cycle},</if>
+            <if test="alarmCycle!=null">alarm_cycle=#{alarmCycle},</if>
             <if test="threshold!=null">threshold=#{threshold},</if>
-            <if test="interval!=null">interval=#{interval},</if>
+            <if test="alarmInterval!=null">alarm_interval=#{alarmInterval},</if>
             <if test="userId!=null">user_id=#{userId},</if>
             <if test="smsTemplateId!=null">sms_template_id=#{smsTemplateId},</if>
             <if test="mailTitle!=null">mail_title=#{mailTitle},</if>
