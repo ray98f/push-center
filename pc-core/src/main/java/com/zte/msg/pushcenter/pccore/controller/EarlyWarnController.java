@@ -34,16 +34,26 @@ public class EarlyWarnController {
     private EarlyWarnService earlyWarnService;
 
     /**
+     * 查看预警配置
+     * @return
+     */
+    @GetMapping("/config")
+    @ApiOperation(value = "查看预警配置")
+    public DataResponse<EarlyWarnConfig> selectEarlyWarnConfig(){
+        return DataResponse.of(earlyWarnService.selectEarlyWarnConfig());
+    }
+
+    /**
      * 新增预警配置
      * @param earlyWarnConfig 预警配置信息
      * @return <T>
      */
     @PutMapping("/config")
-    @ApiOperation(value = "新增预警配置")
-    public <T> DataResponse<T> insertEarlyWarnConfig(@Valid @RequestBody EarlyWarnConfig earlyWarnConfig){
+    @ApiOperation(value = "编辑预警配置")
+    public <T> DataResponse<T> editEarlyWarnConfig(@Valid @RequestBody EarlyWarnConfig earlyWarnConfig){
         earlyWarnConfig.setCreatedBy(TokenUtil.getCurrentUserName());
         earlyWarnConfig.setUpdatedBy(TokenUtil.getCurrentUserName());
-        earlyWarnService.insertEarlyWarnConfig(earlyWarnConfig);
+        earlyWarnService.editEarlyWarnConfig(earlyWarnConfig);
         return DataResponse.success();
     }
 

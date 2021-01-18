@@ -1,6 +1,8 @@
 package com.zte.msg.pushcenter.pccore.service;
 
+import com.github.pagehelper.PageInfo;
 import com.zte.msg.pushcenter.pccore.dto.req.PasswordReqDTO;
+import com.zte.msg.pushcenter.pccore.dto.req.UserReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.User;
 
 import java.util.List;
@@ -19,7 +21,13 @@ public interface UserService {
 
     void changePwd(PasswordReqDTO passwordReqDTO);
 
-    void deleteUser(String userName);
+    void resetPwd(Integer id);
 
-    List<User> listUser();
+    void editUser(UserReqDTO userReqDTO);
+
+    void deleteUser(List<Integer> ids);
+
+    List<User> listAllUser();
+
+    PageInfo<User> listUser(UserReqDTO userReqDTO);
 }

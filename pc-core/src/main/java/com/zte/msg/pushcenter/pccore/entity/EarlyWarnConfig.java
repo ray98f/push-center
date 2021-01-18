@@ -10,35 +10,35 @@ import lombok.Data;
 public class EarlyWarnConfig extends BaseEntity{
 
     @ApiModelProperty(value = "预警周期")
-    private Long cycle;
+    private Long alarmCycle;
 
     @ApiModelProperty(value = "阈值")
     private Long threshold;
 
     @ApiModelProperty(value = "报警间隔")
-    private Long interval;
+    private Long alarmInterval;
 
     @ApiModelProperty(value = "处置人员")
-    private Integer userId;
+    private String userId;
 
     @ApiModelProperty(value = "短信模板")
     private Integer smsTemplateId;
 
     @ApiModelProperty(value = "邮件标题")
-    private Integer mailTitle;
+    private String mailTitle;
 
     @ApiModelProperty(value = "邮件内容")
-    private Integer mailBody;
+    private String mailBody;
 
     @ApiModelProperty(value = "公众号id")
     private Integer wechatId;
 
     @ApiModelProperty(value = "公众号名称")
-    private Integer wechatName;
+    private String wechatName;
 
     @ApiModelProperty(value = "公众号模板id")
     private Integer wechatTemplateId;
 
     @ApiModelProperty(value = "AppId")
-    private Integer applicationId;
+    private String applicationId;
 }

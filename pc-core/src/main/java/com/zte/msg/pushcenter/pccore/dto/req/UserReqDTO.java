@@ -1,5 +1,6 @@
-package com.zte.msg.pushcenter.pccore.entity;
+package com.zte.msg.pushcenter.pccore.dto.req;
 
+import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -11,13 +12,13 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @ApiModel
-public class User extends BaseEntity{
+public class UserReqDTO extends PageReqDTO {
+
+    @ApiModelProperty(value = "用户id")
+    private Long userId;
 
     @ApiModelProperty(value = "用户名称")
     private String userName;
-
-    @ApiModelProperty(value = "用户密码")
-    private String password;
 
     @ApiModelProperty(value = "姓名")
     private String userRealName;
@@ -29,7 +30,7 @@ public class User extends BaseEntity{
     private String mail;
 
     @ApiModelProperty(value = "状态")
-    private String status;
+    private Integer status;
 
     @ApiModelProperty(value = "用户角色id")
     private Long roleId;
