@@ -31,7 +31,7 @@ CREATE TABLE `app`  (
   `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
   `created_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '创建人',
   `updated_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '更新人',
-  `flag` int(1) NOT NULL DEFAULT 0,
+  `is_deleted` int(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
@@ -49,7 +49,7 @@ CREATE TABLE `app_role`  (
   `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
   `created_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建人',
   `updated_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '更新人',
-  `flag` int(1) NOT NULL DEFAULT 0,
+  `is_deleted` int(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '服务对应的推送权限表' ROW_FORMAT = Dynamic;
 
@@ -66,7 +66,7 @@ CREATE TABLE `dic`  (
   `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
   `created_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '创建人',
   `updated_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '更新人',
-  `flag` int(1) NOT NULL DEFAULT 0,
+  `is_deleted` int(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
@@ -91,7 +91,7 @@ CREATE TABLE `mail_info`  (
   `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
   `created_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '创建人',
   `updated_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '更新人',
-  `flag` int(1) NOT NULL DEFAULT 0,
+  `is_deleted` int(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
@@ -111,7 +111,7 @@ CREATE TABLE `provider`  (
   `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
   `created_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '创建人',
   `updated_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '更新人',
-  `flag` int(1) NOT NULL DEFAULT 0,
+  `is_deleted` int(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
@@ -130,7 +130,7 @@ CREATE TABLE `provider_sms_template`  (
   `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '更新人',
   `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
-  `flag` tinyint(4) NOT NULL DEFAULT 0 COMMENT '是否删除 0 正常 1 已删除',
+  `is_deleted` tinyint(4) NOT NULL DEFAULT 0 COMMENT '是否删除 0 正常 1 已删除',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '平台短信模板 消息供应商模板' ROW_FORMAT = Dynamic;
 
@@ -143,7 +143,7 @@ CREATE TABLE `role`  (
   `role_name` varchar(45) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `created_at` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
-  `flag` int(11) NOT NULL DEFAULT 0,
+  `is_deleted` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
@@ -160,7 +160,7 @@ CREATE TABLE `secret_key`  (
   `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
   `created_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '创建人',
   `updated_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '更新人',
-  `flag` int(1) NOT NULL DEFAULT 0,
+  `is_deleted` int(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = 'App的Key和Secret存储表' ROW_FORMAT = Dynamic;
 
@@ -175,7 +175,7 @@ CREATE TABLE `send_mode`  (
   `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
   `created_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '创建人',
   `updated_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '更新人',
-  `flag` int(1) NOT NULL DEFAULT 0,
+  `is_deleted` int(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
@@ -200,7 +200,7 @@ CREATE TABLE `sms_info`  (
   `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
   `created_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '创建人',
   `updated_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '更新人',
-  `flag` int(1) NOT NULL DEFAULT 0,
+  `is_deleted` int(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `sms_info_id_sequence`(`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
@@ -218,7 +218,7 @@ CREATE TABLE `sms_template`  (
   `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '更新人',
   `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
-  `flag` tinyint(4) NOT NULL COMMENT '删除标识 0 正常 1 已删除',
+  `is_deleted` tinyint(4) NOT NULL COMMENT '删除标识 0 正常 1 已删除',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '短信模板 ' ROW_FORMAT = Dynamic;
 
@@ -235,7 +235,7 @@ CREATE TABLE `sms_template_relation`  (
   `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '更新人',
   `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
-  `flag` tinyint(4) NOT NULL DEFAULT 0 COMMENT '是否删除 0 正常 1 已删除',
+  `is_deleted` tinyint(4) NOT NULL DEFAULT 0 COMMENT '是否删除 0 正常 1 已删除',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '短信模板关系 ' ROW_FORMAT = Dynamic;
 
@@ -262,7 +262,7 @@ CREATE TABLE `user`  (
   `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
   `created_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '创建人',
   `updated_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '更新人',
-  `flag` int(1) NOT NULL DEFAULT 0,
+  `is_deleted` int(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '管理平台用户' ROW_FORMAT = Dynamic;
 
@@ -368,12 +368,12 @@ DELIMITER $$
 
 DROP FUNCTION IF EXISTS `Num_char_extract`$$
 
-CREATE FUNCTION `Num_char_extract`(Varstring VARCHAR(100)CHARSET utf8, flag INT) RETURNS VARCHAR(50) CHARSET utf8
+CREATE FUNCTION `Num_char_extract`(Varstring VARCHAR(100)CHARSET utf8, is_deleted INT) RETURNS VARCHAR(50) CHARSET utf8
 BEGIN
 	DECLARE len INT DEFAULT 0;
 	DECLARE Tmp VARCHAR(100) DEFAULT '';
 	SET len=CHAR_LENGTH(Varstring);
-	IF flag = 0
+	IF is_deleted = 0
 	THEN
 		WHILE len > 0 DO
 		IF MID(Varstring,len,1)REGEXP'[0-9]' THEN
@@ -381,7 +381,7 @@ BEGIN
 END IF;
 		SET len = len - 1;
 END WHILE;
-	ELSEIF flag=1
+	ELSEIF is_deleted=1
 	THEN
 		WHILE len > 0 DO
 		IF (MID(Varstring,len,1)REGEXP '[a-zA-Z]')
@@ -390,7 +390,7 @@ END WHILE;
 END IF;
 		SET len = len - 1;
 END WHILE;
-	ELSEIF flag=2
+	ELSEIF is_deleted=2
 	THEN
 		WHILE len > 0 DO
 		IF ( (MID(Varstring,len,1)REGEXP'[0-9]')
@@ -400,7 +400,7 @@ END WHILE;
 END IF;
 		SET len = len - 1;
 END WHILE;
-	ELSEIF flag=3
+	ELSEIF is_deleted=3
 	THEN
 		WHILE len > 0 DO
 		IF NOT (MID(Varstring,len,1)REGEXP '^[u0391-uFFE5]')

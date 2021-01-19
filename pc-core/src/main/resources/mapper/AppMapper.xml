@@ -17,13 +17,13 @@
     </select>
 
     <select id="listAllApp" resultType="com.zte.msg.pushcenter.pccore.entity.App">
-        select * from app where flag=0
+        select * from app where is_deleted=0
     </select>
 
     <delete id="deleteApp">
         <foreach collection="appIds" index="index" item="appId" separator=";">
-            update app set flag=1, updated_by=#{userName} where id=#{appId} and flag=0;
-            update app_role set flag=1, updated_by=#{userName} where app_id=#{appId} and flag=0
+            update app set is_deleted=1, updated_by=#{userName} where id=#{appId} and is_deleted=0;
+            update app_role set is_deleted=1, updated_by=#{userName} where app_id=#{appId} and is_deleted=0
         </foreach>
     </delete>
 
@@ -39,7 +39,7 @@
                 </if>
             </trim>
         </set>
-        where id=#{id} and flag=0
+        where id=#{id} and is_deleted=0
     </update>
 
     <insert id="insertApp" parameterType="com.zte.msg.pushcenter.pccore.entity.App">

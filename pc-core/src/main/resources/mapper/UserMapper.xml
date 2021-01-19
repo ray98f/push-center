@@ -84,16 +84,16 @@
 
     <update id="deleteUser">
         <foreach collection="list" index="index" item="id" separator=";">
-            update user set flag=1 where id=#{id} and flag=0
+            update user set is_deleted=1 where id=#{id} and is_deleted=0
         </foreach>
     </update>
 
     <select id="listAllUser" resultType="com.zte.msg.pushcenter.pccore.entity.User">
-        select * from user where flag=0
+        select * from user where is_deleted=0
     </select>
 
     <select id="listUser" parameterType="com.zte.msg.pushcenter.pccore.dto.req.UserReqDTO" resultType="com.zte.msg.pushcenter.pccore.entity.User">
-        select * from user where flag=0
+        select * from user where is_deleted=0
         <if test="status!=null">
             and status=#{status}
         </if>

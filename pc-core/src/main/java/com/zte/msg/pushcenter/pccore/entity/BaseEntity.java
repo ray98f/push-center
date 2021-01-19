@@ -38,5 +38,5 @@ public class BaseEntity {
     @JsonIgnore
     @TableLogic
     @TableField(value = "is_deleted", fill = FieldFill.INSERT)
-    private Integer flag;
+    private Integer isDeleted;
 }
