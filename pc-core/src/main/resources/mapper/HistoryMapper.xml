@@ -92,7 +92,7 @@
 
     <select id="listHistoryApplication" resultType="com.zte.msg.pushcenter.pccore.entity.ApplicationInfo" parameterType="com.zte.msg.pushcenter.pccore.dto.req.ApplicationHistoryReqDTO">
         select * from application_info
-        <if test="appId!=null or targetPlatform!=null or applicationName!=null or startTime!=null or endTime!=null or result!=null">
+        <if test="appId!=null or targetPlatform!=null or audience!=null or startTime!=null or endTime!=null or result!=null">
             <trim prefix="where " suffixOverrides="and">
                 <if test="appId!=null">
                     app_id=#{appId} and
@@ -100,8 +100,8 @@
                 <if test="targetPlatform!=null">
                     target_platform=#{targetPlatform} and
                 </if>
-                <if test="applicationName!=null">
-                    application_name=#{applicationName} and
+                <if test="audience!=null">
+                    audience=#{audience} and
                 </if>
                 <if test="startTime!=null">
                     transmit_time >= #{startTime} and

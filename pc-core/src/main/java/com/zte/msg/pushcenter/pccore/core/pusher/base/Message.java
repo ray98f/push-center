@@ -18,7 +18,7 @@ public class Message {
     /**
      * messageId
      */
-    private Long messageId;
+    private String messageId;
 
     private Long appId;
 
@@ -47,4 +47,7 @@ public class Message {
 
     private Timestamp transmitTime;
 
+    public void setMessageId(String messageId) {
+        this.messageId = messageId.replace("-", "");
+    }
 }

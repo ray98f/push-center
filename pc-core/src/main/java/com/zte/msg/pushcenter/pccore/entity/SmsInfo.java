@@ -19,6 +19,8 @@ import java.sql.Timestamp;
 @ApiModel
 public class SmsInfo extends BaseEntity {
 
+    private String messageId;
+
     @ApiModelProperty(value = "应用id")
     private Long appId;
 
@@ -55,9 +57,10 @@ public class SmsInfo extends BaseEntity {
     public SmsInfo() {
     }
 
-    public SmsInfo(Long appId, String appName, String phoneNum, Timestamp transmitTime,
-                   String content, String providerName, Long templateId, Integer result,
-                   Integer failCode, String failReason, Timestamp resultTime) {
+    public SmsInfo(String messageId, Long appId, String appName, String phoneNum, Timestamp transmitTime, String content,
+                   String providerName, Long templateId, Integer result, Integer failCode,
+                   String failReason, Timestamp resultTime) {
+        this.messageId = messageId;
         this.appId = appId;
         this.appName = appName;
         this.phoneNum = phoneNum;
@@ -72,29 +75,20 @@ public class SmsInfo extends BaseEntity {
     }
 
     public SmsInfo(SmsMessage message, PcScript.Res res) {
+        this.messageId = message.getMessageId();
         this.appId = message.getAppId();
-
         this.appName = message.getAppName();
-
         this.phoneNum = message.getPhoneNum()[message.getIndex()];
-
         this.transmitTime = message.getTransmitTime();
-
         this.content = String.format(message.getContent()
                 .replaceAll("#.*?#", "%s")
                 .replaceAll("\\{.*?}", "%s"), message.getVars().values().toArray());
-
         this.providerName = message.getProviderName();
-
         this.templateId = message.getTemplateId();
-
         this.failCode = res.getCode();
-
         this.failReason = res.getMessage();
-
         // TODO: 2021/1/11
 //        this.resultTime =
-
         if (res.getCode() == 0) {
             this.result = 0;
         } else {

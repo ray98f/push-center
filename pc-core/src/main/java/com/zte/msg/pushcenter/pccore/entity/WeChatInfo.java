@@ -22,6 +22,8 @@ import java.sql.Timestamp;
 @TableName(value = "wechat_info")
 public class WeChatInfo extends BaseEntity {
 
+    private String messageId;
+
     @ApiModelProperty(value = "应用id")
     private Long appId;
 
@@ -64,9 +66,10 @@ public class WeChatInfo extends BaseEntity {
     public WeChatInfo() {
     }
 
-    public WeChatInfo(Long appId, String appName, String weChatName, String openId, Long templateId,
-                      String templateData, String skipUrl, String appletData, Timestamp transmitTime,
+    public WeChatInfo(String messageId, Long appId, String appName, String weChatName, String openId, Long templateId,
+                      String templateData, String skipUrl, Integer delay, String appletData, Timestamp transmitTime,
                       Integer result, Integer failCode, String failReason) {
+        this.messageId = messageId;
         this.appId = appId;
         this.appName = appName;
         this.weChatName = weChatName;
@@ -74,6 +77,7 @@ public class WeChatInfo extends BaseEntity {
         this.templateId = templateId;
         this.templateData = templateData;
         this.skipUrl = skipUrl;
+        this.delay = delay;
         this.appletData = appletData;
         this.transmitTime = transmitTime;
         this.result = result;
@@ -82,6 +86,7 @@ public class WeChatInfo extends BaseEntity {
     }
 
     public WeChatInfo(WeChatMessage message, PcScript.Res res) {
+        this.messageId = message.getMessageId();
         this.appId = message.getAppId();
         this.appName = message.getAppName();
         this.weChatName = message.getProviderName();

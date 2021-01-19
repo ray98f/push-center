@@ -40,7 +40,7 @@ public class SwaggerConfig {
                 .securityContexts(securityContexts())
                 ;
     }
-//
+
     private List<ApiKey> securitySchemes() {
         List<ApiKey> apiKeyList = new ArrayList<>();
         apiKeyList.add(new ApiKey("Authorization", "Authorization", "header"));

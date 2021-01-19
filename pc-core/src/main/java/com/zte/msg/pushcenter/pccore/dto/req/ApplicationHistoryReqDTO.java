@@ -25,8 +25,8 @@ public class ApplicationHistoryReqDTO extends PageReqDTO {
     @ApiModelProperty(value = "目标平台")
     private String targetPlatform;
 
-    @ApiModelProperty(value = "推送目标（App名称）")
-    private String applicationName;
+    @ApiModelProperty(value = "推送目标（设备注册id）")
+    private String audience;
 
     @ApiModelProperty(value = "搜索开始时间")
     @DateTimeFormat(pattern = "yyyy-MM-DD HH:mm:ss")

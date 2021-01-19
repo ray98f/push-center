@@ -16,6 +16,8 @@ import java.sql.Timestamp;
 @ApiModel
 public class MailInfo extends BaseEntity {
 
+    private String messageId;
+
     @ApiModelProperty(value = "应用id")
     private Long appId;
 
@@ -49,9 +51,13 @@ public class MailInfo extends BaseEntity {
     @ApiModelProperty(value = "错误消息")
     private String failReason;
 
-    public MailInfo(){}
+    public MailInfo() {
+    }
 
-    public MailInfo(Long appId, String appName, String receiveAddress, String ccAddress, String mailTitle, String mailBody, String providerName, Timestamp transmitTime, Integer result, Integer failCode, String failReason) {
+    public MailInfo(String messageId, Long appId, String appName, String receiveAddress, String ccAddress,
+                    String mailTitle, String mailBody, String providerName, Timestamp transmitTime, Integer result,
+                    Integer failCode, String failReason) {
+        this.messageId = messageId;
         this.appId = appId;
         this.appName = appName;
         this.receiveAddress = receiveAddress;
@@ -66,6 +72,7 @@ public class MailInfo extends BaseEntity {
     }
 
     public MailInfo(MailMessage mailMessage, PcScript.Res res) {
+        this.messageId = mailMessage.getMessageId();
         this.appId = mailMessage.getAppId();
         this.appName = mailMessage.getAppName();
         this.receiveAddress = StringUtils.join(mailMessage.getTo(), ",");

@@ -5,6 +5,7 @@ import com.zte.msg.pushcenter.pcscript.PcScript;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 import java.sql.Timestamp;
 
@@ -15,6 +16,8 @@ import java.sql.Timestamp;
 @ApiModel
 public class ApplicationInfo extends BaseEntity {
 
+    private String messageId;
+
     @ApiModelProperty(value = "应用id")
     private Long appId;
 
@@ -24,8 +27,8 @@ public class ApplicationInfo extends BaseEntity {
     @ApiModelProperty(value = "目标平台")
     private Integer targetPlatform;
 
-    @ApiModelProperty(value = "推送目标（App名称）")
-    private String applicationName;
+    @ApiModelProperty(value = "推送目标（设备注册id）")
+    private String audience;
 
     @ApiModelProperty(value = "app消息标题")
     private String title;
@@ -53,28 +56,30 @@ public class ApplicationInfo extends BaseEntity {
     public ApplicationInfo() {
     }
 
-    public ApplicationInfo(Long appId, String appName, Integer targetPlatform, String applicationName, String title,
-                           String content, Timestamp transmitTime, String providerName, Integer result, Integer failCode,
-                           String failReason, Integer delay) {
+    public ApplicationInfo(String messageId, Long appId, String appName, Integer targetPlatform,
+                           String audience, String title, String content, Timestamp transmitTime,
+                           String providerName, Integer delay, Integer result, Integer failCode, String failReason) {
+        this.messageId = messageId;
         this.appId = appId;
         this.appName = appName;
         this.targetPlatform = targetPlatform;
-        this.applicationName = applicationName;
+        this.audience = audience;
         this.title = title;
         this.content = content;
         this.transmitTime = transmitTime;
         this.providerName = providerName;
+        this.delay = delay;
         this.result = result;
         this.failCode = failCode;
         this.failReason = failReason;
-        this.delay = delay;
     }
 
     public ApplicationInfo(AppMessage appMessage, PcScript.Res res) {
+        this.messageId = appMessage.getMessageId();
         this.appId = appMessage.getAppId();
         this.appName = appMessage.getAppName();
         this.targetPlatform = appMessage.getTargetPlatform();
-        this.applicationName = appMessage.getProviderName();
+        this.audience = StringUtils.join(appMessage.getRegistrationId(), ",");
         this.title = appMessage.getTitle();
         this.content = appMessage.getContent();
         this.transmitTime = appMessage.getTransmitTime();
