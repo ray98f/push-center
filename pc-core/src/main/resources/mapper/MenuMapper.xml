@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zte.msg.pushcenter.pccore.mapper.MenuMapper">
+    <select id="listSuperCatalog" resultType="com.zte.msg.pushcenter.pccore.dto.res.SuperMenuResDTO">
+        <if test="type==0">
+            select "根目录" as catalog_name;
+        </if>
+        <if test="type!=0">
+            select id as catalog_id,menu_name as catalog_name from menu where is_deleted=0 and is_show=0 and is_use=0 and is_catalog=0 order by menu_sort ASC;
+        </if>
+    </select>
+
+    <select id="listSuperMenu" resultType="com.zte.msg.pushcenter.pccore.dto.res.SuperMenuResDTO$MenuInfo">
+        select id as menu_id,menu_name as menu_name from menu where is_deleted=0 and is_show=0 and is_use=0 and is_menu=0 and catalog_id=#{id} order by menu_sort ASC;
+    </select>
+
+    <insert id="insertMenu">
+        insert into menu
+        <trim prefix="(" suffix=")">
+            <if test="menuList.isCatalog!=null" >
+                is_catalog,
+            </if>
+            <if test="menuList.catalogId!=null" >
+                catalog_id,
+            </if>
+            <if test="menuList.isMenu!=null" >
+                is_menu,
+            </if>
+            <if test="menuList.menuId!=null" >
+                menu_id,
+            </if>
+            <if test="menuList.menuName!=null" >
+                menu_name,
+            </if>
+            <if test="menuList.menuType!=null" >
+                menu_type,
+            </if>
+            <if test="menuList.menuIcon!=null" >
+                menu_icon,
+            </if>
+            <if test="menuList.menuSort!=null" >
+                menu_sort,
+            </if>
+            <if test="menuList.menuUrl!=null" >
+                menu_url,
+            </if>
+            <if test="menuList.roleIdentify!=null" >
+                role_identify,
+            </if>
+            <if test="menuList.componentPath!=null" >
+                component_path,
+            </if>
+            <if test="menuList.isUse!=null" >
+                is_use,
+            </if>
+            <if test="menuList.isShow!=null" >
+                is_show,
+            </if>
+            created_by,updated_by
+        </trim>
+        value
+        <trim prefix="(" suffix=")">
+            <if test="menuList.isCatalog!=null" >
+                #{menuList.isCatalog},
+            </if>
+            <if test="menuList.catalogId!=null" >
+                #{menuList.catalogId},
+            </if>
+            <if test="menuList.isMenu!=null" >
+                #{menuList.isMenu},
+            </if>
+            <if test="menuList.menuId!=null" >
+                #{menuList.menuId},
+            </if>
+            <if test="menuList.menuName!=null" >
+                #{menuList.menuName},
+            </if>
+            <if test="menuList.menuType!=null" >
+                #{menuList.menuType},
+            </if>
+            <if test="menuList.menuIcon!=null" >
+                #{menuList.menuIcon},
+            </if>
+            <if test="menuList.menuSort!=null" >
+                #{menuList.menuSort},
+            </if>
+            <if test="menuList.menuUrl!=null" >
+                #{menuList.menuUrl},
+            </if>
+            <if test="menuList.roleIdentify!=null" >
+                #{menuList.roleIdentify},
+            </if>
+            <if test="menuList.componentPath!=null" >
+                #{menuList.componentPath},
+            </if>
+            <if test="menuList.isUse!=null" >
+                #{menuList.isUse},
+            </if>
+            <if test="menuList.isShow!=null" >
+                #{menuList.isShow},
+            </if>
+            #{doName},#{doName}
+        </trim>
+    </insert>
+
+    <select id="listCatalog" resultType="com.zte.msg.pushcenter.pccore.dto.res.MenuResDTO" parameterType="com.zte.msg.pushcenter.pccore.dto.req.MenuReqDTO">
+        SELECT id as menu_id,menu_name,menu_icon,menu_sort,role_identify,component_path,is_use,updated_at
+        FROM menu where is_catalog=0 and is_deleted=0 and is_show=0
+<!--        <if test="isUse!=null">-->
+<!--            and is_use=#{isUse}-->
+<!--        </if>-->
+<!--        group by id-->
+<!--        <if test="menuName!=null">-->
+<!--            having GROUP_CONCAT("|",menu_name,"|",to_pinyin(menu_name),"|",pinyin(menu_name),"|") like "%"#{menuName}"%"-->
+<!--        </if>-->
+    </select>
+
+    <select id="listMenu" resultType="com.zte.msg.pushcenter.pccore.dto.res.MenuResDTO$MenuInfo">
+        SELECT id as menu_id,menu_name,menu_icon,menu_sort,role_identify,component_path,is_use,updated_at
+        FROM menu where is_menu=0 and is_deleted=0 and is_show=0
+        <if test="catalogId!=null">
+            and catalog_id=#{catalogId}
+        </if>
+<!--        <if test="menuReqDTO.isUse!=null">-->
+<!--            and is_use=#{menuReqDTO.isUse}-->
+<!--        </if>-->
+<!--        group by id-->
+<!--        <if test="menuReqDTO.menuName!=null">-->
+<!--            having GROUP_CONCAT("|",menu_name,"|",to_pinyin(menu_name),"|",pinyin(menu_name),"|") like "%"#{menuReqDTO.menuName}"%"-->
+<!--        </if>-->
+    </select>
+
+    <select id="listButton" resultType="com.zte.msg.pushcenter.pccore.dto.res.MenuResDTO$MenuInfo$ButtonInfo">
+        SELECT id as menu_id,menu_name,menu_icon,menu_sort,role_identify,component_path,is_use,updated_at
+        FROM menu where is_catalog=1 and is_menu=1 and is_deleted=0 and is_show=0
+        <if test="menuId!=null">
+            and menu_id=#{menuId}
+        </if>
+<!--        <if test="menuReqDTO.isUse!=null">-->
+<!--            and is_use=#{menuReqDTO.isUse}-->
+<!--        </if>-->
+<!--        group by id-->
+<!--        <if test="menuReqDTO.menuName!=null">-->
+<!--            having GROUP_CONCAT("|",menu_name,"|",to_pinyin(menu_name),"|",pinyin(menu_name),"|") like "%"#{menuReqDTO.menuName}"%"-->
+<!--        </if>-->
+    </select>
+
+    <update id="updateMenu">
+        update menu
+        <set>
+            <if test="menuList.isCatalog!=null" >
+                is_catalog=#{menuList.isCatalog},
+            </if>
+            <if test="menuList.catalogId!=null" >
+                catalog_id=#{menuList.catalogId},
+            </if>
+            <if test="menuList.isMenu!=null" >
+                is_menu=#{menuList.isMenu},
+            </if>
+            <if test="menuList.menuId!=null" >
+                menu_id=#{menuList.menuId},
+            </if>
+            <if test="menuList.menuName!=null" >
+                menu_name=#{menuList.menuName},
+            </if>
+            <if test="menuList.menuType!=null" >
+                menu_type=#{menuList.menuType},
+            </if>
+            <if test="menuList.menuIcon!=null" >
+                menu_icon=#{menuList.menuIcon},
+            </if>
+            <if test="menuList.menuSort!=null" >
+                menu_sort=#{menuList.menuSort},
+            </if>
+            <if test="menuList.menuUrl!=null" >
+                menu_url=#{menuList.menuUrl},
+            </if>
+            <if test="menuList.roleIdentify!=null" >
+                role_identify=#{menuList.roleIdentify},
+            </if>
+            <if test="menuList.componentPath!=null" >
+                component_path=#{menuList.componentPath},
+            </if>
+            <if test="menuList.isUse!=null" >
+                is_use=#{menuList.isUse},
+            </if>
+            <if test="menuList.isShow!=null" >
+                is_show=#{menuList.isShow},
+            </if>
+            updated_by=#{doName}
+        </set>
+        where id=#{menuList.id}
+    </update>
+
+    <update id="deleteMenu">
+        update menu set is_deleted=1 where is_deleted=0 and id=#{id}
+    </update>
+</mapper>
