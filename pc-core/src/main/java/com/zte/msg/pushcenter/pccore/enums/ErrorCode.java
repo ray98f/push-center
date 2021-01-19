@@ -147,6 +147,11 @@ public enum ErrorCode {
     OPENAPI_VERIFY_FAIL(32000100, "openapi.verify.fail"),
 
     /**
+     * 字典
+     */
+    DIC_TYPE_ALREADY_EXIST(32000121, "dic.type.already.exist"),
+    DIC_TYPE_NOT_EXIST(32000122, "dic.type.not.exist"),
+    /**
      * 其他
      */
     SECRET_RESET_ERROR(32100000, "secret.reset.error"),

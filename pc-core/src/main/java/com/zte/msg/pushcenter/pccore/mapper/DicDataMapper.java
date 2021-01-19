@@ -3,9 +3,7 @@ package com.zte.msg.pushcenter.pccore.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zte.msg.pushcenter.pccore.dto.res.DicDataResDTO;
-import com.zte.msg.pushcenter.pccore.dto.res.DicResDTO;
-import com.zte.msg.pushcenter.pccore.entity.Dic;
-import org.apache.ibatis.annotations.Mapper;
+import com.zte.msg.pushcenter.pccore.entity.DicData;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -14,25 +12,25 @@ import org.apache.ibatis.annotations.Select;
  *
  * @author chentong
  * @version 1.0
- * @date 2020/12/21 10:29
+ * @date 2021/1/19 14:58
  */
-@Mapper
-public interface DicMapper extends BaseMapper<Dic> {
+public interface DicDataMapper extends BaseMapper<DicData> {
 
     @Select({
             "<script>",
             "SELECT " +
                     " id, " +
-                    " `name`, " +
-                    " type, " +
+                    " `key`, " +
+                    " `value`, " +
                     " is_enable, " +
-                    " description, " +
+                    " type, " +
+                    " `order`, " +
                     " updated_at  " +
                     "FROM " +
-                    " `dic`",
+                    " `dic_data`",
             "<where>",
-            "<if test=\"name != '' and name != null\">",
-            " AND `name` LIKE CONCAT('%',#{name}, '%') ",
+            "<if test=\"value != '' and value != null\">",
+            " AND `value` LIKE CONCAT('%',#{value}, '%') ",
             "</if>",
             "<if test = \"type != '' and type != null\">",
             " AND type = #{type} ",
@@ -43,10 +41,8 @@ public interface DicMapper extends BaseMapper<Dic> {
             "</where>",
             "</script>"
     })
-    Page<DicResDTO> selectDicByPage(Page<DicResDTO> page,
-                                    @Param("name") String name,
-                                    @Param("type") String type,
-                                    @Param("is_enable") Integer isEnable);
-
-
+    Page<DicDataResDTO> selectDicDataByPage(Page<DicDataResDTO> page,
+                                            @Param("type") String type,
+                                            @Param("value") String value,
+                                            @Param("is_enable") Integer isEnable);
 }

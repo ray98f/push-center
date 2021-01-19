@@ -21,7 +21,7 @@ public class MetaObjectHandlerConfig implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         //默认未删除
-        setFieldValByName("is_deleted", Constants.DATA_NOT_DELETED, metaObject);
+        setFieldValByName("isDeleted", Constants.DATA_NOT_DELETED, metaObject);
         //创建时间默认当前时间
         setFieldValByName("createdAt", new Timestamp(System.currentTimeMillis()), metaObject);
         // TODO: 2021/1/6

@@ -8,18 +8,22 @@ import lombok.Data;
  *
  * @author chentong
  * @version 1.0
- * @date 2020/12/21 10:31
+ * @date 2021/1/19 14:58
  */
 @Data
-public class Dic extends BaseEntity {
+public class DicData extends BaseEntity {
 
-    @TableField(value = "`name`")
-    private String name;
+    @TableField(value = "`key`")
+    private Integer key;
+
+    private String value;
 
     private String type;
 
+    @TableField(value = "`order`")
+    private Integer order;
+
     private Integer isEnable;
 
-    private String description;
 
 }

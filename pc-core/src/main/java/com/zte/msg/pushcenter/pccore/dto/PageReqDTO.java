@@ -40,7 +40,7 @@ public class PageReqDTO {
     public <T> Page<T> of() {
         if (null != sort && null != order) {
             Page<T> page = new Page<>(this.getPage(), this.getSize());
-            page.setOrders(Collections.singletonList(new OrderItem().setAsc("asc".equals(order.toLowerCase())).setColumn(sort)));
+            page.setOrders(Collections.singletonList(new OrderItem().setAsc("asc".equalsIgnoreCase(order)).setColumn(sort)));
             return page;
         }
         return new Page<>(this.getPage(), this.getSize());

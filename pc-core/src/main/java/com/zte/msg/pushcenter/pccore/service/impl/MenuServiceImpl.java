@@ -1,25 +1,18 @@
 package com.zte.msg.pushcenter.pccore.service.impl;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.zte.msg.pushcenter.pccore.dto.req.MenuReqDTO;
-import com.zte.msg.pushcenter.pccore.dto.req.RoleReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.MenuResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.SuperMenuResDTO;
 import com.zte.msg.pushcenter.pccore.entity.Menu;
-import com.zte.msg.pushcenter.pccore.entity.Role;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.MenuMapper;
-import com.zte.msg.pushcenter.pccore.mapper.RoleMapper;
 import com.zte.msg.pushcenter.pccore.service.MenuService;
-import com.zte.msg.pushcenter.pccore.service.RoleService;
 import com.zte.msg.pushcenter.pccore.utils.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 

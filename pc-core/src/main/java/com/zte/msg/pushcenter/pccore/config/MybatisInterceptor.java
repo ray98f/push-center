@@ -1,6 +1,5 @@
 package com.zte.msg.pushcenter.pccore.config;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -32,6 +31,10 @@ public class MybatisInterceptor implements Interceptor {
 
     private static final String WHERE = "where";
 
+    private static final String LIMIT = "limit";
+
+    private static final String GROUP_BY = "group by";
+
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
         StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
@@ -41,19 +44,33 @@ public class MybatisInterceptor implements Interceptor {
                         new DefaultReflectorFactory());
         //先拦截到RoutingStatementHandler，里面有个StatementHandler类型的delegate变量，其实现类是BaseStatementHandler，然后就到BaseStatementHandler的成员变量mappedStatement
         MappedStatement mappedStatement = (MappedStatement) metaObject.getValue("delegate.mappedStatement");
+
         if (SqlCommandType.SELECT == mappedStatement.getSqlCommandType()) {
             BoundSql boundSql = statementHandler.getBoundSql();
             //获取到原始sql语句
             String sql = boundSql.getSql().toLowerCase();
-            if (!sql.contains(WHERE)) {
-                sql = sql + " where " + logicDeleteField + " = 0";
-            }else if (!sql.contains(logicDeleteField)){
-                sql = StringUtils.join(sql.split("where"), " where " + logicDeleteField + " = 0 and ");
+            StringBuilder sqlBuilder = new StringBuilder(sql);
+            boolean where = sql.contains(WHERE);
+            boolean limit = sql.contains(LIMIT);
+            boolean group = sql.contains(GROUP_BY);
+            boolean deleted = sql.contains(logicDeleteField);
+            if (!where && !limit && !group) {
+                sqlBuilder.append(" ").append(WHERE).append(" ").append(logicDeleteField).append(" = 0 ");
+
+            }
+            if (where && !deleted) {
+                sqlBuilder.insert(sqlBuilder.indexOf(WHERE) + 6, logicDeleteField + " = 0 and ");
+            }
+            if (!where && !limit && group) {
+                sqlBuilder.insert(sqlBuilder.indexOf(GROUP_BY), WHERE + " " + logicDeleteField + " = 0 ");
+            }
+            if (!where && limit) {
+                sqlBuilder.insert(sqlBuilder.indexOf(LIMIT), WHERE + " " + logicDeleteField + " = 0 ");
             }
             //通过反射修改sql语句
             Field field = boundSql.getClass().getDeclaredField("sql");
             field.setAccessible(true);
-            field.set(boundSql, sql);
+            field.set(boundSql, sqlBuilder.toString());
         }
         return invocation.proceed();
     }
