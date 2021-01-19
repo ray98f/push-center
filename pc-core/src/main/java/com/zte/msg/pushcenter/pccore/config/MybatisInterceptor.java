@@ -42,12 +42,9 @@ public class MybatisInterceptor implements Interceptor {
                 .forObject(statementHandler, SystemMetaObject.DEFAULT_OBJECT_FACTORY,
                         SystemMetaObject.DEFAULT_OBJECT_WRAPPER_FACTORY,
                         new DefaultReflectorFactory());
-        //先拦截到RoutingStatementHandler，里面有个StatementHandler类型的delegate变量，其实现类是BaseStatementHandler，然后就到BaseStatementHandler的成员变量mappedStatement
         MappedStatement mappedStatement = (MappedStatement) metaObject.getValue("delegate.mappedStatement");
-
         if (SqlCommandType.SELECT == mappedStatement.getSqlCommandType()) {
             BoundSql boundSql = statementHandler.getBoundSql();
-            //获取到原始sql语句
             String sql = boundSql.getSql().toLowerCase();
             StringBuilder sqlBuilder = new StringBuilder(sql);
             boolean where = sql.contains(WHERE);
@@ -56,7 +53,6 @@ public class MybatisInterceptor implements Interceptor {
             boolean deleted = sql.contains(logicDeleteField);
             if (!where && !limit && !group) {
                 sqlBuilder.append(" ").append(WHERE).append(" ").append(logicDeleteField).append(" = 0 ");
-
             }
             if (where && !deleted) {
                 sqlBuilder.insert(sqlBuilder.indexOf(WHERE) + 6, logicDeleteField + " = 0 and ");
@@ -67,7 +63,6 @@ public class MybatisInterceptor implements Interceptor {
             if (!where && limit) {
                 sqlBuilder.insert(sqlBuilder.indexOf(LIMIT), WHERE + " " + logicDeleteField + " = 0 ");
             }
-            //通过反射修改sql语句
             Field field = boundSql.getClass().getDeclaredField("sql");
             field.setAccessible(true);
             field.set(boundSql, sqlBuilder.toString());
@@ -82,8 +77,6 @@ public class MybatisInterceptor implements Interceptor {
 
     @Override
     public void setProperties(Properties properties) {
-        //此处可以接收到配置文件的property参数
-        System.out.println(properties.getProperty("name"));
     }
 
 
