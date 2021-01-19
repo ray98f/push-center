@@ -3,7 +3,7 @@
 <mapper namespace="com.zte.msg.pushcenter.pccore.mapper.AppMapper">
 
     <select id="listApp" resultType="com.zte.msg.pushcenter.pccore.entity.App" parameterType="com.zte.msg.pushcenter.pccore.dto.req.AppListReqDTO">
-        select * from app where flag=0
+        select * from app where is_deleted=0
         <if test="appId!=null">
             and id=#{appId}
         </if>

@@ -20,7 +20,7 @@ import java.util.List;
 @Mapper
 public interface ProviderMapper extends BaseMapper<Provider> {
 
-    @Select("SELECT * FROM `provider` WHERE flag = 0")
+    @Select("SELECT * FROM `provider` WHERE is_deleted = 0")
     Page<ProviderResDTO> selectByPage(Page<ProviderResDTO> page);
 
     @Select("SELECT " +
@@ -29,12 +29,12 @@ public interface ProviderMapper extends BaseMapper<Provider> {
             "FROM " +
             " provider p " +
             "WHERE " +
-            " flag = 0  " +
+            " is_deleted = 0  " +
             " AND ISNULL( script_tag ) = 0  " +
             " AND LENGTH( trim( script_tag ) ) > 0  " +
             " AND ISNULL( script_context ) = 0  " +
             " AND LENGTH( trim( script_context ) ) >0" +
-            " AND p.flag = 0 ")
+            " AND p.is_deleted = 0 ")
     List<ScriptModel> selectScripts();
 
 
