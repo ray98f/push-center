@@ -51,16 +51,16 @@ public class MybatisInterceptor implements Interceptor {
             boolean limit = sql.contains(LIMIT);
             boolean group = sql.contains(GROUP_BY);
             boolean deleted = sql.contains(logicDeleteField);
-            if (!where && !limit && !group) {
-                sqlBuilder.append(" ").append(WHERE).append(" ").append(logicDeleteField).append(" = 0 ");
-            }
             if (where && !deleted) {
                 sqlBuilder.insert(sqlBuilder.indexOf(WHERE) + 6, logicDeleteField + " = 0 and ");
             }
-            if (!where && !limit && group) {
+            if (!where && !limit && !group) {
+                sqlBuilder.append(" ").append(WHERE).append(" ").append(logicDeleteField).append(" = 0 ");
+            }
+            if (!where && group) {
                 sqlBuilder.insert(sqlBuilder.indexOf(GROUP_BY), WHERE + " " + logicDeleteField + " = 0 ");
             }
-            if (!where && limit) {
+            if (!where && limit && !group) {
                 sqlBuilder.insert(sqlBuilder.indexOf(LIMIT), WHERE + " " + logicDeleteField + " = 0 ");
             }
             Field field = boundSql.getClass().getDeclaredField("sql");

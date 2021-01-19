@@ -33,5 +33,4 @@ public class DicResDTO {
 
     @ApiModelProperty(value = "操作时间")
     private Timestamp updatedAt;
-
 }
