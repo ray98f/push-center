@@ -45,12 +45,6 @@ public class EarlyWarnServiceImpl implements EarlyWarnService {
 
     @Override
     public PageInfo<EarlyWarnInfo> listEarlyWarnInfo(StatisticsReqDTO statisticsReqDTO) {
-        if (null == statisticsReqDTO.getPage() || null == statisticsReqDTO.getSize()) {
-            throw new CommonException(ErrorCode.PAGE_PARAM_EMPTY);
-        }
-        if (0 >= statisticsReqDTO.getPage() || 0 >= statisticsReqDTO.getSize()) {
-            throw new CommonException(ErrorCode.PAGE_PARAM_ERROR);
-        }
         PageHelper.startPage(statisticsReqDTO.getPage().intValue(), statisticsReqDTO.getSize().intValue());
         List<EarlyWarnInfo> list = earlyWarnMapper.listEarlyWarnInfo(statisticsReqDTO);
         return new PageInfo<>(list);

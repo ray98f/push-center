@@ -135,12 +135,6 @@ public class UserServiceImpl implements UserService {
         if (Objects.isNull(userReqDTO)) {
             throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
         }
-        if (null == userReqDTO.getPage() || null == userReqDTO.getSize()) {
-            throw new CommonException(ErrorCode.PAGE_PARAM_EMPTY);
-        }
-        if (0 >= userReqDTO.getPage() || 0 >= userReqDTO.getSize()) {
-            throw new CommonException(ErrorCode.PAGE_PARAM_ERROR);
-        }
         PageHelper.startPage(userReqDTO.getPage().intValue(), userReqDTO.getSize().intValue());
         List<User> list = userMapper.listUser(userReqDTO);
         return new PageInfo<>(list);

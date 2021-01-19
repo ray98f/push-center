@@ -49,12 +49,6 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Override
     public PageInfo<SmsInfo> listHistorySms(SmsHistoryReqDTO smsHistoryReqDTO) {
-        if (null == smsHistoryReqDTO.getPage() || null == smsHistoryReqDTO.getSize()) {
-            throw new CommonException(ErrorCode.PAGE_PARAM_EMPTY);
-        }
-        if (0 >= smsHistoryReqDTO.getPage() || 0 >= smsHistoryReqDTO.getSize()) {
-            throw new CommonException(ErrorCode.PAGE_PARAM_ERROR);
-        }
         PageHelper.startPage(smsHistoryReqDTO.getPage().intValue(), smsHistoryReqDTO.getSize().intValue());
         List<SmsInfo> list = historyMapper.listHistorySms(smsHistoryReqDTO);
         return new PageInfo<>(list);
@@ -62,12 +56,6 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Override
     public PageInfo<MailInfo> listHistoryMail(MailHistoryReqDTO mailHistoryReqDTO) {
-        if (null == mailHistoryReqDTO.getPage() || null == mailHistoryReqDTO.getSize()) {
-            throw new CommonException(ErrorCode.PAGE_PARAM_EMPTY);
-        }
-        if (0 >= mailHistoryReqDTO.getPage() || 0 >= mailHistoryReqDTO.getSize()) {
-            throw new CommonException(ErrorCode.PAGE_PARAM_ERROR);
-        }
         PageHelper.startPage(mailHistoryReqDTO.getPage().intValue(), mailHistoryReqDTO.getSize().intValue());
         List<MailInfo> list = historyMapper.listHistoryMail(mailHistoryReqDTO);
         return new PageInfo<>(list);
@@ -95,12 +83,6 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Override
     public PageInfo<WeChatInfo> listHistoryWechat(WechatHistoryReqDTO wechatHistoryReqDTO) {
-        if (null == wechatHistoryReqDTO.getPage() || null == wechatHistoryReqDTO.getSize()) {
-            throw new CommonException(ErrorCode.PAGE_PARAM_EMPTY);
-        }
-        if (0 >= wechatHistoryReqDTO.getPage() || 0 >= wechatHistoryReqDTO.getSize()) {
-            throw new CommonException(ErrorCode.PAGE_PARAM_ERROR);
-        }
         PageHelper.startPage(wechatHistoryReqDTO.getPage().intValue(), wechatHistoryReqDTO.getSize().intValue());
 
         //TODO 接口完成
@@ -109,12 +91,6 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Override
     public PageInfo<ApplicationInfo> listHistoryApplication(ApplicationHistoryReqDTO applicationHistoryReqDTO) {
-        if (null == applicationHistoryReqDTO.getPage() || null == applicationHistoryReqDTO.getSize()) {
-            throw new CommonException(ErrorCode.PAGE_PARAM_EMPTY);
-        }
-        if (0 >= applicationHistoryReqDTO.getPage() || 0 >= applicationHistoryReqDTO.getSize()) {
-            throw new CommonException(ErrorCode.PAGE_PARAM_ERROR);
-        }
         PageHelper.startPage(applicationHistoryReqDTO.getPage().intValue(), applicationHistoryReqDTO.getSize().intValue());
         List<ApplicationInfo> list = historyMapper.listHistoryApplication(applicationHistoryReqDTO);
         return new PageInfo<>(list);

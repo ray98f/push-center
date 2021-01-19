@@ -44,12 +44,6 @@ public class RoleServiceImpl implements RoleService {
         if (Objects.isNull(roleReqDTO)) {
             throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
         }
-        if (null == roleReqDTO.getPage() || null == roleReqDTO.getSize()) {
-            throw new CommonException(ErrorCode.PAGE_PARAM_EMPTY);
-        }
-        if (0 >= roleReqDTO.getPage() || 0 >= roleReqDTO.getSize()) {
-            throw new CommonException(ErrorCode.PAGE_PARAM_ERROR);
-        }
         PageHelper.startPage(roleReqDTO.getPage().intValue(), roleReqDTO.getSize().intValue());
         List<Role> list = roleMapper.listRole(roleReqDTO);
         return new PageInfo<>(list);
