@@ -9,8 +9,6 @@ import org.apache.http.Header;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-
 /**
  * description:
  *

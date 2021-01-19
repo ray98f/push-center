@@ -20,6 +20,6 @@ public interface DicMapper extends BaseMapper<Dic> {
      *
      * @return
      */
-    @Select("SELECT * FROM `dic`")
-    Dic selectDic(Integer type);
+    @Select("SELECT * FROM dic")
+    Dic selectAllDic();
 }

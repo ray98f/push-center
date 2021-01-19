@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.sql.Timestamp;
-import java.time.Instant;
 
 /**
  * description:
@@ -38,6 +37,6 @@ public class BaseEntity {
 
     @JsonIgnore
     @TableLogic
-    @TableField(value = "flag", fill = FieldFill.INSERT)
+    @TableField(value = "is_deleted", fill = FieldFill.INSERT)
     private Integer flag;
 }
