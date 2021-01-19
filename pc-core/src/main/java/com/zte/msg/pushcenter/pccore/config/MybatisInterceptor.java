@@ -1,0 +1,73 @@
+package com.zte.msg.pushcenter.pccore.config;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.executor.statement.StatementHandler;
+import org.apache.ibatis.mapping.BoundSql;
+import org.apache.ibatis.mapping.MappedStatement;
+import org.apache.ibatis.mapping.SqlCommandType;
+import org.apache.ibatis.plugin.*;
+import org.apache.ibatis.reflection.DefaultReflectorFactory;
+import org.apache.ibatis.reflection.MetaObject;
+import org.apache.ibatis.reflection.SystemMetaObject;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import java.lang.reflect.Field;
+import java.sql.Connection;
+import java.util.Properties;
+
+/**
+ * description:
+ *
+ * @author chentong
+ * @version 1.0
+ * @date 2021/1/19 11:01
+ */
+@Component
+@Intercepts({@Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class, Integer.class})})
+public class MybatisInterceptor implements Interceptor {
+
+    @Value("${mybatis-plus.global-config.db-config.logic-delete-field}")
+    private String logicDeleteField;
+
+    private static final String WHERE = "where";
+
+    @Override
+    public Object intercept(Invocation invocation) throws Throwable {
+        StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
+        MetaObject metaObject = MetaObject
+                .forObject(statementHandler, SystemMetaObject.DEFAULT_OBJECT_FACTORY,
+                        SystemMetaObject.DEFAULT_OBJECT_WRAPPER_FACTORY,
+                        new DefaultReflectorFactory());
+        //先拦截到RoutingStatementHandler，里面有个StatementHandler类型的delegate变量，其实现类是BaseStatementHandler，然后就到BaseStatementHandler的成员变量mappedStatement
+        MappedStatement mappedStatement = (MappedStatement) metaObject.getValue("delegate.mappedStatement");
+        if (SqlCommandType.SELECT == mappedStatement.getSqlCommandType()) {
+            BoundSql boundSql = statementHandler.getBoundSql();
+            //获取到原始sql语句
+            String sql = boundSql.getSql().toLowerCase();
+            if (!sql.contains(WHERE)) {
+                sql = sql + " where " + logicDeleteField + " = 0";
+            }else if (!sql.contains(logicDeleteField)){
+                sql = StringUtils.join(sql.split("where"), " where " + logicDeleteField + " = 0 and ");
+            }
+            //通过反射修改sql语句
+            Field field = boundSql.getClass().getDeclaredField("sql");
+            field.setAccessible(true);
+            field.set(boundSql, sql);
+        }
+        return invocation.proceed();
+    }
+
+    @Override
+    public Object plugin(Object target) {
+        return Plugin.wrap(target, this);
+    }
+
+    @Override
+    public void setProperties(Properties properties) {
+        //此处可以接收到配置文件的property参数
+        System.out.println(properties.getProperty("name"));
+    }
+
+
+}
