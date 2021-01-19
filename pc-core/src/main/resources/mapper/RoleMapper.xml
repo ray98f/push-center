@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zte.msg.pushcenter.pccore.mapper.RoleMapper">
+    <select id="listAllRole" resultType="com.zte.msg.pushcenter.pccore.entity.Role">
+        select * from role where is_deleted=0
+    </select>
+
+    <select id="listRole" parameterType="com.zte.msg.pushcenter.pccore.dto.req.RoleReqDTO" resultType="com.zte.msg.pushcenter.pccore.entity.Role">
+        select * from role where is_deleted=0
+        <if test="status!=null">
+            and status=#{status}
+        </if>
+        group by id
+        <if test="userRealName!=null">
+            having GROUP_CONCAT("|",role_name,"|",to_pinyin(role_name),"|",pinyin(role_name),"|") like "%"#{roleName}"%"
+        </if>
+    </select>
+
+    <update id="deleteRole">
+        <foreach collection="list" item="id" index="index" separator=";">
+            update role set is_deleted=1 where id=#{id} and is_deleted=0
+        </foreach>
+    </update>
+
+    <insert id="insertRole">
+        insert into role
+        <trim prefix="(" suffix=")">
+            <if test="role.roleName!=null" >
+                role_name,
+            </if>
+            <if test="role.roleStr!=null" >
+                role_str,
+            </if>
+            <if test="role.roleSort!=null" >
+                role_sort,
+            </if>
+            <if test="role.status!=null" >
+                status,
+            </if>
+            <if test="role.menuId!=null" >
+                menu_id,
+            </if>
+            <if test="role.menuRole!=null" >
+                menu_role,
+            </if>
+            <if test="role.remark!=null" >
+                remark,
+            </if>
+            created_by,updated_by
+        </trim>
+        value
+        <trim prefix="(" suffix=")">
+            <if test="role.roleName!=null" >
+                #{role.roleName},
+            </if>
+            <if test="role.roleStr!=null" >
+                #{role.roleStr},
+            </if>
+            <if test="role.roleSort!=null" >
+                #{role.roleSort},
+            </if>
+            <if test="role.status!=null" >
+                #{role.status},
+            </if>
+            <if test="role.menuId!=null" >
+                #{role.menuId},
+            </if>
+            <if test="role.menuRole!=null" >
+                #{role.menuRole},
+            </if>
+            <if test="role.remark!=null" >
+                #{role.remark},
+            </if>
+            #{doName},#{doName}
+        </trim>
+    </insert>
+
+    <update id="updateRole" parameterType="com.zte.msg.pushcenter.pccore.entity.Role">
+        update role
+        <set>
+            <if test="roleName!=null" >
+                role_name=#{roleName},
+            </if>
+            <if test="roleStr!=null" >
+                role_str=#{roleStr},
+            </if>
+            <if test="roleSort!=null" >
+                role_sort=#{roleSort},
+            </if>
+            <if test="status!=null" >
+                status=#{status},
+            </if>
+            <if test="menuId!=null" >
+                menu_id=#{menuId},
+            </if>
+            <if test="menuRole!=null" >
+                menu_role=#{menuRole},
+            </if>
+            <if test="remark!=null" >
+                remark=#{remark},
+            </if>
+            updated_by=#{updatedBy}
+        </set>
+        where id=#{id}
+    </update>
+</mapper>
