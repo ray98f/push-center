@@ -34,5 +34,5 @@ public class DicDataResDTO {
     private Integer isEnable;
 
     @ApiModelProperty(value = "操作时间")
-    private Timestamp updateAt;
+    private Timestamp updatedAt;
 }
