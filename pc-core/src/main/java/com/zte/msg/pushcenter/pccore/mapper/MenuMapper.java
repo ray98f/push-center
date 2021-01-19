@@ -29,8 +29,8 @@ public interface MenuMapper extends BaseMapper<Menu> {
 
     List<MenuResDTO.MenuInfo.ButtonInfo> listButton(Long menuId, MenuReqDTO menuReqDTO);
 
-    int updateMenu(Menu menu, String doName);
+    int updateMenu(Menu menuList, String doName);
 
-    int deleteMenu(Long id);
+    int deleteMenu(List<Long> ids);
 
 }

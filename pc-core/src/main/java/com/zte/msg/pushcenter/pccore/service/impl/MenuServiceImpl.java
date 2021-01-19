@@ -36,13 +36,13 @@ public class MenuServiceImpl implements MenuService {
     public List<SuperMenuResDTO> listSuper(Integer type) {
         List<SuperMenuResDTO> superMenuResDTOList = menuMapper.listSuperCatalog(type);
         if (null == superMenuResDTOList || superMenuResDTOList.isEmpty()) {
-            throw new CommonException(ErrorCode.RESOURCE_NOT_EXIST);
+            log.warn("无目录信息");
         }
-        if (type == INT_BUTTON) {
+        if (type == INT_BUTTON && null != superMenuResDTOList) {
             for (SuperMenuResDTO superMenuResDTO : superMenuResDTOList) {
                 List<SuperMenuResDTO.MenuInfo> menuInfoList = menuMapper.listSuperMenu(superMenuResDTO.getCatalogId());
                 if (null == menuInfoList || menuInfoList.isEmpty()) {
-                    throw new CommonException(ErrorCode.RESOURCE_NOT_EXIST);
+                    log.warn("{}目录无下级菜单", superMenuResDTO.getCatalogId());
                 }
                 superMenuResDTO.setMenuInfo(menuInfoList);
             }
@@ -84,14 +84,14 @@ public class MenuServiceImpl implements MenuService {
 //                    menuInfo.setButtonInfo(buttonInfoList);
 //                }
 //            }
-            log.error("根目录无下级");
+            log.warn("根目录无下级");
         } else {
             for (MenuResDTO menuResDTO : list) {
                 menuInfoList = menuMapper.listMenu(menuResDTO.getMenuId(), menuReqDTO);
                 if (menuInfoList.isEmpty()) {
 //                    buttonInfoList = menuMapper.listButton(null, menuReqDTO);
 //                    menuInfoList.get(0).setButtonInfo(buttonInfoList);
-                    log.error(menuResDTO.getMenuId() + "目录无下级");
+                    log.warn(menuResDTO.getMenuId() + "目录无下级");
                 } else {
                     for (MenuResDTO.MenuInfo menuInfo : menuInfoList) {
                         buttonInfoList = menuMapper.listButton(menuInfo.getMenuId(), menuReqDTO);
@@ -118,10 +118,10 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public void deleteMenu(Long id) {
-        int result = menuMapper.deleteMenu(id);
+    public void deleteMenu(List<Long> ids) {
+        int result = menuMapper.deleteMenu(ids);
         if (result > 0) {
-            log.info("{}菜单修改成功", id);
+            log.info("{}菜单修改成功", ids);
         } else {
             throw new CommonException(ErrorCode.DELETE_ERROR);
         }

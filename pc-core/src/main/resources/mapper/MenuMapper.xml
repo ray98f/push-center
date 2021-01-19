@@ -104,8 +104,8 @@
     </insert>
 
     <select id="listCatalog" resultType="com.zte.msg.pushcenter.pccore.dto.res.MenuResDTO" parameterType="com.zte.msg.pushcenter.pccore.dto.req.MenuReqDTO">
-        SELECT id as menu_id,menu_name,menu_icon,menu_sort,role_identify,component_path,is_use,updated_at
-        FROM menu where is_catalog=0 and is_deleted=0 and is_show=0
+        SELECT *
+        FROM menu where is_catalog=0 and is_deleted=0
 <!--        <if test="isUse!=null">-->
 <!--            and is_use=#{isUse}-->
 <!--        </if>-->
@@ -116,8 +116,8 @@
     </select>
 
     <select id="listMenu" resultType="com.zte.msg.pushcenter.pccore.dto.res.MenuResDTO$MenuInfo">
-        SELECT id as menu_id,menu_name,menu_icon,menu_sort,role_identify,component_path,is_use,updated_at
-        FROM menu where is_menu=0 and is_deleted=0 and is_show=0
+        SELECT *
+        FROM menu where is_menu=0 and is_deleted=0
         <if test="catalogId!=null">
             and catalog_id=#{catalogId}
         </if>
@@ -131,8 +131,8 @@
     </select>
 
     <select id="listButton" resultType="com.zte.msg.pushcenter.pccore.dto.res.MenuResDTO$MenuInfo$ButtonInfo">
-        SELECT id as menu_id,menu_name,menu_icon,menu_sort,role_identify,component_path,is_use,updated_at
-        FROM menu where is_catalog=1 and is_menu=1 and is_deleted=0 and is_show=0
+        SELECT *
+        FROM menu where is_catalog=1 and is_menu=1 and is_deleted=0
         <if test="menuId!=null">
             and menu_id=#{menuId}
         </if>
@@ -193,6 +193,8 @@
     </update>
 
     <update id="deleteMenu">
-        update menu set is_deleted=1 where is_deleted=0 and id=#{id}
+        <foreach collection="list" index="index" item="id" separator=";">
+            update menu set is_deleted=1 where is_deleted=0 and id=#{id}
+        </foreach>
     </update>
 </mapper>

@@ -87,13 +87,13 @@ public class MenuController {
     /**
      * 删除菜单管理
      *
-     * @param id 删除id信息
+     * @param ids 删除id信息
      * @return <T>
      */
     @DeleteMapping
     @ApiOperation(value = "删除菜单管理")
-    public <T> DataResponse<T> deleteMenu(@Valid @RequestParam @NotNull(message = "32000006") Long id) {
-        menuService.deleteMenu(id);
+    public <T> DataResponse<T> deleteMenu(@Valid @RequestBody List<Long> ids) {
+        menuService.deleteMenu(ids);
         return DataResponse.success();
     }
 }

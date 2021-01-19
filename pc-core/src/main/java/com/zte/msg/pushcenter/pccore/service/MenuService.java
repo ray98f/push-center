@@ -24,5 +24,5 @@ public interface MenuService {
 
     void updateMenu(Menu menuList);
 
-    void deleteMenu(Long id);
+    void deleteMenu(List<Long> ids);
 }
