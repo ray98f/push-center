@@ -7,6 +7,7 @@ import com.zte.msg.pushcenter.pccore.dto.req.UserReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.SmsInfo;
 import com.zte.msg.pushcenter.pccore.entity.User;
 import com.zte.msg.pushcenter.pccore.service.UserService;
+import com.zte.msg.pushcenter.pccore.utils.PermissionCheck;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -97,6 +98,7 @@ public class UserController {
     /**
      * 获取所有用户
      */
+    @PermissionCheck(permissionName = {"list"})
     @GetMapping("/user")
     @ApiOperation(value = "获取所有用户")
     public DataResponse<List<User>> listAllUser(){

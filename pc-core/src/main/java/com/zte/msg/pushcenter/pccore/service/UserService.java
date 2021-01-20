@@ -15,7 +15,7 @@ import java.util.List;
  * @date 2020/12/23 15:42
  */
 public interface UserService {
-    void selectUserInfo(User user);
+    User selectUserInfo(User user);
 
     void insertUser(User user);
 

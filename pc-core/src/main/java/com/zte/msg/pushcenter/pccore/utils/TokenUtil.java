@@ -283,6 +283,7 @@ public class TokenUtil {
                 .setId(String.valueOf(item.getId()))
                 .setSubject(item.getUserName())
                 .claim("userRealName", item.getUserRealName())
+                .claim("roleId", item.getRoleId())
                 .setIssuedAt(now)
                 .signWith(generalKey(SIMPLE_TOKEN_SECRET));
         if (ttlMillis >= 0) {
@@ -311,7 +312,9 @@ public class TokenUtil {
         return new SimpleTokenInfo(
                 res.getId(),
                 res.getSubject(),
-                (String) res.get("userRealName")
+                (String) res.get("userRealName"),
+                Long.valueOf(res.get("roleId").toString())
+
         );
     }
 
@@ -377,6 +380,7 @@ public class TokenUtil {
         user.setId(1L);
         user.setUserName("frp");
         user.setUserRealName("冯锐鹏");
+        user.setRoleId(3L);
         System.out.println(createSimpleToken(user, 999999999));
     }
 

@@ -13,11 +13,8 @@ public enum ErrorCode {
      * 鉴权
      */
     AUTHORIZATION_CHECK_FAIL(401, "authorization.check.fail"),
-
     AUTHORIZATION_IS_OVERDUE(401, "authorization.is.overdue"),
-
     AUTHORIZATION_INVALID(401, "authorization.invalid"),
-
     AUTHORIZATION_EMPTY(401, "authorization.empty"),
     /**
      * 该用户无相关资源操作权限
@@ -155,7 +152,9 @@ public enum ErrorCode {
      * 其他
      */
     SECRET_RESET_ERROR(32100000, "secret.reset.error"),
-    FILE_DELETE_ERROR(32100001, "file.delete.error");
+    FILE_DELETE_ERROR(32100001, "file.delete.error"),
+    USER_NOT_LOGIN_IN(32100002, "user.not.login.in"),
+    PERMISSION_FAILED(32100003, "permission.failed");
 
     private Integer code;
 

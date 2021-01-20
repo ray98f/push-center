@@ -36,19 +36,19 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public void selectUserInfo(User user) {
+    public User selectUserInfo(User user) {
         if (Objects.isNull(user)) {
             throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
         }
         User userInfo = userMapper.selectUserInfo(user.getUserName());
         if (Objects.isNull(userInfo)) {
             throw new CommonException(ErrorCode.USER_NOT_EXIST);
-        } else {
-            log.info("用户搜索成功");
-            if (!user.getPassword().equals(AesUtils.decrypt(userInfo.getPassword()))) {
-                throw new CommonException(ErrorCode.LOGIN_PASSWORD_ERROR);
-            }
         }
+        if (!user.getPassword().equals(AesUtils.decrypt(userInfo.getPassword()))) {
+            throw new CommonException(ErrorCode.LOGIN_PASSWORD_ERROR);
+        }
+        log.info("用户搜索成功");
+        return userInfo;
     }
 
     @Override
@@ -86,8 +86,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void resetPwd(Integer id){
-        int result = userMapper.resetPwd(AesUtils.encrypt(DECRYPTED_DATA),TokenUtil.getCurrentUserName(),id);
+    public void resetPwd(Integer id) {
+        int result = userMapper.resetPwd(AesUtils.encrypt(DECRYPTED_DATA), TokenUtil.getCurrentUserName(), id);
         if (result > 0) {
             log.info("用户密码重置成功");
         } else {

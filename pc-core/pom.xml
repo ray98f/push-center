@@ -159,6 +159,11 @@
             <version>4.2.0</version>
             <optional>true</optional>
         </dependency>
+        <!--  AOP  -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <!--打包成jar包时的名字-->

@@ -43,9 +43,9 @@ public class LoginController {
     @PostMapping("/login")
     @ApiOperation(value = "管理平台登录")
     public DataResponse<Map<String, Object>> login(@RequestBody @Valid User user) throws Exception {
-        userService.selectUserInfo(user);
-        String token = createSimpleToken(user);
-        log.info("{} Token返回成功", user.getUserName());
+        User userInfo = userService.selectUserInfo(user);
+        String token = createSimpleToken(userInfo);
+        log.info("{} Token返回成功", userInfo.getUserName());
         Map<String, Object> data = new HashMap<>(16);
         data.put("token", token);
         log.info("登陆成功");
