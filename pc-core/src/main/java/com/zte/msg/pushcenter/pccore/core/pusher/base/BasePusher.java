@@ -2,6 +2,7 @@ package com.zte.msg.pushcenter.pccore.core.pusher.base;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zte.msg.pushcenter.pccore.core.javac.CodeJavac;
+import com.zte.msg.pushcenter.pccore.core.warn.WarnHandler;
 import com.zte.msg.pushcenter.pccore.dto.DataResponse;
 import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import com.zte.msg.pushcenter.pccore.mapper.ProviderMapper;
@@ -9,6 +10,7 @@ import com.zte.msg.pushcenter.pccore.service.AppService;
 import com.zte.msg.pushcenter.pccore.service.HistoryService;
 import com.zte.msg.pushcenter.pcscript.PcScript;
 import lombok.extern.slf4j.Slf4j;
+import org.joda.time.Instant;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -33,6 +35,9 @@ import java.util.TreeMap;
 @Slf4j
 @Service
 public abstract class BasePusher {
+
+    @Resource
+    private WarnHandler warnHandler;
 
     @Resource
     protected AppService appService;
@@ -69,7 +74,7 @@ public abstract class BasePusher {
      * 郵件：providerId作为内部两层嵌套map的key
      * <p>
      * 微信：templateId作为内部两层嵌套的key
-     *
+     * <p>
      * APP: providerId作为内部两层嵌套map的key
      */
     protected Map<PushMethods, Map<Long, TreeMap<Integer, Config>>> configMap = new HashMap<>();
@@ -120,5 +125,10 @@ public abstract class BasePusher {
      */
     @PostConstruct
     abstract protected void init();
+
+    protected void warn() {
+        warnHandler.submitWarn(Instant.now());
+    }
+
 
 }

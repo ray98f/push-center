@@ -1,22 +1,30 @@
-package com.zte.msg.pushcenter.pccore.entity;
+package com.zte.msg.pushcenter.pccore.model;
 
+import com.zte.msg.pushcenter.pccore.entity.User;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.List;
+
 /**
- * @author frp
+ * description:
+ *
+ * @author chentong
+ * @version 1.0
+ * @date 2021/1/20 15:26
  */
 @Data
-public class EarlyWarnConfig extends BaseEntity {
+public class EarlyWarnConfigModel {
+
 
     @ApiModelProperty(value = "预警周期")
     private Long alarmCycle;
 
     @ApiModelProperty(value = "阈值")
-    private Long threshold;
+    private Integer threshold;
 
     @ApiModelProperty(value = "报警间隔")
-    private Integer alarmInterval;
+    private Long alarmInterval;
 
     @ApiModelProperty(value = "处置人员")
     private String userIds;
@@ -39,10 +47,15 @@ public class EarlyWarnConfig extends BaseEntity {
     @ApiModelProperty(value = "公众号模板id")
     private Long wechatTemplateId;
 
+    @ApiModelProperty(value = "公众号内容")
+    private String wechatData;
+
     @ApiModelProperty(value = "AppId")
     private Long appId;
 
     @ApiModelProperty(value = "目标微信openId")
     private String openIds;
+
+    private List<User> users;
 
 }

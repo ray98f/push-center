@@ -26,7 +26,7 @@ public class PageReqDTO {
     @ApiModelProperty(value = "当前页码", required = true)
     private Long page;
 
-    @Range(min = 1, max = 50, message = "32000003")
+    @Range(min = 1, max = 500, message = "32000003")
     @ApiModelProperty(value = "每页条数。范围：1-50", required = true)
     private Long size;
 

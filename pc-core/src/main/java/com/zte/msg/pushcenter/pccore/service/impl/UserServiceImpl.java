@@ -1,5 +1,7 @@
 package com.zte.msg.pushcenter.pccore.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zte.msg.pushcenter.pccore.dto.req.PasswordReqDTO;
@@ -12,7 +14,6 @@ import com.zte.msg.pushcenter.pccore.service.UserService;
 import com.zte.msg.pushcenter.pccore.utils.AesUtils;
 import com.zte.msg.pushcenter.pccore.utils.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,7 @@ import java.util.Objects;
  */
 @Service
 @Slf4j
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     public static final String DECRYPTED_DATA = "123456";
 
@@ -86,8 +87,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void resetPwd(Integer id){
-        int result = userMapper.resetPwd(AesUtils.encrypt(DECRYPTED_DATA),TokenUtil.getCurrentUserName(),id);
+    public void resetPwd(Integer id) {
+        int result = userMapper.resetPwd(AesUtils.encrypt(DECRYPTED_DATA), TokenUtil.getCurrentUserName(), id);
         if (result > 0) {
             log.info("用户密码重置成功");
         } else {
@@ -138,5 +139,10 @@ public class UserServiceImpl implements UserService {
         PageHelper.startPage(userReqDTO.getPage().intValue(), userReqDTO.getSize().intValue());
         List<User> list = userMapper.listUser(userReqDTO);
         return new PageInfo<>(list);
+    }
+
+    @Override
+    public List<User> listUser(List<Long> userIds) {
+        return getBaseMapper().selectList(new QueryWrapper<User>().in("id", userIds));
     }
 }

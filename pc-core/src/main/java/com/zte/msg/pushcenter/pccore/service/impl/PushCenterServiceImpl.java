@@ -31,7 +31,6 @@ import javax.annotation.Resource;
 @Slf4j
 public class PushCenterServiceImpl implements PushCenterService {
 
-
     @Resource
     private SmsPusher smsPusher;
 
@@ -69,7 +68,6 @@ public class PushCenterServiceImpl implements PushCenterService {
         checkProviderType(appMessage, appMessage.getProviderId());
         appPusher.submit(appMessage);
     }
-
 
     private void checkProviderType(Message message, Long providerId) {
         ProviderResDTO providerById = providerService.getProviderById(providerId);

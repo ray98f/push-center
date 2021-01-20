@@ -1,6 +1,5 @@
 package com.zte.msg.pushcenter.pccore.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.AppMessage;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.MailMessage;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.SmsMessage;
@@ -42,10 +41,9 @@ public class PushCenterController {
     @Resource
     private PushCenterService pushCenterService;
 
-
     @PostMapping(value = "/sms")
     @ApiOperation(value = "短信推送")
-    public DataResponse<JSONObject> pushSms(@Valid @RequestBody SmsMessageReqDTO reqDTO) {
+    public <T> DataResponse<T> pushSms(@Valid @RequestBody SmsMessageReqDTO reqDTO) {
 //        SignUtils.verify(reqDTO, reqDTO.getAppId(), reqDTO.getRequestTime(), reqDTO.getSign());
         if (reqDTO.getIsCallBack() && Objects.isNull(reqDTO.getCallBackUrl())) {
             throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
@@ -58,7 +56,7 @@ public class PushCenterController {
 
     @PostMapping(value = "/mail")
     @ApiOperation(value = "邮件推送")
-    public DataResponse<JSONObject> pushMail(@Valid @RequestBody MailMessageReqDTO reqDTO) {
+    public <T> DataResponse<T> pushMail(@Valid @RequestBody MailMessageReqDTO reqDTO) {
 //        SignUtils.verify(reqDTO, reqDTO.getAppId(), reqDTO.getRequestTime(), reqDTO.getSign());
         MailMessage mailMessage = new MailMessage().build(reqDTO);
         mailMessage.setPushMethod(PushMethods.MAIL);

@@ -2,7 +2,6 @@ package com.zte.msg.pushcenter.pccore.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zte.msg.pushcenter.pccore.dto.res.DicDataResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.DicResDTO;
 import com.zte.msg.pushcenter.pccore.entity.Dic;
 import org.apache.ibatis.annotations.Mapper;
@@ -35,7 +34,7 @@ public interface DicMapper extends BaseMapper<Dic> {
             " AND `name` LIKE CONCAT('%',#{name}, '%') ",
             "</if>",
             "<if test = \"type != '' and type != null\">",
-            " AND type = #{type} ",
+            " AND type LIKE CONCAT('%',#{type}, '%') ",
             "</if>",
             "<if test = \"is_enable != null\">",
             " AND is_enable = #{is_enable}",

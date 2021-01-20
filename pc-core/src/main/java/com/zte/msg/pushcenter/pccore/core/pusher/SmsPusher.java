@@ -54,6 +54,7 @@ public class SmsPusher extends BasePusher {
         buildAndFlush(configDetails);
     }
 
+
     private void buildAndFlush(List<SmsConfigModel> smsConfigModels) {
         smsConfigModels.forEach(o -> {
             SmsConfig smsConfig = new SmsConfig();
