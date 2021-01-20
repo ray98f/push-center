@@ -25,4 +25,6 @@ public interface MenuService {
     void updateMenu(Menu menuList);
 
     void deleteMenu(List<Long> ids);
+
+    List<MenuResDTO> listMenu(Long roleId);
 }

@@ -26,7 +26,7 @@ public interface RoleMapper extends BaseMapper<Role> {
 
     int updateRole(Role role);
 
-    String selectMenuIds(Long roleId);
+    String selectMenuRoles(Long roleId);
 
-    List<String> selectMenuRoleIdentify(List<String> ids);
+    String selectMenuIds(Long roleId);
 }

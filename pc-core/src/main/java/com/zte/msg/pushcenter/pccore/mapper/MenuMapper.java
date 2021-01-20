@@ -23,11 +23,13 @@ public interface MenuMapper extends BaseMapper<Menu> {
 
     int insertMenu(Menu menuList, String doName);
 
-    List<MenuResDTO> listCatalog(MenuReqDTO menuReqDTO);
+    List<MenuResDTO> listCatalog(MenuReqDTO menuReqDTO, List<Long> menuIds);
 
-    List<MenuResDTO.MenuInfo> listMenu(Long catalogId, MenuReqDTO menuReqDTO);
+    List<MenuResDTO.MenuInfo> listMenu(Long catalogId, MenuReqDTO menuReqDTO, List<Long> menuIds);
 
-    List<MenuResDTO.MenuInfo.ButtonInfo> listButton(Long menuId, MenuReqDTO menuReqDTO);
+    List<MenuResDTO.MenuInfo.ButtonInfo> listButton(Long menuId, MenuReqDTO menuReqDTO, List<Long> menuIds);
+
+    String listButtonRoleIdentify(Long menuId, List<Long> menuIds);
 
     int updateMenu(Menu menuList, String doName);
 

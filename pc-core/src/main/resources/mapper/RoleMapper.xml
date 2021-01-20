@@ -104,13 +104,11 @@
         where id=#{id}
     </update>
 
+    <select id="selectMenuRoles" resultType="java.lang.String">
+        SELECT menu_role FROM role WHERE id=#{roleId} AND is_deleted=0;
+    </select>
+
     <select id="selectMenuIds" resultType="java.lang.String">
         SELECT menu_id FROM role WHERE id=#{roleId} AND is_deleted=0;
-    </select>
-    
-    <select id="selectMenuRoleIdentify" resultType="java.lang.String">
-        <foreach collection="list" index="index" item="id" separator="UNION ALL">
-            SELECT role_identify FROM menu WHERE id=#{id}
-        </foreach>
     </select>
 </mapper>

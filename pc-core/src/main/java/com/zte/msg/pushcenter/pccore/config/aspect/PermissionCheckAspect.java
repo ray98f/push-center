@@ -70,12 +70,9 @@ public class PermissionCheckAspect {
         } else {
             String token = request.getHeader(AUTHORIZATION);
             SimpleTokenInfo simpleTokenInfo = TokenUtil.getSimpleTokenInfo(token);
-            List<String> ids = Arrays.asList(roleMapper.selectMenuIds(simpleTokenInfo.getRoleId()).split(REGEX));
-            List<String> result = roleMapper.selectMenuRoleIdentify(ids);
-//            result.removeAll(Collections.singleton(STRING_NULL));
-//            result = result.stream().distinct().collect(Collectors.toList());
+            List<String> roles = Arrays.asList(roleMapper.selectMenuRoles(simpleTokenInfo.getRoleId()).split(REGEX));
             for (String str : permissionName) {
-                if (result.contains(str)) {
+                if (roles.contains(str)) {
                     return pjp.proceed();
                 }
             }
