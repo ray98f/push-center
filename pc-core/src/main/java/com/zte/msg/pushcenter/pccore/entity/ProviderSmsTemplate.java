@@ -1,5 +1,6 @@
 package com.zte.msg.pushcenter.pccore.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
 /**
@@ -20,6 +21,7 @@ public class ProviderSmsTemplate extends BaseEntity {
 
     private String content;
 
+    @TableField("is_enable")
     private Integer status;
 
 }

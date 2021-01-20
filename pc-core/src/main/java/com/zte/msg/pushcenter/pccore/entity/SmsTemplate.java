@@ -1,5 +1,6 @@
 package com.zte.msg.pushcenter.pccore.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -13,7 +14,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel
-public class SmsTemplate extends BaseEntity{
+public class SmsTemplate extends BaseEntity {
 
     @ApiModelProperty(value = "短信内容")
     private String content;
@@ -22,6 +23,7 @@ public class SmsTemplate extends BaseEntity{
     private String params;
 
     @ApiModelProperty(value = "模板启用状态")
+    @TableField("is_enable")
     private Integer status;
 
 }

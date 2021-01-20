@@ -29,14 +29,14 @@ public interface SmsTemplateRelationMapper extends BaseMapper<SmsTemplateRelatio
                     " st.id, " +
                     " st.content, " +
                     " st.params, " +
-                    " st.`status` s_status, " +
+                    " st.is_enable s_status, " +
                     " st.updated_by, " +
                     " st.updated_at, " +
                     " str.id relation_id, " +
                     " str.priority, " +
                     " pst.`code`, " +
                     " pst.content p_content, " +
-                    " pst.`status` p_status, " +
+                    " pst.is_enable p_status, " +
                     " pst.id p_template_id, " +
                     " pst.sign, " +
                     " p.provider_name " +
@@ -58,14 +58,14 @@ public interface SmsTemplateRelationMapper extends BaseMapper<SmsTemplateRelatio
             " st.id, " +
             " st.content, " +
             " st.params, " +
-            " st.`status` s_status, " +
+            " st.is_enable s_status, " +
             " st.updated_by, " +
             " st.updated_at, " +
             " str.id relation_id, " +
             " str.priority, " +
             " pst.`code`, " +
             " pst.content p_content, " +
-            " pst.`status` p_status, " +
+            " pst.is_enable p_status, " +
             " pst.id p_template_id, " +
             " pst.sign, " +
             " p.provider_name  " +
@@ -86,11 +86,11 @@ public interface SmsTemplateRelationMapper extends BaseMapper<SmsTemplateRelatio
             " str.sms_template_id, " +
             " str.provider_template_id, " +
             " str.priority, " +
-            " st.`status` template_status, " +
+            " st.is_enable template_status, " +
             " pst.`code`, " +
             " pst.sign, " +
             " pst.content, " +
-            " pst.`status` provider_template_status, " +
+            " pst.is_enable provider_template_status, " +
             " p.provider_name, " +
             " p.script_tag, " +
             " p.config  " +
@@ -105,8 +105,8 @@ public interface SmsTemplateRelationMapper extends BaseMapper<SmsTemplateRelatio
             " AND st.is_deleted = 0  " +
             " AND pst.is_deleted = 0  " +
             " AND p.is_deleted = 0 " +
-            " AND pst.status = 1" +
-            " AND st.status = 1 "
+            " AND pst.is_enable = 1" +
+            " AND st.is_enable = 1 "
     )
     List<SmsConfigModel> selectAllSmsConfigForInit();
 
@@ -116,11 +116,11 @@ public interface SmsTemplateRelationMapper extends BaseMapper<SmsTemplateRelatio
                     " str.sms_template_id, " +
                     " str.provider_template_id, " +
                     " str.priority, " +
-                    " st.`status` template_status, " +
+                    " st.is_enable template_status, " +
                     " pst.`code`, " +
                     " pst.sign, " +
                     " pst.content, " +
-                    " pst.`status` provider_template_status, " +
+                    " pst.is_enable provider_template_status, " +
                     " p.provider_name, " +
                     " p.script_tag, " +
                     " p.config  " +
@@ -135,8 +135,8 @@ public interface SmsTemplateRelationMapper extends BaseMapper<SmsTemplateRelatio
                     " AND st.is_deleted = 0  " +
                     " AND pst.is_deleted = 0  " +
                     " AND p.is_deleted = 0 " +
-                    " AND pst.status = 1" +
-                    " AND st.status = 1 " +
+                    " AND pst.is_enable = 1" +
+                    " AND st.is_enable = 1 " +
                     " AND st.id IN " +
                     "<foreach collection = 'ids' item = 'id' open='(' separator=',' close=')'>",
             " #{id} ",
@@ -151,11 +151,11 @@ public interface SmsTemplateRelationMapper extends BaseMapper<SmsTemplateRelatio
                     " str.sms_template_id, " +
                     " str.provider_template_id, " +
                     " str.priority, " +
-                    " st.`status` template_status, " +
+                    " st.is_enable template_status, " +
                     " pst.`code`, " +
                     " pst.sign, " +
                     " pst.content, " +
-                    " pst.`status` provider_template_status, " +
+                    " pst.is_enable provider_template_status, " +
                     " p.provider_name, " +
                     " p.script_tag, " +
                     " p.config  " +
@@ -170,8 +170,8 @@ public interface SmsTemplateRelationMapper extends BaseMapper<SmsTemplateRelatio
                     " AND st.is_deleted = 0  " +
                     " AND pst.is_deleted = 0  " +
                     " AND p.is_deleted = 0 " +
-                    " AND pst.status = 1" +
-                    " AND st.status = 1 " +
+                    " AND pst.is_enable = 1" +
+                    " AND st.is_enable = 1 " +
                     " AND p.id IN " +
                     "<foreach collection = 'ids' item = 'id' open='(' separator=',' close=')'>",
             " #{id} ",
