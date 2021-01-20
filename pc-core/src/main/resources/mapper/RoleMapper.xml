@@ -7,11 +7,11 @@
 
     <select id="listRole" parameterType="com.zte.msg.pushcenter.pccore.dto.req.RoleReqDTO" resultType="com.zte.msg.pushcenter.pccore.entity.Role">
         select * from role where is_deleted=0
-        <if test="status!=null">
+        <if test="status!=''">
             and status=#{status}
         </if>
         group by id
-        <if test="userRealName!=null">
+        <if test="roleName!=''">
             having GROUP_CONCAT("|",role_name,"|",to_pinyin(role_name),"|",pinyin(role_name),"|") like "%"#{roleName}"%"
         </if>
     </select>
@@ -103,4 +103,12 @@
         </set>
         where id=#{id}
     </update>
+
+    <select id="selectMenuRoles" resultType="java.lang.String">
+        SELECT menu_role FROM role WHERE id=#{roleId} AND is_deleted=0;
+    </select>
+
+    <select id="selectMenuIds" resultType="java.lang.String">
+        SELECT menu_id FROM role WHERE id=#{roleId} AND is_deleted=0;
+    </select>
 </mapper>

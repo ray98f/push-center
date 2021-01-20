@@ -7,14 +7,18 @@ import com.zte.msg.pushcenter.pccore.entity.Menu;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.MenuMapper;
+import com.zte.msg.pushcenter.pccore.mapper.RoleMapper;
 import com.zte.msg.pushcenter.pccore.service.MenuService;
+import com.zte.msg.pushcenter.pccore.utils.Constants;
 import com.zte.msg.pushcenter.pccore.utils.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * description:
@@ -31,6 +35,9 @@ public class MenuServiceImpl implements MenuService {
 
     @Autowired
     private MenuMapper menuMapper;
+
+    @Autowired
+    private RoleMapper roleMapper;
 
     @Override
     public List<SuperMenuResDTO> listSuper(Integer type) {
@@ -72,29 +79,17 @@ public class MenuServiceImpl implements MenuService {
         List<MenuResDTO> list;
         List<MenuResDTO.MenuInfo> menuInfoList;
         List<MenuResDTO.MenuInfo.ButtonInfo> buttonInfoList;
-        list = menuMapper.listCatalog(menuReqDTO);
+        list = menuMapper.listCatalog(menuReqDTO, null);
         if (list.isEmpty()) {
-//            menuInfoList = menuMapper.listMenu(null, menuReqDTO);
-//            if (menuInfoList.isEmpty()) {
-//                buttonInfoList = menuMapper.listButton(null, menuReqDTO);
-//                menuInfoList.get(0).setButtonInfo(buttonInfoList);
-//            } else {
-//                for (MenuResDTO.MenuInfo menuInfo : menuInfoList) {
-//                    buttonInfoList = menuMapper.listButton(menuInfo.getMenuId(), menuReqDTO);
-//                    menuInfo.setButtonInfo(buttonInfoList);
-//                }
-//            }
             log.warn("根目录无下级");
         } else {
             for (MenuResDTO menuResDTO : list) {
-                menuInfoList = menuMapper.listMenu(menuResDTO.getMenuId(), menuReqDTO);
+                menuInfoList = menuMapper.listMenu(menuResDTO.getId(), menuReqDTO, null);
                 if (menuInfoList.isEmpty()) {
-//                    buttonInfoList = menuMapper.listButton(null, menuReqDTO);
-//                    menuInfoList.get(0).setButtonInfo(buttonInfoList);
                     log.warn(menuResDTO.getMenuId() + "目录无下级");
                 } else {
                     for (MenuResDTO.MenuInfo menuInfo : menuInfoList) {
-                        buttonInfoList = menuMapper.listButton(menuInfo.getMenuId(), menuReqDTO);
+                        buttonInfoList = menuMapper.listButton(menuInfo.getId(), menuReqDTO, null);
                         menuInfo.setChildren(buttonInfoList);
                     }
                 }
@@ -125,5 +120,33 @@ public class MenuServiceImpl implements MenuService {
         } else {
             throw new CommonException(ErrorCode.DELETE_ERROR);
         }
+    }
+
+    @Override
+    public List<MenuResDTO> listMenu(Long roleId) {
+        List<MenuResDTO> list;
+        List<MenuResDTO.MenuInfo> menuInfoList;
+        List<Long> menuIds = Arrays.stream(roleMapper.selectMenuIds(roleId).split(Constants.COMMA_EN))
+                .map(s -> Long.parseLong(s.trim())).collect(Collectors.toList());
+        list = menuMapper.listCatalog(null, menuIds);
+        if (list.isEmpty()) {
+            log.warn("根目录无下级");
+            list = null;
+        } else {
+            for (MenuResDTO menuResDTO : list) {
+                menuInfoList = menuMapper.listMenu(menuResDTO.getId(), null, menuIds);
+                if (menuInfoList.isEmpty()) {
+                    log.warn(menuResDTO.getMenuId() + "目录无下级");
+                    menuInfoList = null;
+                } else {
+                    for (MenuResDTO.MenuInfo menuInfo : menuInfoList) {
+                        String str = menuMapper.listButtonRoleIdentify(menuInfo.getId(), menuIds);
+                        menuInfo.setRoleIdentify(str);
+                    }
+                }
+                menuResDTO.setChildren(menuInfoList);
+            }
+        }
+        return list;
     }
 }

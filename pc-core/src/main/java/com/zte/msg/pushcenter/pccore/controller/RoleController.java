@@ -90,7 +90,7 @@ public class RoleController {
     @PostMapping
     @ApiOperation(value = "修改角色")
     public <T> DataResponse<T> updateRole(@Valid @RequestBody Role role){
-        roleService.insertRole(role);
+        roleService.updateRole(role);
         return DataResponse.success();
     }
 }

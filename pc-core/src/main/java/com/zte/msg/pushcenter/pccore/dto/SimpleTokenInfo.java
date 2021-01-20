@@ -9,14 +9,16 @@ import lombok.Data;
 public class SimpleTokenInfo {
     private String userId;
     private String userName;
-    private String userRole;
+    private String userRealName;
+    private Long roleId;
 
     public SimpleTokenInfo(){}
 
-    public SimpleTokenInfo(String userId, String userName, String userRole) {
+    public SimpleTokenInfo(String userId, String userName, String userRealName, Long roleId) {
         this.userId = userId;
         this.userName = userName;
-        this.userRole = userRole;
+        this.userRealName = userRealName;
+        this.roleId = roleId;
     }
 
     public SimpleTokenInfo(String userId, String userName) {

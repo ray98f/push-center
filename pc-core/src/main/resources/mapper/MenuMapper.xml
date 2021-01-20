@@ -3,19 +3,19 @@
 <mapper namespace="com.zte.msg.pushcenter.pccore.mapper.MenuMapper">
     <select id="listSuperCatalog" resultType="com.zte.msg.pushcenter.pccore.dto.res.SuperMenuResDTO">
         <if test="type==0">
-            select "根目录" as catalog_name;
+            SELECT "根目录" AS catalog_name;
         </if>
         <if test="type!=0">
-            select id as catalog_id,menu_name as catalog_name from menu where is_deleted=0 and is_show=0 and is_use=0 and is_catalog=0 order by menu_sort ASC;
+            SELECT id AS catalog_id,menu_name AS catalog_name FROM menu WHERE is_deleted=0 AND is_show=0 AND is_use=0 AND is_catalog=0 ORDER BY menu_sort ASC;
         </if>
     </select>
 
     <select id="listSuperMenu" resultType="com.zte.msg.pushcenter.pccore.dto.res.SuperMenuResDTO$MenuInfo">
-        select id as menu_id,menu_name as menu_name from menu where is_deleted=0 and is_show=0 and is_use=0 and is_menu=0 and catalog_id=#{id} order by menu_sort ASC;
+        SELECT id AS menu_id,menu_name AS menu_name FROM menu WHERE is_deleted=0 AND is_show=0 AND is_use=0 AND is_menu=0 AND catalog_id=#{id} ORDER BY menu_sort ASC;
     </select>
 
     <insert id="insertMenu">
-        insert into menu
+        INSERT INTO menu
         <trim prefix="(" suffix=")">
             <if test="menuList.isCatalog!=null" >
                 is_catalog,
@@ -58,7 +58,7 @@
             </if>
             created_by,updated_by
         </trim>
-        value
+        VALUE
         <trim prefix="(" suffix=")">
             <if test="menuList.isCatalog!=null" >
                 #{menuList.isCatalog},
@@ -103,50 +103,67 @@
         </trim>
     </insert>
 
-    <select id="listCatalog" resultType="com.zte.msg.pushcenter.pccore.dto.res.MenuResDTO" parameterType="com.zte.msg.pushcenter.pccore.dto.req.MenuReqDTO">
+    <select id="listCatalog" resultType="com.zte.msg.pushcenter.pccore.dto.res.MenuResDTO">
         SELECT *
-        FROM menu where is_catalog=0 and is_deleted=0
-<!--        <if test="isUse!=null">-->
-<!--            and is_use=#{isUse}-->
-<!--        </if>-->
-<!--        group by id-->
-<!--        <if test="menuName!=null">-->
-<!--            having GROUP_CONCAT("|",menu_name,"|",to_pinyin(menu_name),"|",pinyin(menu_name),"|") like "%"#{menuName}"%"-->
-<!--        </if>-->
+        FROM menu WHERE is_catalog=0 AND is_deleted=0
+        <if test="menuIds!=null">
+            AND id IN (
+            <foreach collection="menuIds" index="index" item="menuId" separator=",">
+                #{menuId}
+            </foreach>
+            )
+        </if>
     </select>
 
     <select id="listMenu" resultType="com.zte.msg.pushcenter.pccore.dto.res.MenuResDTO$MenuInfo">
         SELECT *
-        FROM menu where is_menu=0 and is_deleted=0
+        FROM menu WHERE is_menu=0 AND is_deleted=0
         <if test="catalogId!=null">
-            and catalog_id=#{catalogId}
+            AND catalog_id=#{catalogId}
         </if>
-<!--        <if test="menuReqDTO.isUse!=null">-->
-<!--            and is_use=#{menuReqDTO.isUse}-->
-<!--        </if>-->
-<!--        group by id-->
-<!--        <if test="menuReqDTO.menuName!=null">-->
-<!--            having GROUP_CONCAT("|",menu_name,"|",to_pinyin(menu_name),"|",pinyin(menu_name),"|") like "%"#{menuReqDTO.menuName}"%"-->
-<!--        </if>-->
+        <if test="menuIds!=null">
+            AND id IN (
+            <foreach collection="menuIds" index="index" item="menuId" separator=",">
+                #{menuId}
+            </foreach>
+            )
+        </if>
     </select>
 
     <select id="listButton" resultType="com.zte.msg.pushcenter.pccore.dto.res.MenuResDTO$MenuInfo$ButtonInfo">
         SELECT *
-        FROM menu where is_catalog=1 and is_menu=1 and is_deleted=0
+        FROM menu WHERE is_catalog=1 AND is_menu=1 AND is_deleted=0
         <if test="menuId!=null">
-            and menu_id=#{menuId}
+            AND menu_id=#{menuId}
         </if>
-<!--        <if test="menuReqDTO.isUse!=null">-->
-<!--            and is_use=#{menuReqDTO.isUse}-->
-<!--        </if>-->
-<!--        group by id-->
-<!--        <if test="menuReqDTO.menuName!=null">-->
-<!--            having GROUP_CONCAT("|",menu_name,"|",to_pinyin(menu_name),"|",pinyin(menu_name),"|") like "%"#{menuReqDTO.menuName}"%"-->
-<!--        </if>-->
+        <if test="menuIds!=null">
+            AND id IN (
+            <foreach collection="menuIds" index="index" item="menuId" separator=",">
+                #{menuId}
+            </foreach>
+            )
+        </if>
+    </select>
+
+    <select id="listButtonRoleIdentify" resultType="java.lang.String">
+        SELECT GROUP_CONCAT(DISTINCT a.role_identify) AS roles FROM
+        ((SELECT role_identify
+        FROM menu WHERE is_catalog=1 AND is_menu=1 AND is_deleted=0
+        <if test="menuId!=null">
+            AND menu_id=#{menuId}
+        </if>
+        <if test="menuIds!=null">
+            AND id IN (
+            <foreach collection="menuIds" index="index" item="menuId" separator=",">
+                #{menuId}
+            </foreach>
+            )
+        </if>
+        )UNION ALL (SELECT "list" AS role_identify)) AS a
     </select>
 
     <update id="updateMenu">
-        update menu
+        UPDATE menu
         <set>
             <if test="menuList.isCatalog!=null" >
                 is_catalog=#{menuList.isCatalog},
@@ -189,12 +206,12 @@
             </if>
             updated_by=#{doName}
         </set>
-        where id=#{menuList.id}
+        WHERE id=#{menuList.id}
     </update>
 
     <update id="deleteMenu">
         <foreach collection="list" index="index" item="id" separator=";">
-            update menu set is_deleted=1 where is_deleted=0 and id=#{id}
+            UPDATE menu SET is_deleted=1 WHERE is_deleted=0 AND id=#{id}
         </foreach>
     </update>
 </mapper>
