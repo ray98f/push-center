@@ -13,7 +13,6 @@ import com.zte.msg.pushcenter.pccore.service.EarlyWarnService;
 import com.zte.msg.pushcenter.pccore.service.PushCenterService;
 import com.zte.msg.pushcenter.pccore.service.UserService;
 import com.zte.msg.pushcenter.pccore.utils.Constants;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.Instant;
@@ -150,14 +149,6 @@ public class WarnHandler {
 
     public void updateWarnConfig() {
         init();
-    }
-
-    @Data
-    public static class TimeRecord {
-
-        private Instant earliest;
-
-        private Instant recent;
     }
 
 }

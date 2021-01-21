@@ -117,6 +117,7 @@ public class SmsPusher extends BasePusher {
                 }
                 return res;
             }, pushExecutor).exceptionally(e -> {
+                warn();
                 log.error("Error while send a sms message: {}", e.getMessage());
                 e.printStackTrace();
                 return new PcScript.Res(1, "系统内部错误");

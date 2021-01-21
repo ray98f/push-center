@@ -108,6 +108,7 @@ public class WeChatPusher extends BasePusher {
             }
             return new PcScript.Res(body.getErrCode(), body.getErrMsg());
         }).exceptionally(e -> {
+            warn();
             log.error("Error while send a wechat message: {}", e.getMessage());
             e.printStackTrace();
             return new PcScript.Res(1, "系统内部错误");

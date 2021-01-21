@@ -69,6 +69,7 @@ public class AppPusher extends BasePusher {
             }
             return res;
         }).exceptionally(e -> {
+            warn();
             log.error("Error while send a sms message: {}", e.getMessage());
             e.printStackTrace();
             return new PcScript.Res(1, "系统内部错误");

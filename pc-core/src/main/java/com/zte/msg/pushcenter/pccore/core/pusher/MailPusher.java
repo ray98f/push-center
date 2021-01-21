@@ -78,6 +78,7 @@ public class MailPusher extends BasePusher {
             mailMessage.setTransmitTime(new Timestamp(start));
             return new PcScript.Res(0, "发送成功");
         }, pushExecutor).exceptionally(e -> {
+            warn();
             log.error("Error while send a mail message: {}", e.getMessage());
             throw new CommonException(ErrorCode.MAIL_PUSH_ERROR);
         }).thenAcceptAsync(o -> persist(mailMessage, o));
