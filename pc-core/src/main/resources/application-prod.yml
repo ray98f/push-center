@@ -36,7 +36,7 @@ spring:
 #    protocol: smtps
 #    test-connection: true
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: wshmang.f3322.net:9092
     consumer:
       auto-commit-interval: 1000ms
       auto-offset-reset: earliest
