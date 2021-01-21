@@ -82,7 +82,7 @@ public class MySqlParserFilter implements ISqlParserFilter {
             for (String table : tables) {
                 joins.add(table + "." + logicDeleteField + " = 0");
             }
-            String join = StringUtils.join(joins, " " + AND + " ");
+            String join = StringUtils.join(joins, SPACE + AND + SPACE);
 
             StringBuilder sqlBuilder = new StringBuilder(sql);
             boolean where = sql.contains(WHERE);
@@ -90,7 +90,7 @@ public class MySqlParserFilter implements ISqlParserFilter {
             boolean group = sql.contains(GROUP_BY);
             boolean deleted = sql.contains(logicDeleteField);
             if (where && !deleted) {
-                sqlBuilder.insert(sqlBuilder.indexOf(WHERE) + 6, join + SPACE + AND);
+                sqlBuilder.insert(sqlBuilder.indexOf(WHERE) + 6, join + SPACE + AND + SPACE);
             }
             if (!where && !limit && !group) {
                 sqlBuilder.append(" ").append(WHERE).append(SPACE).append(join);
@@ -99,7 +99,7 @@ public class MySqlParserFilter implements ISqlParserFilter {
                 sqlBuilder.insert(sqlBuilder.indexOf(GROUP_BY), WHERE + join);
             }
             if (!where && limit && !group) {
-                sqlBuilder.insert(sqlBuilder.indexOf(LIMIT), WHERE + " " + join);
+                sqlBuilder.insert(sqlBuilder.indexOf(LIMIT), WHERE + SPACE + join);
             }
             metaObject.setValue(PluginUtils.DELEGATE_BOUNDSQL_SQL, sqlBuilder.toString());
         }
