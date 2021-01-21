@@ -70,7 +70,7 @@ public class PermissionCheckAspect {
         } else {
             String token = request.getHeader(AUTHORIZATION);
             SimpleTokenInfo simpleTokenInfo = TokenUtil.getSimpleTokenInfo(token);
-            List<String> roles = Arrays.asList(roleMapper.selectMenuRoles(simpleTokenInfo.getRoleId()).split(REGEX));
+            List<String> roles = roleMapper.selectMenuRoles(simpleTokenInfo.getRoleId());
             for (String str : permissionName) {
                 if (roles.contains(str)) {
                     return pjp.proceed();

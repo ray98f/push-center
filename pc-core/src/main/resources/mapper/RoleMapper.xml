@@ -17,65 +17,88 @@
     </select>
 
     <update id="deleteRole">
+        update role set is_deleted=1 where id in (
         <foreach collection="list" item="id" index="index" separator=";">
-            update role set is_deleted=1 where id=#{id} and is_deleted=0
+            #{id}
         </foreach>
+        ) and is_deleted=0
     </update>
 
-    <insert id="insertRole">
+    <update id="deleteRoleMenu">
+        update role_menu set is_deleted=1 where role_id in (
+        <foreach collection="list" item="id" index="index" separator=";">
+            #{id}
+        </foreach>
+        ) and is_deleted=0
+    </update>
+
+    <insert id="insertRole" useGeneratedKeys="true" keyProperty="id" parameterType="com.zte.msg.pushcenter.pccore.dto.req.RoleReqDTO">
         insert into role
         <trim prefix="(" suffix=")">
-            <if test="role.roleName!=null" >
+            <if test="roleName!=null" >
                 role_name,
             </if>
-            <if test="role.roleStr!=null" >
+            <if test="roleStr!=null" >
                 role_str,
             </if>
-            <if test="role.roleSort!=null" >
+            <if test="roleSort!=null" >
                 role_sort,
             </if>
-            <if test="role.status!=null" >
+            <if test="status!=null" >
                 status,
             </if>
-            <if test="role.menuId!=null" >
-                menu_id,
-            </if>
-            <if test="role.menuRole!=null" >
-                menu_role,
-            </if>
-            <if test="role.remark!=null" >
+            <if test="remark!=null" >
                 remark,
             </if>
             created_by,updated_by
         </trim>
         value
         <trim prefix="(" suffix=")">
-            <if test="role.roleName!=null" >
-                #{role.roleName},
+            <if test="roleName!=null" >
+                #{roleName},
             </if>
-            <if test="role.roleStr!=null" >
-                #{role.roleStr},
+            <if test="roleStr!=null" >
+                #{roleStr},
             </if>
-            <if test="role.roleSort!=null" >
-                #{role.roleSort},
+            <if test="roleSort!=null" >
+                #{roleSort},
             </if>
-            <if test="role.status!=null" >
-                #{role.status},
+            <if test="status!=null" >
+                #{status},
             </if>
-            <if test="role.menuId!=null" >
-                #{role.menuId},
+            <if test="remark!=null" >
+                #{remark},
             </if>
-            <if test="role.menuRole!=null" >
-                #{role.menuRole},
-            </if>
-            <if test="role.remark!=null" >
-                #{role.remark},
-            </if>
-            #{doName},#{doName}
+            #{createdBy},#{createdBy}
         </trim>
     </insert>
 
-    <update id="updateRole" parameterType="com.zte.msg.pushcenter.pccore.entity.Role">
+    <insert id="insertRoleMenu">
+        insert into role_menu
+        <trim prefix="(" suffix=")">
+            <if test="roleId!=null" >
+                role_id,
+            </if>
+            <if test="menuIds!=null" >
+                menu_id,
+            </if>
+            created_by,updated_by
+        </trim>
+        values
+        <foreach collection="menuIds" index="index" item="menuId" separator=",">
+            <trim prefix="(" suffix=")">
+                <if test="roleId!=null" >
+                    #{roleId},
+                </if>
+                <if test="menuId!=null" >
+                    #{menuId},
+                </if>
+                #{doName},#{doName}
+            </trim>
+        </foreach>
+    </insert>
+
+    <update id="updateRole" parameterType="com.zte.msg.pushcenter.pccore.dto.req.RoleReqDTO">
         update role
         <set>
             <if test="roleName!=null" >
@@ -90,25 +113,24 @@
             <if test="status!=null" >
                 status=#{status},
             </if>
-            <if test="menuId!=null" >
-                menu_id=#{menuId},
-            </if>
-            <if test="menuRole!=null" >
-                menu_role=#{menuRole},
-            </if>
             <if test="remark!=null" >
                 remark=#{remark},
             </if>
-            updated_by=#{updatedBy}
+            updated_by=#{createdBy}
         </set>
-        where id=#{id}
+        WHERE id=#{id}
     </update>
 
+    <delete id="deleteRoleMenus">
+        UPDATE menu_role SET is_deleted=1 WHERE role_id=#{roleId} AND is_deleted=0;
+    </delete>
+
     <select id="selectMenuRoles" resultType="java.lang.String">
-        SELECT menu_role FROM role WHERE id=#{roleId} AND is_deleted=0;
+        SELECT m.role_identify FROM role as r left join role_menu as rm on r.id=rm.role_id AND r.is_deleted=0 and rm.is_deleted=0
+        left join menu as m on m.id=rm.menu_id and m.is_deleted=0 and m.is_use=0 WHERE r.id=#{roleId}
     </select>
 
     <select id="selectMenuIds" resultType="java.lang.String">
-        SELECT menu_id FROM role WHERE id=#{roleId} AND is_deleted=0;
+        SELECT menu_id FROM role_menu WHERE role_id=#{roleId} AND is_deleted=0;
     </select>
 </mapper>

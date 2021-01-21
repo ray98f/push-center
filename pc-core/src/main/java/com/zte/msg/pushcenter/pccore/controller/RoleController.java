@@ -3,6 +3,7 @@ package com.zte.msg.pushcenter.pccore.controller;
 import com.zte.msg.pushcenter.pccore.dto.DataResponse;
 import com.zte.msg.pushcenter.pccore.dto.PageResponse;
 import com.zte.msg.pushcenter.pccore.dto.req.RoleReqDTO;
+import com.zte.msg.pushcenter.pccore.dto.res.RoleResDTO;
 import com.zte.msg.pushcenter.pccore.entity.Role;
 import com.zte.msg.pushcenter.pccore.service.RoleService;
 import io.swagger.annotations.Api;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * description:
@@ -51,8 +54,22 @@ public class RoleController {
      */
     @PostMapping("/list")
     @ApiOperation(value = "分页获取角色信息")
-    public PageResponse<Role> listAllRole(@Valid @RequestBody RoleReqDTO roleReqDTO) {
+    public PageResponse<Role> listRole(@Valid @RequestBody RoleReqDTO roleReqDTO) {
         return PageResponse.of(roleService.listRole(roleReqDTO));
+    }
+
+    /**
+     * 获取角色对应菜单id
+     *
+     * @param roleId 角色id
+     * @return Map<String, Object>
+     */
+    @GetMapping("/{id}")
+    @ApiOperation(value = "获取角色对应菜单id")
+    public DataResponse<Map<String, Object>> detailRoleMenu(@PathVariable Long roleId) {
+        Map<String, Object> data = new HashMap<>(16);
+        data.put("menuIds", roleService.selectMenuIds(roleId));
+        return DataResponse.of(data);
     }
 
     /**
@@ -63,7 +80,7 @@ public class RoleController {
      */
     @DeleteMapping
     @ApiOperation(value = "删除角色")
-    public <T> DataResponse<T> deleteRole(@Valid @RequestBody List<Integer> ids) {
+    public <T> DataResponse<T> deleteRole(@Valid @RequestBody List<Long> ids) {
         roleService.deleteRole(ids);
         return DataResponse.success();
     }
@@ -71,26 +88,26 @@ public class RoleController {
     /**
      * 新增角色
      *
-     * @param role 新增角色信息
+     * @param roleReqDTO 新增角色信息
      * @return <T>
      */
     @PutMapping
     @ApiOperation(value = "新增角色")
-    public <T> DataResponse<T> insertRole(@Valid @RequestBody Role role){
-        roleService.insertRole(role);
+    public <T> DataResponse<T> insertRole(@Valid @RequestBody RoleReqDTO roleReqDTO){
+        roleService.insertRole(roleReqDTO);
         return DataResponse.success();
     }
 
     /**
      * 修改角色
      *
-     * @param role 修改角色信息
+     * @param roleReqDTO 修改角色信息
      * @return <T>
      */
     @PostMapping
     @ApiOperation(value = "修改角色")
-    public <T> DataResponse<T> updateRole(@Valid @RequestBody Role role){
-        roleService.updateRole(role);
+    public <T> DataResponse<T> updateRole(@Valid @RequestBody RoleReqDTO roleReqDTO){
+        roleService.updateRole(roleReqDTO);
         return DataResponse.success();
     }
 }

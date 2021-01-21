@@ -126,8 +126,7 @@ public class MenuServiceImpl implements MenuService {
     public List<MenuResDTO> listMenu(Long roleId) {
         List<MenuResDTO> list;
         List<MenuResDTO.MenuInfo> menuInfoList;
-        List<Long> menuIds = Arrays.stream(roleMapper.selectMenuIds(roleId).split(Constants.COMMA_EN))
-                .map(s -> Long.parseLong(s.trim())).collect(Collectors.toList());
+        List<Long> menuIds = roleMapper.selectMenuIds(roleId);
         list = menuMapper.listCatalog(null, menuIds);
         if (list.isEmpty()) {
             log.warn("根目录无下级");
@@ -136,7 +135,7 @@ public class MenuServiceImpl implements MenuService {
             for (MenuResDTO menuResDTO : list) {
                 menuInfoList = menuMapper.listMenu(menuResDTO.getId(), null, menuIds);
                 if (menuInfoList.isEmpty()) {
-                    log.warn(menuResDTO.getMenuId() + "目录无下级");
+                    log.warn(menuResDTO.getId() + "目录无下级");
                     menuInfoList = null;
                 } else {
                     for (MenuResDTO.MenuInfo menuInfo : menuInfoList) {

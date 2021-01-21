@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
 /**
  * @author frp
  */
@@ -13,6 +15,9 @@ import lombok.EqualsAndHashCode;
 @Data
 @ApiModel
 public class RoleReqDTO extends PageReqDTO {
+
+    @ApiModelProperty(value = "主键id")
+    private Long id;
 
     @ApiModelProperty(value = "角色名称")
     private String roleName;
@@ -26,12 +31,12 @@ public class RoleReqDTO extends PageReqDTO {
     @ApiModelProperty(value = "状态")
     private String status;
 
-    @ApiModelProperty(value = "菜单权限id（逗号隔开）")
-    private String menuId;
-
-    @ApiModelProperty(value = "菜单权限标识（逗号隔开）")
-    private String menuRole;
-
     @ApiModelProperty(value = "备注")
     private String remark;
+
+    @ApiModelProperty(value = "菜单ids")
+    private List<Long> menuIds;
+
+    @ApiModelProperty(value = "新建人")
+    private String createdBy;
 }

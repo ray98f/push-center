@@ -1,7 +1,6 @@
 package com.zte.msg.pushcenter.pccore.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.extension.api.R;
 import com.zte.msg.pushcenter.pccore.dto.req.RoleReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.Role;
 import org.apache.ibatis.annotations.Mapper;
@@ -20,13 +19,19 @@ public interface RoleMapper extends BaseMapper<Role> {
 
     List<Role> listRole(RoleReqDTO roleReqDTO);
 
-    int deleteRole(List<Integer> ids);
+    int deleteRole(List<Long> ids);
 
-    int insertRole(Role role, String doName);
+    int deleteRoleMenu(List<Long> ids);
 
-    int updateRole(Role role);
+    int insertRole(RoleReqDTO role);
 
-    String selectMenuRoles(Long roleId);
+    int insertRoleMenu(Long roleId, List<Long> menuIds, String doName);
 
-    String selectMenuIds(Long roleId);
+    int updateRole(RoleReqDTO role);
+
+    void deleteRoleMenus(Long roleId);
+
+    List<String> selectMenuRoles(Long roleId);
+
+    List<Long> selectMenuIds(Long roleId);
 }

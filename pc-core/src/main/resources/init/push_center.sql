@@ -240,10 +240,10 @@ CREATE TABLE `sms_template_relation`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '短信模板关系 ' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for t_base_pinyin
+-- Table structure for pinyin_config
 -- ----------------------------
-DROP TABLE IF EXISTS `t_base_pinyin`;
-CREATE TABLE `t_base_pinyin`  (
+DROP TABLE IF EXISTS `pinyin_config`;
+CREATE TABLE `pinyin_config`  (
   `pin_yin_` varchar(255) CHARACTER SET gbk COLLATE gbk_chinese_ci NOT NULL,
   `code_` int(11) NOT NULL,
   PRIMARY KEY (`code_`) USING BTREE
@@ -298,7 +298,7 @@ BEGIN
         SET rcode = CAST(ASCII(UNHEX(tmp_rcode)) AS UNSIGNED);
         IF lcode > 128 THEN
             SET mycode =65536 - lcode * 256 - rcode ;
-SELECT CONCAT(mypy,pin_yin_) INTO mypy FROM t_base_pinyin WHERE CODE_ >= ABS(mycode) ORDER BY CODE_ ASC LIMIT 1;
+SELECT CONCAT(mypy,pin_yin_) INTO mypy FROM pinyin_config WHERE CODE_ >= ABS(mycode) ORDER BY CODE_ ASC LIMIT 1;
 SET lp = lp + 4;
 ELSE
             SET mypy = CONCAT(mypy,CHAR(CAST(ASCII(UNHEX(SUBSTRING(NAME, lp, 2))) AS UNSIGNED)));

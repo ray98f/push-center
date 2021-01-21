@@ -3,6 +3,7 @@ package com.zte.msg.pushcenter.pccore.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zte.msg.pushcenter.pccore.dto.req.RoleReqDTO;
+import com.zte.msg.pushcenter.pccore.dto.res.RoleResDTO;
 import com.zte.msg.pushcenter.pccore.entity.Role;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
@@ -50,42 +51,73 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void deleteRole(List<Integer> ids) {
+    public void deleteRole(List<Long> ids) {
         if (null == ids || ids.isEmpty()) {
             throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
         }
-        int result = roleMapper.deleteRole(ids);
-        if (result > 0) {
-            log.info("角色删除成功");
+        int deleteRole = roleMapper.deleteRole(ids);
+        int deleteRoleMenu = roleMapper.deleteRoleMenu(ids);
+        if (deleteRole >= 0 && deleteRoleMenu >= 0) {
+            log.info("角色删除成功(角色相关权限已删除)");
         } else {
             throw new CommonException(ErrorCode.DELETE_ERROR);
         }
     }
 
     @Override
-    public void insertRole(Role role) {
+    public void insertRole(RoleReqDTO role) {
         if (Objects.isNull(role)) {
             throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
         }
-        int result = roleMapper.insertRole(role, TokenUtil.getCurrentUserName());
-        if (result > 0) {
-            log.info("新增角色成功");
-        } else {
+        role.setCreatedBy(TokenUtil.getCurrentUserName());
+        int insertRole = roleMapper.insertRole(role);
+        if (insertRole <= 0) {
             throw new CommonException(ErrorCode.INSERT_ERROR);
         }
+        if (null == role.getMenuIds() || role.getMenuIds().isEmpty()) {
+            log.warn("没有需要添加的角色权限信息");
+            return;
+        }
+        int insertRoleMenu = roleMapper.insertRoleMenu(role.getId(), role.getMenuIds(), role.getCreatedBy());
+        if (insertRoleMenu <= 0) {
+            throw new CommonException(ErrorCode.INSERT_ERROR);
+        }
+        log.info("新增角色成功");
     }
 
     @Override
-    public void updateRole(Role role) {
+    public void updateRole(RoleReqDTO role) {
         if (Objects.isNull(role)) {
             throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
         }
-        role.setUpdatedBy(TokenUtil.getCurrentUserName());
-        int result = roleMapper.updateRole(role);
-        if (result > 0) {
-            log.info("{}修改角色成功", role.getId());
-        } else {
+        role.setCreatedBy(TokenUtil.getCurrentUserName());
+        int updateRole = roleMapper.updateRole(role);
+        if (updateRole <= 0) {
             throw new CommonException(ErrorCode.UPDATE_ERROR);
+        }
+        roleMapper.deleteRoleMenus(role.getId());
+        if (null == role.getMenuIds() || role.getMenuIds().isEmpty()) {
+            log.warn("没有需要修改的角色权限信息");
+            return;
+        }
+        int insertRoleMenu = roleMapper.insertRoleMenu(role.getId(), role.getMenuIds(), role.getCreatedBy());
+        if (insertRoleMenu <= 0) {
+            throw new CommonException(ErrorCode.INSERT_ERROR);
+        }
+        log.info("修改角色成功");
+    }
+
+    @Override
+    public List<Long> selectMenuIds(Long roleId) {
+        if (null == roleId || roleId < 0) {
+            throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
+        }
+        List<Long> list = roleMapper.selectMenuIds(roleId);
+        if (null == list || list.isEmpty()) {
+            throw new CommonException(ErrorCode.SELECT_ERROR);
+        } else {
+            log.info("角色菜单权限返回成功");
+            return list;
         }
     }
 }

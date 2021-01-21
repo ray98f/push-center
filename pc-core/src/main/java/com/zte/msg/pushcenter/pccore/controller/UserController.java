@@ -98,7 +98,7 @@ public class UserController {
     /**
      * 获取所有用户
      */
-    @PermissionCheck(permissionName = {"list"})
+    @PermissionCheck(permissionName = {"aaa"})
     @GetMapping("/user")
     @ApiOperation(value = "获取所有用户")
     public DataResponse<List<User>> listAllUser(){
