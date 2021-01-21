@@ -58,6 +58,7 @@ public class WarnHandler {
         EarlyWarnConfig earlyWarnConfig = earlyWarnService.selectEarlyWarnConfig();
         List<Long> userIds = Arrays.stream(earlyWarnConfig.getUserIds()
                 .split(Constants.COMMA_EN)).map(Long::parseLong).collect(Collectors.toList());
+        warnConfig = new EarlyWarnConfigModel();
         BeanUtils.copyProperties(earlyWarnConfig, warnConfig);
         warnConfig.setUsers(userService.listUser(userIds));
         statTime = Instant.now().getMillis();
