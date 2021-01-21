@@ -49,60 +49,62 @@ public class MySqlParserFilter implements ISqlParserFilter {
 
     @Override
     public boolean doFilter(MetaObject metaObject) {
-//        MappedStatement mappedStatement = (MappedStatement) metaObject.getValue("delegate.mappedStatement");
-//        if (SqlCommandType.SELECT == mappedStatement.getSqlCommandType()) {
-//            BoundSql boundSql = (BoundSql) metaObject.getValue("delegate.boundSql");
-//            String sql = boundSql.getSql().toLowerCase();
-//            List<String> tables = new ArrayList<>();
-//            try {
-//                Select select = (Select) CCJSqlParserUtil.parse(sql);
-//                SelectBody selectBody = select.getSelectBody();
-//                PlainSelect plainSelect = (PlainSelect) selectBody;
-//                Table table = (Table) plainSelect.getFromItem();
-//                if (Objects.nonNull(table.getAlias())) {
-//                    tables.add(table.getAlias().getName());
-//                } else {
-//                    tables.add(table.getName());
-//                }
-//                if (Objects.nonNull(plainSelect.getJoins()) && !plainSelect.getJoins().isEmpty()) {
-//                    for (Join join : plainSelect.getJoins()) {
-//                        Table joinTable = (Table) join.getRightItem();
-//                        if (joinTable.getAlias() != null) {
-//                            tables.add(joinTable.getAlias().getName());
-//                        } else {
-//                            tables.add(joinTable.getName());
-//                        }
-//                    }
-//                }
-//            } catch (JSQLParserException e) {
-//                e.printStackTrace();
-//                log.error("error when parse sql ! ");
-//            }
-//            List<String> joins = new ArrayList<>(tables.size());
-//            for (String table : tables) {
-//                joins.add(table + "." + logicDeleteField + " = 0");
-//            }
-//            String join = StringUtils.join(joins, SPACE + AND + SPACE);
-//
-//            StringBuilder sqlBuilder = new StringBuilder(sql);
-//            boolean where = sql.contains(WHERE);
-//            boolean limit = sql.contains(LIMIT);
-//            boolean group = sql.contains(GROUP_BY);
-//            boolean deleted = sql.contains(logicDeleteField);
-//            if (where && !deleted) {
-//                sqlBuilder.insert(sqlBuilder.indexOf(WHERE) + 6, join + SPACE + AND + SPACE);
-//            }
-//            if (!where && !limit && !group) {
-//                sqlBuilder.append(" ").append(WHERE).append(SPACE).append(join);
-//            }
-//            if (!where && group) {
-//                sqlBuilder.insert(sqlBuilder.indexOf(GROUP_BY), WHERE + join);
-//            }
-//            if (!where && limit && !group) {
-//                sqlBuilder.insert(sqlBuilder.indexOf(LIMIT), WHERE + SPACE + join);
-//            }
-//            metaObject.setValue(PluginUtils.DELEGATE_BOUNDSQL_SQL, sqlBuilder.toString());
-//        }
+        MappedStatement mappedStatement = (MappedStatement) metaObject.getValue("delegate.mappedStatement");
+        if (SqlCommandType.SELECT == mappedStatement.getSqlCommandType()) {
+            BoundSql boundSql = (BoundSql) metaObject.getValue("delegate.boundSql");
+            String sql = boundSql.getSql().toLowerCase();
+            List<String> tables = new ArrayList<>();
+            try {
+                Select select = (Select) CCJSqlParserUtil.parse(sql);
+                SelectBody selectBody = select.getSelectBody();
+                PlainSelect plainSelect = (PlainSelect) selectBody;
+                if (!(plainSelect.getFromItem() instanceof Table)) {
+                    return false;
+                }
+                Table table = (Table) plainSelect.getFromItem();
+                if (Objects.nonNull(table.getAlias())) {
+                    tables.add(table.getAlias().getName());
+                } else {
+                    tables.add(table.getName());
+                }
+                if (Objects.nonNull(plainSelect.getJoins()) && !plainSelect.getJoins().isEmpty()) {
+                    for (Join join : plainSelect.getJoins()) {
+                        Table joinTable = (Table) join.getRightItem();
+                        if (joinTable.getAlias() != null) {
+                            tables.add(joinTable.getAlias().getName());
+                        } else {
+                            tables.add(joinTable.getName());
+                        }
+                    }
+                }
+            } catch (JSQLParserException e) {
+                e.printStackTrace();
+                log.error("error when parse sql ! ");
+            }
+            List<String> joins = new ArrayList<>(tables.size());
+            for (String table : tables) {
+                joins.add(table + "." + logicDeleteField + " = 0");
+            }
+            String join = StringUtils.join(joins, SPACE + AND + SPACE);
+            StringBuilder sqlBuilder = new StringBuilder(sql);
+            boolean where = sql.contains(WHERE);
+            boolean limit = sql.contains(LIMIT);
+            boolean group = sql.contains(GROUP_BY);
+            boolean deleted = sql.contains(logicDeleteField);
+            if (where && !deleted) {
+                sqlBuilder.insert(sqlBuilder.indexOf(WHERE) + 6, join + SPACE + AND + SPACE);
+            }
+            if (!where && !limit && !group) {
+                sqlBuilder.append(" ").append(WHERE).append(SPACE).append(join);
+            }
+            if (!where && group) {
+                sqlBuilder.insert(sqlBuilder.indexOf(GROUP_BY), WHERE + join);
+            }
+            if (!where && limit && !group) {
+                sqlBuilder.insert(sqlBuilder.indexOf(LIMIT), WHERE + SPACE + join);
+            }
+            metaObject.setValue(PluginUtils.DELEGATE_BOUNDSQL_SQL, sqlBuilder.toString());
+        }
         return false;
     }
 
