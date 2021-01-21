@@ -29,12 +29,10 @@ public interface ProviderMapper extends BaseMapper<Provider> {
             "FROM " +
             " provider p " +
             "WHERE " +
-            " is_deleted = 0  " +
-            " AND ISNULL( script_tag ) = 0  " +
+            " ISNULL( script_tag ) = 0  " +
             " AND LENGTH( trim( script_tag ) ) > 0  " +
             " AND ISNULL( script_context ) = 0  " +
-            " AND LENGTH( trim( script_context ) ) >0" +
-            " AND p.is_deleted = 0 ")
+            " AND LENGTH( trim( script_context ) ) >0")
     List<ScriptModel> selectScripts();
 
 

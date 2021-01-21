@@ -39,6 +39,9 @@ public class EarlyWarnConfig extends BaseEntity {
     @ApiModelProperty(value = "公众号模板id")
     private Long wechatTemplateId;
 
+    @ApiModelProperty(value = "公众号内容")
+    private String wechatData;
+
     @ApiModelProperty(value = "AppId")
     private Long appId;
 

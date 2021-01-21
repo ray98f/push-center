@@ -30,7 +30,10 @@ public class DicDataResDTO {
 
     private Integer order;
 
-    @ApiModelProperty(value = "状态:0-禁用，2-启用")
+    @ApiModelProperty(value = "备注")
+    private String description;
+
+    @ApiModelProperty(value = "状态:0-禁用，1-启用")
     private Integer isEnable;
 
     @ApiModelProperty(value = "操作时间")

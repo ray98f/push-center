@@ -25,6 +25,9 @@ public class DicDataReqDTO {
     @NotNull(message = "32000006")
     private String value;
 
+    @ApiModelProperty(value = "备注")
+    private String description;
+
     @ApiModelProperty(value = "字典类型")
     private String type;
 

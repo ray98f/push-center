@@ -20,6 +20,8 @@ public class DicData extends BaseEntity {
 
     private String type;
 
+    private String description;
+
     @TableField(value = "`order`")
     private Integer order;
 

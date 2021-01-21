@@ -34,8 +34,8 @@ public interface WeChatTemplateMapper extends BaseMapper<WeChatTemplate> {
             " LEFT JOIN provider p ON wt.provider_id = p.id  " +
             "WHERE " +
             " p.type = 4  " +
-            " AND p.is_deleted = 0  " +
-            " AND wt.is_deleted = 0 " +
+//            " AND p.is_deleted = 0  " +
+//            " AND wt.is_deleted = 0 " +
             " AND wt.status = 1")
     List<WxConfigModel> selectWxConfigsForInit();
 
@@ -56,8 +56,8 @@ public interface WeChatTemplateMapper extends BaseMapper<WeChatTemplate> {
                     " LEFT JOIN provider p ON wt.provider_id = p.id  " +
                     "WHERE " +
                     " p.type = 4  " +
-                    " AND p.is_deleted = 0  " +
-                    " AND wt.is_deleted = 0 " +
+//                    " AND p.is_deleted = 0  " +
+//                    " AND wt.is_deleted = 0 " +
                     " AND wt.status = 1 " +
                     " AND wt.id IN " +
                     "<foreach collection = 'ids' item = 'id' open='(' separator=',' close=')'>",
@@ -84,8 +84,8 @@ public interface WeChatTemplateMapper extends BaseMapper<WeChatTemplate> {
                     " LEFT JOIN provider p ON wt.provider_id = p.id  " +
                     "WHERE " +
                     " p.type = 4  " +
-                    " AND p.is_deleted = 0  " +
-                    " AND wt.is_deleted = 0 " +
+//                    " AND p.is_deleted = 0  " +
+//                    " AND wt.is_deleted = 0 " +
                     " AND wt.status = 1 " +
                     " AND p.id IN ",
             "<foreach collection = 'ids' item = 'id' open='(' separator=',' close=')'>",

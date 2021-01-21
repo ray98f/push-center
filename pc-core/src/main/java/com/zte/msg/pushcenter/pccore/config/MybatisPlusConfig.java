@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @MapperScan("com.zte.msg.pushcenter.mapper")
 public class MybatisPlusConfig {
+
     /**
      * 分页插件
      *
@@ -28,9 +29,15 @@ public class MybatisPlusConfig {
         paginationInterceptor.setOverflow(false);
 //         设置最大单页限制数量，默认 500 条，-1 不受限制
         paginationInterceptor.setLimit(50);
+        paginationInterceptor.setSqlParserFilter(getSqlFilter());
         // 开启 count 的 join 优化,只针对部分 left join
         paginationInterceptor.setCountSqlParser(new JsqlParserCountOptimize(true));
         return paginationInterceptor;
+    }
+
+    @Bean
+    public MySqlParserFilter getSqlFilter() {
+        return new MySqlParserFilter();
     }
 
 //    @Bean

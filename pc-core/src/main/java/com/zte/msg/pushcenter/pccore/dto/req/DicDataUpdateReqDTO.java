@@ -30,6 +30,9 @@ public class DicDataUpdateReqDTO {
     @ApiModelProperty(value = "字典类型")
     private String type;
 
+    @ApiModelProperty(value = "备注")
+    private String description;
+
     @ApiModelProperty(value = "字典排序")
     @NotNull(message = "32000006")
     private Integer order;

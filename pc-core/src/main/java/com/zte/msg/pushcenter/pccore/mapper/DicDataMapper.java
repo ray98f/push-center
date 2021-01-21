@@ -25,6 +25,7 @@ public interface DicDataMapper extends BaseMapper<DicData> {
                     " is_enable, " +
                     " type, " +
                     " `order`, " +
+                    " description, " +
                     " updated_at  " +
                     "FROM " +
                     " `dic_data`",

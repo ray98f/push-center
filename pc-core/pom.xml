@@ -12,6 +12,7 @@
     <artifactId>pc-core</artifactId>
 
     <dependencies>
+
         <dependency>
             <groupId>com.zte.msg</groupId>
             <artifactId>pc-script</artifactId>
@@ -44,10 +45,11 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.github.jsqlparser/jsqlparser -->
         <dependency>
-            <groupId>com.github.binarywang</groupId>
-            <artifactId>weixin-java-mp</artifactId>
-            <version>4.0.0</version>
+            <groupId>com.github.jsqlparser</groupId>
+            <artifactId>jsqlparser</artifactId>
+            <version>3.2</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
