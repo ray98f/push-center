@@ -7,8 +7,10 @@ import com.zte.msg.pushcenter.pccore.dto.req.MailMessageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsMessageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.WeChatMessageReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.EarlyWarnConfig;
+import com.zte.msg.pushcenter.pccore.entity.EarlyWarnInfo;
 import com.zte.msg.pushcenter.pccore.entity.User;
 import com.zte.msg.pushcenter.pccore.model.EarlyWarnConfigModel;
+import com.zte.msg.pushcenter.pccore.service.EarlyWarnInfoService;
 import com.zte.msg.pushcenter.pccore.service.EarlyWarnService;
 import com.zte.msg.pushcenter.pccore.service.PushCenterService;
 import com.zte.msg.pushcenter.pccore.service.UserService;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -40,6 +43,9 @@ public class WarnHandler {
 
     @Resource
     private EarlyWarnService earlyWarnService;
+
+    @Resource
+    private EarlyWarnInfoService earlyWarnInfoService;
 
     @Resource
     private UserService userService;
@@ -70,10 +76,13 @@ public class WarnHandler {
     @Resource
     private PushCenterService pushCenterService;
 
-    public void doWarn() {
+    public void doWarn(Instant now) {
+
         pushSms();
         pushMail();
         pushWechat();
+
+        persist(now);
     }
 
     private void pushWechat() {
@@ -133,7 +142,7 @@ public class WarnHandler {
         if (warnCount < warnConfig.getThreshold()) {
             warnCount++;
         } else if ((nowMillis - lastWarnTime) > warnConfig.getAlarmInterval()) {
-            doWarn();
+            doWarn(now);
             lastWarnTime = nowMillis;
             warnCount = 0;
         }
@@ -151,4 +160,13 @@ public class WarnHandler {
         init();
     }
 
+    public void persist(Instant now) {
+        EarlyWarnInfo earlyWarnInfo = new EarlyWarnInfo();
+        earlyWarnInfo.setTime(new Timestamp(now.getMillis()));
+        earlyWarnInfo.setReason(String.format("消息平台%s分钟内，推送失败次数超过%s次", warnConfig.getAlarmCycle() / 1000 / 60,
+                warnConfig.getThreshold()));
+        earlyWarnInfo.setContent(pushCenterService.getSmsConfig(warnConfig.getSmsTemplateId()).getContent());
+        earlyWarnInfo.setDisposer(StringUtils.join(warnConfig.getUsers().stream().map(User::getUserName).toArray(), Constants.COMMA_EN));
+        earlyWarnInfoService.save(earlyWarnInfo);
+    }
 }

@@ -52,6 +52,11 @@ public class PushCenterServiceImpl implements PushCenterService {
     }
 
     @Override
+    public SmsPusher.SmsConfig getSmsConfig(Long templateId) {
+        return smsPusher.getConfig(templateId);
+    }
+
+    @Override
     public void pushMail(MailMessage mailMessage) {
         checkProviderType(mailMessage, mailMessage.getProviderId());
         mailPusher.submit(mailMessage);

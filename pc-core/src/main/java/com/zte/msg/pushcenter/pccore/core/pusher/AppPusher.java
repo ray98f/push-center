@@ -10,7 +10,7 @@ import com.zte.msg.pushcenter.pccore.core.pusher.msg.AppMessage;
 import com.zte.msg.pushcenter.pccore.entity.ApplicationInfo;
 import com.zte.msg.pushcenter.pccore.entity.Provider;
 import com.zte.msg.pushcenter.pccore.enums.PushMethods;
-import com.zte.msg.pushcenter.pccore.utils.MapUtils;
+import com.zte.msg.pushcenter.pccore.utils.Constants;
 import com.zte.msg.pushcenter.pcscript.PcScript;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -44,16 +44,12 @@ public class AppPusher extends BasePusher {
     public void push(Message message) {
         AppMessage appMessage = (AppMessage) message;
         CompletableFuture.supplyAsync(() -> {
-            AppConfig config = (AppConfig) configMap.get(PushMethods.APP)
-                    .get(appMessage.getProviderId())
-                    .get(appMessage.getProviderId().intValue());
+            AppConfig config = getConfig(appMessage.getProviderId());
 
             appMessage.setProviderName(config.getProviderName());
-            Map<String, Object> paramMap = new HashMap<>(16);
-
-            paramMap.putAll(MapUtils.objectToMap(appMessage));
-            paramMap.putAll(JSON.parseObject(config.getConfig(), new TypeReference<HashMap<String, Object>>() {
-            }));
+            Map<String, Object> paramMap = getParamMap(appMessage,
+                    JSON.parseObject(config.getConfig(), new TypeReference<HashMap<String, Object>>() {
+                    }));
             Class<?> scriptClass = scriptManager.getScriptClass(config.getScriptTag());
             Method execute;
             PcScript.Res res = null;
@@ -69,11 +65,13 @@ public class AppPusher extends BasePusher {
             }
             return res;
         }).exceptionally(e -> {
-            warn();
             log.error("Error while send a sms message: {}", e.getMessage());
             e.printStackTrace();
             return new PcScript.Res(1, "系统内部错误");
         }).thenAcceptAsync(o -> {
+            if (o.getCode() != Constants.SUCCESS) {
+                warn();
+            }
             if (message.getIsCallBack()) {
                 response(message, o);
             }
@@ -135,6 +133,10 @@ public class AppPusher extends BasePusher {
             this.providerId = provider.getId();
             this.providerName = provider.getProviderName();
         }
+    }
+
+    private AppConfig getConfig(Long providerId) {
+        return (AppConfig) super.getConfig(PushMethods.APP).get(providerId).lastEntry().getValue();
     }
 
 }

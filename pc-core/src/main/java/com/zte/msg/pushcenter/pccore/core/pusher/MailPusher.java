@@ -13,6 +13,7 @@ import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.service.AppService;
 import com.zte.msg.pushcenter.pccore.service.HistoryService;
+import com.zte.msg.pushcenter.pccore.utils.Constants;
 import com.zte.msg.pushcenter.pcscript.PcScript;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -55,8 +56,7 @@ public class MailPusher extends BasePusher {
         MailMessage mailMessage = (MailMessage) message;
         CompletableFuture.supplyAsync(() -> {
             log.info("==========submit mail push task==========");
-            MailConfig config = (MailConfig) configMap.get(PushMethods.MAIL)
-                    .get(mailMessage.getProviderId()).get(mailMessage.getProviderId().intValue());
+            MailConfig config = getConfig(mailMessage.getProviderId());
             JavaMailSenderImpl mailSender = buildMailSender(config);
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             long start = System.currentTimeMillis();
@@ -81,7 +81,12 @@ public class MailPusher extends BasePusher {
             warn();
             log.error("Error while send a mail message: {}", e.getMessage());
             throw new CommonException(ErrorCode.MAIL_PUSH_ERROR);
-        }).thenAcceptAsync(o -> persist(mailMessage, o));
+        }).thenAcceptAsync(o -> {
+            if (o.getCode() != Constants.SUCCESS) {
+                warn();
+            }
+            persist(mailMessage, o);
+        });
     }
 
     @Override
@@ -149,6 +154,11 @@ public class MailPusher extends BasePusher {
         p.setProperty("mail.smtp.auth", "true");
         jms.setJavaMailProperties(p);
         return jms;
+    }
+
+    private MailConfig getConfig(Long providerId) {
+
+        return (MailConfig) super.getConfig(PushMethods.MAIL).get(providerId).lastEntry().getValue();
     }
 
 }

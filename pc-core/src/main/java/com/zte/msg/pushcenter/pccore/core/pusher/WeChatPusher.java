@@ -18,6 +18,7 @@ import com.zte.msg.pushcenter.pccore.mapper.WeChatTemplateMapper;
 import com.zte.msg.pushcenter.pccore.model.WxConfigModel;
 import com.zte.msg.pushcenter.pccore.service.AppService;
 import com.zte.msg.pushcenter.pccore.service.WechatAccessTokenService;
+import com.zte.msg.pushcenter.pccore.utils.Constants;
 import com.zte.msg.pushcenter.pcscript.PcScript;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -108,11 +109,14 @@ public class WeChatPusher extends BasePusher {
             }
             return new PcScript.Res(body.getErrCode(), body.getErrMsg());
         }).exceptionally(e -> {
-            warn();
+
             log.error("Error while send a wechat message: {}", e.getMessage());
             e.printStackTrace();
             return new PcScript.Res(1, "系统内部错误");
         }).thenAcceptAsync(o -> {
+            if (o.getCode() != Constants.SUCCESS) {
+                warn();
+            }
             if (message.getIsCallBack()) {
                 response(message, o);
             }

@@ -51,15 +51,17 @@ public class SmsInfo extends BaseEntity {
     @ApiModelProperty(value = "错误消息")
     private String failReason;
 
+    private Integer delay;
+
     @ApiModelProperty(value = "状态时间")
     private Timestamp resultTime;
 
     public SmsInfo() {
     }
 
-    public SmsInfo(String messageId, Long appId, String appName, String phoneNum, Timestamp transmitTime, String content,
-                   String providerName, Long templateId, Integer result, Integer failCode,
-                   String failReason, Timestamp resultTime) {
+    public SmsInfo(String messageId, Long appId, String appName, String phoneNum, Timestamp transmitTime,
+                   String content, String providerName, Long templateId, Integer result, Integer failCode,
+                   String failReason, Integer delay, Timestamp resultTime) {
         this.messageId = messageId;
         this.appId = appId;
         this.appName = appName;
@@ -71,6 +73,7 @@ public class SmsInfo extends BaseEntity {
         this.result = result;
         this.failCode = failCode;
         this.failReason = failReason;
+        this.delay = delay;
         this.resultTime = resultTime;
     }
 
@@ -86,6 +89,7 @@ public class SmsInfo extends BaseEntity {
         this.providerName = message.getProviderName();
         this.templateId = message.getTemplateId();
         this.failCode = res.getCode();
+        this.delay = message.getDelay();
         this.failReason = res.getMessage();
         // TODO: 2021/1/11
 //        this.resultTime =
