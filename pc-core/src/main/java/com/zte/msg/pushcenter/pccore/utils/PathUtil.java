@@ -1,5 +1,7 @@
 package com.zte.msg.pushcenter.pccore.utils;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -15,6 +17,7 @@ import java.nio.file.Paths;
  * @version 1.0
  * @date 2021/1/4 16:50
  */
+@SuppressFBWarnings("PATH_TRAVERSAL_IN")
 public class PathUtil {
 
     public static final String WIN = "win";

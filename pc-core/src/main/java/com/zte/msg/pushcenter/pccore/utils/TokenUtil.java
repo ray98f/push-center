@@ -9,6 +9,7 @@ import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.enums.TokenStatus;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.service.SecretService;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.apache.commons.codec.binary.Base64;
@@ -26,6 +27,7 @@ import java.util.UUID;
  * @version 1.0
  * @date 2020/12/23 15:42
  */
+@SuppressFBWarnings("PREDICTABLE_RANDOM")
 public class TokenUtil {
 
     @Resource

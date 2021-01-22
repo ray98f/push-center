@@ -2,6 +2,7 @@ package com.zte.msg.pushcenter.pccore.config;
 
 import com.zte.msg.pushcenter.pccore.config.filter.CorsFilter;
 import com.zte.msg.pushcenter.pccore.config.filter.JwtFilter;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
  *
  * @author frp
  */
+@SuppressFBWarnings("PERMISSIVE_CORS")
 @Configuration
 public class WebConfig extends WebMvcConfigurationSupport {
 

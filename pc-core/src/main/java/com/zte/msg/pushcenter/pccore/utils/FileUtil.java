@@ -2,12 +2,11 @@ package com.zte.msg.pushcenter.pccore.utils;
 
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -18,6 +17,7 @@ import java.util.UUID;
  * @version 1.0
  * @date 2020/12/29 16:41
  */
+@SuppressFBWarnings("PATH_TRAVERSAL_IN")
 public class FileUtil {
 
     public static String readStringFromFile(String path) {
@@ -28,7 +28,7 @@ public class FileUtil {
     public static String readStringFromFile(File file) {
         StringBuilder result = new StringBuilder();
         try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8));
             String s;
             while ((s = br.readLine()) != null) {
                 result.append(System.lineSeparator()).append(s);
