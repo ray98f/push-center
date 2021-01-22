@@ -2,6 +2,7 @@ package com.zte.msg.pushcenter.pccore.controller;
 
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
@@ -23,7 +24,7 @@ public class ErrorController {
     /**
      * 重新抛出异常
      */
-    @RequestMapping("/error/exthrow")
+    @GetMapping("/error/exthrow")
     public void rethrow(HttpServletRequest request) throws Throwable {
         throw (Throwable) request.getAttribute("filter.error");
     }
