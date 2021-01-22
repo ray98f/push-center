@@ -37,9 +37,6 @@ public class LoginController {
     @Resource
     private UserService userService;
 
-    @Resource
-    private MenuService menuService;
-
     /**
      * 管理平台登录
      * @param user 用户信息
@@ -52,10 +49,8 @@ public class LoginController {
         User userInfo = userService.selectUserInfo(user);
         String token = createSimpleToken(userInfo);
         log.info("{} Token返回成功", userInfo.getUserName());
-        List<MenuResDTO> menuResDTOList = menuService.listMenu(userInfo.getRoleId());
         Map<String, Object> data = new HashMap<>(16);
         data.put("token", token);
-        data.put("menuInfo", menuResDTOList);
         log.info("登陆成功");
         return DataResponse.of(data);
     }

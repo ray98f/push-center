@@ -112,7 +112,7 @@ public class RoleServiceImpl implements RoleService {
         if (null == roleId || roleId < 0) {
             throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
         }
-        List<Long> list = roleMapper.selectMenuIds(roleId);
+        List<Long> list = roleMapper.selectRoleMenuIds(roleId);
         if (null == list || list.isEmpty()) {
             throw new CommonException(ErrorCode.SELECT_ERROR);
         } else {

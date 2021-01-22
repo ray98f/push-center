@@ -18,6 +18,8 @@ public interface MenuService {
 
     List<SuperMenuResDTO> listSuper(Integer type);
 
+    List<MenuResDTO> listLoginMenu();
+
     void insertMenu(Menu menuList);
 
     List<MenuResDTO> listMenu(MenuReqDTO menuReqDTO);
@@ -26,5 +28,5 @@ public interface MenuService {
 
     void deleteMenu(List<Long> ids);
 
-    List<MenuResDTO> listMenu(Long roleId);
+    List<MenuResDTO> listMenu(List<Long> roleIds);
 }

@@ -17,6 +17,8 @@ import java.util.List;
 public interface UserMapper extends BaseMapper<User> {
     User selectUserInfo(String userName);
 
+    List<Long> selectUserRoles(String userName);
+
     int insertUser(User user, String doName);
 
     int changePwd(PasswordReqDTO passwordReqDTO, String updateBy);

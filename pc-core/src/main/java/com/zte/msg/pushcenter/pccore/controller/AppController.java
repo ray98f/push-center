@@ -7,6 +7,7 @@ import com.zte.msg.pushcenter.pccore.dto.res.SecretKeyResDTO;
 import com.zte.msg.pushcenter.pccore.entity.App;
 import com.zte.msg.pushcenter.pccore.service.AppService;
 import com.zte.msg.pushcenter.pccore.service.SecretService;
+import com.zte.msg.pushcenter.pccore.utils.PermissionCheck;
 import com.zte.msg.pushcenter.pccore.utils.TokenUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -46,6 +47,7 @@ public class AppController {
      *
      * @return List<App>
      */
+    @PermissionCheck(permissionName = {"system:tab:remove"})
     @PostMapping("/app/list")
     @ApiOperation(value = "服务列表获取")
     public PageResponse<App> listApp(@Valid @RequestBody AppListReqDTO appListReqDTO) {
@@ -58,6 +60,7 @@ public class AppController {
      * @param appIds 服务ID
      * @return <T>
      */
+    @PermissionCheck(permissionName = {"system:tab:remove"})
     @DeleteMapping("/app")
     @ApiOperation(value = "服务删除")
     public <T> DataResponse<T> deleteApp(@Valid @RequestBody List<Integer> appIds) {
@@ -72,6 +75,7 @@ public class AppController {
      * @param app 服务信息
      * @return <T>
      */
+    @PermissionCheck(permissionName = {"system:tab:remove"})
     @PostMapping("/app")
     @ApiOperation(value = "服务修改")
     public <T> DataResponse<T> updateApp(@RequestBody @Valid App app) {
@@ -86,6 +90,7 @@ public class AppController {
      * @param app 服务详情
      * @return <T>
      */
+    @PermissionCheck(permissionName = {"system:tab:remove"})
     @PutMapping("/app")
     @ApiOperation(value = "新增服务")
     public <T> DataResponse<T> insertApp(@Valid @RequestBody App app) {
@@ -101,6 +106,7 @@ public class AppController {
      *
      * @return <T>
      */
+    @PermissionCheck(permissionName = {"system:tab:remove"})
     @GetMapping("/app/reset")
     @ApiOperation(value = "重置密钥")
     public <T> DataResponse<T> resetKey(@Valid @RequestParam @NotNull(message = "32000006") Integer appId) {
@@ -114,6 +120,7 @@ public class AppController {
      *
      * @return Map<String, Object>
      */
+    @PermissionCheck(permissionName = {"system:tab:remove"})
     @GetMapping("/app/secret")
     @ApiOperation(value = "根据应用Id获取应用密钥")
     public DataResponse<SecretKeyResDTO> selectAppSecret(@Valid @RequestParam @NotNull(message = "32000006") Integer appId){

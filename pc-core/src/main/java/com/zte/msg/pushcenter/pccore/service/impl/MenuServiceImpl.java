@@ -4,17 +4,22 @@ import com.zte.msg.pushcenter.pccore.dto.req.MenuReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.MenuResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.SuperMenuResDTO;
 import com.zte.msg.pushcenter.pccore.entity.Menu;
+import com.zte.msg.pushcenter.pccore.entity.User;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.MenuMapper;
 import com.zte.msg.pushcenter.pccore.mapper.RoleMapper;
+import com.zte.msg.pushcenter.pccore.mapper.UserMapper;
 import com.zte.msg.pushcenter.pccore.service.MenuService;
 import com.zte.msg.pushcenter.pccore.utils.Constants;
 import com.zte.msg.pushcenter.pccore.utils.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -39,6 +44,12 @@ public class MenuServiceImpl implements MenuService {
     @Autowired
     private RoleMapper roleMapper;
 
+    @Autowired
+    private UserMapper userMapper;
+
+    @Resource
+    private MenuService menuService;
+
     @Override
     public List<SuperMenuResDTO> listSuper(Integer type) {
         List<SuperMenuResDTO> superMenuResDTOList = menuMapper.listSuperCatalog(type);
@@ -56,6 +67,13 @@ public class MenuServiceImpl implements MenuService {
         }
         log.info("上级菜单列表返回成功");
         return superMenuResDTOList;
+    }
+
+    @Override
+    public List<MenuResDTO> listLoginMenu() {
+        String userName = TokenUtil.getCurrentUserName();
+        List<Long> userRoles = userMapper.selectUserRoles(userName);
+        return new ArrayList<>(menuService.listMenu(userRoles));
     }
 
     @Override
@@ -123,10 +141,10 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public List<MenuResDTO> listMenu(Long roleId) {
+    public List<MenuResDTO> listMenu(List<Long> roleIds) {
         List<MenuResDTO> list;
         List<MenuResDTO.MenuInfo> menuInfoList;
-        List<Long> menuIds = roleMapper.selectMenuIds(roleId);
+        List<Long> menuIds = roleMapper.selectMenuIds(roleIds);
         list = menuMapper.listCatalog(null, menuIds);
         if (list.isEmpty()) {
             log.warn("根目录无下级");
@@ -140,7 +158,9 @@ public class MenuServiceImpl implements MenuService {
                 } else {
                     for (MenuResDTO.MenuInfo menuInfo : menuInfoList) {
                         String str = menuMapper.listButtonRoleIdentify(menuInfo.getId(), menuIds);
-                        menuInfo.setRoleIdentify(str);
+                        if (StringUtils.isNotBlank(str)) {
+                            menuInfo.setRoleIdentify(str);
+                        }
                     }
                 }
                 menuResDTO.setChildren(menuInfoList);
