@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zte.msg.pushcenter.pccore.mapper.HistoryMapper">
 
-    <select id="listHistorySms" resultType="com.zte.msg.pushcenter.pccore.entity.SmsInfo" parameterType="com.zte.msg.pushcenter.pccore.dto.req.SmsHistoryReqDTO">
+    <select id="listHistorySms" resultType="com.zte.msg.pushcenter.pccore.entity.SmsInfo"
+            parameterType="com.zte.msg.pushcenter.pccore.dto.req.SmsHistoryReqDTO">
         select * from sms_info
         <if test="appId!=null or phoneNum!=null or startTime!=null or endTime!=null or result!=null or templateId!=null">
             <trim prefix="where " suffixOverrides="and">
@@ -13,7 +14,7 @@
                     template_id=#{templateId} and
                 </if>
                 <if test="phoneNum!=null">
-                    phone_num like "%"#{phoneNum}"%" and
+                    phone_num like CONCAT('%',#{phoneNum},'%') and
                 </if>
                 <if test="startTime!=null">
                     transmit_time >= #{startTime} and
@@ -28,11 +29,14 @@
         </if>
         group by id
         <if test="appName!=null">
-            having GROUP_CONCAT("|",app_name,"|",to_pinyin(app_name),"|",pinyin(Num_char_extract(app_name,3)),"|",Num_char_extract(app_name,2),"|") like "%"#{appName}"%"
+            having
+            GROUP_CONCAT("|",app_name,"|",to_pinyin(app_name),"|",pinyin(Num_char_extract(app_name,3)),"|",Num_char_extract(app_name,2),"|")
+            like CONCAT('%',#{appName},'%')
         </if>
     </select>
 
-    <select id="listHistoryMail" resultType="com.zte.msg.pushcenter.pccore.entity.MailInfo" parameterType="com.zte.msg.pushcenter.pccore.dto.req.MailHistoryReqDTO">
+    <select id="listHistoryMail" resultType="com.zte.msg.pushcenter.pccore.entity.MailInfo"
+            parameterType="com.zte.msg.pushcenter.pccore.dto.req.MailHistoryReqDTO">
         select * from mail_info
         <if test="appId!=null or receiveAddress!=null or startTime!=null or endTime!=null or result!=null">
             <trim prefix="where " suffixOverrides="and">
@@ -40,7 +44,7 @@
                     app_id=#{appId} and
                 </if>
                 <if test="receiveAddress!=null">
-                    receive_address like "%"#{receiveAddress}"%" and
+                    receive_address like CONCAT('%', #{receiveAddress},'%') and
                 </if>
                 <if test="startTime!=null">
                     transmit_time >= #{startTime} and
@@ -55,11 +59,14 @@
         </if>
         group by id
         <if test="appName!=null">
-            having GROUP_CONCAT("|",app_name,"|",to_pinyin(app_name),"|",pinyin(Num_char_extract(app_name,3)),"|",Num_char_extract(app_name,2),"|") like "%"#{appName}"%"
+            having
+            GROUP_CONCAT("|",app_name,"|",to_pinyin(app_name),"|",pinyin(Num_char_extract(app_name,3)),"|",Num_char_extract(app_name,2),"|")
+            like CONCAT('%', #{appName},'%')
         </if>
     </select>
 
-    <select id="listHistoryWechat" resultType="com.zte.msg.pushcenter.pccore.entity.WeChatInfo" parameterType="com.zte.msg.pushcenter.pccore.dto.req.WechatHistoryReqDTO">
+    <select id="listHistoryWechat" resultType="com.zte.msg.pushcenter.pccore.entity.WeChatInfo"
+            parameterType="com.zte.msg.pushcenter.pccore.dto.req.WechatHistoryReqDTO">
         select * from wechat_info
         <if test="appId!=null or wechatName!=null or startTime!=null or endTime!=null or result!=null">
             <trim prefix="where " suffixOverrides="and">
@@ -81,16 +88,19 @@
         <if test="appName!=null or wechatName!=null">
             <trim prefix="having " suffixOverrides="and">
                 <if test="wechatName!=null">
-                    GROUP_CONCAT("|",wechat_name,"|",to_pinyin(wechat_name),"|",pinyin(Num_char_extract(wechat_name,3)),"|",Num_char_extract(wechat_name,2),"|") like "%"#{wechatName}"%" and
+                    GROUP_CONCAT("|",wechat_name,"|",to_pinyin(wechat_name),"|",pinyin(Num_char_extract(wechat_name,3)),"|",Num_char_extract(wechat_name,2),"|")
+                    like CONCAT('%', #{wechatName},'%') and
                 </if>
                 <if test="appName!=null">
-                    GROUP_CONCAT("|",app_name,"|",to_pinyin(app_name),"|",pinyin(Num_char_extract(app_name,3)),"|",Num_char_extract(app_name,2),"|") like "%"#{appName}"%" and
+                    GROUP_CONCAT("|",app_name,"|",to_pinyin(app_name),"|",pinyin(Num_char_extract(app_name,3)),"|",Num_char_extract(app_name,2),"|")
+                    like CONCAT('%', #{appName},'%') and
                 </if>
             </trim>
         </if>
     </select>
 
-    <select id="listHistoryApplication" resultType="com.zte.msg.pushcenter.pccore.entity.ApplicationInfo" parameterType="com.zte.msg.pushcenter.pccore.dto.req.ApplicationHistoryReqDTO">
+    <select id="listHistoryApplication" resultType="com.zte.msg.pushcenter.pccore.entity.ApplicationInfo"
+            parameterType="com.zte.msg.pushcenter.pccore.dto.req.ApplicationHistoryReqDTO">
         select * from application_info
         <if test="appId!=null or targetPlatform!=null or audience!=null or startTime!=null or endTime!=null or result!=null">
             <trim prefix="where " suffixOverrides="and">
@@ -116,7 +126,9 @@
         </if>
         group by id
         <if test="appName!=null">
-            having GROUP_CONCAT("|",app_name,"|",to_pinyin(app_name),"|",pinyin(Num_char_extract(app_name,3)),"|",Num_char_extract(app_name,2),"|") like "%"#{appName}"%"
+            having
+            GROUP_CONCAT("|",app_name,"|",to_pinyin(app_name),"|",pinyin(Num_char_extract(app_name,3)),"|",Num_char_extract(app_name,2),"|")
+            like CONCAT('%', #{appName},'%')
         </if>
     </select>
 </mapper>

@@ -92,16 +92,16 @@ public class MySqlParserFilter implements ISqlParserFilter {
             boolean group = sql.contains(GROUP_BY);
             boolean deleted = sql.contains(logicDeleteField);
             if (where && !deleted) {
-                sqlBuilder.insert(sqlBuilder.indexOf(WHERE) + 6, join + SPACE + AND + SPACE);
+                sqlBuilder.insert(sqlBuilder.indexOf(WHERE) + 6, SPACE + join + SPACE + AND + SPACE);
             }
             if (!where && !limit && !group) {
                 sqlBuilder.append(" ").append(WHERE).append(SPACE).append(join);
             }
             if (!where && group) {
-                sqlBuilder.insert(sqlBuilder.indexOf(GROUP_BY), WHERE + join);
+                sqlBuilder.insert(sqlBuilder.indexOf(GROUP_BY), SPACE + WHERE + SPACE + join + SPACE);
             }
             if (!where && limit && !group) {
-                sqlBuilder.insert(sqlBuilder.indexOf(LIMIT), WHERE + SPACE + join);
+                sqlBuilder.insert(sqlBuilder.indexOf(LIMIT), SPACE + WHERE + SPACE + join + SPACE);
             }
             metaObject.setValue(PluginUtils.DELEGATE_BOUNDSQL_SQL, sqlBuilder.toString());
         }
