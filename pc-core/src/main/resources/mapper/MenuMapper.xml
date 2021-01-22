@@ -29,25 +29,25 @@
             <if test="menuList.menuId!=null" >
                 menu_id,
             </if>
-            <if test="menuList.menuName!=null" >
+            <if test="menuList.menuName!=null and menuList.menuName!=''" >
                 menu_name,
             </if>
             <if test="menuList.menuType!=null" >
                 menu_type,
             </if>
-            <if test="menuList.menuIcon!=null" >
+            <if test="menuList.menuIcon!=null and menuList.menuIcon!=''" >
                 menu_icon,
             </if>
             <if test="menuList.menuSort!=null" >
                 menu_sort,
             </if>
-            <if test="menuList.menuUrl!=null" >
+            <if test="menuList.menuUrl!=null and menuList.menuUrl!=''" >
                 menu_url,
             </if>
-            <if test="menuList.roleIdentify!=null" >
+            <if test="menuList.roleIdentify!=null and menuList.roleIdentify!=''" >
                 role_identify,
             </if>
-            <if test="menuList.componentPath!=null" >
+            <if test="menuList.componentPath!=null and menuList.componentPath!=''" >
                 component_path,
             </if>
             <if test="menuList.isUse!=null" >
@@ -72,25 +72,25 @@
             <if test="menuList.menuId!=null" >
                 #{menuList.menuId},
             </if>
-            <if test="menuList.menuName!=null" >
+            <if test="menuList.menuName!=null and menuList.menuName!=''" >
                 #{menuList.menuName},
             </if>
             <if test="menuList.menuType!=null" >
                 #{menuList.menuType},
             </if>
-            <if test="menuList.menuIcon!=null" >
+            <if test="menuList.menuIcon!=null and menuList.menuIcon!=''" >
                 #{menuList.menuIcon},
             </if>
             <if test="menuList.menuSort!=null" >
                 #{menuList.menuSort},
             </if>
-            <if test="menuList.menuUrl!=null" >
+            <if test="menuList.menuUrl!=null and menuList.menuUrl!=''" >
                 #{menuList.menuUrl},
             </if>
-            <if test="menuList.roleIdentify!=null" >
+            <if test="menuList.roleIdentify!=null and menuList.roleIdentify!=''" >
                 #{menuList.roleIdentify},
             </if>
-            <if test="menuList.componentPath!=null" >
+            <if test="menuList.componentPath!=null and menuList.componentPath!=''" >
                 #{menuList.componentPath},
             </if>
             <if test="menuList.isUse!=null" >
@@ -138,8 +138,8 @@
         </if>
         <if test="menuIds!=null">
             AND id IN (
-            <foreach collection="menuIds" index="index" item="menuId" separator=",">
-                #{menuId}
+            <foreach collection="menuIds" index="index" item="id" separator=",">
+                #{id}
             </foreach>
             )
         </if>
@@ -147,19 +147,19 @@
 
     <select id="listButtonRoleIdentify" resultType="java.lang.String">
         SELECT GROUP_CONCAT(DISTINCT a.role_identify) AS roles FROM
-        ((SELECT role_identify
+        (SELECT role_identify
         FROM menu WHERE is_catalog=1 AND is_menu=1 AND is_deleted=0
         <if test="menuId!=null">
             AND menu_id=#{menuId}
         </if>
         <if test="menuIds!=null">
             AND id IN (
-            <foreach collection="menuIds" index="index" item="menuId" separator=",">
-                #{menuId}
+            <foreach collection="menuIds" index="index" item="id" separator=",">
+                #{id}
             </foreach>
             )
         </if>
-        )UNION ALL (SELECT "list" AS role_identify)) AS a
+        ) AS a
     </select>
 
     <update id="updateMenu">
@@ -177,25 +177,25 @@
             <if test="menuList.menuId!=null" >
                 menu_id=#{menuList.menuId},
             </if>
-            <if test="menuList.menuName!=null" >
+            <if test="menuList.menuName!=null and menuList.menuName!=''" >
                 menu_name=#{menuList.menuName},
             </if>
             <if test="menuList.menuType!=null" >
                 menu_type=#{menuList.menuType},
             </if>
-            <if test="menuList.menuIcon!=null" >
+            <if test="menuList.menuIcon!=null and menuList.menuIcon!=''" >
                 menu_icon=#{menuList.menuIcon},
             </if>
             <if test="menuList.menuSort!=null" >
                 menu_sort=#{menuList.menuSort},
             </if>
-            <if test="menuList.menuUrl!=null" >
+            <if test="menuList.menuUrl!=null and menuList.menuUrl!=''" >
                 menu_url=#{menuList.menuUrl},
             </if>
-            <if test="menuList.roleIdentify!=null" >
+            <if test="menuList.roleIdentify!=null and menuList.roleIdentify!=''" >
                 role_identify=#{menuList.roleIdentify},
             </if>
-            <if test="menuList.componentPath!=null" >
+            <if test="menuList.componentPath!=null and menuList.componentPath!=''" >
                 component_path=#{menuList.componentPath},
             </if>
             <if test="menuList.isUse!=null" >

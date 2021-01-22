@@ -122,15 +122,23 @@
     </update>
 
     <delete id="deleteRoleMenus">
-        UPDATE menu_role SET is_deleted=1 WHERE role_id=#{roleId} AND is_deleted=0;
+        UPDATE role_menu SET is_deleted=1 WHERE role_id=#{roleId} AND is_deleted=0;
     </delete>
 
     <select id="selectMenuRoles" resultType="java.lang.String">
-        SELECT m.role_identify FROM role as r left join role_menu as rm on r.id=rm.role_id AND r.is_deleted=0 and rm.is_deleted=0
+        SELECT DISTINCT m.role_identify FROM role as r left join role_menu as rm on r.id=rm.role_id AND r.is_deleted=0 and rm.is_deleted=0
         left join menu as m on m.id=rm.menu_id and m.is_deleted=0 and m.is_use=0 WHERE r.id=#{roleId}
     </select>
 
+    <select id="selectRoleMenuIds" resultType="java.lang.String">
+        SELECT DISTINCT menu_id FROM role_menu WHERE role_id=#{roleId} AND is_deleted=0;
+    </select>
+
     <select id="selectMenuIds" resultType="java.lang.String">
-        SELECT menu_id FROM role_menu WHERE role_id=#{roleId} AND is_deleted=0;
+        SELECT DISTINCT menu_id FROM role_menu WHERE role_id in (
+            <foreach collection="list" index="index" item="roleId" separator=",">
+                #{roleId}
+            </foreach>
+            ) AND is_deleted=0;
     </select>
 </mapper>

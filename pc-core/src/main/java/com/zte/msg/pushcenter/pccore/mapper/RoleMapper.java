@@ -33,5 +33,7 @@ public interface RoleMapper extends BaseMapper<Role> {
 
     List<String> selectMenuRoles(Long roleId);
 
-    List<Long> selectMenuIds(Long roleId);
+    List<Long> selectRoleMenuIds(Long roleId);
+
+    List<Long> selectMenuIds(List<Long> roleIds);
 }
