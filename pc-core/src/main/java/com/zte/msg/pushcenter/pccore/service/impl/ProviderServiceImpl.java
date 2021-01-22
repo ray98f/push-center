@@ -81,10 +81,8 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
         }
         Provider provider = new Provider();
         BeanUtils.copyProperties(providerReqDTO, provider);
-        if (PushMethods.valueOf(providerReqDTO.getType()) != PushMethods.MAIL) {
-            provider.setScriptTag(PushConfigUtils.getTag());
-        }
         provider.setId(providerId);
+        provider.setScriptTag(exist.getScriptTag());
         getBaseMapper().updateById(provider);
         // 刷新配置
         flusher.flush(provider);

@@ -45,6 +45,8 @@ public class MailInfo extends BaseEntity {
     @ApiModelProperty(value = "发送状态")
     private Integer result;
 
+    private Integer delay;
+
     @ApiModelProperty(value = "错误代码")
     private Integer failCode;
 
@@ -56,7 +58,7 @@ public class MailInfo extends BaseEntity {
 
     public MailInfo(String messageId, Long appId, String appName, String receiveAddress, String ccAddress,
                     String mailTitle, String mailBody, String providerName, Timestamp transmitTime, Integer result,
-                    Integer failCode, String failReason) {
+                    Integer delay, Integer failCode, String failReason) {
         this.messageId = messageId;
         this.appId = appId;
         this.appName = appName;
@@ -67,6 +69,7 @@ public class MailInfo extends BaseEntity {
         this.providerName = providerName;
         this.transmitTime = transmitTime;
         this.result = result;
+        this.delay = delay;
         this.failCode = failCode;
         this.failReason = failReason;
     }
@@ -79,6 +82,7 @@ public class MailInfo extends BaseEntity {
         this.ccAddress = StringUtils.join(mailMessage.getCc(), ",");
         this.mailTitle = mailMessage.getSubject();
         this.mailBody = mailMessage.getContent();
+        this.delay = mailMessage.getDelay();
         // TODO: 2021/1/12
         this.providerName = "网易";
         this.transmitTime = mailMessage.getTransmitTime();

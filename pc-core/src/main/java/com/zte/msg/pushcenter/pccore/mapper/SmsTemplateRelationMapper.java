@@ -101,10 +101,6 @@ public interface SmsTemplateRelationMapper extends BaseMapper<SmsTemplateRelatio
             " LEFT JOIN provider p ON pst.provider_id = p.id  " +
             "WHERE " +
             " p.type = 1  " +
-            " AND str.is_deleted = 0  " +
-            " AND st.is_deleted = 0  " +
-            " AND pst.is_deleted = 0  " +
-            " AND p.is_deleted = 0 " +
             " AND pst.is_enable = 1" +
             " AND st.is_enable = 1 "
     )
@@ -131,10 +127,6 @@ public interface SmsTemplateRelationMapper extends BaseMapper<SmsTemplateRelatio
                     " LEFT JOIN provider p ON pst.provider_id = p.id  " +
                     "WHERE " +
                     " p.type = 1  " +
-                    " AND str.is_deleted = 0  " +
-                    " AND st.is_deleted = 0  " +
-                    " AND pst.is_deleted = 0  " +
-                    " AND p.is_deleted = 0 " +
                     " AND pst.is_enable = 1" +
                     " AND st.is_enable = 1 " +
                     " AND st.id IN " +

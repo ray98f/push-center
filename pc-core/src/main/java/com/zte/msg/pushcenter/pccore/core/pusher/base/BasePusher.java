@@ -8,6 +8,7 @@ import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import com.zte.msg.pushcenter.pccore.mapper.ProviderMapper;
 import com.zte.msg.pushcenter.pccore.service.AppService;
 import com.zte.msg.pushcenter.pccore.service.HistoryService;
+import com.zte.msg.pushcenter.pccore.utils.MapUtils;
 import com.zte.msg.pushcenter.pcscript.PcScript;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.Instant;
@@ -79,6 +80,7 @@ public abstract class BasePusher {
      */
     protected Map<PushMethods, Map<Long, TreeMap<Integer, Config>>> configMap = new HashMap<>();
 
+
     /**
      * 提交推送
      *
@@ -128,6 +130,22 @@ public abstract class BasePusher {
 
     protected void warn() {
         warnHandler.submitWarn(Instant.now());
+    }
+
+    protected Map<Long, TreeMap<Integer, Config>> getConfig(PushMethods pushMethods) {
+        return configMap.get(pushMethods);
+    }
+
+    protected Map<String, Object> getParamMap(Object... objects) {
+        Map<String, Object> paramMap = new HashMap<>(16);
+        for (Object object : objects) {
+            if (object instanceof Map) {
+                paramMap.putAll((Map<String, Object>) object);
+            } else {
+                paramMap.putAll(MapUtils.objectToMap(object));
+            }
+        }
+        return paramMap;
     }
 
 

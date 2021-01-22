@@ -56,6 +56,8 @@ public class EarlyWarnConfigModel {
     @ApiModelProperty(value = "目标微信openId")
     private String openIds;
 
+    private String disposer;
+
     private List<User> users;
 
 }

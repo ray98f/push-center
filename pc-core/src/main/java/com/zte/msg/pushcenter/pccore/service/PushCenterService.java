@@ -1,5 +1,6 @@
 package com.zte.msg.pushcenter.pccore.service;
 
+import com.zte.msg.pushcenter.pccore.core.pusher.SmsPusher;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.AppMessage;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.MailMessage;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.SmsMessage;
@@ -15,6 +16,8 @@ import com.zte.msg.pushcenter.pccore.core.pusher.msg.WeChatMessage;
 public interface PushCenterService {
 
     void pushSms(SmsMessage smsMessage);
+
+    SmsPusher.SmsConfig getSmsConfig(Long templateId);
 
     void pushMail(MailMessage mailMessage);
 

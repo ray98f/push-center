@@ -13,7 +13,7 @@ import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.SmsTemplateRelationMapper;
 import com.zte.msg.pushcenter.pccore.model.SmsConfigModel;
 import com.zte.msg.pushcenter.pccore.service.AppService;
-import com.zte.msg.pushcenter.pccore.utils.MapUtils;
+import com.zte.msg.pushcenter.pccore.utils.Constants;
 import com.zte.msg.pushcenter.pccore.utils.PatternUtils;
 import com.zte.msg.pushcenter.pcscript.ParamConstants;
 import com.zte.msg.pushcenter.pcscript.PcScript;
@@ -25,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
-import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -54,7 +53,6 @@ public class SmsPusher extends BasePusher {
         buildAndFlush(configDetails);
     }
 
-
     private void buildAndFlush(List<SmsConfigModel> smsConfigModels) {
         smsConfigModels.forEach(o -> {
             SmsConfig smsConfig = new SmsConfig();
@@ -67,49 +65,42 @@ public class SmsPusher extends BasePusher {
     }
 
     private void flushConfig(SmsConfig o) {
-        TreeMap<Integer, Config> treeMap = configMap.get(PushMethods.SMS).get(o.getSmsTemplateId());
+        TreeMap<Integer, Config> treeMap = super.getConfig(PushMethods.SMS).get(o.getSmsTemplateId());
         if (Objects.isNull(treeMap)) {
             treeMap = new TreeMap<>();
         }
         treeMap.put(o.getPriority(), o);
-        configMap.get(PushMethods.SMS).put(o.getSmsTemplateId(), treeMap);
+        super.getConfig(PushMethods.SMS).put(o.getSmsTemplateId(), treeMap);
     }
 
     @Override
     public void push(Message message) {
-        long pushStart = System.currentTimeMillis();
         SmsMessage smsMessage = (SmsMessage) message;
-        smsMessage.setTransmitTime(new Timestamp(pushStart));
-        TreeMap<Integer, Config> treeMap = configMap.get(PushMethods.SMS).get(smsMessage.getTemplateId());
-        SmsConfig smsConfigDetail = (SmsConfig) treeMap.lastEntry().getValue();
-        smsMessage.setContent(smsConfigDetail.getContent());
-        smsMessage.setProviderName(smsConfigDetail.getProviderName());
-        smsMessage.setCode(smsConfigDetail.getCode());
+        SmsConfig smsConfig = getConfig(smsMessage.getTemplateId());
+        smsMessage.build(smsConfig);
         String[] varsKeySet = smsMessage.getVars().keySet().toArray(new String[]{});
-        if (varsKeySet.length != smsConfigDetail.getParams().size()) {
+        if (varsKeySet.length != smsConfig.getParams().size()) {
             log.error("模版: {} 参数列表数量不匹配，短信发送失败..", smsMessage.getTemplateId());
             throw new CommonException(ErrorCode.SMS_TEMPLATE_PARAMS_NOT_MATCH);
         }
-        for (int i = 0; i < smsConfigDetail.getParams().size(); i++) {
-            smsMessage.getVars().put(smsConfigDetail.getParams().get(i), smsMessage.getVars().remove(varsKeySet[i]));
+        for (int i = 0; i < smsConfig.getParams().size(); i++) {
+            smsMessage.getVars().put(smsConfig.getParams().get(i), smsMessage.getVars().remove(varsKeySet[i]));
         }
-        Map<String, Object> mapAll = new HashMap<>(16);
-        mapAll.putAll(MapUtils.objectToMap(smsConfigDetail));
-        mapAll.putAll(MapUtils.objectToMap(smsMessage));
-        mapAll.putAll(smsConfigDetail.getConfig().getInnerMap());
+        Map<String, Object> paramMap = getParamMap(smsConfig, smsMessage, smsConfig.getConfig().getInnerMap());
+
         for (int i = 0; i < smsMessage.getPhoneNum().length; i++) {
             String phoneNum = smsMessage.getPhoneNum()[i];
-            mapAll.put(ParamConstants.PHONE_NUM, phoneNum);
+            paramMap.put(ParamConstants.PHONE_NUM, phoneNum);
             smsMessage.setIndex(i);
             CompletableFuture.supplyAsync(() -> {
                 log.info("==========submit sms push task==========");
                 PcScript.Res res = null;
                 try {
-                    Class<?> scriptClass = scriptManager.getScriptClass(smsConfigDetail.getScriptTag());
+                    Class<?> scriptClass = scriptManager.getScriptClass(smsConfig.getScriptTag());
                     Method execute = scriptClass.getMethod("execute", Map.class);
                     Object o = scriptClass.newInstance();
                     long start = System.currentTimeMillis();
-                    res = (PcScript.Res) execute.invoke(o, mapAll);
+                    res = (PcScript.Res) execute.invoke(o, paramMap);
                     int delay = (int) (System.currentTimeMillis() - start);
                     smsMessage.setDelay(delay);
                 } catch (Exception e) {
@@ -117,11 +108,13 @@ public class SmsPusher extends BasePusher {
                 }
                 return res;
             }, pushExecutor).exceptionally(e -> {
-                warn();
                 log.error("Error while send a sms message: {}", e.getMessage());
                 e.printStackTrace();
                 return new PcScript.Res(1, "系统内部错误");
             }).thenAcceptAsync(o -> {
+                if (o.getCode() != Constants.SUCCESS) {
+                    warn();
+                }
                 if (message.getIsCallBack()) {
                     response(message, o);
                 }
@@ -224,5 +217,11 @@ public class SmsPusher extends BasePusher {
         private JSONObject config;
 
     }
+
+    public SmsConfig getConfig(Long templateId) {
+        return (SmsConfig) super.getConfig(PushMethods.SMS).get(templateId).lastEntry().getValue();
+    }
+
+
 }
 

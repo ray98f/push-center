@@ -11,6 +11,8 @@ import java.util.regex.Pattern;
  */
 public class Constants {
 
+    public static final int SUCCESS = 0;
+
     public static final Pattern SMS_CONTENT_PATTERN_1 = Pattern.compile("\\{(.*?)}");
 
     public static final Pattern SMS_CONTENT_PATTERN_2 = Pattern.compile("#(.*?)#");

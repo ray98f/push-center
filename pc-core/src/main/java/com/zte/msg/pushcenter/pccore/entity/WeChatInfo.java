@@ -94,6 +94,7 @@ public class WeChatInfo extends BaseEntity {
         this.templateId = message.getTemplateId();
         this.templateData = message.getData();
         this.skipUrl = message.getSkipUrl();
+        this.delay = message.getDelay();
         this.appletData = message.getAppletData();
         this.transmitTime = message.getTransmitTime();
         if (res.getCode() == 0) {
