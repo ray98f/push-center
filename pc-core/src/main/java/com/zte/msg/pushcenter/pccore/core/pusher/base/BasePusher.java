@@ -25,6 +25,7 @@ import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * description:
@@ -129,7 +130,7 @@ public abstract class BasePusher {
     abstract protected void init();
 
     protected void warn() {
-        warnHandler.submitWarn(Instant.now());
+        warnHandler.submitWarn(Instant.now().plus(TimeUnit.HOURS.toMillis(8)));
     }
 
     protected Map<Long, TreeMap<Integer, Config>> getConfig(PushMethods pushMethods) {

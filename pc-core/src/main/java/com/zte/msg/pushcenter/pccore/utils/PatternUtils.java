@@ -27,4 +27,10 @@ public class PatternUtils {
         return params;
     }
 
+    public static String buildContent(String origin, Object... replacement) {
+
+        return String.format(origin
+                .replaceAll("#.*?#", "%s")
+                .replaceAll("\\{.*?}", "%s"), replacement);
+    }
 }

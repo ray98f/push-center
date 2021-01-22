@@ -3,6 +3,7 @@ package com.zte.msg.pushcenter.pccore.core.pusher.msg;
 import com.zte.msg.pushcenter.pccore.core.pusher.SmsPusher;
 import com.zte.msg.pushcenter.pccore.core.pusher.base.Message;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsMessageReqDTO;
+import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.Instant;
@@ -45,6 +46,7 @@ public class SmsMessage extends Message {
     private Map<String, String> vars;
 
     public SmsMessage build(SmsMessageReqDTO reqDTO) {
+        this.setPushMethod(PushMethods.SMS);
         BeanUtils.copyProperties(reqDTO, this);
         return this;
     }

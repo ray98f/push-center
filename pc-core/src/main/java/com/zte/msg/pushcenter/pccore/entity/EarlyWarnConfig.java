@@ -10,10 +10,10 @@ import lombok.Data;
 public class EarlyWarnConfig extends BaseEntity {
 
     @ApiModelProperty(value = "预警周期")
-    private Long alarmCycle;
+    private Integer alarmCycle;
 
     @ApiModelProperty(value = "阈值")
-    private Long threshold;
+    private Integer threshold;
 
     @ApiModelProperty(value = "报警间隔")
     private Integer alarmInterval;

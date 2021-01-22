@@ -1,6 +1,7 @@
 package com.zte.msg.pushcenter.pccore.entity;
 
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.SmsMessage;
+import com.zte.msg.pushcenter.pccore.utils.PatternUtils;
 import com.zte.msg.pushcenter.pcscript.PcScript;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -83,9 +84,7 @@ public class SmsInfo extends BaseEntity {
         this.appName = message.getAppName();
         this.phoneNum = message.getPhoneNum()[message.getIndex()];
         this.transmitTime = message.getTransmitTime();
-        this.content = String.format(message.getContent()
-                .replaceAll("#.*?#", "%s")
-                .replaceAll("\\{.*?}", "%s"), message.getVars().values().toArray());
+        this.content = PatternUtils.buildContent(message.getContent(), message.getVars().values().toArray());
         this.providerName = message.getProviderName();
         this.templateId = message.getTemplateId();
         this.failCode = res.getCode();

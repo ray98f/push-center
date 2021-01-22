@@ -11,6 +11,10 @@ import java.util.regex.Pattern;
  */
 public class Constants {
 
+    public static final String DATE_FORMAT_PATTERN = "yyyy-MM-DD HH:mm:ss";
+
+    public static final long PER_MINUTE_MILLS = 60000;
+
     public static final int SUCCESS = 0;
 
     public static final Pattern SMS_CONTENT_PATTERN_1 = Pattern.compile("\\{(.*?)}");

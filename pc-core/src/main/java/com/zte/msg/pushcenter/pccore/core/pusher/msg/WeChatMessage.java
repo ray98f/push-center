@@ -2,6 +2,7 @@ package com.zte.msg.pushcenter.pccore.core.pusher.msg;
 
 import com.zte.msg.pushcenter.pccore.core.pusher.base.Message;
 import com.zte.msg.pushcenter.pccore.dto.req.WeChatMessageReqDTO;
+import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
@@ -26,6 +27,7 @@ public class WeChatMessage extends Message {
     private String skipUrl;
 
     public WeChatMessage build(WeChatMessageReqDTO reqDTO) {
+        this.setPushMethod(PushMethods.WECHAT);
         BeanUtils.copyProperties(reqDTO, this);
         return this;
     }

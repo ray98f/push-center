@@ -2,6 +2,7 @@ package com.zte.msg.pushcenter.pccore.core.pusher.msg;
 
 import com.zte.msg.pushcenter.pccore.core.pusher.base.Message;
 import com.zte.msg.pushcenter.pccore.dto.req.MailMessageReqDTO;
+import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.beans.BeanUtils;
@@ -35,6 +36,7 @@ public class MailMessage extends Message {
     private String[] cc;
 
     public MailMessage build(MailMessageReqDTO reqDTO) {
+        this.setPushMethod(PushMethods.MAIL);
         BeanUtils.copyProperties(reqDTO, this);
         return this;
     }

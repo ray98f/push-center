@@ -1,5 +1,6 @@
 package com.zte.msg.pushcenter.pccore.core.warn;
 
+import com.zte.msg.pushcenter.pccore.core.pusher.SmsPusher;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.MailMessage;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.SmsMessage;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.WeChatMessage;
@@ -15,6 +16,8 @@ import com.zte.msg.pushcenter.pccore.service.EarlyWarnService;
 import com.zte.msg.pushcenter.pccore.service.PushCenterService;
 import com.zte.msg.pushcenter.pccore.service.UserService;
 import com.zte.msg.pushcenter.pccore.utils.Constants;
+import com.zte.msg.pushcenter.pccore.utils.DateUtils;
+import com.zte.msg.pushcenter.pccore.utils.PatternUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.Instant;
@@ -24,10 +27,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -66,6 +66,8 @@ public class WarnHandler {
         warnConfig = new EarlyWarnConfigModel();
         BeanUtils.copyProperties(earlyWarnConfig, warnConfig);
         warnConfig.setUsers(userService.listUser(userIds));
+        warnConfig.setAlarmCycle(earlyWarnConfig.getAlarmCycle() * Constants.PER_MINUTE_MILLS);
+        warnConfig.setAlarmInterval(earlyWarnConfig.getAlarmInterval() * Constants.PER_MINUTE_MILLS);
         statTime = Instant.now().getMillis();
         endTime = earlyWarnConfig.getAlarmCycle() + statTime;
         warnCount = 0;
@@ -81,7 +83,6 @@ public class WarnHandler {
         pushSms();
         pushMail();
         pushWechat();
-
         persist(now);
     }
 
@@ -123,7 +124,19 @@ public class WarnHandler {
 
     private void pushSms() {
         String[] phoneNums = warnConfig.getUsers().stream().map(User::getPhone).toArray(String[]::new);
+        Map<String, String> var = new HashMap<>(8);
+        SmsPusher.SmsConfig smsConfig = pushCenterService.getSmsConfig(warnConfig.getSmsTemplateId());
+        List<String> params = smsConfig.getParams();
+        if (params.size() < 3) {
+            log.error("预警配置模板参数数量与规定不符");
+        }
+
+        var.put(params.get(0), DateUtils.formatDate(new Date(statTime)));
+        var.put(params.get(1), DateUtils.formatDate(new Date(endTime)));
+        var.put(params.get(2), warnCount + "");
+
         SmsMessageReqDTO reqDTO = new SmsMessageReqDTO();
+        reqDTO.setVars(var);
         reqDTO.setPhoneNum(phoneNums);
         reqDTO.setTemplateId(warnConfig.getSmsTemplateId());
         reqDTO.setMessageId(UUID.randomUUID().toString());
@@ -139,9 +152,9 @@ public class WarnHandler {
             statTime = endTime;
             endTime += warnConfig.getAlarmCycle();
         }
-        if (warnCount < warnConfig.getThreshold()) {
-            warnCount++;
-        } else if ((nowMillis - lastWarnTime) > warnConfig.getAlarmInterval()) {
+        warnCount++;
+        if (warnCount >= warnConfig.getThreshold() &&
+                (nowMillis - lastWarnTime) > warnConfig.getAlarmInterval()) {
             doWarn(now);
             lastWarnTime = nowMillis;
             warnCount = 0;
@@ -153,6 +166,7 @@ public class WarnHandler {
         if (Objects.isNull(warnConfig)) {
             log.warn("Cannot set up an invalid early-warn config ! Early-warn will be cancelled !");
         }
+        log.info("Receive a push fail warn ....");
         warnMatch(now);
     }
 
@@ -165,7 +179,8 @@ public class WarnHandler {
         earlyWarnInfo.setTime(new Timestamp(now.getMillis()));
         earlyWarnInfo.setReason(String.format("消息平台%s分钟内，推送失败次数超过%s次", warnConfig.getAlarmCycle() / 1000 / 60,
                 warnConfig.getThreshold()));
-        earlyWarnInfo.setContent(pushCenterService.getSmsConfig(warnConfig.getSmsTemplateId()).getContent());
+        earlyWarnInfo.setContent(PatternUtils.buildContent(pushCenterService.getSmsConfig(warnConfig.getSmsTemplateId()).getContent(),
+                new Date(statTime), new Date(endTime), warnConfig.getThreshold()));
         earlyWarnInfo.setDisposer(StringUtils.join(warnConfig.getUsers().stream().map(User::getUserName).toArray(), Constants.COMMA_EN));
         earlyWarnInfoService.save(earlyWarnInfo);
     }

@@ -10,7 +10,6 @@ import com.zte.msg.pushcenter.pccore.dto.req.MailMessageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsMessageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.WeChatMessageReqDTO;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
-import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.service.PushCenterService;
 import io.swagger.annotations.Api;
@@ -49,7 +48,6 @@ public class PushCenterController {
             throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
         }
         SmsMessage smsMessage = new SmsMessage().build(reqDTO);
-        smsMessage.setPushMethod(PushMethods.SMS);
         pushCenterService.pushSms(smsMessage);
         return DataResponse.success();
     }
@@ -59,7 +57,6 @@ public class PushCenterController {
     public <T> DataResponse<T> pushMail(@Valid @RequestBody MailMessageReqDTO reqDTO) {
 //        SignUtils.verify(reqDTO, reqDTO.getAppId(), reqDTO.getRequestTime(), reqDTO.getSign());
         MailMessage mailMessage = new MailMessage().build(reqDTO);
-        mailMessage.setPushMethod(PushMethods.MAIL);
         pushCenterService.pushMail(mailMessage);
         return DataResponse.success();
     }
@@ -69,7 +66,6 @@ public class PushCenterController {
     public <T> DataResponse<T> pushWeChat(@Valid @RequestBody WeChatMessageReqDTO reqDTO) {
 
         WeChatMessage weChatMessage = new WeChatMessage().build(reqDTO);
-        weChatMessage.setPushMethod(PushMethods.WECHAT);
         pushCenterService.pushWechat(weChatMessage);
         return DataResponse.success();
     }
@@ -79,7 +75,6 @@ public class PushCenterController {
     public <T> DataResponse<T> pushApp(@Valid @RequestBody AppMessageReqDTO reqDTO) {
 
         AppMessage appMessage = new AppMessage().build(reqDTO);
-        appMessage.setPushMethod(PushMethods.APP);
         pushCenterService.pushApp(appMessage);
         return DataResponse.success();
     }
