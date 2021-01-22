@@ -182,9 +182,11 @@ public class TencentSmsDemo implements PcScript {
 
         TEMPLATE_VAR_NOR_FORMAT("InvalidParameterValue.TemplateParameterFormatError", 32100006, "验证码模板参数格式错误，验证码类模版，模版变量只能传入0 - 6位（包括6位）纯数字"),
 
-        EXCEED_LIMIT("LimitExceeded.PhoneNumberThirtySecondLimit", 32100004, "单个手机号30秒内下发短信条数超过设定的上限，可自行到控制台调整短信频率限制策略。"),
+        EXCEED_30S_LIMIT("LimitExceeded.PhoneNumberThirtySecondLimit", 32100004, "单个手机号30秒内下发短信条数超过设定的上限，可自行到控制台调整短信频率限制策略。"),
 
         ERROR_KEY("AuthFailure.SignatureFailure", 32100005, "签名错误。 签名计算错误，请对照调用方式中的签名方法文档检查签名计算过程。"),
+
+        EXCEED_DAILY_LIMIT("LimitExceeded.PhoneNumberDailyLimit", 32100004, "单个手机号日内下发短信条数超过设定的上限"),
 
         SUCCESS("0", 0, "成功"),
 

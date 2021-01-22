@@ -28,8 +28,19 @@ public interface TemplateService {
      */
     void addSmsTemplate(SmsTemplateReqDTO smsTemplateReqDTO);
 
+    /**
+     * 更新短信模板
+     *
+     * @param templateId
+     * @param smsTemplateReqDTO
+     */
     void updateSmsTemplate(Long templateId, SmsTemplateReqDTO smsTemplateReqDTO);
 
+    /**
+     * 删除短信模板
+     *
+     * @param templateIds
+     */
     void deleteSmsTemplate(Long[] templateIds);
 
     /**
@@ -41,18 +52,40 @@ public interface TemplateService {
     void addProviderSmsTemplateRelate(Long templateId,
                                       SmsTemplateRelateProviderReqDTO reqDTO);
 
+    /**
+     * 更新模板关联关系
+     *
+     * @param templateId
+     * @param reqDTO
+     */
     void updateProviderSmsTemplateRelate(Long templateId,
                                          SmsTemplateRelateProviderUpdateReqDTO reqDTO);
 
+    /**
+     * 删除短信模板下关联的第三方模板
+     *
+     * @param templateId
+     * @param ids
+     */
     void deleteProviderSmsTemplateRelate(Long templateId,
                                          Long[] ids);
 
+    /**
+     * 根据模板id查询第三方模板详情
+     *
+     * @param templateId
+     * @return
+     */
     List<ProviderSmsTemplateResDTO> getProviderSmsTemplatesByTemplateId(Long templateId);
 
 
     /**
      * 分页查询模版
      *
+     * @param content
+     * @param templateId
+     * @param status
+     * @param pageReqDTO
      * @return
      */
     Page<SmsTemplateDetailResDTO> getTemplateByPage(String content,
@@ -67,14 +100,44 @@ public interface TemplateService {
      */
     List<SmsTemplate> getTemplateList();
 
+    /**
+     * 添加微信模板
+     *
+     * @param reqDTO
+     */
     void addWeChatTemplate(WeChatTemplateReqDTO reqDTO);
 
+    /**
+     * 更新微信模板
+     *
+     * @param reqDTO
+     */
     void updateWeChatTemplate(WeChatTemplateUpdateReqDTO reqDTO);
 
+    /**
+     * 根据id查询微信模板
+     *
+     * @param templateId
+     * @return
+     */
     WeChatTemplateResDTO getWeChatTemplate(Long templateId);
 
+    /**
+     * 删除微信模板
+     *
+     * @param ids
+     */
     void deleteWeChatTemplates(Long[] ids);
 
+    /**
+     * 分页查询微信模板
+     *
+     * @param page
+     * @param templateId
+     * @param providerName
+     * @param status
+     * @return
+     */
     Page<WeChatTemplateResDTO> getWeChatTemplates(PageReqDTO page,
                                                   Long templateId,
                                                   String providerName,

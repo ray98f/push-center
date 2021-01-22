@@ -46,9 +46,6 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       max-poll-records: 1000
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      thread:
-        min: 2
-        max: 5
       topic: push-center-topic
     producer:
       batch-size: 65536

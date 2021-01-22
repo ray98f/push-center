@@ -15,14 +15,40 @@ import com.zte.msg.pushcenter.pccore.core.pusher.msg.WeChatMessage;
  */
 public interface PushCenterService {
 
+    /**
+     * 短信推送
+     *
+     * @param smsMessage
+     */
     void pushSms(SmsMessage smsMessage);
 
+    /**
+     * 获取对应模板id的短信配置
+     *
+     * @param templateId
+     * @return
+     */
     SmsPusher.SmsConfig getSmsConfig(Long templateId);
 
+    /**
+     * 推送邮件
+     *
+     * @param mailMessage
+     */
     void pushMail(MailMessage mailMessage);
 
+    /**
+     * 推送微信消息
+     *
+     * @param weChatMessage
+     */
     void pushWechat(WeChatMessage weChatMessage);
 
+    /**
+     * 推送app消息
+     *
+     * @param appMessage
+     */
     void pushApp(AppMessage appMessage);
 
 }

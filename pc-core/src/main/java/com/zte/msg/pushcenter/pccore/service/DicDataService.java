@@ -16,14 +16,38 @@ import com.zte.msg.pushcenter.pccore.entity.DicData;
  */
 public interface DicDataService extends IService<DicData> {
 
+    /**
+     * 分页查询字典数据
+     *
+     * @param page
+     * @param type
+     * @param value
+     * @param isEnable
+     * @return
+     */
     Page<DicDataResDTO> getDicDataByPage(Page<DicDataResDTO> page,
                                          String type,
                                          String value,
                                          Integer isEnable);
 
+    /**
+     * 添加字典数据
+     *
+     * @param reqDTO
+     */
     void addDicData(DicDataReqDTO reqDTO);
 
+    /**
+     * 更新字典数据
+     *
+     * @param reqDTO
+     */
     void updateDicData(DicDataUpdateReqDTO reqDTO);
 
+    /**
+     * 删除字典数据
+     *
+     * @param ids
+     */
     void deleteDicData(Long[] ids);
 }

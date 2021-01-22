@@ -1,6 +1,5 @@
 package com.zte.msg.pushcenter.pccore.kafka;
 
-import com.zte.msg.pushcenter.pccore.utils.Constants;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +13,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.List;
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * description:
@@ -40,6 +38,7 @@ public abstract class BaseConsumer implements ApplicationListener<ConsumerStoppe
 
     private volatile boolean isClosePoolExecutor = false;
 
+    @SuppressWarnings("AlibabaThreadShouldSetName")
     @PostConstruct
     public void init() {
 

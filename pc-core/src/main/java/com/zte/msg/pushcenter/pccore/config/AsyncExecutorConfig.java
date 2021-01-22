@@ -29,6 +29,7 @@ public class AsyncExecutorConfig {
         return buildExecutor(5, 10, 100, "asyncWarnExecutor-");
     }
 
+
     private ThreadPoolTaskExecutor buildExecutor(int corePoolSize,
                                                  int maxPoolSize,
                                                  int queueCapacity,

@@ -19,6 +19,11 @@ import java.util.List;
 @Mapper
 public interface WeChatTemplateMapper extends BaseMapper<WeChatTemplate> {
 
+    /**
+     * 查询微信模板用于配置初始化
+     *
+     * @return
+     */
     @Select("SELECT " +
             " wt.id template_id, " +
             " wt.provider_id, " +
@@ -34,11 +39,15 @@ public interface WeChatTemplateMapper extends BaseMapper<WeChatTemplate> {
             " LEFT JOIN provider p ON wt.provider_id = p.id  " +
             "WHERE " +
             " p.type = 4  " +
-//            " AND p.is_deleted = 0  " +
-//            " AND wt.is_deleted = 0 " +
             " AND wt.status = 1")
     List<WxConfigModel> selectWxConfigsForInit();
 
+    /**
+     * 查询模板用于更新配置
+     *
+     * @param ids
+     * @return
+     */
     @Select({
             "<script>" +
                     "SELECT " +
@@ -56,8 +65,6 @@ public interface WeChatTemplateMapper extends BaseMapper<WeChatTemplate> {
                     " LEFT JOIN provider p ON wt.provider_id = p.id  " +
                     "WHERE " +
                     " p.type = 4  " +
-//                    " AND p.is_deleted = 0  " +
-//                    " AND wt.is_deleted = 0 " +
                     " AND wt.status = 1 " +
                     " AND wt.id IN " +
                     "<foreach collection = 'ids' item = 'id' open='(' separator=',' close=')'>",
@@ -67,6 +74,12 @@ public interface WeChatTemplateMapper extends BaseMapper<WeChatTemplate> {
     })
     List<WxConfigModel> selectSmsConfigForFlushByTemplateIds(@Param("ids") List<Long> ids);
 
+    /**
+     * 根据providerId查询微信配置模板
+     *
+     * @param ids
+     * @return
+     */
     @Select({
             "<script>",
             "SELECT " +
@@ -84,8 +97,6 @@ public interface WeChatTemplateMapper extends BaseMapper<WeChatTemplate> {
                     " LEFT JOIN provider p ON wt.provider_id = p.id  " +
                     "WHERE " +
                     " p.type = 4  " +
-//                    " AND p.is_deleted = 0  " +
-//                    " AND wt.is_deleted = 0 " +
                     " AND wt.status = 1 " +
                     " AND p.id IN ",
             "<foreach collection = 'ids' item = 'id' open='(' separator=',' close=')'>",

@@ -1,8 +1,6 @@
 package com.zte.msg.pushcenter.pccore.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zte.msg.pushcenter.pccore.dto.res.ProviderResDTO;
 import com.zte.msg.pushcenter.pccore.entity.Provider;
 import com.zte.msg.pushcenter.pccore.model.ScriptModel;
 import org.apache.ibatis.annotations.Mapper;
@@ -20,9 +18,11 @@ import java.util.List;
 @Mapper
 public interface ProviderMapper extends BaseMapper<Provider> {
 
-    @Select("SELECT * FROM `provider` WHERE is_deleted = 0")
-    Page<ProviderResDTO> selectByPage(Page<ProviderResDTO> page);
-
+    /**
+     * 查询可用脚本列表
+     *
+     * @return
+     */
     @Select("SELECT " +
             " script_tag, " +
             " script_context  " +

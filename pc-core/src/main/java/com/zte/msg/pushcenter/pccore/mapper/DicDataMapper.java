@@ -16,6 +16,16 @@ import org.apache.ibatis.annotations.Select;
  */
 public interface DicDataMapper extends BaseMapper<DicData> {
 
+
+    /**
+     * 分页查询字典数据
+     *
+     * @param page
+     * @param type
+     * @param value
+     * @param isEnable
+     * @return
+     */
     @Select({
             "<script>",
             "SELECT " +

@@ -12,8 +12,18 @@ import com.zte.msg.pushcenter.pccore.entity.EarlyWarnConfig;
  */
 public interface EarlyWarnService extends IService<EarlyWarnConfig> {
 
+    /**
+     * 更新预警配置
+     *
+     * @param earlyWarnConfig
+     */
     void saveOrUpdateEarlyWarnConfig(EarlyWarnConfig earlyWarnConfig);
 
+    /**
+     * 查询预警配置
+     *
+     * @return
+     */
     EarlyWarnConfig selectEarlyWarnConfig();
 
 }

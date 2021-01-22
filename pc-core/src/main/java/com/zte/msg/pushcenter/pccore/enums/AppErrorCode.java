@@ -9,16 +9,34 @@ package com.zte.msg.pushcenter.pccore.enums;
  */
 public enum AppErrorCode {
 
+    /**
+     * 缺少了必须的参数
+     */
     ERROR_PHONE_NUM(32200001, "缺少了必须的参数"),
 
+    /**
+     * 参数值不合法
+     */
     ERROR_TEMPLATE_ID(32200002, "参数值不合法"),
 
+    /**
+     * 验证失败
+     */
     NET_ERROR(32200003, "验证失败"),
 
+    /**
+     * 消息体太大
+     */
     EXCEED_LIMIT(32200004, "消息体太大"),
 
+    /**
+     * app_key 参数非法
+     */
     AUTH_FAIL(32200005, "app_key 参数非法"),
 
+    /**
+     * 推送对象中有不支持的 key
+     */
     TEMPLATE_NOT_FORMAT(32200006, "推送对象中有不支持的 key");
 
     private Integer code;

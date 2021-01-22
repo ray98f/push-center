@@ -21,6 +21,7 @@ public interface SmsTemplateRelationMapper extends BaseMapper<SmsTemplateRelatio
     /**
      * 根据templateId列表查询关联的所有第三方模版
      *
+     * @param ids
      * @return
      */
     @Select({
@@ -54,6 +55,12 @@ public interface SmsTemplateRelationMapper extends BaseMapper<SmsTemplateRelatio
     List<SmsTemplateRelationModel> selectByTemplateIds(@Param("ids") List<Long> ids);
 
 
+    /**
+     * 根据id查询模板详情
+     *
+     * @param id
+     * @return
+     */
     @Select("SELECT " +
             " st.id, " +
             " st.content, " +
@@ -82,6 +89,11 @@ public interface SmsTemplateRelationMapper extends BaseMapper<SmsTemplateRelatio
             " And st.id = #{id}")
     List<SmsTemplateRelationModel> selectByTemplateId(@Param("id") Long id);
 
+    /**
+     * 查询所有短息模板详情用于配置初始化
+     *
+     * @return
+     */
     @Select("SELECT " +
             " str.sms_template_id, " +
             " str.provider_template_id, " +
@@ -106,6 +118,12 @@ public interface SmsTemplateRelationMapper extends BaseMapper<SmsTemplateRelatio
     )
     List<SmsConfigModel> selectAllSmsConfigForInit();
 
+    /**
+     * 根据templateId查询短信模板详情用于更新配置
+     *
+     * @param templateIds
+     * @return
+     */
     @Select({
             "<script>",
             "SELECT " +
@@ -137,6 +155,12 @@ public interface SmsTemplateRelationMapper extends BaseMapper<SmsTemplateRelatio
     })
     List<SmsConfigModel> selectSmsConfigForFlush(@Param("ids") List<Long> templateIds);
 
+    /**
+     * 根据providerId查询短信模板详情用于更新配置
+     *
+     * @param ids
+     * @return
+     */
     @Select({
             "<script>",
             "SELECT " +

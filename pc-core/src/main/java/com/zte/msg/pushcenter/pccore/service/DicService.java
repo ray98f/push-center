@@ -16,15 +16,39 @@ import com.zte.msg.pushcenter.pccore.entity.Dic;
  */
 public interface DicService extends IService<Dic> {
 
+    /**
+     * 分页查询字典类型
+     *
+     * @param page
+     * @param name
+     * @param type
+     * @param isEnable
+     * @return
+     */
     Page<DicResDTO> getDics(Page<DicResDTO> page,
                             String name,
                             String type,
                             Integer isEnable);
 
+    /**
+     * 添加字典类型
+     *
+     * @param reqDTO
+     */
     void addDic(DicReqDTO reqDTO);
 
+    /**
+     * 更新字典类型
+     *
+     * @param reqDTO
+     */
     void updateDic(DicUpdateReqDTO reqDTO);
 
+    /**
+     * 删除字典类型
+     *
+     * @param ids
+     */
     void deleteDic(Long[] ids);
 
 

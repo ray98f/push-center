@@ -49,6 +49,9 @@ public interface ProviderService {
     /**
      * 分页查询消息平台配置
      *
+     * @param provider
+     * @param type
+     * @param status
      * @param pageReqDTO
      * @return
      */

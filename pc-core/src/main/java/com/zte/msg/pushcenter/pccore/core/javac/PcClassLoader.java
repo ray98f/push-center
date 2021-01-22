@@ -15,7 +15,7 @@ import java.util.Objects;
 @Slf4j
 public class PcClassLoader extends ClassLoader {
 
-    private Hashtable<String, ClassInfo> classInfos = new Hashtable<>();
+    private final Hashtable<String, ClassInfo> classInfos = new Hashtable<>();
 
     @Override
     protected Class<?> findClass(String name) {
