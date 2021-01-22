@@ -18,6 +18,7 @@ import com.zte.msg.pushcenter.pccore.service.UserService;
 import com.zte.msg.pushcenter.pccore.utils.Constants;
 import com.zte.msg.pushcenter.pccore.utils.DateUtils;
 import com.zte.msg.pushcenter.pccore.utils.PatternUtils;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.Instant;
@@ -85,8 +86,8 @@ public class WarnHandler {
     @Resource
     private PushCenterService pushCenterService;
 
-    public void doWarn(Instant now) {
-        pushSms();
+    public void doWarn(Instant now, Reference reference) {
+        pushSms(reference);
         pushMail();
         pushWechat();
         persist(now);
@@ -128,7 +129,7 @@ public class WarnHandler {
         pushCenterService.pushMail(message);
     }
 
-    private void pushSms() {
+    private void pushSms(Reference reference) {
         String[] phoneNums = warnConfig.getUsers().stream().map(User::getPhone).toArray(String[]::new);
         Map<String, String> var = new HashMap<>(8);
         SmsPusher.SmsConfig smsConfig = pushCenterService.getSmsConfig(warnConfig.getSmsTemplateId());
@@ -136,9 +137,9 @@ public class WarnHandler {
         if (params.size() < VAR_COUNT) {
             log.error("预警配置模板参数数量与规定不符");
         }
-        var.put(params.get(0), DateUtils.formatDate(new Date(statTime)));
-        var.put(params.get(1), DateUtils.formatDate(new Date(endTime)));
-        var.put(params.get(2), warnCount + "");
+        var.put(params.get(0), DateUtils.formatDate(new Date(reference.getStatTime())));
+        var.put(params.get(1), DateUtils.formatDate(new Date(reference.getEndTime())));
+        var.put(params.get(2), String.valueOf(reference.getWarnCount()));
 
         SmsMessageReqDTO reqDTO = new SmsMessageReqDTO();
         reqDTO.setVars(var);
@@ -161,20 +162,20 @@ public class WarnHandler {
         if (warnCount >= warnConfig.getThreshold() &&
                 (nowMillis - lastWarnTime) > warnConfig.getAlarmInterval()) {
             CompletableFuture.supplyAsync(() -> {
-                doWarn(now);
+                Reference reference = new Reference(statTime, endTime, warnCount);
+                doWarn(now, reference);
                 return null;
-            }, warnExecutor).thenAccept(o -> {
-                log.info("finish a warn task !");
-            });
+            }, warnExecutor).thenAccept(o -> log.info("finish a warn task !"));
+
             lastWarnTime = nowMillis;
             warnCount = 0;
         }
-
     }
 
     public void submitWarn(Instant now) {
         if (Objects.isNull(warnConfig)) {
             log.warn("Cannot set up an invalid early-warn config ! Early-warn will be cancelled !");
+            return;
         }
         log.info("Receive a push fail warn ....");
         warnMatch(now);
@@ -193,5 +194,21 @@ public class WarnHandler {
                 DateUtils.formatDate(new Date(statTime)), DateUtils.formatDate(new Date(endTime)), warnConfig.getThreshold()));
         earlyWarnInfo.setDisposer(StringUtils.join(warnConfig.getUsers().stream().map(User::getUserName).toArray(), Constants.COMMA_EN));
         earlyWarnInfoService.save(earlyWarnInfo);
+    }
+
+    @Data
+    private static class Reference {
+
+        private long statTime;
+
+        private long endTime;
+
+        private int warnCount;
+
+        public Reference(long statTime, long endTime, int warnCount) {
+            this.statTime = statTime;
+            this.endTime = endTime;
+            this.warnCount = warnCount;
+        }
     }
 }
