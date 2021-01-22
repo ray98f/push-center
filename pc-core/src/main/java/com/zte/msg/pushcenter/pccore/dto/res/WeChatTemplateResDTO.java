@@ -4,6 +4,7 @@ import com.zte.msg.pushcenter.pccore.dto.BaseResDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * description:
@@ -12,6 +13,7 @@ import lombok.Data;
  * @version 1.0
  * @date 2021/1/13 17:20
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ApiModel
 public class WeChatTemplateResDTO extends BaseResDTO {

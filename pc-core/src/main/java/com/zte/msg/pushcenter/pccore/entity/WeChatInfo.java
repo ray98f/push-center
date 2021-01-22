@@ -7,6 +7,7 @@ import com.zte.msg.pushcenter.pcscript.PcScript;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.sql.Timestamp;
 
@@ -17,6 +18,7 @@ import java.sql.Timestamp;
  * @version 1.0
  * @date 2021/1/13 8:47
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ApiModel
 @TableName(value = "wechat_info")

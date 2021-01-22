@@ -5,6 +5,7 @@ import com.zte.msg.pushcenter.pcscript.PcScript;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.StringUtils;
 
 import java.sql.Timestamp;
@@ -12,6 +13,7 @@ import java.sql.Timestamp;
 /**
  * @author frp
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ApiModel
 public class MailInfo extends BaseEntity {

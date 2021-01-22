@@ -4,6 +4,7 @@ import com.zte.msg.pushcenter.pccore.core.pusher.base.Message;
 import com.zte.msg.pushcenter.pccore.dto.req.AppMessageReqDTO;
 import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.beans.BeanUtils;
 
 /**
@@ -13,6 +14,7 @@ import org.springframework.beans.BeanUtils;
  * @version 1.0
  * @date 2021/1/15 15:02
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class AppMessage extends Message {
 

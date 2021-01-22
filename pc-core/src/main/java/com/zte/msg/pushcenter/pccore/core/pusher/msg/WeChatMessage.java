@@ -4,6 +4,7 @@ import com.zte.msg.pushcenter.pccore.core.pusher.base.Message;
 import com.zte.msg.pushcenter.pccore.dto.req.WeChatMessageReqDTO;
 import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.beans.BeanUtils;
 
 /**
@@ -13,6 +14,7 @@ import org.springframework.beans.BeanUtils;
  * @version 1.0
  * @date 2020/12/15 10:27
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class WeChatMessage extends Message {
 

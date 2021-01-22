@@ -1,6 +1,7 @@
 package com.zte.msg.pushcenter.pccore.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * description:
@@ -9,6 +10,7 @@ import lombok.Data;
  * @version 1.0
  * @date 2020/12/22 14:40
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class Provider extends BaseEntity {
 

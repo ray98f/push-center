@@ -2,6 +2,7 @@ package com.zte.msg.pushcenter.pccore.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * description:
@@ -10,6 +11,7 @@ import lombok.Data;
  * @version 1.0
  * @date 2021/1/19 14:58
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class DicData extends BaseEntity {
 

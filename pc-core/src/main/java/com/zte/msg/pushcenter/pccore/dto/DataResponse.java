@@ -2,6 +2,7 @@ package com.zte.msg.pushcenter.pccore.dto;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
@@ -12,6 +13,7 @@ import java.io.Serializable;
  * @version 1.0
  * @date 2020/10/10 15:57
  */
+@EqualsAndHashCode(callSuper = true)
 @ApiModel
 @Data
 public class DataResponse<T> extends BaseResponse implements Serializable {

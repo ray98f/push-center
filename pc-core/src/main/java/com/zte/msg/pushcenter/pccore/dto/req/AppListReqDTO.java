@@ -3,10 +3,12 @@ package com.zte.msg.pushcenter.pccore.dto.req;
 import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author frp
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class AppListReqDTO extends PageReqDTO {
 

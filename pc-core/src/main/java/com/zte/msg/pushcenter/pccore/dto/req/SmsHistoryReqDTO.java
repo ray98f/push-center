@@ -1,11 +1,11 @@
 package com.zte.msg.pushcenter.pccore.dto.req;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -13,6 +13,7 @@ import java.util.Date;
 /**
  * @author frp
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ApiModel
 public class SmsHistoryReqDTO extends PageReqDTO {

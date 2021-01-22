@@ -2,10 +2,12 @@ package com.zte.msg.pushcenter.pccore.entity;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author frp
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class EarlyWarnConfig extends BaseEntity {
 

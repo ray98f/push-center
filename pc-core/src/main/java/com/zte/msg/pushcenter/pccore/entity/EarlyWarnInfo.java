@@ -2,12 +2,14 @@ package com.zte.msg.pushcenter.pccore.entity;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.sql.Timestamp;
 
 /**
  * @author frp
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class EarlyWarnInfo extends BaseEntity{
 

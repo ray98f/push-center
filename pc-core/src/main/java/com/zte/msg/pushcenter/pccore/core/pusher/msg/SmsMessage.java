@@ -5,6 +5,7 @@ import com.zte.msg.pushcenter.pccore.core.pusher.base.Message;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsMessageReqDTO;
 import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.Instant;
 import org.springframework.beans.BeanUtils;
@@ -20,6 +21,7 @@ import java.util.Map;
  * @version 1.0
  * @date 2020/12/10 11:13
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Slf4j
 public class SmsMessage extends Message {

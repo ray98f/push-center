@@ -3,6 +3,7 @@ package com.zte.msg.pushcenter.pccore.dto.req;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotNull;
 
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotNull;
  * @version 1.0
  * @date 2020/12/14 14:29
  */
+@EqualsAndHashCode(callSuper = true)
 @ApiModel
 @Data
 public class MailMessageReqDTO extends PushReqDTO {

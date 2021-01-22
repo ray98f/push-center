@@ -3,10 +3,12 @@ package com.zte.msg.pushcenter.pccore.dto.req;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author frp
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ApiModel
 public class ConditionStatisticsReqDTO extends StatisticsReqDTO{

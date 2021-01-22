@@ -4,10 +4,12 @@ import com.zte.msg.pushcenter.pccore.entity.SmsTemplate;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author frp
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ApiModel
 public class TemplateResDTO extends SmsTemplate {
