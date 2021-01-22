@@ -31,7 +31,7 @@ public class SecretServiceImpl implements SecretService {
     }
 
     @Override
-    public String selectAppSecret(Integer appId){
+    public String selectAppSecret(Long appId){
         return secretMapper.selectAppSecret(appId);
     }
 

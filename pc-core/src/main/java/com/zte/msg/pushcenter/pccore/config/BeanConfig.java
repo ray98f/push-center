@@ -11,6 +11,9 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 
 import javax.annotation.Resource;
 
+/**
+ * @author frp
+ */
 @Configuration
 public class BeanConfig {
 

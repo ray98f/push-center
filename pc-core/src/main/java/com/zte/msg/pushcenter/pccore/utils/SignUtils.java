@@ -25,7 +25,7 @@ public class SignUtils {
         return DigestUtils.md5DigestAsHex(str.getBytes(StandardCharsets.UTF_8));
     }
 
-    public static void verify(Object view, Integer appId, String requestTime, String sign) {
+    public static void verify(Object view, Long appId, String requestTime, String sign) {
         if (Long.valueOf(TokenUtil.getTimestamp()).compareTo(Long.parseLong(requestTime) + SIGN_DEADLINE) > 0) {
             log.error("请求失效，请重新发起请求");
             throw new RuntimeException("请求失效，请重新发起请求");
