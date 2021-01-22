@@ -4,6 +4,9 @@ package com.zte.msg.pushcenter.pcscript;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * @author frp
+ */
 @SpringBootApplication
 public class Application {
 

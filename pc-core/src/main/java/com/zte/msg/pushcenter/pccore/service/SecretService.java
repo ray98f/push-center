@@ -17,7 +17,7 @@ import java.util.List;
 public interface SecretService {
     String selectAppRole(String appKey);
 
-    String selectAppSecret(Integer appId);
+    String selectAppSecret(Long appId);
 
     SecretKeyResDTO selectSecretKey(Integer appId);
 }

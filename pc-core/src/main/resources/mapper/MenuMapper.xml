@@ -35,7 +35,7 @@
             <if test="menuList.menuType!=null" >
                 menu_type,
             </if>
-            <if test="menuList.menuIcon!=null and menuList.menuIcon!=''" >
+            <if test="menuList.menuIcon!=null" >
                 menu_icon,
             </if>
             <if test="menuList.menuSort!=null" >
@@ -78,7 +78,7 @@
             <if test="menuList.menuType!=null" >
                 #{menuList.menuType},
             </if>
-            <if test="menuList.menuIcon!=null and menuList.menuIcon!=''" >
+            <if test="menuList.menuIcon!=null" >
                 #{menuList.menuIcon},
             </if>
             <if test="menuList.menuSort!=null" >

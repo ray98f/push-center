@@ -29,6 +29,7 @@ import java.util.Arrays;
 @Service
 public class DicDataServiceImpl extends ServiceImpl<DicDataMapper, DicData> implements DicDataService {
 
+    public static final String TYPE = "type";
     @Resource
     private DicMapper dicMapper;
 
@@ -40,7 +41,7 @@ public class DicDataServiceImpl extends ServiceImpl<DicDataMapper, DicData> impl
     @Override
     public void addDicData(DicDataReqDTO reqDTO) {
 
-        if (dicMapper.selectCount(new QueryWrapper<Dic>().eq("type", reqDTO.getType())) <= 0) {
+        if (dicMapper.selectCount(new QueryWrapper<Dic>().eq(TYPE, reqDTO.getType())) <= 0) {
             throw new CommonException(ErrorCode.DIC_TYPE_NOT_EXIST);
         }
         DicData dicData = new DicData();
@@ -52,7 +53,7 @@ public class DicDataServiceImpl extends ServiceImpl<DicDataMapper, DicData> impl
     @Override
     public void updateDicData(DicDataUpdateReqDTO reqDTO) {
 
-        if (dicMapper.selectCount(new QueryWrapper<Dic>().eq("type", reqDTO.getType())) <= 0) {
+        if (dicMapper.selectCount(new QueryWrapper<Dic>().eq(TYPE, reqDTO.getType())) <= 0) {
             throw new CommonException(ErrorCode.DIC_TYPE_NOT_EXIST);
         }
         DicData dicData = new DicData();
