@@ -6,12 +6,12 @@
             SELECT "根目录" AS catalog_name;
         </if>
         <if test="type!=0">
-            SELECT id AS catalog_id,menu_name AS catalog_name FROM menu WHERE is_deleted=0 AND is_show=0 AND is_use=0 AND is_catalog=0 ORDER BY menu_sort ASC;
+            SELECT id AS catalog_id,menu_name AS catalog_name FROM menu WHERE is_deleted=0 AND is_use=0 AND is_catalog=0 ORDER BY menu_sort ASC;
         </if>
     </select>
 
     <select id="listSuperMenu" resultType="com.zte.msg.pushcenter.pccore.dto.res.SuperMenuResDTO$MenuInfo">
-        SELECT id AS menu_id,menu_name AS menu_name FROM menu WHERE is_deleted=0 AND is_show=0 AND is_use=0 AND is_menu=0 AND catalog_id=#{id} ORDER BY menu_sort ASC;
+        SELECT id AS menu_id,menu_name AS menu_name FROM menu WHERE is_deleted=0 AND is_use=0 AND is_menu=0 AND catalog_id=#{id} ORDER BY menu_sort ASC;
     </select>
 
     <insert id="insertMenu">

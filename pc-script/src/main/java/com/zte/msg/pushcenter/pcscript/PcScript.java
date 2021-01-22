@@ -11,6 +11,11 @@ import java.util.Map;
  */
 public interface PcScript {
 
+    /**
+     * 执行脚本方法入口
+     * @param params
+     * @return
+     */
     Res execute(Map<String, Object> params);
 
     class Res {

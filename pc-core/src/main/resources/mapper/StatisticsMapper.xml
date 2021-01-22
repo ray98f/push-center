@@ -2,14 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zte.msg.pushcenter.pccore.mapper.StatisticsMapper">
     <select id="statisticsType" resultType="com.zte.msg.pushcenter.pccore.dto.res.TypeStatisticsResDTO">
+        select a.* from (
         <foreach collection="typeArray" item="type" index="index" separator=" UNION ALL">
             select #{type} as type,
             count(case when result=0 then 1 end) as success_num,
             count(case when result=1 then 1 end) as fail_num,
             count(*) as total_num,
-            ifnull(min(delay),0) as min_delay,
-            ifnull(max(delay),0) as max_delay,
-            avg(ifnull(delay,0)) as avg_delay
+            ifnull(min(delay),0) as min_delay_time,
+            ifnull(max(delay),0) as max_delay_time,
+            avg(ifnull(delay,0)) as avg_delay_time
             from
             <if test="type == '邮件'">mail_info</if>
             <if test="type == '短信'">sms_info</if>
@@ -24,6 +25,7 @@
                 </if>
             </trim>
         </foreach>
+        ) as a
     </select>
 
     <select id="statisticsAppAndCondition" resultType="com.zte.msg.pushcenter.pccore.dto.res.AppStatisticsResDTO">
@@ -36,9 +38,9 @@
             ifnull(sum(case when r.type is not null then 1 end),0) as total_num,
             ifnull(sum(case when result=0 then 1 end),0) as success_num,
             ifnull(sum(case when result=1 then 1 end),0) as fail_num,
-            ifnull(min(delay),0) as min_delay,
-            ifnull(max(delay),0) as max_delay,
-            avg(ifnull(delay,0)) as avg_delay
+            ifnull(min(delay),0) as min_delay_time,
+            ifnull(max(delay),0) as max_delay_time,
+            avg(ifnull(delay,0)) as avg_delay_time
             from
             (select '短信' as type,app_id,app_name,result,delay,transmit_time from sms_info
             UNION ALL
@@ -66,6 +68,7 @@
             </if>
         </if>
         <if test="conditionStatisticsReqDTO.appId==null and conditionStatisticsReqDTO.appName==null">
+            select a.* from (
             <foreach collection="appList" index="index" item="app" separator=" UNION ALL">
                 select r.app_name,
                 ifnull(sum(case when r.type='短信' then 1 end),0) as sms_send_num,
@@ -75,9 +78,9 @@
                 ifnull(sum(case when r.type is not null then 1 end),0) as total_num,
                 ifnull(sum(case when result=0 then 1 end),0) as success_num,
                 ifnull(sum(case when result=1 then 1 end),0) as fail_num,
-                ifnull(min(delay),0) as min_delay,
-                ifnull(max(delay),0) as max_delay,
-                avg(ifnull(delay,0)) as avg_delay
+                ifnull(min(delay),0) as min_delay_time,
+                ifnull(max(delay),0) as max_delay_time,
+                avg(ifnull(delay,0)) as avg_delay_time
                 from
                 (select '短信' as type,app_id,app_name,result,delay,transmit_time from sms_info
                 UNION ALL
@@ -104,6 +107,7 @@
                     </if>
                 </trim>
             </foreach>
+            ) as a
         </if>
     </select>
 
@@ -113,9 +117,9 @@
         count(case when r.result=1 then 1 end) as fail_num,
         count(*) as total_num,
         ROUND(count(case when r.result=0 then 1 end) / count(*) * 100, 2) as accuracy,
-        ifnull(min(delay),0) as min_delay,
-        ifnull(max(delay),0) as max_delay,
-        avg(ifnull(delay,0)) as avg_delay from
+        ifnull(min(delay),0) as min_delay_time,
+        ifnull(max(delay),0) as max_delay_time,
+        avg(ifnull(delay,0)) as avg_delay_time from
         (select app_id,app_name,result,delay,transmit_time,provider_name from sms_info
         UNION ALL
         select app_id,app_name,result,delay,transmit_time,provider_name from application_info

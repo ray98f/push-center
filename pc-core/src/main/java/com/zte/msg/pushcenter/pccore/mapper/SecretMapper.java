@@ -14,9 +14,24 @@ import java.util.List;
 @Repository
 public interface SecretMapper extends BaseMapper<SecretKey> {
 
+    /**
+     * 获取应用权限
+     * @param appKey
+     * @return
+     */
     String selectAppRole(String appKey);
 
+    /**
+     * 获取应用密钥
+     * @param appId
+     * @return
+     */
     String selectAppSecret(Long appId);
 
+    /**
+     * 查询应用密钥
+     * @param appId
+     * @return
+     */
     SecretKeyResDTO selectSecretKey(Integer appId);
 }

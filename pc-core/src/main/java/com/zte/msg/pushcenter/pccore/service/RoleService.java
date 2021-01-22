@@ -16,15 +16,41 @@ import java.util.List;
  */
 public interface RoleService {
 
+    /**
+     * 获取角色列表
+     * @return
+     */
     List<Role> listAllRole();
 
+    /**
+     * 查询角色列表
+     * @param roleReqDTO
+     * @return
+     */
     PageInfo<Role> listRole(RoleReqDTO roleReqDTO);
 
+    /**
+     * 删除角色
+     * @param ids
+     */
     void deleteRole(List<Long> ids);
 
+    /**
+     * 新增角色
+     * @param role
+     */
     void insertRole(RoleReqDTO role);
 
+    /**
+     * 修改角色
+     * @param role
+     */
     void updateRole(RoleReqDTO role);
 
+    /**
+     * 获取角色对应菜单ids
+     * @param roleId
+     * @return
+     */
     List<Long> selectMenuIds(Long roleId);
 }

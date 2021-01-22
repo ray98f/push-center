@@ -18,23 +18,73 @@ import java.util.List;
 @Repository
 public interface AppRoleMapper extends BaseMapper<AppRoleResDTO> {
 
+    /**
+     * 搜索应用
+     * @param appId
+     * @return
+     */
     AppRoleResDTO selectApp(Integer appId);
 
+    /**
+     * 获取短信模板
+     * @param modeId
+     * @param appId
+     * @return
+     */
     List<TemplateResDTO> selectSmsTemplate(Integer modeId, Integer appId);
 
+    /**
+     * 获取公众号模板
+     * @param appId
+     * @return
+     */
     List<WeChatTemplateRoleResDTO> selectWechatTemplate(Integer appId);
 
+    /**
+     * 获取应用权限
+     * @param appId
+     * @return
+     */
     List<AppRole> selectAppMode(Integer appId);
 
+    /**
+     * 修改应用权限
+     * @param appRoleResDTO
+     * @return
+     */
     int editAppRole(AppRoleResDTO appRoleResDTO);
 
+    /**
+     * 获取消息推送方式列表
+     * @return
+     */
     List<SendMode> listSendMode();
 
+    /**
+     * 删除消息推送方式
+     * @param modeId
+     * @return
+     */
     int deleteSendMode(Integer modeId);
 
+    /**
+     * 修改消息推送方式
+     * @param sendMode
+     * @return
+     */
     int updateSendMode(SendMode sendMode);
 
+    /**
+     * 新增消息推送方式
+     * @param modeName
+     * @return
+     */
     int insertSendMode(String modeName);
 
+    /**
+     * 获取消息推送方式id
+     * @param modeName
+     * @return
+     */
     Integer selectSendModeId(String modeName);
 }

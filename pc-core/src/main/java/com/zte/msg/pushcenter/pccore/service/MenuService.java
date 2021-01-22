@@ -16,17 +16,48 @@ import java.util.List;
  */
 public interface MenuService {
 
+    /**
+     * 获取上层菜单列表
+     * @param type
+     * @return
+     */
     List<SuperMenuResDTO> listSuper(Integer type);
 
+    /**
+     * 登录动态菜单列表获取
+     * @return
+     */
     List<MenuResDTO> listLoginMenu();
 
+    /**
+     * 新增菜单
+     * @param menuList
+     */
     void insertMenu(Menu menuList);
 
+    /**
+     * 获取菜单列表（查询）
+     * @param menuReqDTO
+     * @return
+     */
     List<MenuResDTO> listMenu(MenuReqDTO menuReqDTO);
 
+    /**
+     * 修改菜单
+     * @param menuList
+     */
     void updateMenu(Menu menuList);
 
+    /**
+     * 删除菜单
+     * @param ids
+     */
     void deleteMenu(List<Long> ids);
 
+    /**
+     * 根据权限获取菜单列表
+     * @param roleIds
+     * @return
+     */
     List<MenuResDTO> listMenu(List<Long> roleIds);
 }

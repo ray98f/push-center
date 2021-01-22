@@ -15,9 +15,25 @@ import java.util.List;
  * @date 2020/12/23 15:42
  */
 public interface SecretService {
+
+    /**
+     * 获取应用权限
+     * @param appKey
+     * @return
+     */
     String selectAppRole(String appKey);
 
+    /**
+     * 获取应用密钥
+     * @param appId
+     * @return
+     */
     String selectAppSecret(Long appId);
 
+    /**
+     * 查询应用密钥
+     * @param appId
+     * @return
+     */
     SecretKeyResDTO selectSecretKey(Integer appId);
 }

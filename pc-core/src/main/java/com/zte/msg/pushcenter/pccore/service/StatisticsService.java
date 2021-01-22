@@ -18,10 +18,25 @@ import java.util.List;
  */
 public interface StatisticsService {
 
+    /**
+     * 分类统计
+     * @param statisticsReqDTO
+     * @return
+     */
     List<TypeStatisticsResDTO> statisticsType(StatisticsReqDTO statisticsReqDTO);
 
+    /**
+     * 应用统计、条件统计搜索
+     * @param conditionStatisticsReqDTO
+     * @return
+     */
     List<AppStatisticsResDTO> statisticsAppAndCondition(ConditionStatisticsReqDTO conditionStatisticsReqDTO);
 
+    /**
+     * 消息平台统计搜索
+     * @param statisticsReqDTO
+     * @return
+     */
     List<ProviderStatisticsResDTO> statisticsPlatform(StatisticsReqDTO statisticsReqDTO);
 
 }

@@ -24,9 +24,26 @@ import java.util.List;
 @Repository
 public interface StatisticsMapper extends BaseMapper<StatisticsResDTO> {
 
+    /**
+     * 分类统计
+     * @param typeArray
+     * @param statisticsReqDTO
+     * @return
+     */
     List<TypeStatisticsResDTO> statisticsType(String[] typeArray, StatisticsReqDTO statisticsReqDTO);
 
+    /**
+     * 应用统计、条件统计搜索
+     * @param appList
+     * @param conditionStatisticsReqDTO
+     * @return
+     */
     List<AppStatisticsResDTO> statisticsAppAndCondition(List<App> appList, ConditionStatisticsReqDTO conditionStatisticsReqDTO);
 
+    /**
+     * 消息平台统计搜索
+     * @param statisticsReqDTO
+     * @return
+     */
     List<ProviderStatisticsResDTO> statisticsPlatform(StatisticsReqDTO statisticsReqDTO);
 }
