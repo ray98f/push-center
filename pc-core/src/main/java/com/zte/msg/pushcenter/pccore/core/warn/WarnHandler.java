@@ -119,6 +119,7 @@ public class WarnHandler {
         }
         MailMessageReqDTO reqDTO = new MailMessageReqDTO();
         reqDTO.setTo(warnConfig.getUsers().stream().map(User::getMail).toArray(String[]::new));
+        reqDTO.setSubject(warnConfig.getMailTitle());
         reqDTO.setProviderId(warnConfig.getMailProviderId());
         reqDTO.setContent(warnConfig.getMailBody());
         reqDTO.setMessageId(UUID.randomUUID().toString());
