@@ -16,6 +16,14 @@ import java.sql.Timestamp;
  */
 public interface EarlyWarnInfoService extends IService<EarlyWarnInfo> {
 
+    /**
+     * 分页查询预警记录
+     *
+     * @param pageReqDTO
+     * @param startTime
+     * @param endTime
+     * @return
+     */
     Page<EarlyWarnInfo> getWarnInfoByPage(PageReqDTO pageReqDTO, Timestamp startTime, Timestamp endTime);
 
 }

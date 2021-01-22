@@ -22,12 +22,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.Instant;
 import org.springframework.beans.BeanUtils;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 /**
@@ -40,6 +42,11 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class WarnHandler {
+
+    @Resource(name = "asyncWarnExecutor")
+    private ThreadPoolTaskExecutor warnExecutor;
+
+    private static final int VAR_COUNT = 3;
 
     @Resource
     private EarlyWarnService earlyWarnService;
@@ -79,7 +86,6 @@ public class WarnHandler {
     private PushCenterService pushCenterService;
 
     public void doWarn(Instant now) {
-
         pushSms();
         pushMail();
         pushWechat();
@@ -87,11 +93,11 @@ public class WarnHandler {
     }
 
     private void pushWechat() {
-        String[] openIds = warnConfig.getOpenIds().split(Constants.COMMA_EN);
+        String openIds = warnConfig.getOpenIds();
         if (StringUtils.isBlank(warnConfig.getOpenIds()) || Objects.isNull(warnConfig.getWechatProviderId())) {
             return;
         }
-        for (String openId : openIds) {
+        for (String openId : openIds.split(Constants.COMMA_EN)) {
             WeChatMessageReqDTO reqDTO = new WeChatMessageReqDTO();
             reqDTO.setOpenId(openId);
             reqDTO.setProviderId(warnConfig.getWechatProviderId());
@@ -127,10 +133,9 @@ public class WarnHandler {
         Map<String, String> var = new HashMap<>(8);
         SmsPusher.SmsConfig smsConfig = pushCenterService.getSmsConfig(warnConfig.getSmsTemplateId());
         List<String> params = smsConfig.getParams();
-        if (params.size() < 3) {
+        if (params.size() < VAR_COUNT) {
             log.error("预警配置模板参数数量与规定不符");
         }
-
         var.put(params.get(0), DateUtils.formatDate(new Date(statTime)));
         var.put(params.get(1), DateUtils.formatDate(new Date(endTime)));
         var.put(params.get(2), warnCount + "");
@@ -146,7 +151,7 @@ public class WarnHandler {
         pushCenterService.pushSms(smsMessage);
     }
 
-    public void warnMatch(Instant now) {
+    public synchronized void warnMatch(Instant now) {
         long nowMillis = now.getMillis();
         while (nowMillis > endTime) {
             statTime = endTime;
@@ -155,7 +160,12 @@ public class WarnHandler {
         warnCount++;
         if (warnCount >= warnConfig.getThreshold() &&
                 (nowMillis - lastWarnTime) > warnConfig.getAlarmInterval()) {
-            doWarn(now);
+            CompletableFuture.supplyAsync(() -> {
+                doWarn(now);
+                return null;
+            }, warnExecutor).thenAccept(o -> {
+                log.info("finish a warn task !");
+            });
             lastWarnTime = nowMillis;
             warnCount = 0;
         }
@@ -174,13 +184,13 @@ public class WarnHandler {
         init();
     }
 
-    public void persist(Instant now) {
+    private void persist(Instant now) {
         EarlyWarnInfo earlyWarnInfo = new EarlyWarnInfo();
         earlyWarnInfo.setTime(new Timestamp(now.getMillis()));
         earlyWarnInfo.setReason(String.format("消息平台%s分钟内，推送失败次数超过%s次", warnConfig.getAlarmCycle() / 1000 / 60,
                 warnConfig.getThreshold()));
         earlyWarnInfo.setContent(PatternUtils.buildContent(pushCenterService.getSmsConfig(warnConfig.getSmsTemplateId()).getContent(),
-                new Date(statTime), new Date(endTime), warnConfig.getThreshold()));
+                DateUtils.formatDate(new Date(statTime)), DateUtils.formatDate(new Date(endTime)), warnConfig.getThreshold()));
         earlyWarnInfo.setDisposer(StringUtils.join(warnConfig.getUsers().stream().map(User::getUserName).toArray(), Constants.COMMA_EN));
         earlyWarnInfoService.save(earlyWarnInfo);
     }
