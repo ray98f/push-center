@@ -1,6 +1,6 @@
 package com.zte.msg.pushcenter.pccore.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zte.msg.pushcenter.pccore.dto.req.ProviderSmsTemplateReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.ProviderSmsTemplateResDTO;
@@ -33,8 +33,6 @@ import java.util.Objects;
 public class ProviderSmsTemplateServiceImpl extends ServiceImpl<ProviderSmsTemplateMapper, ProviderSmsTemplate>
         implements ProviderSmsTemplateService {
 
-
-
     @Resource
     private ProviderService providerService;
 
@@ -50,8 +48,6 @@ public class ProviderSmsTemplateServiceImpl extends ServiceImpl<ProviderSmsTempl
         providerSmsTemplate.setSign(smsTemplateReqDTO.getSign());
         providerSmsTemplate.setStatus(smsTemplateReqDTO.getStatus());
         getBaseMapper().insert(providerSmsTemplate);
-
-
     }
 
     @Override
@@ -76,15 +72,15 @@ public class ProviderSmsTemplateServiceImpl extends ServiceImpl<ProviderSmsTempl
         }
         getBaseMapper().deleteBatchIds(pstIds);
         // 删除该消息平台模版和消息中心模版关联关系
-        pstIds.forEach(o -> smsTemplateRelationMapper.delete(new QueryWrapper<SmsTemplateRelation>()
-                .eq("provider_template_id", o)));
+        pstIds.forEach(o -> smsTemplateRelationMapper.delete(new LambdaQueryWrapper<SmsTemplateRelation>()
+                .eq(SmsTemplateRelation::getProviderTemplateId, o)));
     }
 
     @Override
     public List<ProviderSmsTemplateResDTO> getProviderSmsTemplatesByProviderId(Long providerId) {
-        QueryWrapper<ProviderSmsTemplate> wrapper = new QueryWrapper<>();
+        LambdaQueryWrapper<ProviderSmsTemplate> wrapper = new LambdaQueryWrapper<>();
         if (Objects.nonNull(providerId)) {
-            wrapper.eq("provider_id", providerId);
+            wrapper.eq(ProviderSmsTemplate::getProviderId, providerId);
         }
         List<ProviderSmsTemplate> providerSmsTemplates = getBaseMapper().selectList(wrapper);
 

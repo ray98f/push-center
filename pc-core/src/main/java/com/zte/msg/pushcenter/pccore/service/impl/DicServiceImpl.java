@@ -1,6 +1,6 @@
 package com.zte.msg.pushcenter.pccore.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zte.msg.pushcenter.pccore.dto.req.DicReqDTO;
@@ -27,8 +27,6 @@ import java.util.Objects;
 @Service
 public class DicServiceImpl extends ServiceImpl<DicMapper, Dic> implements DicService {
 
-    public static final String TYPE = "type";
-
     @Override
     public Page<DicResDTO> getDics(Page<DicResDTO> page, String name, String type, Integer isEnable) {
         return getBaseMapper().selectDicByPage(page, name, type, isEnable);
@@ -36,7 +34,7 @@ public class DicServiceImpl extends ServiceImpl<DicMapper, Dic> implements DicSe
 
     @Override
     public void addDic(DicReqDTO reqDTO) {
-        if (getBaseMapper().selectCount(new QueryWrapper<Dic>().eq(TYPE, reqDTO.getType())) > 0) {
+        if (getBaseMapper().selectCount(new LambdaQueryWrapper<Dic>().eq(Dic::getType, reqDTO.getType())) > 0) {
             throw new CommonException(ErrorCode.DIC_TYPE_ALREADY_EXIST, reqDTO.getType());
         }
         Dic dic = new Dic();
@@ -46,7 +44,7 @@ public class DicServiceImpl extends ServiceImpl<DicMapper, Dic> implements DicSe
 
     @Override
     public void updateDic(DicUpdateReqDTO reqDTO) {
-        Dic dic1 = getBaseMapper().selectOne(new QueryWrapper<Dic>().eq(TYPE, reqDTO.getType()));
+        Dic dic1 = getBaseMapper().selectOne(new LambdaQueryWrapper<Dic>().eq(Dic::getType, reqDTO.getType()));
         if (Objects.nonNull(dic1) && !dic1.getId().equals(reqDTO.getId())) {
             throw new CommonException(ErrorCode.DIC_TYPE_ALREADY_EXIST, reqDTO.getType());
         }

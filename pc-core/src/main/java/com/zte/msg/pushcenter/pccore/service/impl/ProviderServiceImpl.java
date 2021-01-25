@@ -1,6 +1,6 @@
 package com.zte.msg.pushcenter.pccore.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zte.msg.pushcenter.pccore.core.Flusher;
@@ -56,9 +56,9 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
     @Override
     public void addProvider(ProviderReqDTO providerReqDTO) {
 
-        Integer integer = getBaseMapper().selectCount(new QueryWrapper<Provider>()
-                .eq("provider_name", providerReqDTO.getProviderName())
-                .eq("type", providerReqDTO.getType()));
+        Integer integer = getBaseMapper().selectCount(new LambdaQueryWrapper<Provider>()
+                .eq(Provider::getProviderName, providerReqDTO.getProviderName())
+                .eq(Provider::getType, providerReqDTO.getType()));
         if (integer >= 1) {
             throw new CommonException(ErrorCode.PROVIDER_ALREADY_EXIST);
         }
@@ -92,8 +92,8 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
     @Transactional(rollbackFor = Exception.class)
     public void deleteProvider(Long[] providerIds) {
 
-        List<ProviderSmsTemplate> providerSmsTemplates = providerSmsTemplateMapper.selectList(new QueryWrapper<ProviderSmsTemplate>()
-                .in("provider_id", Arrays.asList(providerIds)));
+        List<ProviderSmsTemplate> providerSmsTemplates = providerSmsTemplateMapper.selectList(new LambdaQueryWrapper<ProviderSmsTemplate>()
+                .in(ProviderSmsTemplate::getProviderId, Arrays.asList(providerIds)));
 
         if (!CollectionUtils.isEmpty(providerSmsTemplates)) {
             List<Long> providerSmsTemplateIds = providerSmsTemplates.stream()
@@ -101,8 +101,8 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
             // 删除消息平台表中的模版
             providerSmsTemplateMapper.deleteBatchIds(providerSmsTemplateIds);
             // 删除短信关联映射表中的数据
-            smsTemplateRelationMapper.delete(new QueryWrapper<SmsTemplateRelation>()
-                    .in("provider_template_id", providerSmsTemplateIds));
+            smsTemplateRelationMapper.delete(new LambdaQueryWrapper<SmsTemplateRelation>()
+                    .in(SmsTemplateRelation::getProviderTemplateId, providerSmsTemplateIds));
         }
 
         List<Long> ids = Arrays.asList(providerIds);
@@ -132,15 +132,12 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
                                              Integer status,
                                              PageReqDTO pageReqDTO) {
 
-        QueryWrapper<Provider> wrapper = new QueryWrapper<>();
+        LambdaQueryWrapper<Provider> wrapper = new LambdaQueryWrapper<>();
         if (Objects.nonNull(provider)) {
-            wrapper.like("provider_name", provider);
+            wrapper.like(Provider::getProviderName, provider);
         }
         if (Objects.nonNull(type)) {
-            wrapper.eq("type", type);
-        }
-        if (Objects.nonNull(status)) {
-            wrapper.eq("status", status);
+            wrapper.eq(Provider::getType, type);
         }
         Page<Provider> providerPage = getBaseMapper().selectPage(pageReqDTO.of(), wrapper);
         Page<ProviderResDTO> dtoPage = new Page<>();

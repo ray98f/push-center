@@ -1,5 +1,6 @@
 package com.zte.msg.pushcenter.pccore.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zte.msg.pushcenter.pccore.core.pusher.SmsPusher;
@@ -85,8 +86,8 @@ public class TemplateServiceImpl implements TemplateService {
     @Override
     public void deleteSmsTemplate(Long[] templateIds) {
         smsTemplateMapper.deleteBatchIds(Arrays.asList(templateIds));
-        smsTemplateRelationMapper.delete(new QueryWrapper<SmsTemplateRelation>()
-                .in("sms_template_id", Arrays.asList(templateIds)));
+        smsTemplateRelationMapper.delete(new LambdaQueryWrapper<SmsTemplateRelation>()
+                .in(SmsTemplateRelation::getSmsTemplateId, Arrays.asList(templateIds)));
         // 删除模板时，刷新内存中的模板信息
         smsPusher.flushConfig(templateIds, true);
     }
@@ -98,13 +99,13 @@ public class TemplateServiceImpl implements TemplateService {
         if (Objects.isNull(smsTemplate)) {
             throw new CommonException(ErrorCode.SMS_TEMPLATE_NOT_EXIST);
         }
-        if (smsTemplateRelationMapper.selectCount(new QueryWrapper<SmsTemplateRelation>()
-                .eq("sms_template_id", templateId)
-                .eq("provider_template_id", reqDTO.getPTemplateId())) >= 1) {
+        if (smsTemplateRelationMapper.selectCount(new LambdaQueryWrapper<SmsTemplateRelation>()
+                .eq(SmsTemplateRelation::getSmsTemplateId, templateId)
+                .eq(SmsTemplateRelation::getProviderTemplateId, reqDTO.getPTemplateId())) >= 1) {
             throw new CommonException(ErrorCode.SMS_TEMPLATE_RELATION_ALREADY_EXIST);
         }
-        if (smsTemplateRelationMapper.selectCount(new QueryWrapper<SmsTemplateRelation>()
-                .eq("priority", reqDTO.getPriority())) >= 1) {
+        if (smsTemplateRelationMapper.selectCount(new LambdaQueryWrapper<SmsTemplateRelation>()
+                .eq(SmsTemplateRelation::getPriority, reqDTO.getPriority())) >= 1) {
             throw new CommonException(ErrorCode.SMS_TEMPLATE_RELATION_PRIORITY_EXIST);
         }
         ProviderSmsTemplate providerSmsTemplate = providerSmsTemplateMapper.selectById(reqDTO.getPTemplateId());
@@ -130,8 +131,8 @@ public class TemplateServiceImpl implements TemplateService {
         if (Objects.isNull(relation)) {
             throw new CommonException(ErrorCode.SMS_TEMPLATE_NOT_EXIST);
         }
-        if (smsTemplateRelationMapper.selectCount(new QueryWrapper<SmsTemplateRelation>()
-                .eq("priority", reqDTO.getPriority())) >= 0) {
+        if (smsTemplateRelationMapper.selectCount(new LambdaQueryWrapper<SmsTemplateRelation>()
+                .eq(SmsTemplateRelation::getPriority, reqDTO.getPriority())) >= 0) {
             throw new CommonException(ErrorCode.SMS_TEMPLATE_RELATION_ALREADY_EXIST);
         }
         ProviderSmsTemplate providerSmsTemplate = providerSmsTemplateMapper.selectById(relation.getProviderTemplateId());
@@ -187,15 +188,15 @@ public class TemplateServiceImpl implements TemplateService {
                                                            Long templateId,
                                                            Integer status,
                                                            PageReqDTO pageReqDTO) {
-        QueryWrapper<SmsTemplate> wrapper = new QueryWrapper<>();
+        LambdaQueryWrapper<SmsTemplate> wrapper = new LambdaQueryWrapper<>();
         if (StringUtils.isNotBlank(content)) {
-            wrapper.like("content", content);
+            wrapper.like(SmsTemplate::getContent, content);
         }
         if (null != templateId) {
-            wrapper.eq("id", templateId);
+            wrapper.eq(SmsTemplate::getId, templateId);
         }
         if (null != status) {
-            wrapper.eq("status", status);
+            wrapper.eq(SmsTemplate::getStatus, status);
         }
 
         Page<SmsTemplate> smsTemplatePage = smsTemplateMapper.selectPage(pageReqDTO.of(), wrapper);
@@ -307,15 +308,15 @@ public class TemplateServiceImpl implements TemplateService {
                                                          Long templateId,
                                                          String providerName,
                                                          Integer status) {
-        QueryWrapper<WeChatTemplate> wrapper = new QueryWrapper<>();
+        LambdaQueryWrapper<WeChatTemplate> wrapper = new LambdaQueryWrapper<>();
         if (!Objects.isNull(templateId)) {
-            wrapper.eq("id", templateId);
+            wrapper.eq(WeChatTemplate::getId, templateId);
         }
         if (!Objects.isNull(providerName)) {
-            wrapper.like("provider_name", providerName);
+            wrapper.like(WeChatTemplate::getProviderName, providerName);
         }
         if (!Objects.isNull(status)) {
-            wrapper.eq("status", status);
+            wrapper.eq(WeChatTemplate::getStatus, status);
         }
         Page<WeChatTemplate> result = weChatTemplateMapper.selectPage(page.of(), wrapper);
         List<WeChatTemplate> records = result.getRecords();
