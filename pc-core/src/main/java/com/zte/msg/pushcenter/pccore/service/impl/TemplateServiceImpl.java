@@ -86,7 +86,7 @@ public class TemplateServiceImpl implements TemplateService {
     public void deleteSmsTemplate(Long[] templateIds) {
         smsTemplateMapper.deleteBatchIds(Arrays.asList(templateIds));
         smsTemplateRelationMapper.delete(new QueryWrapper<SmsTemplateRelation>()
-                .in("template_id", Arrays.asList(templateIds)));
+                .in("sms_template_id", Arrays.asList(templateIds)));
         // 删除模板时，刷新内存中的模板信息
         smsPusher.flushConfig(templateIds, true);
     }
