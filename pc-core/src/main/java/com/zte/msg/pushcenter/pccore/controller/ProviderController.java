@@ -6,6 +6,7 @@ import com.zte.msg.pushcenter.pccore.dto.PageResponse;
 import com.zte.msg.pushcenter.pccore.dto.req.ProviderReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.ProviderResDTO;
 import com.zte.msg.pushcenter.pccore.service.ProviderService;
+import com.zte.msg.pushcenter.pccore.utils.PermissionCheck;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -32,6 +33,7 @@ public class ProviderController {
     private ProviderService providerService;
 
     @PostMapping
+    @PermissionCheck(permissionName = "provider:config:add")
     @ApiOperation(value = "【消息平台配置】- 添加")
     public <T> DataResponse<T> addProvider(@RequestBody @Valid ProviderReqDTO provider) {
         providerService.addProvider(provider);
@@ -39,6 +41,7 @@ public class ProviderController {
     }
 
     @PutMapping(value = "/{id}")
+    @PermissionCheck(permissionName = "provider:config:modify")
     @ApiOperation(value = "【消息平台配置】- 修改")
     public <T> DataResponse<T> updateProvider(@PathVariable Long id,
                                               @RequestBody ProviderReqDTO provider) {
@@ -48,6 +51,7 @@ public class ProviderController {
 
     @DeleteMapping
     @ApiOperation(value = "【消息平台配置】- 删除")
+    @PermissionCheck(permissionName = "provider:config:remove")
     public <T> DataResponse<T> deleteProvider(@RequestBody Long[] ids) {
         providerService.deleteProvider(ids);
         return DataResponse.success();
@@ -55,6 +59,7 @@ public class ProviderController {
 
 
     @GetMapping(value = "/page")
+    @PermissionCheck(permissionName = "provider:config:list")
     @ApiOperation(value = "【消息平台配置】- 分页查询")
     public PageResponse<ProviderResDTO> getProviders(@RequestParam(required = false)
                                                      @ApiParam("平台模糊查询") String provider,

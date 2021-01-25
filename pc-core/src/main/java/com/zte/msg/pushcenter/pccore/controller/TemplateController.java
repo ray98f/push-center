@@ -9,6 +9,7 @@ import com.zte.msg.pushcenter.pccore.dto.res.SmsTemplateDetailResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.WeChatTemplateResDTO;
 import com.zte.msg.pushcenter.pccore.service.ProviderSmsTemplateService;
 import com.zte.msg.pushcenter.pccore.service.TemplateService;
+import com.zte.msg.pushcenter.pccore.utils.PermissionCheck;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -40,6 +41,7 @@ public class TemplateController {
     private ProviderSmsTemplateService providerSmsTemplateService;
 
     @PostMapping(value = "/sms")
+    @PermissionCheck(permissionName = "template:sms:add")
     @ApiOperation(value = "【短信模版】- 添加")
     public <T> DataResponse<T> addSmsTemplate(@RequestBody @Valid SmsTemplateReqDTO templateConfig) {
         templateService.addSmsTemplate(templateConfig);
@@ -47,6 +49,7 @@ public class TemplateController {
     }
 
     @GetMapping(value = "/sms/page")
+    @PermissionCheck(permissionName = "template:sms:list")
     @ApiOperation(value = "【短信模版】- 分页查询")
     public PageResponse<SmsTemplateDetailResDTO> getSmsTemplate(@RequestParam(required = false)
                                                                 @ApiParam(value = "模板内容模糊查询字段") String content,
@@ -59,6 +62,7 @@ public class TemplateController {
     }
 
     @PutMapping(value = "/sms/{templateId}")
+    @PermissionCheck(permissionName = "template:sms:modify")
     @ApiOperation(value = "【短信模版】- 修改短信模版")
     public <T> DataResponse<T> updateSmsTemplate(@PathVariable Long templateId,
                                                  @RequestBody @Valid SmsTemplateReqDTO reqDTO) {
@@ -68,6 +72,7 @@ public class TemplateController {
     }
 
     @DeleteMapping(value = "/sms")
+    @PermissionCheck(permissionName = "template:sms:remove")
     @ApiOperation(value = "【短信模版】- 删除短信模版")
     public <T> DataResponse<T> removeSmsTemplate(@RequestParam @ApiParam(value = "模版id数组") Long[] templateIds) {
 
@@ -76,6 +81,7 @@ public class TemplateController {
     }
 
     @PostMapping(value = "/sms/relation/{templateId}")
+    @PermissionCheck(permissionName = "template:sms:modify")
     @ApiOperation(value = "【短信模版】- 新增消息平台模版关联配置")
     public <T> DataResponse<T> addProviderSmsTemplateRelate(@PathVariable Long templateId,
                                                             @RequestBody SmsTemplateRelateProviderReqDTO reqDTO) {
@@ -85,6 +91,7 @@ public class TemplateController {
 
     @PutMapping(value = "/sms/relation/{templateId}")
     @ApiOperation(value = "【短信模板】- 修改消息平台模版关联配置")
+    @PermissionCheck(permissionName = "template:sms:modify")
     public <T> DataResponse<T> updateProviderSmsTemplateRelate(@PathVariable @ApiParam(value = "短信模版id") Long templateId,
                                                                @RequestBody SmsTemplateRelateProviderUpdateReqDTO reqDTO) {
         templateService.updateProviderSmsTemplateRelate(templateId, reqDTO);
@@ -92,6 +99,7 @@ public class TemplateController {
     }
 
     @DeleteMapping(value = "/sms/relation/{templateId}")
+    @PermissionCheck(permissionName = "template:sms:remove")
     @ApiOperation(value = "【短信模版】- 删除消息平台模版配置的关联模版")
     public <T> DataResponse<T> deleteProviderSmsTemplateRelate(@PathVariable Long templateId,
                                                                @RequestParam @NotNull(message = "32000006")
@@ -101,12 +109,14 @@ public class TemplateController {
     }
 
     @GetMapping(value = "/sms/relation/{templateId}")
+    @PermissionCheck(permissionName = "template:sms:list")
     @ApiOperation(value = "【短信模版】- 获取消息平台模版配置列表（根据消息中心模版id）")
     public DataResponse<List<ProviderSmsTemplateResDTO>> getProviderSmsTemplatesByTemplateId(@PathVariable Long templateId) {
         return DataResponse.of(templateService.getProviderSmsTemplatesByTemplateId(templateId));
     }
 
     @PostMapping(value = "/provider/sms/{providerId}")
+    @PermissionCheck(permissionName = "provider:config:modify")
     @ApiOperation(value = "【消息平台配置】- 短信模版配置 - 新增")
     public <T> DataResponse<T> addSmsProviderTemplate(@PathVariable @ApiParam(value = "消息平台id") Long providerId,
                                                       @RequestBody @Valid ProviderSmsTemplateReqDTO smsTemplateReqDTO) {
@@ -117,6 +127,7 @@ public class TemplateController {
 
     @PutMapping(value = "/provider/sms/{providerId}/{providerSmsTemplateId}")
     @ApiOperation(value = "【消息平台配置】- 短信模版配置 - 修改")
+    @PermissionCheck(permissionName = "provider:config:modify")
     public <T> DataResponse<T> addSmsProviderTemplate(@PathVariable("providerId") @ApiParam("消息平台id") Long providerId,
                                                       @PathVariable("providerSmsTemplateId") @ApiParam("消息平台短信模版id") Long providerSmsTemplateId,
                                                       @RequestBody @Valid ProviderSmsTemplateReqDTO smsTemplateReqDTO) {
@@ -127,6 +138,7 @@ public class TemplateController {
     }
 
     @DeleteMapping(value = "/provider/sms/{providerId}")
+    @PermissionCheck(permissionName = "provider:config:modify")
     @ApiOperation(value = "【消息平台配置】- 短信模版配置 - 删除")
     public <T> DataResponse<T> deleteSmsProviderTemplate(@PathVariable("providerId")
                                                          @ApiParam("消息平台id") Long providerId,
@@ -139,6 +151,7 @@ public class TemplateController {
     }
 
     @GetMapping(value = "/provider/sms")
+    @PermissionCheck(permissionName = "provider:config:list")
     @ApiOperation(value = "【消息平台配置】- 短信模版配置 - 获取消息平台短信模版列表")
     public DataResponse<List<ProviderSmsTemplateResDTO>> getProviderSmsTemplatesByProviderId(@RequestParam(required = false)
                                                                                              @ApiParam(value = "第三方消息平台id，不传的话查询全部") Long providerId) {
@@ -146,6 +159,7 @@ public class TemplateController {
     }
 
     @PostMapping(value = "/provider/wechat")
+    @PermissionCheck(permissionName = "template:wechat:add")
     @ApiOperation(value = "【微信公众号模版】- 新增")
     public <T> DataResponse<T> addWeChatTemplate(@RequestBody @Valid WeChatTemplateReqDTO reqDTO) {
         templateService.addWeChatTemplate(reqDTO);
@@ -154,18 +168,21 @@ public class TemplateController {
 
     @PutMapping(value = "/provider/wechat")
     @ApiOperation(value = "【微信公众号模版】- 修改")
+    @PermissionCheck(permissionName = "template:wechat:modify")
     public <T> DataResponse<T> updateWeChatTemplate(@RequestBody WeChatTemplateUpdateReqDTO reqDTO) {
         templateService.updateWeChatTemplate(reqDTO);
         return DataResponse.success();
     }
 
     @GetMapping(value = "/provider/wechat")
+    @PermissionCheck(permissionName = "template:wechat:list")
     @ApiOperation(value = "【微信公众号模版】- 查看详情")
     public DataResponse<WeChatTemplateResDTO> getWeChatTemplate(@RequestParam @ApiParam(required = true) Long templateId) {
         return DataResponse.of(templateService.getWeChatTemplate(templateId));
     }
 
     @DeleteMapping(value = "/provider/wechat")
+    @PermissionCheck(permissionName = "template:wechat:remove")
     @ApiOperation(value = "【微信公众号模版】- 批量删除")
     public <T> DataResponse<T> deleteWeChatTemplates(@RequestBody Long[] ids) {
 
@@ -174,6 +191,7 @@ public class TemplateController {
     }
 
     @GetMapping(value = "/provider/wechat/page")
+    @PermissionCheck(permissionName = "template:wechat:list")
     @ApiOperation(value = "【微信公众号模版】- 分页查询")
     public PageResponse<WeChatTemplateResDTO> getWeChatTemplates(@Valid PageReqDTO page,
                                                                  @RequestParam(required = false) @ApiParam(value = "模版id") Long templateId,

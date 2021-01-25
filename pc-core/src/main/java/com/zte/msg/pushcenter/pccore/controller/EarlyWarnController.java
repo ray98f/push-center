@@ -7,6 +7,7 @@ import com.zte.msg.pushcenter.pccore.entity.EarlyWarnConfig;
 import com.zte.msg.pushcenter.pccore.entity.EarlyWarnInfo;
 import com.zte.msg.pushcenter.pccore.service.EarlyWarnInfoService;
 import com.zte.msg.pushcenter.pccore.service.EarlyWarnService;
+import com.zte.msg.pushcenter.pccore.utils.PermissionCheck;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +44,7 @@ public class EarlyWarnController {
      * @return
      */
     @GetMapping("/config")
+    @PermissionCheck(permissionName = "early-warn:config:query")
     @ApiOperation(value = "查看预警配置")
     public DataResponse<EarlyWarnConfig> selectEarlyWarnConfig() {
         return DataResponse.of(earlyWarnService.selectEarlyWarnConfig());
@@ -56,6 +58,7 @@ public class EarlyWarnController {
      */
     @PutMapping("/config")
     @ApiOperation(value = "编辑预警配置")
+    @PermissionCheck(permissionName = "early-warn:config:modify")
     public <T> DataResponse<T> editEarlyWarnConfig(@Valid @RequestBody EarlyWarnConfig earlyWarnConfig) {
         earlyWarnService.saveOrUpdateEarlyWarnConfig(earlyWarnConfig);
         return DataResponse.success();
@@ -69,6 +72,7 @@ public class EarlyWarnController {
      */
     @GetMapping
     @ApiOperation(value = "预警记录查询")
+    @PermissionCheck(permissionName = "early-warn:info:list")
     public PageResponse<EarlyWarnInfo> listEarlyWarnInfo(@Valid PageReqDTO pageReqDTO,
                                                          @RequestParam(required = false) Timestamp startTime,
                                                          @RequestParam(required = false) Timestamp endTime) {

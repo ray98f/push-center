@@ -13,6 +13,7 @@ import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.service.PushCenterService;
 import com.zte.msg.pushcenter.pccore.utils.PatternUtils;
+import com.zte.msg.pushcenter.pccore.utils.PermissionCheck;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
@@ -42,6 +43,7 @@ public class PushCenterController {
     private PushCenterService pushCenterService;
 
     @PostMapping(value = "/sms")
+    @PermissionCheck(permissionName = "sms:send")
     @ApiOperation(value = "短信推送")
     public <T> DataResponse<T> pushSms(@Valid @RequestBody SmsMessageReqDTO reqDTO) {
         if (reqDTO.getIsCallBack() && Objects.isNull(reqDTO.getCallBackUrl())) {
@@ -57,6 +59,7 @@ public class PushCenterController {
 
     @PostMapping(value = "/mail")
     @ApiOperation(value = "邮件推送")
+    @PermissionCheck(permissionName = "mail:send")
     public <T> DataResponse<T> pushMail(@Valid @RequestBody MailMessageReqDTO reqDTO) {
         MailMessage mailMessage = new MailMessage().build(reqDTO);
         if (!PatternUtils.validEmails(reqDTO.getCc()) || !PatternUtils.validEmails(reqDTO.getTo())) {
@@ -67,6 +70,7 @@ public class PushCenterController {
     }
 
     @PostMapping(value = "/wechat")
+    @PermissionCheck(permissionName = "wechat:send")
     @ApiOperation(value = "公众号消息推送")
     public <T> DataResponse<T> pushWeChat(@Valid @RequestBody WeChatMessageReqDTO reqDTO) {
         WeChatMessage weChatMessage = new WeChatMessage().build(reqDTO);
@@ -75,6 +79,7 @@ public class PushCenterController {
     }
 
     @PostMapping(value = "/app")
+    @PermissionCheck(permissionName = "app:send")
     @ApiOperation(value = "APP消息推送")
     public <T> DataResponse<T> pushApp(@Valid @RequestBody AppMessageReqDTO reqDTO) {
         AppMessage appMessage = new AppMessage().build(reqDTO);

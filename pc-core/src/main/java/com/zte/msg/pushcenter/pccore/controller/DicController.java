@@ -11,6 +11,7 @@ import com.zte.msg.pushcenter.pccore.dto.res.DicDataResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.DicResDTO;
 import com.zte.msg.pushcenter.pccore.service.DicDataService;
 import com.zte.msg.pushcenter.pccore.service.DicService;
+import com.zte.msg.pushcenter.pccore.utils.PermissionCheck;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -40,6 +41,7 @@ public class DicController {
     private DicDataService dicDataService;
 
     @GetMapping("/page")
+    @PermissionCheck(permissionName = "system:dic-type:list")
     @ApiOperation(value = "【字典管理】- 分页查询字典类型列表")
     public PageResponse<DicResDTO> getDics(@RequestParam(required = false) @ApiParam(value = "名称模糊查询字段") String name,
                                            @RequestParam(required = false) @ApiParam(value = "字典类型") String type,
@@ -49,6 +51,7 @@ public class DicController {
     }
 
     @PostMapping
+    @PermissionCheck(permissionName = "system:dic-type:add")
     @ApiOperation(value = "【字典管理】- 新增字典类型")
     public <T> DataResponse<T> addDic(@RequestBody @Valid DicReqDTO reqDTO) {
 
@@ -58,6 +61,7 @@ public class DicController {
 
     @PutMapping
     @ApiOperation(value = "【字典管理】- 修改字典类型")
+    @PermissionCheck(permissionName = "system:dic-type:modify")
     public <T> DataResponse<T> updateDic(@RequestBody @Valid DicUpdateReqDTO reqDTO) {
 
         dicService.updateDic(reqDTO);
@@ -66,6 +70,7 @@ public class DicController {
 
     @DeleteMapping
     @ApiOperation(value = "【字典管理】- 删除字典类型")
+    @PermissionCheck(permissionName = "system:dic-type:remove")
     public <T> DataResponse<T> deleteDic(@RequestBody Long[] dicIds) {
         dicService.deleteDic(dicIds);
         return DataResponse.success();
@@ -73,6 +78,7 @@ public class DicController {
 
     @GetMapping("/data")
     @ApiOperation(value = "【字典数据】- 分页查询")
+    @PermissionCheck(permissionName = "system:dic-data:list")
     public PageResponse<DicDataResDTO> getDicDataByPage(@Valid PageReqDTO pageReqDTO,
                                                         @RequestParam(required = false) @ApiParam(value = "字典名称，下拉框显示名称，实际传type") String type,
                                                         @RequestParam(required = false) @ApiParam(value = "字典标签") String value,
@@ -83,6 +89,7 @@ public class DicController {
 
     @PostMapping("/data")
     @ApiOperation(value = "【字典数据】- 新增字典数据")
+    @PermissionCheck(permissionName = "system:dic-data:add")
     public <T> DataResponse<T> addDicData(@RequestBody @Valid DicDataReqDTO reqDTO) {
 
         dicDataService.addDicData(reqDTO);
@@ -91,6 +98,7 @@ public class DicController {
 
     @PutMapping("/data")
     @ApiOperation(value = "【字典数据】- 更新字典数据")
+    @PermissionCheck(permissionName = "system:dic-data:modify")
     public <T> DataResponse<T> updateDicData(@RequestBody @Valid DicDataUpdateReqDTO reqDTO) {
         dicDataService.updateDicData(reqDTO);
         return DataResponse.success();
@@ -98,6 +106,7 @@ public class DicController {
 
     @DeleteMapping("/data")
     @ApiOperation(value = "【字典数据】- 删除字典数据")
+    @PermissionCheck(permissionName = "system:dic-data:remove")
     public <T> DataResponse<T> deleteDicData(@RequestBody Long[] dicIds) {
         dicDataService.deleteDicData(dicIds);
         return DataResponse.success();
