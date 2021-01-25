@@ -47,7 +47,13 @@ public class Message {
 
     private Timestamp transmitTime;
 
+    private Long requestTime;
+
     public void setMessageId(String messageId) {
         this.messageId = messageId.replace("-", "");
+    }
+
+    public void setRequestTime(String requestTime) {
+        this.requestTime = Long.parseLong(requestTime);
     }
 }

@@ -2,6 +2,7 @@ package com.zte.msg.pushcenter.pccore.core.pusher;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.zte.msg.pushcenter.pccore.core.pusher.base.BasePusher;
@@ -112,7 +113,7 @@ public class WeChatPusher extends BasePusher {
 
             log.error("Error while send a wechat message: {}", e.getMessage());
             e.printStackTrace();
-            return new PcScript.Res(1, "系统内部错误");
+            return new PcScript.Res(-1, e.getMessage());
         }).thenAcceptAsync(o -> {
             if (o.getCode() != Constants.SUCCESS) {
                 warn();
@@ -142,8 +143,8 @@ public class WeChatPusher extends BasePusher {
             wechatAccessToken.setExpire(accessToken.getExpire());
             wechatAccessToken.setAppId(accessToken.getAppId());
 
-            wechatAccessTokenService.saveOrUpdate(wechatAccessToken, new QueryWrapper<WechatAccessToken>()
-                    .eq("app_id", accessToken.getAppId()));
+            wechatAccessTokenService.saveOrUpdate(wechatAccessToken, new LambdaQueryWrapper<WechatAccessToken>()
+                    .eq(WechatAccessToken::getAppId, accessToken.getAppId()));
             accessTokens.put(wxConfig.getAppId(), accessToken);
         }
         return accessToken.getAccessToken();
@@ -153,6 +154,9 @@ public class WeChatPusher extends BasePusher {
     protected void persist(Message message, PcScript.Res res) {
         try {
             WeChatMessage weChatMessage = (WeChatMessage) message;
+
+            weChatMessage.setDelay(getDelay(message));
+
             weChatMessage.setAppName(appService.getAppName(weChatMessage.getAppId()));
             WeChatInfo weChatInfo = new WeChatInfo(weChatMessage, res);
             historyService.addHistoryWeChat(weChatInfo);

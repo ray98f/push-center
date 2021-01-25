@@ -99,10 +99,7 @@ public class SmsPusher extends BasePusher {
                     Class<?> scriptClass = scriptManager.getScriptClass(smsConfig.getScriptTag());
                     Method execute = scriptClass.getMethod("execute", Map.class);
                     Object o = scriptClass.newInstance();
-                    long start = System.currentTimeMillis();
                     res = (PcScript.Res) execute.invoke(o, paramMap);
-                    int delay = (int) (System.currentTimeMillis() - start);
-                    smsMessage.setDelay(delay);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -110,7 +107,7 @@ public class SmsPusher extends BasePusher {
             }, pushExecutor).exceptionally(e -> {
                 log.error("Error while send a sms message: {}", e.getMessage());
                 e.printStackTrace();
-                return new PcScript.Res(1, "系统内部错误");
+                return new PcScript.Res(-1, e.getMessage());
             }).thenAcceptAsync(o -> {
                 if (o.getCode() != Constants.SUCCESS) {
                     warn();
@@ -128,6 +125,9 @@ public class SmsPusher extends BasePusher {
     protected void persist(Message message, PcScript.Res res) {
         try {
             SmsMessage smsMessage = (SmsMessage) message;
+
+            smsMessage.setDelay(getDelay(message));
+
             smsMessage.setAppName(appService.getAppName(smsMessage.getAppId()));
             SmsInfo smsInfo = new SmsInfo(smsMessage, res);
             historyService.addHistorySms(smsInfo);

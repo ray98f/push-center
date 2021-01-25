@@ -29,6 +29,7 @@ public class AppMessage extends Message {
     private String content;
 
     public AppMessage build(AppMessageReqDTO reqDTO) {
+
         this.setPushMethod(PushMethods.APP);
         BeanUtils.copyProperties(reqDTO, this);
         return this;

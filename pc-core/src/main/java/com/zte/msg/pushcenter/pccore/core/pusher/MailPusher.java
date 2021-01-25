@@ -8,9 +8,7 @@ import com.zte.msg.pushcenter.pccore.core.pusher.base.Message;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.MailMessage;
 import com.zte.msg.pushcenter.pccore.entity.MailInfo;
 import com.zte.msg.pushcenter.pccore.entity.Provider;
-import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.enums.PushMethods;
-import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.service.AppService;
 import com.zte.msg.pushcenter.pccore.service.HistoryService;
 import com.zte.msg.pushcenter.pccore.utils.Constants;
@@ -59,7 +57,6 @@ public class MailPusher extends BasePusher {
             MailConfig config = getConfig(mailMessage.getProviderId());
             JavaMailSenderImpl mailSender = buildMailSender(config);
             MimeMessage mimeMessage = mailSender.createMimeMessage();
-            long start = System.currentTimeMillis();
             try {
                 MimeMessageHelper simpleMailMessage = new MimeMessageHelper(mimeMessage, true);
                 simpleMailMessage.setFrom(config.getUsername());
@@ -69,18 +66,16 @@ public class MailPusher extends BasePusher {
                 if (!Objects.isNull(mailMessage.getCc()) && mailMessage.getCc().length > 0) {
                     simpleMailMessage.setCc(mailMessage.getCc());
                 }
+                mailMessage.setTransmitTime(new Timestamp(System.currentTimeMillis()));
                 mailSender.send(mimeMessage);
-                int delay = (int) (System.currentTimeMillis() - start);
-                mailMessage.setDelay(delay);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            mailMessage.setTransmitTime(new Timestamp(start));
             return new PcScript.Res(0, "发送成功");
         }, pushExecutor).exceptionally(e -> {
             warn();
             log.error("Error while send a mail message: {}", e.getMessage());
-            throw new CommonException(ErrorCode.MAIL_PUSH_ERROR);
+            return new PcScript.Res(-1, e.getMessage());
         }).thenAcceptAsync(o -> {
             if (o.getCode() != Constants.SUCCESS) {
                 warn();
@@ -93,6 +88,9 @@ public class MailPusher extends BasePusher {
     protected void persist(Message message, PcScript.Res res) {
         MailMessage mailMessage = (MailMessage) message;
         mailMessage.setAppName(appService.getAppName(mailMessage.getAppId()));
+
+        mailMessage.setDelay(getDelay(message));
+
         MailInfo mailInfo = new MailInfo(mailMessage, res);
         historyService.addHistoryMail(mailInfo);
     }

@@ -56,10 +56,7 @@ public class AppPusher extends BasePusher {
             try {
                 execute = scriptClass.getMethod("execute", Map.class);
                 Object o = scriptClass.newInstance();
-                long start = System.currentTimeMillis();
                 res = (PcScript.Res) execute.invoke(o, paramMap);
-                int delay = (int) (System.currentTimeMillis() - start);
-                appMessage.setDelay(delay);
             } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
                 e.printStackTrace();
             }
@@ -67,7 +64,7 @@ public class AppPusher extends BasePusher {
         }).exceptionally(e -> {
             log.error("Error while send a sms message: {}", e.getMessage());
             e.printStackTrace();
-            return new PcScript.Res(1, "系统内部错误");
+            return new PcScript.Res(-1, e.getMessage());
         }).thenAcceptAsync(o -> {
             if (o.getCode() != Constants.SUCCESS) {
                 warn();
@@ -83,6 +80,9 @@ public class AppPusher extends BasePusher {
     protected void persist(Message message, PcScript.Res res) {
         AppMessage appMessage = (AppMessage) message;
         appMessage.setAppName(appService.getAppName(appMessage.getAppId()));
+
+        appMessage.setDelay(getDelay(message));
+
         ApplicationInfo applicationInfo = new ApplicationInfo(appMessage, res);
         historyService.addApplicationInfo(applicationInfo);
         System.out.println("========== Sms message persist ==========");

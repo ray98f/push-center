@@ -149,5 +149,8 @@ public abstract class BasePusher {
         return paramMap;
     }
 
+    protected int getDelay(Message message) {
+        return (int) (System.currentTimeMillis() - message.getRequestTime());
+    }
 
 }
