@@ -69,6 +69,9 @@ public class WarnHandler {
     @PostConstruct
     public void init() {
         EarlyWarnConfig earlyWarnConfig = earlyWarnService.selectEarlyWarnConfig();
+        if (Objects.isNull(earlyWarnConfig)) {
+            return;
+        }
         List<Long> userIds = Arrays.stream(earlyWarnConfig.getUserIds()
                 .split(Constants.COMMA_EN)).map(Long::parseLong).collect(Collectors.toList());
         warnConfig = new EarlyWarnConfigModel();
