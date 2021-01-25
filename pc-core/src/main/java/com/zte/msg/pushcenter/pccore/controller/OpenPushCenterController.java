@@ -14,16 +14,16 @@ import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.service.PushCenterService;
 import com.zte.msg.pushcenter.pccore.utils.Constants;
 import com.zte.msg.pushcenter.pccore.utils.SignUtils;
-import com.zte.msg.pushcenter.pccore.utils.PatternUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
@@ -34,10 +34,10 @@ import java.util.Objects;
  * @date 2020/12/10 13:57
  */
 @RestController
-@RequestMapping("/api/v1/push")
-@Api(tags = "消息推送")
+@RequestMapping("/api/open/v1/push")
+@Api(tags = "OpenApi消息推送")
 @Validated
-public class PushCenterController {
+public class OpenPushCenterController {
 
     @Resource
     private PushCenterService pushCenterService;
@@ -45,11 +45,11 @@ public class PushCenterController {
     @PostMapping(value = "/sms")
     @ApiOperation(value = "短信推送")
     public <T> DataResponse<T> pushSms(@Valid @RequestBody SmsMessageReqDTO reqDTO) {
+        String sign = reqDTO.getSign();
+        reqDTO.setSign(Constants.EMPTY);
+        SignUtils.verify(reqDTO, reqDTO.getAppId(), reqDTO.getRequestTime(), sign);
         if (reqDTO.getIsCallBack() && Objects.isNull(reqDTO.getCallBackUrl())) {
             throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
-        }
-        if (!PatternUtils.validPhoneNums(reqDTO.getPhoneNum())) {
-            throw new CommonException(ErrorCode.PHONE_NUM_ERROR);
         }
         SmsMessage smsMessage = new SmsMessage().build(reqDTO);
         pushCenterService.pushSms(smsMessage);
@@ -59,10 +59,10 @@ public class PushCenterController {
     @PostMapping(value = "/mail")
     @ApiOperation(value = "邮件推送")
     public <T> DataResponse<T> pushMail(@Valid @RequestBody MailMessageReqDTO reqDTO) {
+        String sign = reqDTO.getSign();
+        reqDTO.setSign(Constants.EMPTY);
+        SignUtils.verify(reqDTO, reqDTO.getAppId(), reqDTO.getRequestTime(), sign);
         MailMessage mailMessage = new MailMessage().build(reqDTO);
-        if (!PatternUtils.validEmails(reqDTO.getCc()) || !PatternUtils.validEmails(reqDTO.getTo())) {
-            throw new CommonException(ErrorCode.MAIL_ADDRESS_INVALID);
-        }
         pushCenterService.pushMail(mailMessage);
         return DataResponse.success();
     }
@@ -70,6 +70,9 @@ public class PushCenterController {
     @PostMapping(value = "/wechat")
     @ApiOperation(value = "公众号消息推送")
     public <T> DataResponse<T> pushWeChat(@Valid @RequestBody WeChatMessageReqDTO reqDTO) {
+        String sign = reqDTO.getSign();
+        reqDTO.setSign(Constants.EMPTY);
+        SignUtils.verify(reqDTO, reqDTO.getAppId(), reqDTO.getRequestTime(), sign);
         WeChatMessage weChatMessage = new WeChatMessage().build(reqDTO);
         pushCenterService.pushWechat(weChatMessage);
         return DataResponse.success();
@@ -78,6 +81,9 @@ public class PushCenterController {
     @PostMapping(value = "/app")
     @ApiOperation(value = "APP消息推送")
     public <T> DataResponse<T> pushApp(@Valid @RequestBody AppMessageReqDTO reqDTO) {
+        String sign = reqDTO.getSign();
+        reqDTO.setSign(Constants.EMPTY);
+        SignUtils.verify(reqDTO, reqDTO.getAppId(), reqDTO.getRequestTime(), sign);
         AppMessage appMessage = new AppMessage().build(reqDTO);
         pushCenterService.pushApp(appMessage);
         return DataResponse.success();
