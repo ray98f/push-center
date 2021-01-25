@@ -103,6 +103,7 @@ public enum ErrorCode {
     SMS_TEMPLATE_RELATION_ALREADY_EXIST(32000027, "sms.template.relation.already.exist"),
     SMS_TEMPLATE_RELATION_PRIORITY_EXIST(32000028, "sms.template.relation.priority.exist"),
     SMS_TEMPLATE_PARAMS_NOT_MATCH(32000028, "sms.template.params.not.match"),
+    PHONE_NUM_ERROR(32000029, "phone.num.invalid"),
 
     /**
      * App 32000030 - 32000039
@@ -116,7 +117,7 @@ public enum ErrorCode {
      * 邮箱 32000050 - 32000059
      */
     MAIL_PARAM_EMPTY(32000050, "mail.param.empty"),
-
+    MAIL_ADDRESS_INVALID(32000051, "mail.address.invalid"),
 
     /**
      * 鉴权 32000060 - 32000079

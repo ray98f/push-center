@@ -3,6 +3,7 @@ package com.zte.msg.pushcenter.pccore.utils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * description:
@@ -32,5 +33,31 @@ public class PatternUtils {
         return String.format(origin
                 .replaceAll("#.*?#", "%s")
                 .replaceAll("\\{.*?}", "%s"), replacement);
+    }
+
+    public static boolean validPhoneNums(String... phoneNums) {
+        Pattern compile = Pattern.compile(Constants.PHONE_NUM_PATTERN);
+        if (phoneNums.length == 0) {
+            return false;
+        }
+        for (String phoneNum : phoneNums) {
+            if (!compile.matcher(phoneNum).matches()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean validEmails(String... emailNums) {
+        Pattern compile = Pattern.compile(Constants.EMAIL_PATTERN);
+        if (emailNums.length == 0) {
+            return false;
+        }
+        for (String email : emailNums) {
+            if (!compile.matcher(email).matches()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

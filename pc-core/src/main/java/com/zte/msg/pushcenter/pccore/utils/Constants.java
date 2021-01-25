@@ -11,6 +11,10 @@ import java.util.regex.Pattern;
  */
 public class Constants {
 
+    public static final String EMAIL_PATTERN = "[\\w!#$%&'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)+[\\w](?:[\\w-]*[\\w])?";
+
+    public static final String PHONE_NUM_PATTERN = "^((13[0-9])|(14[0,1,4-9])|(15[0-3,5-9])|(16[2,5,6,7])|(17[0-8])|(18[0-9])|(19[0-3,5-9]))\\d{8}$";
+
     public static final String DATE_FORMAT_PATTERN = "yyyy-MM-DD HH:mm:ss";
 
     public static final long PER_MINUTE_MILLS = 60000;

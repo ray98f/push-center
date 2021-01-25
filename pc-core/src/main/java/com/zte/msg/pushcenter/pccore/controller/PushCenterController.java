@@ -12,6 +12,7 @@ import com.zte.msg.pushcenter.pccore.dto.req.WeChatMessageReqDTO;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.service.PushCenterService;
+import com.zte.msg.pushcenter.pccore.utils.PatternUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
@@ -47,6 +48,9 @@ public class PushCenterController {
         if (reqDTO.getIsCallBack() && Objects.isNull(reqDTO.getCallBackUrl())) {
             throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
         }
+        if (!PatternUtils.validPhoneNums(reqDTO.getPhoneNum())) {
+            throw new CommonException(ErrorCode.PHONE_NUM_ERROR);
+        }
         SmsMessage smsMessage = new SmsMessage().build(reqDTO);
         pushCenterService.pushSms(smsMessage);
         return DataResponse.success();
@@ -57,6 +61,9 @@ public class PushCenterController {
     public <T> DataResponse<T> pushMail(@Valid @RequestBody MailMessageReqDTO reqDTO) {
 //        SignUtils.verify(reqDTO, reqDTO.getAppId(), reqDTO.getRequestTime(), reqDTO.getSign());
         MailMessage mailMessage = new MailMessage().build(reqDTO);
+        if (!PatternUtils.validEmails(reqDTO.getCc()) || !PatternUtils.validEmails(reqDTO.getTo())) {
+            throw new CommonException(ErrorCode.MAIL_ADDRESS_INVALID);
+        }
         pushCenterService.pushMail(mailMessage);
         return DataResponse.success();
     }
