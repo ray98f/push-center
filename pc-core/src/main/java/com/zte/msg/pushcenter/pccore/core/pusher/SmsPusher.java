@@ -60,6 +60,7 @@ public class SmsPusher extends BasePusher {
             smsConfig.setParams(PatternUtils.getParams(smsConfig.getContent()));
             smsConfig.setConfig(JSONObject.parseObject(o.getConfig()));
             flushConfig(smsConfig);
+            log.info(smsConfig.toString());
         });
         log.info("==========update sms config completed, update count {} ==========", smsConfigModels.size());
     }
