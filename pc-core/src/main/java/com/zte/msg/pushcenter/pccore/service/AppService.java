@@ -1,6 +1,7 @@
 package com.zte.msg.pushcenter.pccore.service;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageInfo;
 import com.zte.msg.pushcenter.pccore.dto.req.AppListReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.App;
@@ -17,11 +18,17 @@ import java.util.List;
 public interface AppService {
 
     /**
+     * 获取所有应用列表
+     * @return
+     */
+    List<App> listAllApp();
+
+    /**
      * 获取应用列表
      * @param appListReqDTO
      * @return
      */
-    PageInfo<App> listApp(AppListReqDTO appListReqDTO);
+    Page<App> listApp(AppListReqDTO appListReqDTO);
 
     /**
      * 删除应用

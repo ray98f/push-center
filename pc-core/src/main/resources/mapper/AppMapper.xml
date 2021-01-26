@@ -2,17 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zte.msg.pushcenter.pccore.mapper.AppMapper">
 
-    <select id="listApp" resultType="com.zte.msg.pushcenter.pccore.entity.App" parameterType="com.zte.msg.pushcenter.pccore.dto.req.AppListReqDTO">
+    <select id="listApp" resultType="com.zte.msg.pushcenter.pccore.entity.App">
         select * from app where is_deleted=0
-        <if test="appId!=null">
-            and id=#{appId}
+        <if test="appListReqDTO.appId!=null">
+            and id=#{appListReqDTO.appId}
         </if>
-        <if test="status!=null">
-            and status=#{status}
+        <if test="appListReqDTO.status!=null">
+            and status=#{appListReqDTO.status}
         </if>
         group by id
-        <if test="appName!=null">
-            having GROUP_CONCAT("|",app_name,"|",to_pinyin(app_name),"|",pinyin(Num_char_extract(app_name,3)),"|",Num_char_extract(app_name,2),"|") like "%"#{appName}"%"
+        <if test="appListReqDTO.appName!=null">
+            having GROUP_CONCAT("|",app_name,"|",to_pinyin(app_name),"|",pinyin(Num_char_extract(app_name,3)),"|",Num_char_extract(app_name,2),"|") like "%"#{appListReqDTO.appName}"%"
         </if>
     </select>
 

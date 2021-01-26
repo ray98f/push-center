@@ -43,6 +43,18 @@ public class AppController {
     private SecretService secretService;
 
     /**
+     * 获取所有应用列表
+     *
+     * @return List<App>
+     */
+    @PermissionCheck(permissionName = {"system:tab:remove"})
+    @GetMapping("/app")
+    @ApiOperation(value = "获取所有应用列表")
+    public DataResponse<List<App>> listAllApp() {
+        return DataResponse.of(appService.listAllApp());
+    }
+
+    /**
      * 服务列表获取
      *
      * @return List<App>

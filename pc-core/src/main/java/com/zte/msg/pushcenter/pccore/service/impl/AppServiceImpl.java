@@ -1,7 +1,9 @@
 package com.zte.msg.pushcenter.pccore.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.AppListReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.App;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
@@ -12,6 +14,7 @@ import com.zte.msg.pushcenter.pccore.utils.Constants;
 import com.zte.msg.pushcenter.pccore.utils.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,26 +36,16 @@ public class AppServiceImpl implements AppService {
     private AppMapper appMapper;
 
     @Override
-    public PageInfo<App> listApp(AppListReqDTO appListReqDTO) {
-        if (Objects.isNull(appListReqDTO) || null == appListReqDTO.getPage() || null == appListReqDTO.getSize()) {
-            List<App> appList = appMapper.listAllApp();
-            if (null != appList && !appList.isEmpty()) {
-                log.info("服务列表获取成功");
-                return new PageInfo<>(appList);
-            } else {
-                log.error("服务列表获取失败");
-                throw new CommonException(ErrorCode.SELECT_EMPTY);
-            }
-        }
+    public List<App> listAllApp(){
+        return appMapper.listAllApp();
+    }
+
+    @Override
+    public Page<App> listApp(AppListReqDTO appListReqDTO) {
+        PageReqDTO pageReqDTO = new PageReqDTO();
+        BeanUtils.copyProperties(appListReqDTO, pageReqDTO);
         PageHelper.startPage(appListReqDTO.getPage().intValue(), appListReqDTO.getSize().intValue());
-        List<App> appList = appMapper.listApp(appListReqDTO);
-        if (null != appList && !appList.isEmpty()) {
-            log.info("服务列表获取成功");
-            return new PageInfo<>(appList);
-        } else {
-            log.error("服务列表获取失败");
-            throw new CommonException(ErrorCode.SELECT_EMPTY);
-        }
+        return appMapper.listApp(pageReqDTO.of(), appListReqDTO);
     }
 
     @Override
