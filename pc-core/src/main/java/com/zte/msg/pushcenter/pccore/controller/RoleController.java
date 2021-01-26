@@ -41,7 +41,6 @@ public class RoleController {
      *
      * @return List<Role>
      */
-    @PermissionCheck(permissionName = {"system:role:list"})
     @GetMapping
     @ApiOperation(value = "获取所有角色信息")
     public DataResponse<List<Role>> listAllRole() {
@@ -67,7 +66,6 @@ public class RoleController {
      * @param roleId 角色id
      * @return Map<String, Object>
      */
-    @PermissionCheck(permissionName = {"system:role:list"})
     @GetMapping("/{roleId}")
     @ApiOperation(value = "获取角色对应菜单id")
     public DataResponse<Map<String, Object>> detailRoleMenu(@PathVariable Long roleId) {

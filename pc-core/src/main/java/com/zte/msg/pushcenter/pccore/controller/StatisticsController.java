@@ -7,6 +7,7 @@ import com.zte.msg.pushcenter.pccore.dto.res.AppStatisticsResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.ProviderStatisticsResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.TypeStatisticsResDTO;
 import com.zte.msg.pushcenter.pccore.service.StatisticsService;
+import com.zte.msg.pushcenter.pccore.utils.PermissionCheck;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +40,7 @@ public class StatisticsController {
      * @param statisticsReqDTO 分类统计搜索
      * @return List<TypeStatisticsResDTO>
      */
+    @PermissionCheck(permissionName = {"statistic:type:list"})
     @PostMapping("/type")
     @ApiOperation(value = "分类统计")
     public DataResponse<List<TypeStatisticsResDTO>> typeStatistics(@Valid @RequestBody StatisticsReqDTO statisticsReqDTO) {
@@ -51,6 +53,7 @@ public class StatisticsController {
      * @param conditionStatisticsReqDTO 应用统计、条件统计搜索
      * @return List<AppStatisticsResDTO>
      */
+    @PermissionCheck(permissionName = {"statistic:application:list", "statistic:condition:list"})
     @PostMapping("/app")
     @ApiOperation(value = "应用统计、条件统计")
     public DataResponse<List<AppStatisticsResDTO>> appStatistics(@Valid @RequestBody ConditionStatisticsReqDTO conditionStatisticsReqDTO) {
@@ -63,6 +66,7 @@ public class StatisticsController {
      * @param statisticsReqDTO 消息平台统计搜索
      * @return List<ProviderStatisticsResDTO>
      */
+    @PermissionCheck(permissionName = {"statistic:provider:list"})
     @PostMapping("/provider")
     @ApiOperation(value = "消息平台统计")
     public DataResponse<List<ProviderStatisticsResDTO>> providerStatistics(@Valid @RequestBody StatisticsReqDTO statisticsReqDTO) {

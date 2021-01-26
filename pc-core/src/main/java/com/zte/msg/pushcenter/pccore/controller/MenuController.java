@@ -41,7 +41,6 @@ public class MenuController {
      * @param type 类型
      * @return List<SuperMenuResDTO>
      */
-    @PermissionCheck(permissionName = {"system:tab:list"})
     @GetMapping
     @ApiOperation(value = "获取上级菜单列表")
     public DataResponse<List<SuperMenuResDTO>> listSuper(@Valid @RequestParam @NotNull(message = "32000006") Integer type) {

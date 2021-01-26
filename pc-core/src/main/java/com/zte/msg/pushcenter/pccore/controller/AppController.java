@@ -47,7 +47,6 @@ public class AppController {
      *
      * @return List<App>
      */
-    @PermissionCheck(permissionName = {"system:tab:remove"})
     @GetMapping("/app")
     @ApiOperation(value = "获取所有应用列表")
     public DataResponse<List<App>> listAllApp() {
@@ -59,7 +58,7 @@ public class AppController {
      *
      * @return List<App>
      */
-    @PermissionCheck(permissionName = {"system:tab:remove"})
+    @PermissionCheck(permissionName = {"application:config:list"})
     @PostMapping("/app/list")
     @ApiOperation(value = "服务列表获取")
     public PageResponse<App> listApp(@Valid @RequestBody AppListReqDTO appListReqDTO) {
@@ -72,7 +71,7 @@ public class AppController {
      * @param appIds 服务ID
      * @return <T>
      */
-    @PermissionCheck(permissionName = {"system:tab:remove"})
+    @PermissionCheck(permissionName = {"application:config:remove"})
     @DeleteMapping("/app")
     @ApiOperation(value = "服务删除")
     public <T> DataResponse<T> deleteApp(@Valid @RequestBody List<Integer> appIds) {
@@ -87,7 +86,7 @@ public class AppController {
      * @param app 服务信息
      * @return <T>
      */
-    @PermissionCheck(permissionName = {"system:tab:remove"})
+    @PermissionCheck(permissionName = {"application:config:modify"})
     @PostMapping("/app")
     @ApiOperation(value = "服务修改")
     public <T> DataResponse<T> updateApp(@RequestBody @Valid App app) {
@@ -102,7 +101,7 @@ public class AppController {
      * @param app 服务详情
      * @return <T>
      */
-    @PermissionCheck(permissionName = {"system:tab:remove"})
+    @PermissionCheck(permissionName = {"application:config:add"})
     @PutMapping("/app")
     @ApiOperation(value = "新增服务")
     public <T> DataResponse<T> insertApp(@Valid @RequestBody App app) {
@@ -118,7 +117,7 @@ public class AppController {
      *
      * @return <T>
      */
-    @PermissionCheck(permissionName = {"system:tab:remove"})
+    @PermissionCheck(permissionName = {"application:config:reset-key"})
     @GetMapping("/app/reset")
     @ApiOperation(value = "重置密钥")
     public <T> DataResponse<T> resetKey(@Valid @RequestParam @NotNull(message = "32000006") Integer appId) {
@@ -132,7 +131,6 @@ public class AppController {
      *
      * @return Map<String, Object>
      */
-    @PermissionCheck(permissionName = {"system:tab:remove"})
     @GetMapping("/app/secret")
     @ApiOperation(value = "根据应用Id获取应用密钥")
     public DataResponse<SecretKeyResDTO> selectAppSecret(@Valid @RequestParam @NotNull(message = "32000006") Integer appId){

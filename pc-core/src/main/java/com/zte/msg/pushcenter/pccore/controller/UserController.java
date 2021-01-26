@@ -56,7 +56,6 @@ public class UserController {
      * @param passwordReqDTO 密码信息
      * @return DataResponse
      */
-    @PermissionCheck(permissionName = {"system:user:reset-psw"})
     @PostMapping("/change")
     @ApiOperation(value = "修改密码")
     public <T> DataResponse<T> changePwd(@RequestBody @Valid PasswordReqDTO passwordReqDTO) {
@@ -64,7 +63,13 @@ public class UserController {
         return DataResponse.success();
     }
 
-    @PermissionCheck(permissionName = {"system:user:list"})
+    /**
+     * 重置密码
+     *
+     * @param id 用户id
+     * @return DataResponse
+     */
+    @PermissionCheck(permissionName = {"system:user:reset-psw"})
     @GetMapping("/change")
     @ApiOperation(value = "重置密码")
     public <T> DataResponse<T> resetPwd(@Valid @RequestParam @NotNull(message = "32000006") Integer id) {
@@ -103,7 +108,6 @@ public class UserController {
     /**
      * 获取所有用户
      */
-    @PermissionCheck(permissionName = {"system:user:list"})
     @GetMapping
     @ApiOperation(value = "获取所有用户")
     public DataResponse<List<User>> listAllUser(){
