@@ -1,6 +1,7 @@
 package com.zte.msg.pushcenter.pccore.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zte.msg.pushcenter.pccore.dto.req.AppListReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.App;
 import org.apache.ibatis.annotations.Mapper;
@@ -18,11 +19,12 @@ import java.util.List;
 public interface AppMapper extends BaseMapper<App> {
 
     /**
-     * 应用列表获取
+     * 分页查询App列表
+     * @param page
      * @param appListReqDTO
      * @return
      */
-    List<App> listApp(AppListReqDTO appListReqDTO);
+    Page<App> listApp(Page<App> page, AppListReqDTO appListReqDTO);
 
     /**
      * 获取所有应用
