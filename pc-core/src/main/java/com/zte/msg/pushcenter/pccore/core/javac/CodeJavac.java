@@ -12,7 +12,10 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.tools.*;
 import java.io.StringWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * description:
@@ -91,6 +94,7 @@ public class CodeJavac {
         if (Objects.isNull(pcClassLoader)) {
             pcClassLoader = new PcClassLoader();
         }
+        log.info("Take script :{}", scriptTag);
         Class<?> aClass = pcClassLoader.findClass(scriptTag);
         if (Objects.isNull(aClass)) {
             log.error("ClassNotFoundException: {}", scriptTag);
