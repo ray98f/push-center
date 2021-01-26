@@ -53,7 +53,7 @@ public class Message {
         this.messageId = messageId.replace("-", "");
     }
 
-    public void setRequestTime(String requestTime) {
-        this.requestTime = Long.parseLong(requestTime);
+    public void setRequestTime(Long requestTime) {
+        this.requestTime = System.currentTimeMillis();
     }
 }
