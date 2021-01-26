@@ -28,7 +28,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/user")
 @Api(tags = "用户")
 @Validated
 public class UserController {
@@ -43,7 +43,7 @@ public class UserController {
      * @return DataResponse
      */
     @PermissionCheck(permissionName = {"system:user:add"})
-    @PutMapping("/user")
+    @PutMapping
     @ApiOperation(value = "新增管理平台登录用户")
     public <T> DataResponse<T> creatUser(@RequestBody @Valid User user) {
         userService.insertUser(user);
@@ -57,7 +57,7 @@ public class UserController {
      * @return DataResponse
      */
     @PermissionCheck(permissionName = {"system:user:reset-psw"})
-    @PostMapping("/user/change")
+    @PostMapping("/change")
     @ApiOperation(value = "修改密码")
     public <T> DataResponse<T> changePwd(@RequestBody @Valid PasswordReqDTO passwordReqDTO) {
         userService.changePwd(passwordReqDTO);
@@ -65,7 +65,7 @@ public class UserController {
     }
 
     @PermissionCheck(permissionName = {"system:user:list"})
-    @GetMapping("/user/change")
+    @GetMapping("/change")
     @ApiOperation(value = "重置密码")
     public <T> DataResponse<T> resetPwd(@Valid @RequestParam @NotNull(message = "32000006") Integer id) {
         userService.resetPwd(id);
@@ -79,7 +79,7 @@ public class UserController {
      * @return <T>
      */
     @PermissionCheck(permissionName = {"system:user:modify"})
-    @PostMapping("/user")
+    @PostMapping
     @ApiOperation(value = "修改用户信息")
     public <T> DataResponse<T> edit(@RequestBody @Valid UserReqDTO userReqDTO) {
         userService.editUser(userReqDTO);
@@ -93,7 +93,7 @@ public class UserController {
      * @return DataResponse
      */
     @PermissionCheck(permissionName = {"system:user:remove"})
-    @DeleteMapping("/user")
+    @DeleteMapping
     @ApiOperation(value = "删除用户")
     public <T> DataResponse<T> deleteUser(@Valid @RequestBody List<Integer> ids) {
         userService.deleteUser(ids);
@@ -104,7 +104,7 @@ public class UserController {
      * 获取所有用户
      */
     @PermissionCheck(permissionName = {"system:user:list"})
-    @GetMapping("/user")
+    @GetMapping
     @ApiOperation(value = "获取所有用户")
     public DataResponse<List<User>> listAllUser(){
         return DataResponse.of(userService.listAllUser());
@@ -116,7 +116,7 @@ public class UserController {
      * @return
      */
     @PermissionCheck(permissionName = {"system:user:list"})
-    @PostMapping("/user/list")
+    @PostMapping("/list")
     @ApiOperation(value = "分页查询用户列表")
     public PageResponse<User> listUser(@Valid @RequestBody UserReqDTO userReqDTO){
         return PageResponse.of(userService.listUser(userReqDTO));

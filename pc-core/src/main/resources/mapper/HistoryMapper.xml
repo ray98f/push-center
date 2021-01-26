@@ -2,133 +2,129 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zte.msg.pushcenter.pccore.mapper.HistoryMapper">
 
-    <select id="listHistorySms" resultType="com.zte.msg.pushcenter.pccore.entity.SmsInfo"
-            parameterType="com.zte.msg.pushcenter.pccore.dto.req.SmsHistoryReqDTO">
+    <select id="listHistorySms" resultType="com.zte.msg.pushcenter.pccore.entity.SmsInfo">
         select * from sms_info
-        <if test="appId!=null or phoneNum!=null or startTime!=null or endTime!=null or result!=null or templateId!=null">
+        <if test="smsHistoryReqDTO.appId!=null or smsHistoryReqDTO.phoneNum!=null or smsHistoryReqDTO.startTime!=null or smsHistoryReqDTO.endTime!=null or smsHistoryReqDTO.result!=null or smsHistoryReqDTO.templateId!=null">
             <trim prefix="where " suffixOverrides="and">
-                <if test="appId!=null">
-                    app_id=#{appId} and
+                <if test="smsHistoryReqDTO.appId!=null">
+                    app_id=#{smsHistoryReqDTO.appId} and
                 </if>
-                <if test="templateId!=null">
-                    template_id=#{templateId} and
+                <if test="smsHistoryReqDTO.templateId!=null">
+                    template_id=#{smsHistoryReqDTO.templateId} and
                 </if>
-                <if test="phoneNum!=null">
-                    phone_num like CONCAT('%',#{phoneNum},'%') and
+                <if test="smsHistoryReqDTO.phoneNum!=null">
+                    phone_num like CONCAT('%',#{smsHistoryReqDTO.phoneNum},'%') and
                 </if>
-                <if test="startTime!=null">
-                    transmit_time >= #{startTime} and
+                <if test="smsHistoryReqDTO.startTime!=null">
+                    transmit_time >= #{smsHistoryReqDTO.startTime} and
                 </if>
-                <if test="endTime!=null">
-                    #{endTime} >= transmit_time and
+                <if test="smsHistoryReqDTO.endTime!=null">
+                    #{smsHistoryReqDTO.endTime} >= transmit_time and
                 </if>
-                <if test="result!=null">
-                    result=#{result} and
+                <if test="smsHistoryReqDTO.result!=null">
+                    result=#{smsHistoryReqDTO.result} and
                 </if>
             </trim>
         </if>
         group by id
-        <if test="appName!=null">
+        <if test="smsHistoryReqDTO.appName!=null">
             having
             GROUP_CONCAT("|",app_name,"|",to_pinyin(app_name),"|",pinyin(Num_char_extract(app_name,3)),"|",Num_char_extract(app_name,2),"|")
-            like CONCAT('%',#{appName},'%')
+            like CONCAT('%',#{smsHistoryReqDTO.appName},'%')
         </if>
     </select>
 
-    <select id="listHistoryMail" resultType="com.zte.msg.pushcenter.pccore.entity.MailInfo"
-            parameterType="com.zte.msg.pushcenter.pccore.dto.req.MailHistoryReqDTO">
+    <select id="listHistoryMail" resultType="com.zte.msg.pushcenter.pccore.entity.MailInfo">
         select * from mail_info
-        <if test="appId!=null or receiveAddress!=null or startTime!=null or endTime!=null or result!=null">
+        <if test="mailHistoryReqDTO.appId!=null or mailHistoryReqDTO.receiveAddress!=null or mailHistoryReqDTO.startTime!=null or mailHistoryReqDTO.endTime!=null or mailHistoryReqDTO.result!=null">
             <trim prefix="where " suffixOverrides="and">
-                <if test="appId!=null">
-                    app_id=#{appId} and
+                <if test="mailHistoryReqDTO.appId!=null">
+                    app_id=#{mailHistoryReqDTO.appId} and
                 </if>
-                <if test="receiveAddress!=null">
-                    receive_address like CONCAT('%', #{receiveAddress},'%') and
+                <if test="mailHistoryReqDTO.receiveAddress!=null">
+                    receive_address like CONCAT('%', #{mailHistoryReqDTO.receiveAddress},'%') and
                 </if>
-                <if test="startTime!=null">
-                    transmit_time >= #{startTime} and
+                <if test="mailHistoryReqDTO.startTime!=null">
+                    transmit_time >= #{mailHistoryReqDTO.startTime} and
                 </if>
-                <if test="endTime!=null">
-                    #{endTime} >= transmit_time and
+                <if test="mailHistoryReqDTO.endTime!=null">
+                    #{mailHistoryReqDTO.endTime} >= transmit_time and
                 </if>
-                <if test="result!=null">
-                    result=#{result} and
+                <if test="mailHistoryReqDTO.result!=null">
+                    result=#{mailHistoryReqDTO.result} and
                 </if>
             </trim>
         </if>
         group by id
-        <if test="appName!=null">
+        <if test="mailHistoryReqDTO.appName!=null">
             having
             GROUP_CONCAT("|",app_name,"|",to_pinyin(app_name),"|",pinyin(Num_char_extract(app_name,3)),"|",Num_char_extract(app_name,2),"|")
-            like CONCAT('%', #{appName},'%')
+            like CONCAT('%', #{mailHistoryReqDTO.appName},'%')
         </if>
     </select>
 
-    <select id="listHistoryWechat" resultType="com.zte.msg.pushcenter.pccore.entity.WeChatInfo"
-            parameterType="com.zte.msg.pushcenter.pccore.dto.req.WechatHistoryReqDTO">
+    <select id="listHistoryWechat" resultType="com.zte.msg.pushcenter.pccore.entity.WeChatInfo">
         select * from wechat_info
-        <if test="appId!=null or wechatName!=null or startTime!=null or endTime!=null or result!=null">
+        <if test="wechatHistoryReqDTO.appId!=null or wechatHistoryReqDTO.wechatName!=null or wechatHistoryReqDTO.startTime!=null or wechatHistoryReqDTO.endTime!=null or wechatHistoryReqDTO.result!=null">
             <trim prefix="where " suffixOverrides="and">
-                <if test="appId!=null">
-                    app_id=#{appId} and
+                <if test="wechatHistoryReqDTO.appId!=null">
+                    app_id=#{wechatHistoryReqDTO.appId} and
                 </if>
-                <if test="startTime!=null">
-                    transmit_time >= #{startTime} and
+                <if test="wechatHistoryReqDTO.startTime!=null">
+                    transmit_time >= #{wechatHistoryReqDTO.startTime} and
                 </if>
-                <if test="endTime!=null">
-                    #{endTime} >= transmit_time and
+                <if test="wechatHistoryReqDTO.endTime!=null">
+                    #{wechatHistoryReqDTO.endTime} >= transmit_time and
                 </if>
-                <if test="result!=null">
-                    result=#{result} and
+                <if test="wechatHistoryReqDTO.result!=null">
+                    result=#{wechatHistoryReqDTO.result} and
                 </if>
             </trim>
         </if>
         group by id
-        <if test="appName!=null or wechatName!=null">
+        <if test="wechatHistoryReqDTO.appName!=null or wechatHistoryReqDTO.wechatName!=null">
             <trim prefix="having " suffixOverrides="and">
-                <if test="wechatName!=null">
+                <if test="wechatHistoryReqDTO.wechatName!=null">
                     GROUP_CONCAT("|",wechat_name,"|",to_pinyin(wechat_name),"|",pinyin(Num_char_extract(wechat_name,3)),"|",Num_char_extract(wechat_name,2),"|")
-                    like CONCAT('%', #{wechatName},'%') and
+                    like CONCAT('%', #{wechatHistoryReqDTO.wechatName},'%') and
                 </if>
-                <if test="appName!=null">
+                <if test="wechatHistoryReqDTO.appName!=null">
                     GROUP_CONCAT("|",app_name,"|",to_pinyin(app_name),"|",pinyin(Num_char_extract(app_name,3)),"|",Num_char_extract(app_name,2),"|")
-                    like CONCAT('%', #{appName},'%') and
+                    like CONCAT('%', #{wechatHistoryReqDTO.appName},'%') and
                 </if>
             </trim>
         </if>
     </select>
 
-    <select id="listHistoryApplication" resultType="com.zte.msg.pushcenter.pccore.entity.ApplicationInfo"
-            parameterType="com.zte.msg.pushcenter.pccore.dto.req.ApplicationHistoryReqDTO">
+    <select id="listHistoryApplication" resultType="com.zte.msg.pushcenter.pccore.entity.ApplicationInfo">
         select * from application_info
-        <if test="appId!=null or targetPlatform!=null or audience!=null or startTime!=null or endTime!=null or result!=null">
+        <if test="applicationHistoryReqDTO.appId!=null or applicationHistoryReqDTO.targetPlatform!=null or applicationHistoryReqDTO.audience!=null or applicationHistoryReqDTO.startTime!=null or applicationHistoryReqDTO.endTime!=null or applicationHistoryReqDTO.result!=null">
             <trim prefix="where " suffixOverrides="and">
-                <if test="appId!=null">
-                    app_id=#{appId} and
+                <if test="applicationHistoryReqDTO.appId!=null">
+                    app_id=#{applicationHistoryReqDTO.appId} and
                 </if>
-                <if test="targetPlatform!=null">
-                    target_platform=#{targetPlatform} and
+                <if test="applicationHistoryReqDTO.targetPlatform!=null">
+                    target_platform=#{applicationHistoryReqDTO.targetPlatform} and
                 </if>
-                <if test="audience!=null">
-                    audience=#{audience} and
+                <if test="applicationHistoryReqDTO.audience!=null">
+                    audience=#{applicationHistoryReqDTO.audience} and
                 </if>
-                <if test="startTime!=null">
-                    transmit_time >= #{startTime} and
+                <if test="applicationHistoryReqDTO.startTime!=null">
+                    transmit_time >= #{applicationHistoryReqDTO.startTime} and
                 </if>
-                <if test="endTime!=null">
-                    #{endTime} >= transmit_time and
+                <if test="applicationHistoryReqDTO.endTime!=null">
+                    #{applicationHistoryReqDTO.endTime} >= transmit_time and
                 </if>
-                <if test="result!=null">
-                    result=#{result} and
+                <if test="applicationHistoryReqDTO.result!=null">
+                    result=#{applicationHistoryReqDTO.result} and
                 </if>
             </trim>
         </if>
         group by id
-        <if test="appName!=null">
+        <if test="applicationHistoryReqDTO.appName!=null">
             having
             GROUP_CONCAT("|",app_name,"|",to_pinyin(app_name),"|",pinyin(Num_char_extract(app_name,3)),"|",Num_char_extract(app_name,2),"|")
-            like CONCAT('%', #{appName},'%')
+            like CONCAT('%', #{applicationHistoryReqDTO.appName},'%')
         </if>
     </select>
 </mapper>

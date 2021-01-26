@@ -1,5 +1,6 @@
 package com.zte.msg.pushcenter.pccore.mapper;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageInfo;
 import com.zte.msg.pushcenter.pccore.dto.req.ApplicationHistoryReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.MailHistoryReqDTO;
@@ -11,6 +12,8 @@ import com.zte.msg.pushcenter.pccore.entity.SmsInfo;
 import com.zte.msg.pushcenter.pccore.entity.WeChatInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * description:
@@ -29,7 +32,7 @@ public interface HistoryMapper {
      * @param smsHistoryReqDTO
      * @return
      */
-    PageInfo<SmsInfo> listHistorySms(SmsHistoryReqDTO smsHistoryReqDTO);
+    Page<SmsInfo> listHistorySms(Page<SmsInfo> page, SmsHistoryReqDTO smsHistoryReqDTO);
 
     /**
      * 查询邮件历史记录
@@ -37,7 +40,7 @@ public interface HistoryMapper {
      * @param mailHistoryReqDTO
      * @return
      */
-    PageInfo<MailInfo> listHistoryMail(MailHistoryReqDTO mailHistoryReqDTO);
+    Page<MailInfo> listHistoryMail(Page<MailInfo> page, MailHistoryReqDTO mailHistoryReqDTO);
 
     /**
      * 查询微信推送历史记录
@@ -45,7 +48,7 @@ public interface HistoryMapper {
      * @param wechatHistoryReqDTO
      * @return
      */
-    PageInfo<WeChatInfo> listHistoryWechat(WechatHistoryReqDTO wechatHistoryReqDTO);
+    Page<WeChatInfo> listHistoryWechat(Page<WeChatInfo> page, WechatHistoryReqDTO wechatHistoryReqDTO);
 
     /**
      * 查询app推送历史记录
@@ -53,6 +56,6 @@ public interface HistoryMapper {
      * @param applicationHistoryReqDTO
      * @return
      */
-    PageInfo<ApplicationInfo> listHistoryApplication(ApplicationHistoryReqDTO applicationHistoryReqDTO);
+    Page<ApplicationInfo> listHistoryApplication(Page<ApplicationInfo> page, ApplicationHistoryReqDTO applicationHistoryReqDTO);
 
 }

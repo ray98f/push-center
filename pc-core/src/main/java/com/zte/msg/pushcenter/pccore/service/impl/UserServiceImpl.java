@@ -1,9 +1,11 @@
 package com.zte.msg.pushcenter.pccore.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.PasswordReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.UserReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.User;
@@ -14,6 +16,7 @@ import com.zte.msg.pushcenter.pccore.service.UserService;
 import com.zte.msg.pushcenter.pccore.utils.AesUtils;
 import com.zte.msg.pushcenter.pccore.utils.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -132,13 +135,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public PageInfo<User> listUser(UserReqDTO userReqDTO) {
+    public Page<User> listUser(UserReqDTO userReqDTO) {
         if (Objects.isNull(userReqDTO)) {
             throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
         }
+        PageReqDTO pageReqDTO = new PageReqDTO();
+        BeanUtils.copyProperties(userReqDTO, pageReqDTO);
         PageHelper.startPage(userReqDTO.getPage().intValue(), userReqDTO.getSize().intValue());
-        List<User> list = userMapper.listUser(userReqDTO);
-        return new PageInfo<>(list);
+        return userMapper.listUser(pageReqDTO.of(), userReqDTO);
     }
 
     @Override

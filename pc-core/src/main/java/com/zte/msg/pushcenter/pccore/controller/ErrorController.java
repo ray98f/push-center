@@ -24,7 +24,7 @@ public class ErrorController {
     /**
      * 重新抛出异常
      */
-    @GetMapping("/error/exthrow")
+    @RequestMapping("/error/exthrow")
     public void rethrow(HttpServletRequest request) throws Throwable {
         throw (Throwable) request.getAttribute("filter.error");
     }

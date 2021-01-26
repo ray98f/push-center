@@ -1,5 +1,6 @@
 package com.zte.msg.pushcenter.pccore.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageInfo;
 import com.zte.msg.pushcenter.pccore.dto.req.RoleReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.RoleResDTO;
@@ -27,7 +28,7 @@ public interface RoleService {
      * @param roleReqDTO
      * @return
      */
-    PageInfo<Role> listRole(RoleReqDTO roleReqDTO);
+    Page<Role> listRole(RoleReqDTO roleReqDTO);
 
     /**
      * 删除角色

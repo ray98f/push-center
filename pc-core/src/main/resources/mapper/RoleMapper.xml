@@ -5,14 +5,14 @@
         select * from role where is_deleted=0
     </select>
 
-    <select id="listRole" parameterType="com.zte.msg.pushcenter.pccore.dto.req.RoleReqDTO" resultType="com.zte.msg.pushcenter.pccore.entity.Role">
+    <select id="listRole" resultType="com.zte.msg.pushcenter.pccore.entity.Role">
         select * from role where is_deleted=0
-        <if test="status!=''">
-            and status=#{status}
+        <if test="roleReqDTO.status!=''">
+            and status=#{roleReqDTO.status}
         </if>
         group by id
-        <if test="roleName!=''">
-            having GROUP_CONCAT("|",role_name,"|",to_pinyin(role_name),"|",pinyin(role_name),"|") like "%"#{roleName}"%"
+        <if test="roleReqDTO.roleName!=''">
+            having GROUP_CONCAT("|",role_name,"|",to_pinyin(role_name),"|",pinyin(role_name),"|") like "%"#{roleReqDTO.roleName}"%"
         </if>
     </select>
 

@@ -96,14 +96,14 @@
         select * from user where is_deleted=0
     </select>
 
-    <select id="listUser" parameterType="com.zte.msg.pushcenter.pccore.dto.req.UserReqDTO" resultType="com.zte.msg.pushcenter.pccore.entity.User">
+    <select id="listUser" resultType="com.zte.msg.pushcenter.pccore.entity.User">
         select * from user where is_deleted=0
-        <if test="status!=null">
-            and status=#{status}
+        <if test="userReqDTO.status!=null">
+            and status=#{userReqDTO.status}
         </if>
         group by id
-        <if test="userRealName!=null">
-            having GROUP_CONCAT("|",user_real_name,"|",to_pinyin(user_real_name),"|",pinyin(user_real_name),"|") like "%"#{userRealName}"%"
+        <if test="userReqDTO.userRealName!=null">
+            having GROUP_CONCAT("|",user_real_name,"|",to_pinyin(user_real_name),"|",pinyin(user_real_name),"|") like "%"#{userReqDTO.userRealName}"%"
         </if>
     </select>
 </mapper>

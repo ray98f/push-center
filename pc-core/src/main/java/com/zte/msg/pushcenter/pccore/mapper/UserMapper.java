@@ -1,6 +1,7 @@
 package com.zte.msg.pushcenter.pccore.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zte.msg.pushcenter.pccore.dto.req.PasswordReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.UserReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.User;
@@ -81,5 +82,5 @@ public interface UserMapper extends BaseMapper<User> {
      * @param userReqDTO
      * @return
      */
-    List<User> listUser(UserReqDTO userReqDTO);
+    Page<User> listUser(Page<User> page, UserReqDTO userReqDTO);
 }

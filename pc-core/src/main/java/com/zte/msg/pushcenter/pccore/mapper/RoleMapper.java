@@ -1,6 +1,7 @@
 package com.zte.msg.pushcenter.pccore.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zte.msg.pushcenter.pccore.dto.req.RoleReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.Role;
 import org.apache.ibatis.annotations.Mapper;
@@ -26,7 +27,7 @@ public interface RoleMapper extends BaseMapper<Role> {
      * @param roleReqDTO
      * @return
      */
-    List<Role> listRole(RoleReqDTO roleReqDTO);
+    Page<Role> listRole(Page<Role> page, RoleReqDTO roleReqDTO);
 
     /**
      * 删除角色

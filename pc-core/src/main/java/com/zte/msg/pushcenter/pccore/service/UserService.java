@@ -1,5 +1,6 @@
 package com.zte.msg.pushcenter.pccore.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
 import com.zte.msg.pushcenter.pccore.dto.req.PasswordReqDTO;
@@ -65,7 +66,7 @@ public interface UserService extends IService<User> {
      * @param userReqDTO
      * @return
      */
-    PageInfo<User> listUser(UserReqDTO userReqDTO);
+    Page<User> listUser(UserReqDTO userReqDTO);
 
     /**
      * 根据用户id获取用户列表

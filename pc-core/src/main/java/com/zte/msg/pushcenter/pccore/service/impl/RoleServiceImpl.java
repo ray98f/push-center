@@ -1,7 +1,9 @@
 package com.zte.msg.pushcenter.pccore.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.RoleReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.RoleResDTO;
 import com.zte.msg.pushcenter.pccore.entity.Role;
@@ -11,6 +13,7 @@ import com.zte.msg.pushcenter.pccore.mapper.RoleMapper;
 import com.zte.msg.pushcenter.pccore.service.RoleService;
 import com.zte.msg.pushcenter.pccore.utils.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,13 +44,14 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public PageInfo<Role> listRole(RoleReqDTO roleReqDTO) {
+    public Page<Role> listRole(RoleReqDTO roleReqDTO) {
         if (Objects.isNull(roleReqDTO)) {
             throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
         }
+        PageReqDTO pageReqDTO = new PageReqDTO();
+        BeanUtils.copyProperties(roleReqDTO, pageReqDTO);
         PageHelper.startPage(roleReqDTO.getPage().intValue(), roleReqDTO.getSize().intValue());
-        List<Role> list = roleMapper.listRole(roleReqDTO);
-        return new PageInfo<>(list);
+        return roleMapper.listRole(pageReqDTO.of(), roleReqDTO);
     }
 
     @Override

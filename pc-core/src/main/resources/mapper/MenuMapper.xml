@@ -113,6 +113,7 @@
             </foreach>
             )
         </if>
+        ORDER BY menu_sort
     </select>
 
     <select id="listMenu" resultType="com.zte.msg.pushcenter.pccore.dto.res.MenuResDTO$MenuInfo">
@@ -128,6 +129,7 @@
             </foreach>
             )
         </if>
+        ORDER BY menu_sort
     </select>
 
     <select id="listButton" resultType="com.zte.msg.pushcenter.pccore.dto.res.MenuResDTO$MenuInfo$ButtonInfo">
@@ -143,6 +145,7 @@
             </foreach>
             )
         </if>
+        ORDER BY menu_sort
     </select>
 
     <select id="listButtonRoleIdentify" resultType="java.lang.String">
