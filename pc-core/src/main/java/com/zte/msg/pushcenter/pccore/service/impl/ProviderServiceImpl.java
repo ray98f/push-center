@@ -11,7 +11,6 @@ import com.zte.msg.pushcenter.pccore.entity.Provider;
 import com.zte.msg.pushcenter.pccore.entity.ProviderSmsTemplate;
 import com.zte.msg.pushcenter.pccore.entity.SmsTemplateRelation;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
-import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.ProviderMapper;
 import com.zte.msg.pushcenter.pccore.mapper.ProviderSmsTemplateMapper;
@@ -64,9 +63,7 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
         }
         Provider provider = new Provider();
         BeanUtils.copyProperties(providerReqDTO, provider);
-        if (PushMethods.valueOf(providerReqDTO.getType()) != PushMethods.MAIL && StringUtils.isNotBlank(providerReqDTO.getScriptContext())) {
-            provider.setScriptTag(PushConfigUtils.getTag());
-        }
+
         getBaseMapper().insert(provider);
         // 刷新配置
         flusher.flush(provider);
@@ -82,6 +79,9 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
         Provider provider = new Provider();
         BeanUtils.copyProperties(providerReqDTO, provider);
         provider.setId(providerId);
+        if (Objects.isNull(exist.getScriptTag()) && StringUtils.isNotBlank(providerReqDTO.getScriptContext())) {
+            exist.setScriptTag(PushConfigUtils.getTag());
+        }
         provider.setScriptTag(exist.getScriptTag());
         getBaseMapper().updateById(provider);
         // 刷新配置
