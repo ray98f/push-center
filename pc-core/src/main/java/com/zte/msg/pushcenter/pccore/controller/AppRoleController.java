@@ -4,6 +4,7 @@ import com.zte.msg.pushcenter.pccore.dto.DataResponse;
 import com.zte.msg.pushcenter.pccore.dto.res.AppRoleResDTO;
 import com.zte.msg.pushcenter.pccore.entity.SendMode;
 import com.zte.msg.pushcenter.pccore.service.AppRoleService;
+import com.zte.msg.pushcenter.pccore.utils.PermissionCheck;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +38,7 @@ public class AppRoleController {
      *
      * @return List<AppRoleResDTO>
      */
+    @PermissionCheck(permissionName = {"application:config:role"})
     @GetMapping("/appRole")
     @ApiOperation(value = "第三方服务权限列表获取")
     public DataResponse<AppRoleResDTO> listAppRole(@Valid @RequestParam @NotNull(message = "32000006") Integer appId) {
@@ -49,6 +51,7 @@ public class AppRoleController {
      * @param appRoleResDTO 第三方服务编辑参数
      * @return <T>
      */
+    @PermissionCheck(permissionName = {"application:config:role"})
     @PostMapping("/appRole")
     @ApiOperation(value = "编辑第三方服务权限")
     public <T> DataResponse<T> editAppRole(@RequestBody @Valid AppRoleResDTO appRoleResDTO){

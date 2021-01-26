@@ -60,7 +60,7 @@ public class HistoryController {
      */
     @PostMapping("/mail")
     @ApiOperation(value = "分页查询邮件发送历史")
-    @PermissionCheck(permissionName = "sms:info:list")
+    @PermissionCheck(permissionName = "mail:info:list")
     public PageResponse<MailInfo> listHistoryMail(@Valid @RequestBody MailHistoryReqDTO mailHistoryReqDTO) {
         return PageResponse.of(historyService.listHistoryMail(mailHistoryReqDTO));
     }
