@@ -105,7 +105,8 @@ public class TemplateServiceImpl implements TemplateService {
             throw new CommonException(ErrorCode.SMS_TEMPLATE_RELATION_ALREADY_EXIST);
         }
         if (smsTemplateRelationMapper.selectCount(new LambdaQueryWrapper<SmsTemplateRelation>()
-                .eq(SmsTemplateRelation::getPriority, reqDTO.getPriority())) >= 1) {
+                .eq(SmsTemplateRelation::getPriority, reqDTO.getPriority())
+                .eq(SmsTemplateRelation::getSmsTemplateId, templateId)) >= 1) {
             throw new CommonException(ErrorCode.SMS_TEMPLATE_RELATION_PRIORITY_EXIST);
         }
         ProviderSmsTemplate providerSmsTemplate = providerSmsTemplateMapper.selectById(reqDTO.getPTemplateId());
