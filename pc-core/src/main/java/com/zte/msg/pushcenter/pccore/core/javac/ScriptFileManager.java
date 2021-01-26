@@ -1,5 +1,7 @@
 package com.zte.msg.pushcenter.pccore.core.javac;
 
+import lombok.extern.slf4j.Slf4j;
+
 import javax.tools.*;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -17,6 +19,7 @@ import java.util.Set;
  * @version 1.0
  * @date 2020/12/31 17:37
  */
+@Slf4j
 public class ScriptFileManager implements JavaFileManager {
     private final StandardJavaFileManager fileManager;
     private final Map<String, ByteArrayOutputStream> buffers = new LinkedHashMap<>();
@@ -131,6 +134,7 @@ public class ScriptFileManager implements JavaFileManager {
         Map<String, byte[]> ret = new LinkedHashMap<>(buffers.size() * 2);
         for (Map.Entry<String, ByteArrayOutputStream> entry : buffers.entrySet()) {
             ret.put(entry.getKey(), entry.getValue().toByteArray());
+            log.info(entry.getKey());
         }
         return ret;
     }

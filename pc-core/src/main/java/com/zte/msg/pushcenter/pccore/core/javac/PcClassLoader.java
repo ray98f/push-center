@@ -24,8 +24,13 @@ public class PcClassLoader extends ClassLoader {
             if (Objects.isNull(bytes)) {
                 bytes = CodeJavac.allBuffers.get("com.zte.msg.pushcenter.pccore.core.script." + name);
             }
-            Class<?> result = defineClass(name, bytes, 0, bytes.length);
-            classInfos.put(name, new ClassInfo(result, System.currentTimeMillis()));
+            Class<?> result = null;
+            try {
+                result = defineClass(name, bytes, 0, bytes.length);
+                classInfos.put(name, new ClassInfo(result, System.currentTimeMillis()));
+            } catch (Exception e) {
+                log.error("error when take script :{}, message :{}", name, e.getMessage());
+            }
             return result;
         }
         ClassInfo loadedClassInfo = classInfos.get(name);
