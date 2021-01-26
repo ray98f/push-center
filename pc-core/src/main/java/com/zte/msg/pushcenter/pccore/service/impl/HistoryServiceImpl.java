@@ -10,8 +10,6 @@ import com.zte.msg.pushcenter.pccore.entity.ApplicationInfo;
 import com.zte.msg.pushcenter.pccore.entity.MailInfo;
 import com.zte.msg.pushcenter.pccore.entity.SmsInfo;
 import com.zte.msg.pushcenter.pccore.entity.WeChatInfo;
-import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
-import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.*;
 import com.zte.msg.pushcenter.pccore.service.HistoryService;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * description:
@@ -50,15 +47,13 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public PageInfo<SmsInfo> listHistorySms(SmsHistoryReqDTO smsHistoryReqDTO) {
         PageHelper.startPage(smsHistoryReqDTO.getPage().intValue(), smsHistoryReqDTO.getSize().intValue());
-        List<SmsInfo> list = historyMapper.listHistorySms(smsHistoryReqDTO);
-        return new PageInfo<>(list);
+        return historyMapper.listHistorySms(smsHistoryReqDTO);
     }
 
     @Override
     public PageInfo<MailInfo> listHistoryMail(MailHistoryReqDTO mailHistoryReqDTO) {
         PageHelper.startPage(mailHistoryReqDTO.getPage().intValue(), mailHistoryReqDTO.getSize().intValue());
-        List<MailInfo> list = historyMapper.listHistoryMail(mailHistoryReqDTO);
-        return new PageInfo<>(list);
+        return historyMapper.listHistoryMail(mailHistoryReqDTO);
     }
 
     @Override
@@ -84,16 +79,13 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public PageInfo<WeChatInfo> listHistoryWechat(WechatHistoryReqDTO wechatHistoryReqDTO) {
         PageHelper.startPage(wechatHistoryReqDTO.getPage().intValue(), wechatHistoryReqDTO.getSize().intValue());
-
-        //TODO 接口完成
-        return new PageInfo<>(historyMapper.listHistoryWechat(wechatHistoryReqDTO));
+        return historyMapper.listHistoryWechat(wechatHistoryReqDTO);
     }
 
     @Override
     public PageInfo<ApplicationInfo> listHistoryApplication(ApplicationHistoryReqDTO applicationHistoryReqDTO) {
         PageHelper.startPage(applicationHistoryReqDTO.getPage().intValue(), applicationHistoryReqDTO.getSize().intValue());
-        List<ApplicationInfo> list = historyMapper.listHistoryApplication(applicationHistoryReqDTO);
-        return new PageInfo<>(list);
+        return historyMapper.listHistoryApplication(applicationHistoryReqDTO);
     }
 
 }
