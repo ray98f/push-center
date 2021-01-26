@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
-import java.sql.Timestamp;
 
 /**
  * description:
@@ -34,7 +33,7 @@ public class PushReqDTO {
     private String callBackUrl;
 
     @ApiModelProperty(value = "发起请求时间戳")
-    private String requestTime;
+    private Long requestTime;
 
     @ApiModelProperty(value = "签名sign值")
     private String sign;
