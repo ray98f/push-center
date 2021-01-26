@@ -44,6 +44,7 @@ public class CodeJavac {
         List<ScriptModel> scripts = providerMapper.selectScripts();
         String projectPath = PathUtil.getAppHomePath();
         String classPath = String.format("%s/pc-script/target/pc-script-1.0.0-jar-with-dependencies.jar", projectPath);
+        log.info("classpath: {}", classPath);
         options = new ArrayList<>();
         options.add("-classpath");
         options.add(classPath);

@@ -19,6 +19,7 @@ public class PcClassLoader extends ClassLoader {
 
     @Override
     protected Class<?> findClass(String name) {
+        log.info("findClass name : {}" ,name);
         if (!classInfos.containsKey(name)) {
             byte[] bytes = CodeJavac.allBuffers.get(name);
             if (Objects.isNull(bytes)) {
@@ -26,6 +27,7 @@ public class PcClassLoader extends ClassLoader {
             }
             Class<?> result = null;
             try {
+                log.info("findClass before defined name : {}" ,name);
                 result = defineClass(name, bytes, 0, bytes.length);
                 classInfos.put(name, new ClassInfo(result, System.currentTimeMillis()));
             } catch (Exception e) {
