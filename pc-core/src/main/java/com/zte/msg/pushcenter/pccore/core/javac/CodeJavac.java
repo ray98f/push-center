@@ -1,5 +1,7 @@
 package com.zte.msg.pushcenter.pccore.core.javac;
 
+import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
+import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.ProviderMapper;
 import com.zte.msg.pushcenter.pccore.model.ScriptModel;
 import com.zte.msg.pushcenter.pccore.utils.JavaCodecUtils;
@@ -57,6 +59,10 @@ public class CodeJavac {
     }
 
     private void getTask(List<ScriptModel> scriptModels) {
+        getTask(scriptModels, false);
+    }
+
+    private void getTask(List<ScriptModel> scriptModels, boolean throwException) {
         scriptModels.forEach(o -> {
             if (StringUtils.isNotBlank(o.getScriptContext()) && StringUtils.isNotBlank(o.getScriptTag())) {
                 Iterable<? extends JavaFileObject> compilationUnits = new ArrayList<JavaFileObject>() {{
@@ -70,6 +76,9 @@ public class CodeJavac {
                 if (!ok) {
                     String errorMessage = errorStringWriter.toString();
                     log.error("Compile Error:{}" + errorMessage);
+                    if (throwException) {
+                        throw new CommonException(ErrorCode.SCRIPT_COMPILE_ERROR);
+                    }
                 }
             }
 
@@ -79,7 +88,7 @@ public class CodeJavac {
 
     public void scriptFlush(boolean remove, List<ScriptModel> scripts) {
         if (!remove) {
-            getTask(scripts);
+            getTask(scripts, true);
             log.info("========== update script completed, update count: {} ==========", scripts.size());
         } else {
             scripts.forEach(o -> scriptFileManager.remove(o.getScriptTag()));

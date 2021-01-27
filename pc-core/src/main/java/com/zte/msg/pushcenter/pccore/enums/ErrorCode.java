@@ -138,6 +138,7 @@ public enum ErrorCode {
      */
     SCRIPT_TYPE_ERROR(32000090, "script.type.error"),
     SCRIPT_NOT_EXIST(32000091, "script.not.exist"),
+    SCRIPT_COMPILE_ERROR(32000092, "script.compile.error"),
 
     /**
      * OpenApi签名校验

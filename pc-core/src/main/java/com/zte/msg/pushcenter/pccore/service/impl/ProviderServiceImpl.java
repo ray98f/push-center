@@ -64,9 +64,8 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
         Provider provider = new Provider();
         BeanUtils.copyProperties(providerReqDTO, provider);
 
-        getBaseMapper().insert(provider);
-        // 刷新配置
         flusher.flush(provider);
+        getBaseMapper().insert(provider);
     }
 
     @Override
@@ -83,9 +82,8 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
             exist.setScriptTag(PushConfigUtils.getTag());
         }
         provider.setScriptTag(exist.getScriptTag());
-        getBaseMapper().updateById(provider);
-        // 刷新配置
         flusher.flush(provider);
+        getBaseMapper().updateById(provider);
     }
 
     @Override
