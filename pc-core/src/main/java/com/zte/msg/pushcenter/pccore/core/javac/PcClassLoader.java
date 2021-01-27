@@ -28,8 +28,7 @@ public class PcClassLoader extends ClassLoader {
             } catch (Exception e) {
                 try {
                     return contextClassLoader.loadClass(name);
-                } catch (ClassNotFoundException classNotFoundException) {
-                    classNotFoundException.printStackTrace();
+                } catch (ClassNotFoundException ignored) {
                 }
             }
             return result;
