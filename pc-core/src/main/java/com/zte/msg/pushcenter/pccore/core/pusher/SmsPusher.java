@@ -125,6 +125,7 @@ public class SmsPusher extends BasePusher {
     @Override
     @Transactional(rollbackFor = Exception.class)
     protected void persist(Message message, PcScript.Res res) {
+        System.out.println("========== Sms message persist ==========");
         try {
             SmsMessage smsMessage = (SmsMessage) message;
 
@@ -136,7 +137,6 @@ public class SmsPusher extends BasePusher {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("========== Sms message persist ==========");
     }
 
     public void flushConfig(Provider provider) {

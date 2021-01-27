@@ -86,6 +86,7 @@ public class MailPusher extends BasePusher {
 
     @Override
     protected void persist(Message message, PcScript.Res res) {
+        System.out.println("========== Mail message persist ==========");
         MailMessage mailMessage = (MailMessage) message;
         mailMessage.setAppName(appService.getAppName(mailMessage.getAppId()));
 
@@ -93,6 +94,7 @@ public class MailPusher extends BasePusher {
 
         MailInfo mailInfo = new MailInfo(mailMessage, res);
         historyService.addHistoryMail(mailInfo);
+
     }
 
     public void flushConfig(List<Provider> providers) {

@@ -152,6 +152,7 @@ public class WeChatPusher extends BasePusher {
 
     @Override
     protected void persist(Message message, PcScript.Res res) {
+        System.out.println("========== Wechat message persist ==========");
         try {
             WeChatMessage weChatMessage = (WeChatMessage) message;
 
