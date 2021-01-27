@@ -91,7 +91,10 @@ public class MySqlParserFilter implements ISqlParserFilter {
             boolean limit = sql.contains(LIMIT);
             boolean group = sql.contains(GROUP_BY);
             boolean deleted = sql.contains(logicDeleteField);
-            if (where && !deleted) {
+            if (deleted) {
+                return false;
+            }
+            if (where) {
                 sqlBuilder.insert(sqlBuilder.indexOf(WHERE) + 6, SPACE + join + SPACE + AND + SPACE);
             }
             if (!where && !limit && !group) {
