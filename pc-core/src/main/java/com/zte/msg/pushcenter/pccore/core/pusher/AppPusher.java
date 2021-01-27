@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
@@ -45,7 +46,7 @@ public class AppPusher extends BasePusher {
         AppMessage appMessage = (AppMessage) message;
         CompletableFuture.supplyAsync(() -> {
             AppConfig config = getConfig(appMessage.getProviderId());
-
+            appMessage.setTransmitTime(new Timestamp(System.currentTimeMillis()));
             appMessage.setProviderName(config.getProviderName());
             Map<String, Object> paramMap = getParamMap(appMessage,
                     JSON.parseObject(config.getConfig(), new TypeReference<HashMap<String, Object>>() {
