@@ -62,7 +62,7 @@ public class MailPusher extends BasePusher {
                 simpleMailMessage.setFrom(config.getUsername());
                 simpleMailMessage.setTo(mailMessage.getTo());
                 simpleMailMessage.setSubject(mailMessage.getSubject());
-                simpleMailMessage.setText(mailMessage.getContent());
+                simpleMailMessage.setText(mailMessage.getContent(), true);
                 if (!Objects.isNull(mailMessage.getCc()) && mailMessage.getCc().length > 0) {
                     simpleMailMessage.setCc(mailMessage.getCc());
                 }
