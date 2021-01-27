@@ -19,6 +19,10 @@
         SELECT p.id,ar.id as app_role_id,p.provider_name as wechat_name,ar.status FROM app_role as ar
         left join provider as p on ar.wechat_id=p.id and p.is_deleted=0 and ar.mode_id=4 where ar.app_id=#{appId} and p.type=4 and ar.is_deleted=0;
     </select>
+    
+    <select id="listAllWechatProvider" resultType="com.zte.msg.pushcenter.pccore.dto.res.WeChatTemplateRoleResDTO">
+        select id, null as app_role_id,provider_name as wechat_name,null as status from provider as p where is_deleted=0 and type=4
+    </select>
 
     <insert id="editAppRole" parameterType="com.zte.msg.pushcenter.pccore.dto.res.AppRoleResDTO">
         <foreach collection="sendMode" index="index" item="sendMode" separator=";">

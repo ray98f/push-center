@@ -41,6 +41,12 @@ public interface AppRoleMapper extends BaseMapper<AppRoleResDTO> {
     List<WeChatTemplateRoleResDTO> selectWechatTemplate(Integer appId);
 
     /**
+     * 获取所有公众号账号
+     * @return
+     */
+    List<WeChatTemplateRoleResDTO> listAllWechatProvider();
+
+    /**
      * 获取应用权限
      * @param appId
      * @return

@@ -16,9 +16,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * description:
@@ -42,7 +41,6 @@ public class AppRoleServiceImpl implements AppRoleService {
     public AppRoleResDTO listAppRole(Integer appId) {
         AppRoleResDTO appRoleResDTO = appRoleMapper.selectApp(appId);
         if (Objects.nonNull(appId)) {
-            log.info("服务查询成功");
             List<AppRole> appRole = appRoleMapper.selectAppMode(appId);
             if (null == appRole || appRole.isEmpty()) {
                 throw new CommonException(ErrorCode.RESOURCE_NOT_EXIST);
@@ -52,7 +50,7 @@ public class AppRoleServiceImpl implements AppRoleService {
                     List<TemplateResDTO> templateResDTOList = appRoleMapper.selectSmsTemplate(ONE, appId);
                     List<SmsTemplate> smsTemplateList = templateService.getTemplateList();
                     if (Objects.isNull(smsTemplateList) || 0 == smsTemplateList.size()) {
-                        throw new CommonException(ErrorCode.RESOURCE_NOT_EXIST);
+                        log.warn("短信模板列表为空，请检查");
                     }
                     if (Objects.isNull(templateResDTOList) || 0 == templateResDTOList.size()) {
                         for (SmsTemplate smsTemplate : smsTemplateList) {
@@ -86,12 +84,26 @@ public class AppRoleServiceImpl implements AppRoleService {
                     appRoleTemplate.setSmsTemplate(resultTemplateResDTOList);
                 }
                 if (appRoleTemplate.getModeId() == 4) {
-                    List<WeChatTemplateRoleResDTO> weChatTemplateRoleResDTOList = appRoleMapper.selectWechatTemplate(appId);
-                    if (Objects.isNull(weChatTemplateRoleResDTOList) || 0 == weChatTemplateRoleResDTOList.size()) {
+                    List<WeChatTemplateRoleResDTO> result = new ArrayList<>();
+                    List<WeChatTemplateRoleResDTO> wechatProviders = appRoleMapper.listAllWechatProvider();
+                    if (null == wechatProviders || wechatProviders.isEmpty()){
                         appRoleTemplate.setWechatTemplate(null);
                         continue;
                     }
-                    appRoleTemplate.setWechatTemplate(weChatTemplateRoleResDTOList);
+                    List<WeChatTemplateRoleResDTO> weChatTemplateRoleResDTOList = appRoleMapper.selectWechatTemplate(appId);
+                    if (null != weChatTemplateRoleResDTOList && !weChatTemplateRoleResDTOList.isEmpty()){
+                        result.addAll(wechatProviders);
+                        result.addAll(weChatTemplateRoleResDTOList);
+                        for (WeChatTemplateRoleResDTO wechatProvider : wechatProviders){
+                            for (WeChatTemplateRoleResDTO weChatTemplateRoleResDTO : weChatTemplateRoleResDTOList){
+                                if (wechatProvider.getId().equals(weChatTemplateRoleResDTO.getId())){
+                                    result.remove(wechatProvider);
+                                }
+                            }
+                        }
+                        appRoleTemplate.setWechatTemplate(result);
+                    }
+                    appRoleTemplate.setWechatTemplate(wechatProviders);
                 }
             }
             appRoleResDTO.setSendMode(appRole);
