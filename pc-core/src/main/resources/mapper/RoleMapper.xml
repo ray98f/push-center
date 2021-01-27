@@ -18,7 +18,7 @@
 
     <update id="deleteRole">
         update role set is_deleted=1 where id in (
-        <foreach collection="list" item="id" index="index" separator=";">
+        <foreach collection="list" item="id" index="index" separator=",">
             #{id}
         </foreach>
         ) and is_deleted=0
@@ -26,7 +26,7 @@
 
     <update id="deleteRoleMenu">
         update role_menu set is_deleted=1 where role_id in (
-        <foreach collection="list" item="id" index="index" separator=";">
+        <foreach collection="list" item="id" index="index" separator=",">
             #{id}
         </foreach>
         ) and is_deleted=0

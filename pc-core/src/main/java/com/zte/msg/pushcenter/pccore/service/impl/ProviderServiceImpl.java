@@ -12,6 +12,7 @@ import com.zte.msg.pushcenter.pccore.entity.ProviderSmsTemplate;
 import com.zte.msg.pushcenter.pccore.entity.SmsTemplateRelation;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
+import com.zte.msg.pushcenter.pccore.mapper.AppRoleMapper;
 import com.zte.msg.pushcenter.pccore.mapper.ProviderMapper;
 import com.zte.msg.pushcenter.pccore.mapper.ProviderSmsTemplateMapper;
 import com.zte.msg.pushcenter.pccore.mapper.SmsTemplateRelationMapper;
@@ -51,6 +52,9 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
 
     @Resource
     private SmsTemplateRelationMapper smsTemplateRelationMapper;
+
+    @Resource
+    private AppRoleMapper appRoleMapper;
 
     @Override
     public void addProvider(ProviderReqDTO providerReqDTO) {
@@ -101,6 +105,8 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
             // 删除短信关联映射表中的数据
             smsTemplateRelationMapper.delete(new LambdaQueryWrapper<SmsTemplateRelation>()
                     .in(SmsTemplateRelation::getProviderTemplateId, providerSmsTemplateIds));
+            // 删除应用微信推送相关权限模板配置
+            appRoleMapper.deleteAppRole(providerIds);
         }
 
         List<Long> ids = Arrays.asList(providerIds);

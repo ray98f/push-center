@@ -93,4 +93,11 @@ public interface AppRoleMapper extends BaseMapper<AppRoleResDTO> {
      * @return
      */
     Integer selectSendModeId(String modeName);
+
+    /**
+     * 应用模板权限删除
+     * @param providerIds
+     * @return
+     */
+    int deleteAppRole(Long[] providerIds);
 }

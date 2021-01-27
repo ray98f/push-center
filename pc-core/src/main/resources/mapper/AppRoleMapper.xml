@@ -119,4 +119,12 @@
     <select id="selectSendModeId" resultType="java.lang.Integer" parameterType="java.lang.String">
         select id from send_mode where mode_name=#{modeName}
     </select>
+
+    <update id="deleteAppRole">
+        update app_role set is_deleted=1 where wechat_id in (
+        <foreach collection="array" index="index" item="id" separator=",">
+            #{id}
+        </foreach>
+        ) and is_deleted=0
+    </update>
 </mapper>
