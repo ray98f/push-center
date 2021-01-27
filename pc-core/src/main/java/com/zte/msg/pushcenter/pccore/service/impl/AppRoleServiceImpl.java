@@ -31,6 +31,7 @@ import java.util.Objects;
 @Slf4j
 public class AppRoleServiceImpl implements AppRoleService {
 
+    public static final int ONE = 1;
     @Autowired
     private AppRoleMapper appRoleMapper;
 
@@ -43,9 +44,12 @@ public class AppRoleServiceImpl implements AppRoleService {
         if (Objects.nonNull(appId)) {
             log.info("服务查询成功");
             List<AppRole> appRole = appRoleMapper.selectAppMode(appId);
+            if (null == appRole || appRole.isEmpty()) {
+                throw new CommonException(ErrorCode.RESOURCE_NOT_EXIST);
+            }
             for (AppRole appRoleTemplate : appRole) {
-                if (appRoleTemplate.getModeId() == 1) {
-                    List<TemplateResDTO> templateResDTOList = appRoleMapper.selectSmsTemplate(appRoleTemplate.getModeId(), appId);
+                if (appRoleTemplate.getModeId() == ONE) {
+                    List<TemplateResDTO> templateResDTOList = appRoleMapper.selectSmsTemplate(ONE, appId);
                     List<SmsTemplate> smsTemplateList = templateService.getTemplateList();
                     if (Objects.isNull(smsTemplateList) || 0 == smsTemplateList.size()) {
                         throw new CommonException(ErrorCode.RESOURCE_NOT_EXIST);

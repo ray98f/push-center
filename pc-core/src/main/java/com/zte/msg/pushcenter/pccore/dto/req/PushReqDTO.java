@@ -1,5 +1,6 @@
 package com.zte.msg.pushcenter.pccore.dto.req;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -26,7 +27,7 @@ public class PushReqDTO {
     private Long appId;
 
     @ApiModelProperty(value = "是否需要回调, true or false")
-    @NotNull(message = "32000006")
+    @JsonProperty(defaultValue = "false")
     private Boolean isCallBack;
 
     @ApiModelProperty(value = "回调地址")

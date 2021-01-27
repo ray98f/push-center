@@ -51,7 +51,10 @@ public class PatternUtils {
     public static boolean validEmails(String... emailNums) {
         Pattern compile = Pattern.compile(Constants.EMAIL_PATTERN);
         if (emailNums.length == 0) {
-            return false;
+            return true;
+        }
+        if (emailNums.length == 1 && Constants.EMPTY.equals(emailNums[0])) {
+            return true;
         }
         for (String email : emailNums) {
             if (!compile.matcher(email).matches()) {
