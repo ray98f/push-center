@@ -88,16 +88,16 @@ public class SmsPusher extends BasePusher {
             smsMessage.getVars().put(smsConfig.getParams().get(i), smsMessage.getVars().remove(varsKeySet[i]));
         }
         Map<String, Object> paramMap = getParamMap(smsConfig, smsMessage, smsConfig.getConfig().getInnerMap());
-
-        for (int i = 0; i < smsMessage.getPhoneNum().length; i++) {
-            String phoneNum = smsMessage.getPhoneNum()[i];
-            paramMap.put(ParamConstants.PHONE_NUM, phoneNum);
-            smsMessage.setIndex(i);
-            CompletableFuture.supplyAsync(() -> {
+        Class<?> scriptClass = scriptManager.getScriptClass(smsConfig.getScriptTag());
+        List<PcScript.Res> resList = new ArrayList<>(smsMessage.getPhoneNum().length);
+        CompletableFuture.supplyAsync(() -> {
+            for (int i = 0; i < smsMessage.getPhoneNum().length; i++) {
+                smsMessage.setIndex(i);
+                String phoneNum = smsMessage.getPhoneNum()[i];
+                paramMap.put(ParamConstants.PHONE_NUM, phoneNum);
                 log.info("==========submit sms push task==========");
                 PcScript.Res res = null;
                 try {
-                    Class<?> scriptClass = scriptManager.getScriptClass(smsConfig.getScriptTag());
                     log.info("success find script class : name {}, obj :{}", smsConfig.getScriptTag(), scriptClass.getName());
                     Method execute = scriptClass.getMethod("execute", Map.class);
                     Object o = scriptClass.newInstance();
@@ -105,21 +105,23 @@ public class SmsPusher extends BasePusher {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                return res;
-            }, pushExecutor).exceptionally(e -> {
-                log.error("Error while send a sms message: {}", e.getMessage());
-                e.printStackTrace();
-                return new PcScript.Res(-1, e.getMessage());
-            }).thenAcceptAsync(o -> {
-                if (o.getCode() != Constants.SUCCESS) {
-                    warn();
-                }
-                if (message.getIsCallBack()) {
-                    response(message, o);
-                }
-                persist(smsMessage, o);
-            }, resExecutor);
-        }
+                resList.add(res);
+                persist(smsMessage, res);
+            }
+            return resList;
+        }, pushExecutor).exceptionally(e -> {
+            log.error("Error while send a sms message: {}", e.getMessage());
+            e.printStackTrace();
+            resList.add(new PcScript.Res(-1, e.getMessage()));
+            return resList;
+        }).thenAcceptAsync(list -> list.forEach(o -> {
+            if (o.getCode() != Constants.SUCCESS) {
+                warn();
+            }
+            if (message.getIsCallBack()) {
+                response(message, o);
+            }
+        }), resExecutor);
     }
 
     @Override
@@ -128,9 +130,7 @@ public class SmsPusher extends BasePusher {
         System.out.println("========== Sms message persist ==========");
         try {
             SmsMessage smsMessage = (SmsMessage) message;
-
             smsMessage.setDelay(getDelay(message));
-
             smsMessage.setAppName(appService.getAppName(smsMessage.getAppId()));
             SmsInfo smsInfo = new SmsInfo(smsMessage, res);
             historyService.addHistorySms(smsInfo);
