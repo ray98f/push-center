@@ -102,6 +102,7 @@ public class AppRoleServiceImpl implements AppRoleService {
                             }
                         }
                         appRoleTemplate.setWechatTemplate(result);
+                        continue;
                     }
                     appRoleTemplate.setWechatTemplate(wechatProviders);
                 }
