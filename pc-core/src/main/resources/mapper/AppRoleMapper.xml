@@ -6,7 +6,7 @@
     </select>
     
     <select id="selectAppMode" resultType="com.zte.msg.pushcenter.pccore.entity.AppRole">
-        SELECT distinct r.id as mode_id,if(count(ar.id)>1,null,ar.id) as app_role_id,r.mode_name,if(min(ar.status) is null,1,ar.status) as mode_status FROM send_mode as r
+        SELECT distinct r.id as mode_id,if(count(ar.id)>1,null,ar.id) as app_role_id,r.mode_name,if(min(ar.status) is null,1,min(ar.status)) as mode_status FROM send_mode as r
         left join app_role as ar on r.id=ar.mode_id and r.is_deleted=0 and ar.is_deleted=0 and ar.app_id=#{appId} group by r.id
     </select>
 
