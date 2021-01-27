@@ -100,28 +100,28 @@
         select * from application_info
         <if test="applicationHistoryReqDTO.appId!=null or applicationHistoryReqDTO.targetPlatform!=null or applicationHistoryReqDTO.audience!=null or applicationHistoryReqDTO.startTime!=null or applicationHistoryReqDTO.endTime!=null or applicationHistoryReqDTO.result!=null">
             <trim prefix="where " suffixOverrides="and">
-                <if test="applicationHistoryReqDTO.appId!=null">
+                <if test="applicationHistoryReqDTO.appId!=null and applicationHistoryReqDTO.appId!=''">
                     app_id=#{applicationHistoryReqDTO.appId} and
                 </if>
-                <if test="applicationHistoryReqDTO.targetPlatform!=null">
+                <if test="applicationHistoryReqDTO.targetPlatform!=null and applicationHistoryReqDTO.targetPlatform!=''">
                     target_platform=#{applicationHistoryReqDTO.targetPlatform} and
                 </if>
-                <if test="applicationHistoryReqDTO.audience!=null">
+                <if test="applicationHistoryReqDTO.audience!=null and applicationHistoryReqDTO.audience!=''">
                     audience=#{applicationHistoryReqDTO.audience} and
                 </if>
-                <if test="applicationHistoryReqDTO.startTime!=null">
+                <if test="applicationHistoryReqDTO.startTime!=null and applicationHistoryReqDTO.startTime!=''">
                     transmit_time >= #{applicationHistoryReqDTO.startTime} and
                 </if>
-                <if test="applicationHistoryReqDTO.endTime!=null">
+                <if test="applicationHistoryReqDTO.endTime!=null and applicationHistoryReqDTO.endTime!= ''">
                     #{applicationHistoryReqDTO.endTime} >= transmit_time and
                 </if>
-                <if test="applicationHistoryReqDTO.result!=null">
+                <if test="applicationHistoryReqDTO.result!=null and applicationHistoryReqDTO.result!= ''">
                     result=#{applicationHistoryReqDTO.result} and
                 </if>
             </trim>
         </if>
         group by id
-        <if test="applicationHistoryReqDTO.appName!=null">
+        <if test="applicationHistoryReqDTO.appName!=null and applicationHistoryReqDTO.appName!=''">
             having
             GROUP_CONCAT("|",app_name,"|",to_pinyin(app_name),"|",pinyin(Num_char_extract(app_name,3)),"|",Num_char_extract(app_name,2),"|")
             like CONCAT('%', #{applicationHistoryReqDTO.appName},'%')
