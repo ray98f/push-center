@@ -60,4 +60,5 @@ public class SmsMessage extends Message {
         this.setCode(smsConfig.getCode());
         return this;
     }
+
 }
