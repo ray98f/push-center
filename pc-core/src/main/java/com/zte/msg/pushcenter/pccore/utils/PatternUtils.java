@@ -53,9 +53,6 @@ public class PatternUtils {
         if (emailNums.length == 0) {
             return true;
         }
-        if (emailNums.length == 1 && Constants.EMPTY.equals(emailNums[0])) {
-            return true;
-        }
         for (String email : emailNums) {
             if (!compile.matcher(email).matches()) {
                 return false;
