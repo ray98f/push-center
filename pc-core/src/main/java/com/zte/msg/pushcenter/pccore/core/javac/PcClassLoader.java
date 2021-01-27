@@ -3,7 +3,6 @@ package com.zte.msg.pushcenter.pccore.core.javac;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Hashtable;
-import java.util.Objects;
 
 /**
  * description:
@@ -19,19 +18,19 @@ public class PcClassLoader extends ClassLoader {
 
     @Override
     protected Class<?> findClass(String name) {
-        log.info("findClass name : {}" ,name);
+        ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
         if (!classInfos.containsKey(name)) {
             byte[] bytes = CodeJavac.allBuffers.get(name);
-            if (Objects.isNull(bytes)) {
-                bytes = CodeJavac.allBuffers.get("com.zte.msg.pushcenter.pccore.core.script." + name);
-            }
             Class<?> result = null;
             try {
-                log.info("findClass before defined name : {}" ,name);
                 result = defineClass(name, bytes, 0, bytes.length);
                 classInfos.put(name, new ClassInfo(result, System.currentTimeMillis()));
             } catch (Exception e) {
-                log.error("error when take script :{}, message :{}", name, e.getMessage());
+                try {
+                    return contextClassLoader.loadClass(name);
+                } catch (ClassNotFoundException classNotFoundException) {
+                    classNotFoundException.printStackTrace();
+                }
             }
             return result;
         }

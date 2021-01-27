@@ -98,6 +98,7 @@ public class SmsPusher extends BasePusher {
                 PcScript.Res res = null;
                 try {
                     Class<?> scriptClass = scriptManager.getScriptClass(smsConfig.getScriptTag());
+                    log.info("success find script class : name {}, obj :{}", smsConfig.getScriptTag(), scriptClass.getName());
                     Method execute = scriptClass.getMethod("execute", Map.class);
                     Object o = scriptClass.newInstance();
                     res = (PcScript.Res) execute.invoke(o, paramMap);
@@ -222,7 +223,6 @@ public class SmsPusher extends BasePusher {
     public SmsConfig getConfig(Long templateId) {
         return (SmsConfig) super.getConfig(PushMethods.SMS).get(templateId).lastEntry().getValue();
     }
-
 
 }
 
