@@ -10,6 +10,7 @@ import com.zte.msg.pushcenter.pccore.service.EarlyWarnInfoService;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 /**
  * description:
@@ -22,8 +23,10 @@ import java.sql.Timestamp;
 public class EarlyWarnInfoServiceImpl extends ServiceImpl<EarlyWarnInfoMapper, EarlyWarnInfo> implements EarlyWarnInfoService {
     @Override
     public Page<EarlyWarnInfo> getWarnInfoByPage(PageReqDTO pageReqDTO, Timestamp startTime, Timestamp endTime) {
-
-        return getBaseMapper().selectPage(pageReqDTO.of(),
-                new LambdaQueryWrapper<EarlyWarnInfo>().between(EarlyWarnInfo::getTime, startTime, endTime));
+        LambdaQueryWrapper<EarlyWarnInfo> wrapper = new LambdaQueryWrapper<>();
+        if (Objects.nonNull(startTime) && Objects.nonNull(endTime)) {
+            wrapper.between(EarlyWarnInfo::getTime, startTime, endTime);
+        }
+        return getBaseMapper().selectPage(pageReqDTO.of(),wrapper);
     }
 }

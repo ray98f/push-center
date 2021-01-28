@@ -112,6 +112,8 @@ public class WarnHandler {
             reqDTO.setIsCallBack(false);
 
             WeChatMessage weChatMessage = new WeChatMessage().build(reqDTO);
+
+            weChatMessage.setIsWarn(true);
             pushCenterService.pushWechat(weChatMessage);
         }
     }
@@ -130,6 +132,8 @@ public class WarnHandler {
         reqDTO.setIsCallBack(false);
 
         MailMessage message = new MailMessage().build(reqDTO);
+
+        message.setIsWarn(true);
         pushCenterService.pushMail(message);
     }
 
@@ -153,6 +157,9 @@ public class WarnHandler {
         reqDTO.setAppId(warnConfig.getAppId());
         reqDTO.setIsCallBack(false);
         SmsMessage smsMessage = new SmsMessage().build(reqDTO);
+
+        smsMessage.setIsWarn(true);
+
         pushCenterService.pushSms(smsMessage);
     }
 

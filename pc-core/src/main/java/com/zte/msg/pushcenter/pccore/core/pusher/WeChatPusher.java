@@ -114,7 +114,7 @@ public class WeChatPusher extends BasePusher {
             e.printStackTrace();
             return new PcScript.Res(-1, e.getMessage());
         }).thenAcceptAsync(o -> {
-            if (o.getCode() != Constants.SUCCESS) {
+            if (o.getCode() != Constants.SUCCESS && message.getIsWarn()) {
                 warn();
             }
             if (message.getIsCallBack()) {

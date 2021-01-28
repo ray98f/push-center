@@ -49,6 +49,11 @@ public class Message {
 
     private Long requestTime;
 
+    /**
+     * 是否是预警类型的消息
+     */
+    private Boolean isWarn = false;
+
     public void setMessageId(String messageId) {
         this.messageId = messageId.replace("-", "");
     }

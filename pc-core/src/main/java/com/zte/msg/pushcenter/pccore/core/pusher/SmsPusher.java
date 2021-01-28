@@ -115,7 +115,7 @@ public class SmsPusher extends BasePusher {
             resList.add(new PcScript.Res(-1, e.getMessage()));
             return resList;
         }).thenAcceptAsync(list -> list.forEach(o -> {
-            if (o.getCode() != Constants.SUCCESS) {
+            if (o.getCode() != Constants.SUCCESS && message.getIsWarn()) {
                 warn();
             }
             if (message.getIsCallBack()) {

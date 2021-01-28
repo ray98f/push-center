@@ -77,7 +77,7 @@ public class MailPusher extends BasePusher {
             log.error("Error while send a mail message: {}", e.getMessage());
             return new PcScript.Res(-1, e.getMessage());
         }).thenAcceptAsync(o -> {
-            if (o.getCode() != Constants.SUCCESS) {
+            if (o.getCode() != Constants.SUCCESS && message.getIsWarn()) {
                 warn();
             }
             persist(mailMessage, o);
