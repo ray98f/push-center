@@ -26,11 +26,6 @@ public class SecretServiceImpl implements SecretService {
     private SecretMapper secretMapper;
 
     @Override
-    public String selectAppRole(String appKey) {
-        return secretMapper.selectAppRole(appKey);
-    }
-
-    @Override
     public String selectAppSecret(Long appId){
         return secretMapper.selectAppSecret(appId);
     }
