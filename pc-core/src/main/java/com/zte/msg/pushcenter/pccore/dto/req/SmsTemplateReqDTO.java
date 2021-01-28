@@ -22,7 +22,6 @@ public class SmsTemplateReqDTO {
     private String content;
 
     @ApiModelProperty(value = "参数列表")
-    @NotNull(message = "32000006")
     private String[] params;
 
     @ApiModelProperty(value = "状态：0-禁用，1-启用")

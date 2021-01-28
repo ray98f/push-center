@@ -16,7 +16,7 @@ public class AsyncExecutorConfig {
 
     @Bean(name = "asyncPushExecutor")
     public ThreadPoolTaskExecutor asyncPushExecutor() {
-        return buildExecutor(8, 20, 200, "asyncPushExecutor-");
+        return buildExecutor(8, 20, 2000, "asyncPushExecutor-");
     }
 
     @Bean(name = "asyncResponseExecutor")
@@ -26,7 +26,7 @@ public class AsyncExecutorConfig {
 
     @Bean(name = "asyncWarnExecutor")
     public ThreadPoolTaskExecutor asyncWarnExecutor() {
-        return buildExecutor(5, 10, 100, "asyncWarnExecutor-");
+        return buildExecutor(5, 10, 200, "asyncWarnExecutor-");
     }
 
 
