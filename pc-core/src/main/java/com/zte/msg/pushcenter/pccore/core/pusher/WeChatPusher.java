@@ -110,7 +110,6 @@ public class WeChatPusher extends BasePusher {
             }
             return new PcScript.Res(body.getErrCode(), body.getErrMsg());
         }).exceptionally(e -> {
-
             log.error("Error while send a wechat message: {}", e.getMessage());
             e.printStackTrace();
             return new PcScript.Res(-1, e.getMessage());
@@ -136,7 +135,7 @@ public class WeChatPusher extends BasePusher {
                 log.info("inset a new access token: {}", accessToken.getAccessToken());
             } else {
                 log.error("WeChart access token request fail : {}", wxConfig.getAppId());
-                throw new CommonException(-1, "WeChar access token request fail");
+                throw new CommonException(-1, "WeChat access token request fail");
             }
             WechatAccessToken wechatAccessToken = new WechatAccessToken();
             wechatAccessToken.setAccessToken(accessToken.getAccessToken());
@@ -283,7 +282,7 @@ public class WeChatPusher extends BasePusher {
             this.toUser = message.getOpenId();
             this.templateId = config.getWechatTemplateId();
             this.url = message.getSkipUrl();
-            this.data = JSONObject.parseObject(message.getData());
+            this.data = message.getData();
 //            this.miniProgram.setAppId(config.getAppId());
         }
 
@@ -294,7 +293,7 @@ public class WeChatPusher extends BasePusher {
         private String url;
         @JSONField(name = "miniprogram")
         private MiniProgramDTO miniProgram;
-        private JSONObject data;
+        private String data;
 
         @Data
         public static class MiniProgramDTO {
