@@ -798,9 +798,6 @@ CREATE TABLE `role_menu`  (
 -- ----------------------------
 -- Records of role_menu
 -- ----------------------------
-INSERT INTO `role_menu` VALUES (1,'1',4,'2021-01-26 07:40:50','2021-01-26 07:40:50','admin','admin',1);
-INSERT INTO `role_menu` VALUES (2,'1',5,'2021-01-26 07:40:50','2021-01-26 07:40:50','admin','admin',1);
-INSERT INTO `role_menu` VALUES (3,'1',6,'2021-01-26 07:40:50','2021-01-26 07:40:50','admin','admin',1);
 INSERT INTO `role_menu` VALUES (9,'1',4,'2021-01-26 07:40:50','2021-01-26 07:40:50','admin','admin',0);
 INSERT INTO `role_menu` VALUES (10,'1',5,'2021-01-26 07:40:50','2021-01-26 07:40:50','admin','admin',0);
 INSERT INTO `role_menu` VALUES (11,'1',9,'2021-01-26 07:40:50','2021-01-26 07:40:50','admin','admin',0);
@@ -868,23 +865,6 @@ INSERT INTO `role_menu` VALUES (72,'1',32,'2021-01-26 07:40:50','2021-01-26 07:4
 INSERT INTO `role_menu` VALUES (73,'1',33,'2021-01-26 07:40:50','2021-01-26 07:40:50','admin','admin',0);
 
 -- ----------------------------
--- Table structure for secret_key
--- ----------------------------
-DROP TABLE IF EXISTS `secret_key`;
-CREATE TABLE `secret_key`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '密钥ID',
-  `app_id` bigint(20) NOT NULL COMMENT '服务ID',
-  `app_key` varchar(40) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '服务对应Key',
-  `app_secret` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '服务对应密码',
-  `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
-  `created_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '创建人',
-  `updated_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '更新人',
-  `is_deleted` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = 'App的Key和Secret存储表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
 -- Table structure for send_mode
 -- ----------------------------
 DROP TABLE IF EXISTS `send_mode`;
@@ -895,7 +875,7 @@ CREATE TABLE `send_mode`  (
   `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
   `created_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '创建人',
   `updated_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '更新人',
-  `flag` int(11) NOT NULL DEFAULT 0,
+  `is_deleted` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除标志',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
@@ -997,7 +977,7 @@ CREATE TABLE `user`  (
 INSERT INTO `user` VALUES (1, 'admin', 'admin', 'xF0EJZJQ/2fzjYIlfwOG5w==', NULL, NULL, 0, 1, NULL, '2021-01-25 17:01:07', '2021-01-25 17:01:07', 'admin', 'admin', 0);
 
 -- ----------------------------
--- Table structure for user_role
+-- Table structure for user_role TODO 用户多权限
 -- ----------------------------
 DROP TABLE IF EXISTS `user_role`;
 CREATE TABLE `user_role`  (
@@ -1025,7 +1005,7 @@ CREATE TABLE `wechat_access_token`  (
   `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
   `created_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '创建人',
   `updated_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '更新人',
-  `is_deleted` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `is_deleted` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除标志',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
@@ -1077,6 +1057,8 @@ CREATE TABLE `wechat_template`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
+
+-- -------------------------------  Functions  -------------------------------
 -- ----------------------------
 -- Function structure for fristPinyin
 -- ----------------------------
