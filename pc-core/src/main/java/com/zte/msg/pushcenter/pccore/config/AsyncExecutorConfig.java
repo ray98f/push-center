@@ -1,5 +1,6 @@
 package com.zte.msg.pushcenter.pccore.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -14,14 +15,20 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @Configuration
 public class AsyncExecutorConfig {
 
+    @Value("${async.push.pool-size.core}")
+    private int pushCore;
+
+    @Value("${async.push.pool-size.max}")
+    private int pushMax;
+
     @Bean(name = "asyncPushExecutor")
     public ThreadPoolTaskExecutor asyncPushExecutor() {
-        return buildExecutor(15, 100, 2000, "asyncPushExecutor-");
+        return buildExecutor(pushCore, pushMax, 3000, "asyncPushExecutor-");
     }
 
     @Bean(name = "asyncResponseExecutor")
     public ThreadPoolTaskExecutor asyncResponseExecutor() {
-        return buildExecutor(5, 10, 100, "asyncResponseExecutor-");
+        return buildExecutor(10, 10, 200, "asyncResponseExecutor-");
     }
 
     @Bean(name = "asyncWarnExecutor")
