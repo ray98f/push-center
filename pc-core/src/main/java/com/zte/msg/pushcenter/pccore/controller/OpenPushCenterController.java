@@ -16,6 +16,7 @@ import com.zte.msg.pushcenter.pccore.utils.Constants;
 import com.zte.msg.pushcenter.pccore.utils.SignUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,15 +40,21 @@ import java.util.Objects;
 @Validated
 public class OpenPushCenterController {
 
+    @Value("${sign.verify}")
+    private Boolean signVerify;
+
     @Resource
     private PushCenterService pushCenterService;
 
     @PostMapping(value = "/sms")
     @ApiOperation(value = "短信推送")
     public <T> DataResponse<T> pushSms(@Valid @RequestBody SmsMessageReqDTO reqDTO) {
-        String sign = reqDTO.getSign();
-        reqDTO.setSign(Constants.EMPTY);
-        SignUtils.verify(reqDTO, reqDTO.getAppId(), reqDTO.getRequestTime(), sign);
+        System.out.println(signVerify);
+        if (signVerify){
+            String sign = reqDTO.getSign();
+            reqDTO.setSign(Constants.EMPTY);
+            SignUtils.verify(reqDTO, reqDTO.getAppId(), reqDTO.getRequestTime(), sign);
+        }
         if (reqDTO.getIsCallBack() && Objects.isNull(reqDTO.getCallBackUrl())) {
             throw new CommonException(ErrorCode.PARAM_NULL_ERROR);
         }
@@ -59,9 +66,11 @@ public class OpenPushCenterController {
     @PostMapping(value = "/mail")
     @ApiOperation(value = "邮件推送")
     public <T> DataResponse<T> pushMail(@Valid @RequestBody MailMessageReqDTO reqDTO) {
-        String sign = reqDTO.getSign();
-        reqDTO.setSign(Constants.EMPTY);
-        SignUtils.verify(reqDTO, reqDTO.getAppId(), reqDTO.getRequestTime(), sign);
+        if (signVerify){
+            String sign = reqDTO.getSign();
+            reqDTO.setSign(Constants.EMPTY);
+            SignUtils.verify(reqDTO, reqDTO.getAppId(), reqDTO.getRequestTime(), sign);
+        }
         MailMessage mailMessage = new MailMessage().build(reqDTO);
         pushCenterService.pushMail(mailMessage);
         return DataResponse.success();
@@ -70,9 +79,11 @@ public class OpenPushCenterController {
     @PostMapping(value = "/wechat")
     @ApiOperation(value = "公众号消息推送")
     public <T> DataResponse<T> pushWeChat(@Valid @RequestBody WeChatMessageReqDTO reqDTO) {
-        String sign = reqDTO.getSign();
-        reqDTO.setSign(Constants.EMPTY);
-        SignUtils.verify(reqDTO, reqDTO.getAppId(), reqDTO.getRequestTime(), sign);
+        if (signVerify){
+            String sign = reqDTO.getSign();
+            reqDTO.setSign(Constants.EMPTY);
+            SignUtils.verify(reqDTO, reqDTO.getAppId(), reqDTO.getRequestTime(), sign);
+        }
         WeChatMessage weChatMessage = new WeChatMessage().build(reqDTO);
         pushCenterService.pushWechat(weChatMessage);
         return DataResponse.success();
@@ -81,9 +92,11 @@ public class OpenPushCenterController {
     @PostMapping(value = "/app")
     @ApiOperation(value = "APP消息推送")
     public <T> DataResponse<T> pushApp(@Valid @RequestBody AppMessageReqDTO reqDTO) {
-        String sign = reqDTO.getSign();
-        reqDTO.setSign(Constants.EMPTY);
-        SignUtils.verify(reqDTO, reqDTO.getAppId(), reqDTO.getRequestTime(), sign);
+        if (signVerify){
+            String sign = reqDTO.getSign();
+            reqDTO.setSign(Constants.EMPTY);
+            SignUtils.verify(reqDTO, reqDTO.getAppId(), reqDTO.getRequestTime(), sign);
+        }
         AppMessage appMessage = new AppMessage().build(reqDTO);
         pushCenterService.pushApp(appMessage);
         return DataResponse.success();
