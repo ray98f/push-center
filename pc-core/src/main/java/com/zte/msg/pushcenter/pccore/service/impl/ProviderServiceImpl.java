@@ -68,8 +68,8 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
         Provider provider = new Provider();
         BeanUtils.copyProperties(providerReqDTO, provider);
 
-        flusher.flush(provider);
         getBaseMapper().insert(provider);
+        flusher.flush(provider);
     }
 
     @Override
