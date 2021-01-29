@@ -200,6 +200,8 @@ public class TemplateServiceImpl implements TemplateService {
             wrapper.eq(SmsTemplate::getStatus, status);
         }
 
+        wrapper.orderByDesc(SmsTemplate::getUpdatedAt);
+
         Page<SmsTemplate> smsTemplatePage = smsTemplateMapper.selectPage(pageReqDTO.of(), wrapper);
         List<SmsTemplate> templates = smsTemplatePage.getRecords();
 

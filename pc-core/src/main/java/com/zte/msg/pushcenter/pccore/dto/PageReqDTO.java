@@ -1,6 +1,5 @@
 package com.zte.msg.pushcenter.pccore.dto;
 
-import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -8,8 +7,6 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
-import java.util.Collections;
 
 /**
  * description:
@@ -30,19 +27,19 @@ public class PageReqDTO {
     @ApiModelProperty(value = "每页条数。范围：1-50", required = true)
     private Long size;
 
-    @Size(max = 128, message = "32000003")
-    @ApiModelProperty(value = "排序字段。长度：0-128")
-    private String sort;
+//    @Size(max = 128, message = "32000003")
+//    @ApiModelProperty(value = "排序字段。长度：0-128")
+//    private String sort;
 
-    @ApiModelProperty(value = "顺序,asc: 升序，desc")
-    private String order;
+//    @ApiModelProperty(value = "顺序,asc: 逆序，desc")
+//    private String order;
 
     public <T> Page<T> of() {
-        if (null != sort && null != order) {
-            Page<T> page = new Page<>(this.getPage(), this.getSize());
-            page.setOrders(Collections.singletonList(new OrderItem().setAsc("asc".equalsIgnoreCase(order)).setColumn(sort)));
-            return page;
-        }
+//        if (null != sort && null != order) {
+//            Page<T> page = new Page<>(this.getPage(), this.getSize());
+//            page.setOrders(Collections.singletonList(new OrderItem().setAsc("asc".equalsIgnoreCase(order)).setColumn(sort)));
+//            return page;
+//        }
         return new Page<>(this.getPage(), this.getSize());
     }
 

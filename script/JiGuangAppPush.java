@@ -7,7 +7,8 @@ import com.arronlong.httpclientutil.common.HttpHeader;
 import com.zte.msg.pushcenter.pcscript.PcScript;
 import org.apache.http.Header;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.springframework.stereotype.Service;
+
+import java.util.stream.Collectors;
 
 /**
  * description:
@@ -16,8 +17,7 @@ import org.springframework.stereotype.Service;
  * @version 1.0
  * @date 2021/1/18 12:40
  */
-@Service
-public class JiGuangAppPush implements PcScript {
+public class Test11 implements PcScript {
 
     private static final String URL = "https://api.jpush.cn/v3/push";
 
@@ -67,7 +67,7 @@ public class JiGuangAppPush implements PcScript {
 
         if (Objects.nonNull(error)) {
             String code = error.getString("code");
-            JiGuangAppPush.ErrorCodes errorCode = JiGuangAppPush.ErrorCodes.find(code);
+            Test11.ErrorCodes errorCode = Test11.ErrorCodes.find(code);
             System.out.println("app push error code: " + code);
             return new Res(errorCode.getPcCode(), errorCode.getMessage());
         }
@@ -104,8 +104,8 @@ public class JiGuangAppPush implements PcScript {
             this.message = message;
         }
 
-        private static JiGuangAppPush.ErrorCodes find(String code) {
-            for (JiGuangAppPush.ErrorCodes errorCode : JiGuangAppPush.ErrorCodes.values()) {
+        private static Test11.ErrorCodes find(String code) {
+            for (Test11.ErrorCodes errorCode : Test11.ErrorCodes.values()) {
                 if (errorCode.code.equals(code)) {
                     return errorCode;
                 }
@@ -140,10 +140,7 @@ public class JiGuangAppPush implements PcScript {
         /**
          * 所有
          */
-        ALL(3, "all"),
-
-
-        UNKNOWN(-1, "位置");
+        ALL(3, "all");
 
         private Integer type;
 
@@ -160,7 +157,7 @@ public class JiGuangAppPush implements PcScript {
                     return platforms;
                 }
             }
-            return UNKNOWN;
+            return null;
         }
 
         public Integer getType() {
@@ -195,8 +192,8 @@ public class JiGuangAppPush implements PcScript {
             this.messageType = messageType;
         }
 
-        public static JiGuangAppPush.AppMessageType valueOf(Integer type) {
-            for (JiGuangAppPush.AppMessageType messageType : JiGuangAppPush.AppMessageType.values()) {
+        public static Test11.AppMessageType valueOf(Integer type) {
+            for (Test11.AppMessageType messageType : Test11.AppMessageType.values()) {
                 if (messageType.type.equals(type)) {
                     return messageType;
                 }
@@ -312,7 +309,11 @@ public class JiGuangAppPush implements PcScript {
      * @param platform
      */
     private static JSONArray buildPlatform(List<Platform> platformList, JSONArray platform) {
-        if (platformList != null && platformList.size() > 0) {
+        if (platformList.contains(Platform.ALL)) {
+            platform.addAll(Arrays.stream(Platform.values()).map(Platform::getPlatform).collect(Collectors.toList()));
+            return platform;
+        }
+        if (platformList.size() > 0) {
             for (Platform platFormEnum : platformList) {
                 String platformStr = platFormEnum.toString().toLowerCase();
                 platform.add(platformStr);

@@ -24,9 +24,10 @@ public class EarlyWarnInfoServiceImpl extends ServiceImpl<EarlyWarnInfoMapper, E
     @Override
     public Page<EarlyWarnInfo> getWarnInfoByPage(PageReqDTO pageReqDTO, Timestamp startTime, Timestamp endTime) {
         LambdaQueryWrapper<EarlyWarnInfo> wrapper = new LambdaQueryWrapper<>();
+        wrapper.orderByDesc(EarlyWarnInfo::getUpdatedAt);
         if (Objects.nonNull(startTime) && Objects.nonNull(endTime)) {
             wrapper.between(EarlyWarnInfo::getTime, startTime, endTime);
         }
-        return getBaseMapper().selectPage(pageReqDTO.of(),wrapper);
+        return getBaseMapper().selectPage(pageReqDTO.of(), wrapper);
     }
 }

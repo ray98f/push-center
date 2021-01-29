@@ -143,6 +143,7 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
         if (Objects.nonNull(type)) {
             wrapper.eq(Provider::getType, type);
         }
+        wrapper.orderByDesc(Provider::getUpdatedAt);
         Page<Provider> providerPage = getBaseMapper().selectPage(pageReqDTO.of(), wrapper);
         Page<ProviderResDTO> dtoPage = new Page<>();
         BeanUtils.copyProperties(providerPage, dtoPage);

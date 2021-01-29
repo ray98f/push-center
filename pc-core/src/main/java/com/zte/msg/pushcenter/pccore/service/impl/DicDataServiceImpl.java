@@ -35,6 +35,7 @@ public class DicDataServiceImpl extends ServiceImpl<DicDataMapper, DicData> impl
 
     @Override
     public Page<DicDataResDTO> getDicDataByPage(Page<DicDataResDTO> page, String type, String value, Integer isEnable) {
+
         return getBaseMapper().selectDicDataByPage(page, type, value, isEnable);
     }
 

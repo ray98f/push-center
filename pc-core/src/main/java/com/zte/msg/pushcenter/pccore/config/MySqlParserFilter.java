@@ -46,6 +46,7 @@ public class MySqlParserFilter implements ISqlParserFilter {
 
     private static final String SPACE = " ";
 
+    private static final String ORDER_BY = "order by";
 
     @Override
     public boolean doFilter(MetaObject metaObject) {
@@ -91,20 +92,25 @@ public class MySqlParserFilter implements ISqlParserFilter {
             boolean limit = sql.contains(LIMIT);
             boolean group = sql.contains(GROUP_BY);
             boolean deleted = sql.contains(logicDeleteField);
+            boolean orderBy = sql.contains(ORDER_BY);
             if (deleted) {
                 return false;
             }
             if (where) {
                 sqlBuilder.insert(sqlBuilder.indexOf(WHERE) + 6, SPACE + join + SPACE + AND + SPACE);
-            }
-            if (!where && !limit && !group) {
-                sqlBuilder.append(" ").append(WHERE).append(SPACE).append(join);
-            }
-            if (!where && group) {
-                sqlBuilder.insert(sqlBuilder.indexOf(GROUP_BY), SPACE + WHERE + SPACE + join + SPACE);
-            }
-            if (!where && limit && !group) {
-                sqlBuilder.insert(sqlBuilder.indexOf(LIMIT), SPACE + WHERE + SPACE + join + SPACE);
+            } else {
+                if (!limit && !group && !orderBy) {
+                    sqlBuilder.append(" ").append(WHERE).append(SPACE).append(join);
+                }
+                if (group) {
+                    sqlBuilder.insert(sqlBuilder.indexOf(GROUP_BY), SPACE + WHERE + SPACE + join + SPACE);
+                }
+                if (!group && orderBy) {
+                    sqlBuilder.insert(sqlBuilder.indexOf(ORDER_BY) - 1, SPACE + WHERE + SPACE + join + SPACE);
+                }
+                if (limit && !group && !orderBy) {
+                    sqlBuilder.insert(sqlBuilder.indexOf(LIMIT), SPACE + WHERE + SPACE + join + SPACE);
+                }
             }
             metaObject.setValue(PluginUtils.DELEGATE_BOUNDSQL_SQL, sqlBuilder.toString());
         }

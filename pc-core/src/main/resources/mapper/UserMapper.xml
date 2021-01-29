@@ -105,5 +105,6 @@
         <if test="userReqDTO.userRealName!=null">
             having GROUP_CONCAT("|",user_real_name,"|",to_pinyin(user_real_name),"|",pinyin(user_real_name),"|") like "%"#{userReqDTO.userRealName}"%"
         </if>
+        ORDER BY updated_at DESC
     </select>
 </mapper>

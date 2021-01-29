@@ -47,9 +47,10 @@ public interface DicDataMapper extends BaseMapper<DicData> {
             " AND type = #{type} ",
             "</if>",
             "<if test = \"is_enable != null\">",
-            " AND is_enable = #{is_enable}",
+            " AND is_enable = #{is_enable} ",
             "</if>",
             "</where>",
+            " ORDER BY updated_at DESC ",
             "</script>"
     })
     Page<DicDataResDTO> selectDicDataByPage(Page<DicDataResDTO> page,
