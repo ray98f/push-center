@@ -31,7 +31,7 @@ public class DicServiceImpl extends ServiceImpl<DicMapper, Dic> implements DicSe
     @Override
     public Page<DicResDTO> getDics(Page<DicResDTO> page, String name, String type, Integer isEnable) {
         Page<DicResDTO> dicResDTOPage = getBaseMapper().selectDicByPage(page, name, type, isEnable);
-        dicResDTOPage.getRecords().sort(Comparator.comparing(DicResDTO::getUpdatedAt));
+        dicResDTOPage.getRecords().sort(Comparator.comparing(DicResDTO::getUpdatedAt).reversed());
         return dicResDTOPage;
     }
 

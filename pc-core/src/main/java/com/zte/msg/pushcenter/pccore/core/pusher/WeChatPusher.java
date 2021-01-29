@@ -166,7 +166,10 @@ public class WeChatPusher extends BasePusher {
     }
 
     private void buildAndFlush(List<WxConfigModel> wxConfigModels) {
-        List<WxConfig> wxConfigs = wxConfigModels.stream().map(o -> {
+        List<WxConfig> wxConfigs = wxConfigModels.stream().filter(o ->
+                Objects.nonNull(o.getConfig()) &&
+                        o.getConfig().contains("appId") &&
+                        o.getConfig().contains("appSecret")).map(o -> {
             WxConfig wxConfig = new WxConfig();
             BeanUtils.copyProperties(o, wxConfig);
             JSONObject config = JSONObject.parseObject(o.getConfig());
