@@ -26,10 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -143,7 +140,6 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
         if (Objects.nonNull(type)) {
             wrapper.eq(Provider::getType, type);
         }
-        wrapper.orderByDesc(Provider::getUpdatedAt);
         Page<Provider> providerPage = getBaseMapper().selectPage(pageReqDTO.of(), wrapper);
         Page<ProviderResDTO> dtoPage = new Page<>();
         BeanUtils.copyProperties(providerPage, dtoPage);
@@ -154,7 +150,7 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
             BeanUtils.copyProperties(o, providerResDTO);
             list.add(providerResDTO);
         });
-
+        list.sort(Comparator.comparing(ProviderResDTO::getUpdatedAt).reversed());
         return dtoPage.setRecords(list);
     }
 

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * description:
@@ -35,8 +36,9 @@ public class DicDataServiceImpl extends ServiceImpl<DicDataMapper, DicData> impl
 
     @Override
     public Page<DicDataResDTO> getDicDataByPage(Page<DicDataResDTO> page, String type, String value, Integer isEnable) {
-
-        return getBaseMapper().selectDicDataByPage(page, type, value, isEnable);
+        Page<DicDataResDTO> dicDataResDTOPage = getBaseMapper().selectDicDataByPage(page, type, value, isEnable);
+        dicDataResDTOPage.getRecords().sort(Comparator.comparing(DicDataResDTO::getUpdatedAt).reversed());
+        return dicDataResDTOPage;
     }
 
     @Override

@@ -15,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Objects;
 
 /**
@@ -29,7 +30,9 @@ public class DicServiceImpl extends ServiceImpl<DicMapper, Dic> implements DicSe
 
     @Override
     public Page<DicResDTO> getDics(Page<DicResDTO> page, String name, String type, Integer isEnable) {
-        return getBaseMapper().selectDicByPage(page, name, type, isEnable);
+        Page<DicResDTO> dicResDTOPage = getBaseMapper().selectDicByPage(page, name, type, isEnable);
+        dicResDTOPage.getRecords().sort(Comparator.comparing(DicResDTO::getUpdatedAt));
+        return dicResDTOPage;
     }
 
     @Override

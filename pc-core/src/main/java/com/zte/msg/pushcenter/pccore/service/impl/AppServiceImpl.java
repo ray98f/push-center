@@ -2,7 +2,6 @@ package com.zte.msg.pushcenter.pccore.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.AppListReqDTO;
 import com.zte.msg.pushcenter.pccore.entity.App;
@@ -18,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,7 +36,7 @@ public class AppServiceImpl implements AppService {
     private AppMapper appMapper;
 
     @Override
-    public List<App> listAllApp(){
+    public List<App> listAllApp() {
         return appMapper.listAllApp();
     }
 
@@ -45,7 +45,9 @@ public class AppServiceImpl implements AppService {
         PageReqDTO pageReqDTO = new PageReqDTO();
         BeanUtils.copyProperties(appListReqDTO, pageReqDTO);
         PageHelper.startPage(appListReqDTO.getPage().intValue(), appListReqDTO.getSize().intValue());
-        return appMapper.listApp(pageReqDTO.of(), appListReqDTO);
+        Page<App> appPage = appMapper.listApp(pageReqDTO.of(), appListReqDTO);
+        appPage.getRecords().sort(Comparator.comparing(App::getUpdatedAt).reversed());
+        return appPage;
     }
 
     @Override

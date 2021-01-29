@@ -86,7 +86,9 @@ public interface SmsTemplateRelationMapper extends BaseMapper<SmsTemplateRelatio
             " AND str.is_deleted = 0  " +
             " AND st.is_deleted = 0  " +
             " AND p.is_deleted = 0 " +
-            " And st.id = #{id}")
+            " And st.id = #{id}" +
+            " ORDER BY pst.updated_at DESC"
+    )
     List<SmsTemplateRelationModel> selectByTemplateId(@Param("id") Long id);
 
     /**
@@ -114,7 +116,8 @@ public interface SmsTemplateRelationMapper extends BaseMapper<SmsTemplateRelatio
             "WHERE " +
             " p.type = 1  " +
             " AND pst.is_enable = 1" +
-            " AND st.is_enable = 1 "
+            " AND st.is_enable = 1 " +
+            " ORDER BY str.updated_at DESC"
     )
     List<SmsConfigModel> selectAllSmsConfigForInit();
 

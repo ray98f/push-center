@@ -181,6 +181,7 @@ public class TemplateServiceImpl implements TemplateService {
             providerSmsTemplateResDTO.setUpdatedBy(o.getUpdatedBy());
             resDTOList.add(providerSmsTemplateResDTO);
         });
+        resDTOList.sort(Comparator.comparing(ProviderSmsTemplateResDTO::getUpdatedAt).reversed());
         return resDTOList;
     }
 
@@ -199,8 +200,6 @@ public class TemplateServiceImpl implements TemplateService {
         if (null != status) {
             wrapper.eq(SmsTemplate::getStatus, status);
         }
-
-        wrapper.orderByDesc(SmsTemplate::getUpdatedAt);
 
         Page<SmsTemplate> smsTemplatePage = smsTemplateMapper.selectPage(pageReqDTO.of(), wrapper);
         List<SmsTemplate> templates = smsTemplatePage.getRecords();
@@ -255,6 +254,7 @@ public class TemplateServiceImpl implements TemplateService {
 
         });
         List<SmsTemplateDetailResDTO> list = new ArrayList<>(smsTemplateMap.values());
+        list.sort(Comparator.comparing(SmsTemplateDetailResDTO::getUpdatedAt).reversed());
         return pageRes.setRecords(list);
     }
 
@@ -334,6 +334,7 @@ public class TemplateServiceImpl implements TemplateService {
             BeanUtils.copyProperties(o, resDTO);
             resList.add(resDTO);
         });
+        resList.sort(Comparator.comparing(WeChatTemplateResDTO::getUpdatedAt).reversed());
         return resPage.setRecords(resList);
     }
 

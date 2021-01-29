@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.PasswordReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.UserReqDTO;
@@ -20,6 +19,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -142,7 +142,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         PageReqDTO pageReqDTO = new PageReqDTO();
         BeanUtils.copyProperties(userReqDTO, pageReqDTO);
         PageHelper.startPage(userReqDTO.getPage().intValue(), userReqDTO.getSize().intValue());
-        return userMapper.listUser(pageReqDTO.of(), userReqDTO);
+        Page<User> userPage = userMapper.listUser(pageReqDTO.of(), userReqDTO);
+        userPage.getRecords().sort(Comparator.comparing(User::getUpdatedAt).reversed());
+        return userPage;
     }
 
     @Override

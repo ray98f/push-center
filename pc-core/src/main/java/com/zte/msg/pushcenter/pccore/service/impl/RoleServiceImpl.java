@@ -2,10 +2,8 @@ package com.zte.msg.pushcenter.pccore.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.RoleReqDTO;
-import com.zte.msg.pushcenter.pccore.dto.res.RoleResDTO;
 import com.zte.msg.pushcenter.pccore.entity.Role;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
@@ -17,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -51,7 +50,9 @@ public class RoleServiceImpl implements RoleService {
         PageReqDTO pageReqDTO = new PageReqDTO();
         BeanUtils.copyProperties(roleReqDTO, pageReqDTO);
         PageHelper.startPage(roleReqDTO.getPage().intValue(), roleReqDTO.getSize().intValue());
-        return roleMapper.listRole(pageReqDTO.of(), roleReqDTO);
+        Page<Role> rolePage = roleMapper.listRole(pageReqDTO.of(), roleReqDTO);
+        rolePage.getRecords().sort(Comparator.comparing(Role::getUpdatedAt).reversed());
+        return rolePage;
     }
 
     @Override
