@@ -41,13 +41,22 @@ public class SignUtils {
         service = secretService;
     }
 
-    private static String md5(String str) {
+    private static String signMd5(String str) {
         return DigestUtils.md5DigestAsHex(str.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public static String generateOpenSign(Object view, Long appId, Long requestTime){
+        String s = JSON.toJSONString(view) + appId + requestTime;
+        String secret = service.selectAppSecret(appId);
+        if (StringUtils.isBlank(secret)){
+            throw new CommonException(ErrorCode.SECRET_NOT_EXIST);
+        }
+        s = secret + s + secret;
+        return signMd5(s);
     }
 
     public static void verify(Object view, Long appId, Long requestTime, String sign) {
         if (Long.valueOf(TokenUtil.getTimestamp()).compareTo((requestTime) + SIGN_DEADLINE) > 0) {
-            log.error("请求失效，请重新发起请求");
             throw new RuntimeException("请求失效，请重新发起请求");
         }
 
@@ -57,7 +66,7 @@ public class SignUtils {
             throw new CommonException(ErrorCode.RESOURCE_NOT_EXIST);
         }
         s = secret + s + secret;
-        String o = md5(s);
+        String o = signMd5(s);
         if (sign.equals(o)) {
             log.info("签名校验通过");
         } else {

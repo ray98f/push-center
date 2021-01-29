@@ -49,7 +49,6 @@ public class OpenPushCenterController {
     @PostMapping(value = "/sms")
     @ApiOperation(value = "短信推送")
     public <T> DataResponse<T> pushSms(@Valid @RequestBody SmsMessageReqDTO reqDTO) {
-        System.out.println(signVerify);
         if (signVerify){
             String sign = reqDTO.getSign();
             reqDTO.setSign(Constants.EMPTY);
