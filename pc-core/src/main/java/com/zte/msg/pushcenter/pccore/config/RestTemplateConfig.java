@@ -51,7 +51,7 @@ public class RestTemplateConfig {
                 .register("https", SSLConnectionSocketFactory.getSocketFactory())
                 .build();
         PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager(registry);
-        connectionManager.setMaxTotal(150);
+        connectionManager.setMaxTotal(600);
         connectionManager.setDefaultMaxPerRoute(100);
         RequestConfig requestConfig = RequestConfig.custom()
                 .setSocketTimeout(READ_TIMEOUT)

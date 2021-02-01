@@ -2,7 +2,6 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://wshmang.f3322.net:33306/push_center?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
-#    url: jdbc:mysql://localhost:3306/push_center?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
     username: root
     password: root123456
     hikari:
@@ -14,28 +13,6 @@ spring:
       login-timeout: 5
       maximum-pool-size: 60
       minimum-idle: 10
-#  mail:
-#    default-encoding: UTF-8
-#    host: smtp.163.com
-#    username: KRApxf1xDB7Ff2awefRQupp6wAAMfHTvRY3U0zkvNho=
-#    password: eIMY+mFbPkujWgFNf6uOlF16JX2etFhgtc+1q3itb84=
-#    port: 465
-#    properties:
-#      mail:
-#        display:
-#          sendmail: zte-rail
-#        smtp:
-#          auth: true
-#          ssl:
-#            enable: true
-#          starttls:
-#            enable: true
-#            required: true
-#          socketFactory:
-#            port: 465
-#            class: javax.net.ssl.SSLSocketFactory
-#    protocol: smtps
-#    test-connection: true
   kafka:
     bootstrap-servers: 127.0.0.1:9092
     consumer:
@@ -62,15 +39,14 @@ mybatis-plus:
   mapper-locations: classpath:/mapper/*.xml
   type-aliases-package: com.zte.msg.pushcenter.pccore.entity
   configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#    multiple-result-sets-enabled: true
+    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
     map-underscore-to-camel-case: true
   global-config:
     db-config:
-      #全局逻辑删除字段值 3.3.0开始支持，详情看下面。
       logic-delete-field: is_deleted
-      # 逻辑已删除值(默认为 1)
       logic-delete-value: 1
-      # 逻辑未删除值(默认为 0)
       logic-not-delete-value: 0
 sign:
   verify: false
