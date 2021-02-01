@@ -48,4 +48,6 @@ public class Constants {
     public static final String APP_SECRET_STRING = "appSecret";
 
     public static final String TOKEN_STRING = "token";
+
+    public static final String UNDER_LINE = "_";
 }

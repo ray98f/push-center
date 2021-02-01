@@ -40,7 +40,6 @@ public class AppPusher extends BasePusher {
         flushConfig(providers);
     }
 
-
     @Override
     public void push(Message message) {
         AppMessage appMessage = (AppMessage) message;

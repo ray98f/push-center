@@ -1,6 +1,10 @@
 package com.zte.msg.pushcenter.pccore.core.javac;
 
 
+import lombok.Data;
+
+import java.util.TreeMap;
+
 /**
  * description:
  *
@@ -8,13 +12,17 @@ package com.zte.msg.pushcenter.pccore.core.javac;
  * @version 1.0
  * @date 2021/1/11 12:40
  */
+@Data
 public class ClassInfo {
-    public Class<?> classType;
+    private TreeMap<String, Class<?>> classType;
 
-    public long lastModified;
+    private long lastModified;
 
-    public ClassInfo(Class<?> classType, long lastModified) {
-        this.classType = classType;
+    public ClassInfo(long lastModified) {
+        this.classType = new TreeMap<>();
         this.lastModified = lastModified;
+    }
+
+    public ClassInfo() {
     }
 }

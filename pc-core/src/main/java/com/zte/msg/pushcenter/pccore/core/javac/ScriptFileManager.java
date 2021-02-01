@@ -140,7 +140,7 @@ public class ScriptFileManager implements JavaFileManager {
     }
 
     public void remove(String name) {
-        buffers.remove(name);
+        buffers.keySet().removeIf(o -> o.startsWith(name));
     }
 
     @SuppressWarnings("unchecked")

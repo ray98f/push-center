@@ -8,6 +8,7 @@ import com.zte.msg.pushcenter.pcscript.PcScript;
 import org.apache.http.Header;
 import org.apache.http.impl.client.CloseableHttpClient;
 
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
  * @version 1.0
  * @date 2021/1/18 12:40
  */
-public class JiGuangAppPush implements PcScript {
+public class Test implements PcScript {
 
     private static final String URL = "https://api.jpush.cn/v3/push";
 
@@ -315,7 +316,6 @@ public class JiGuangAppPush implements PcScript {
      * @param platform
      */
     private static JSONArray buildPlatform(List<Platform> platformList, JSONArray platform) {
-        System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
         if (platformList.contains(Platform.ALL)) {
             platform.addAll(Arrays.stream(Platform.values()).filter(o -> o != Platform.ALL).map(Platform::getPlatform).collect(Collectors.toList()));
             return platform;

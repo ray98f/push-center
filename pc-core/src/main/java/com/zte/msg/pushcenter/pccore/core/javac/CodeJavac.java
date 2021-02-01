@@ -4,9 +4,11 @@ import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.ProviderMapper;
 import com.zte.msg.pushcenter.pccore.model.ScriptModel;
+import com.zte.msg.pushcenter.pccore.utils.Constants;
 import com.zte.msg.pushcenter.pccore.utils.JavaCodecUtils;
 import com.zte.msg.pushcenter.pccore.utils.PathUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -63,10 +65,15 @@ public class CodeJavac {
     }
 
     private void getTask(List<ScriptModel> scriptModels, boolean throwException) {
+
+        List<PcClassLoader.ScriptName> classInfos = new ArrayList<>(scriptModels.size());
         scriptModels.forEach(o -> {
+            String suffix = String.valueOf(RandomUtils.nextInt());
+            String className = o.getScriptTag() + Constants.UNDER_LINE + suffix;
             if (StringUtils.isNotBlank(o.getScriptContext()) && StringUtils.isNotBlank(o.getScriptTag())) {
+                scriptFileManager.remove(o.getScriptTag());
                 Iterable<? extends JavaFileObject> compilationUnits = new ArrayList<JavaFileObject>() {{
-                    add(new JavaSourceFromString(o.getScriptTag(), JavaCodecUtils.replaceCodeJavaName(o.getScriptContext(), o.getScriptTag())));
+                    add(new JavaSourceFromString(className, JavaCodecUtils.replaceCodeJavaName(o.getScriptContext(), className)));
                 }};
                 boolean ok = javaCompiler.getTask(errorStringWriter, scriptFileManager, diagnostic -> {
                     if (diagnostic.getKind() == Diagnostic.Kind.ERROR) {
@@ -80,10 +87,16 @@ public class CodeJavac {
                         throw new CommonException(ErrorCode.SCRIPT_COMPILE_ERROR);
                     }
                 }
+                classInfos.add(new PcClassLoader.ScriptName(o.getScriptTag(), suffix));
             }
 
         });
+        if (Objects.isNull(pcClassLoader)) {
+            pcClassLoader = new PcClassLoader();
+        }
         allBuffers = scriptFileManager.getAllBuffers();
+        pcClassLoader.flushClazzInfo(classInfos);
+
     }
 
     public void scriptFlush(boolean remove, List<ScriptModel> scripts) {

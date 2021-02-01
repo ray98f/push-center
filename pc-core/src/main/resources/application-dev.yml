@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://115.221.11.108:33306/push_center?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://115.221.13.253:33306/push_center?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
 #    url: jdbc:mysql://localhost:3306/push_center?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
     username: root
     password: root123456
@@ -78,5 +78,5 @@ sign:
 async:
   push:
    pool-size:
-     core: 80
-     max: 80
+     core: 100
+     max: 100
