@@ -132,8 +132,10 @@ public class WeChatPusher extends BasePusher {
             if (Objects.nonNull(accessToken) && StringUtils.isNotBlank(accessToken.getAccessToken())) {
                 accessToken.setExpire(now + ACCESS_TOKEN_EXPIRE);
                 accessToken.setAppId(wxConfig.getAppId());
+                accessTokens.put(wxConfig.getAppId(), accessToken);
                 log.info("inset a new access token: {}", accessToken.getAccessToken());
             } else {
+                log.info("AccessToken request result: {}" ,accessToken);
                 log.error("WeChart access token request fail : {}", wxConfig.getAppId());
                 throw new CommonException(-1, "WeChat access token request fail");
             }
