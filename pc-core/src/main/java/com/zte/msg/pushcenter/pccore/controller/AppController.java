@@ -19,6 +19,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -137,4 +138,17 @@ public class AppController {
         return DataResponse.of(secretService.selectSecretKey(appId));
     }
 
+    /**
+     * 根据appId获取secret
+     * @param appId
+     * @return
+     */
+    @GetMapping("/app/open/secret")
+    @ApiOperation(value = "根据appId获取secret")
+    public DataResponse<Map<String, Object>> getSecret(@Valid @RequestParam @NotNull(message = "32000006") Long appId){
+        String secret = secretService.selectAppSecret(appId);
+        Map<String, Object> data = new HashMap<>(16);
+        data.put("secret", secret);
+        return DataResponse.of(data);
+    }
 }
