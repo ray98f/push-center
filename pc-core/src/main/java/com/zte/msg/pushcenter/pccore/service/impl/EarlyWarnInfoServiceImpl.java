@@ -28,6 +28,7 @@ public class EarlyWarnInfoServiceImpl extends ServiceImpl<EarlyWarnInfoMapper, E
         if (Objects.nonNull(startTime) && Objects.nonNull(endTime)) {
             wrapper.between(EarlyWarnInfo::getTime, startTime, endTime);
         }
+        wrapper.orderByDesc(EarlyWarnInfo::getUpdatedAt);
         Page<EarlyWarnInfo> earlyWarnInfoPage = getBaseMapper().selectPage(pageReqDTO.of(), wrapper);
         earlyWarnInfoPage.getRecords().sort(Comparator.comparing(EarlyWarnInfo::getUpdatedAt).reversed());
         return earlyWarnInfoPage;

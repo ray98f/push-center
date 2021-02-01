@@ -15,7 +15,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -50,9 +49,7 @@ public class RoleServiceImpl implements RoleService {
         PageReqDTO pageReqDTO = new PageReqDTO();
         BeanUtils.copyProperties(roleReqDTO, pageReqDTO);
         PageHelper.startPage(roleReqDTO.getPage().intValue(), roleReqDTO.getSize().intValue());
-        Page<Role> rolePage = roleMapper.listRole(pageReqDTO.of(), roleReqDTO);
-        rolePage.getRecords().sort(Comparator.comparing(Role::getUpdatedAt).reversed());
-        return rolePage;
+        return roleMapper.listRole(pageReqDTO.of(), roleReqDTO);
     }
 
     @Override

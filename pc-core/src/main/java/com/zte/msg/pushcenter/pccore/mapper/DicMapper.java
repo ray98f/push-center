@@ -49,6 +49,7 @@ public interface DicMapper extends BaseMapper<Dic> {
             " AND is_enable = #{is_enable}",
             "</if>",
             "</where>",
+            " ORDER BY updated_at DESC",
             "</script>"
     })
     Page<DicResDTO> selectDicByPage(Page<DicResDTO> page,

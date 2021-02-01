@@ -17,7 +17,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,9 +44,7 @@ public class AppServiceImpl implements AppService {
         PageReqDTO pageReqDTO = new PageReqDTO();
         BeanUtils.copyProperties(appListReqDTO, pageReqDTO);
         PageHelper.startPage(appListReqDTO.getPage().intValue(), appListReqDTO.getSize().intValue());
-        Page<App> appPage = appMapper.listApp(pageReqDTO.of(), appListReqDTO);
-        appPage.getRecords().sort(Comparator.comparing(App::getUpdatedAt).reversed());
-        return appPage;
+        return appMapper.listApp(pageReqDTO.of(), appListReqDTO);
     }
 
     @Override

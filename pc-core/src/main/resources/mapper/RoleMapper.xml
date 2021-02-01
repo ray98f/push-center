@@ -14,6 +14,7 @@
         <if test="roleReqDTO.roleName!=''">
             having GROUP_CONCAT("|",role_name,"|",to_pinyin(role_name),"|",pinyin(role_name),"|") like "%"#{roleReqDTO.roleName}"%"
         </if>
+        ORDER BY updated_at DESC
     </select>
 
     <update id="deleteRole">

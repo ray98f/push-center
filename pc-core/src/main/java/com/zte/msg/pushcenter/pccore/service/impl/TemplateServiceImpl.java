@@ -201,6 +201,8 @@ public class TemplateServiceImpl implements TemplateService {
             wrapper.eq(SmsTemplate::getStatus, status);
         }
 
+        wrapper.orderByDesc(SmsTemplate::getUpdatedAt);
+
         Page<SmsTemplate> smsTemplatePage = smsTemplateMapper.selectPage(pageReqDTO.of(), wrapper);
         List<SmsTemplate> templates = smsTemplatePage.getRecords();
 
@@ -321,6 +323,9 @@ public class TemplateServiceImpl implements TemplateService {
         if (!Objects.isNull(status)) {
             wrapper.eq(WeChatTemplate::getStatus, status);
         }
+
+        wrapper.orderByDesc(WeChatTemplate::getUpdatedAt);
+
         Page<WeChatTemplate> result = weChatTemplateMapper.selectPage(page.of(), wrapper);
         List<WeChatTemplate> records = result.getRecords();
         Page<WeChatTemplateResDTO> resPage = new Page<>();

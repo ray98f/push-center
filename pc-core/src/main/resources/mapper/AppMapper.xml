@@ -14,6 +14,7 @@
         <if test="appListReqDTO.appName!=null">
             having GROUP_CONCAT("|",app_name,"|",to_pinyin(app_name),"|",pinyin(Num_char_extract(app_name,3)),"|",Num_char_extract(app_name,2),"|") like "%"#{appListReqDTO.appName}"%"
         </if>
+        ORDER BY updated_at DESC
     </select>
 
     <select id="listAllApp" resultType="com.zte.msg.pushcenter.pccore.entity.App">
