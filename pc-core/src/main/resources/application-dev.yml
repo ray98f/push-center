@@ -49,7 +49,7 @@ mybatis-plus:
       logic-delete-value: 1
       logic-not-delete-value: 0
 sign:
-  verify: false
+  verify: true
 
 async:
   push:

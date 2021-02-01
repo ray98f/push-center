@@ -40,6 +40,8 @@ import java.util.Objects;
 @Validated
 public class OpenPushCenterController {
 
+    public static final String NULL = null;
+
     @Value("${sign.verify}")
     private Boolean signVerify;
 
@@ -51,7 +53,7 @@ public class OpenPushCenterController {
     public <T> DataResponse<T> pushSms(@Valid @RequestBody SmsMessageReqDTO reqDTO) {
         if (signVerify){
             String sign = reqDTO.getSign();
-            reqDTO.setSign(Constants.EMPTY);
+            reqDTO.setSign(NULL);
             SignUtils.verify(reqDTO, reqDTO.getAppId(), reqDTO.getRequestTime(), sign);
         }
         if (reqDTO.getIsCallBack() && Objects.isNull(reqDTO.getCallBackUrl())) {
@@ -67,7 +69,7 @@ public class OpenPushCenterController {
     public <T> DataResponse<T> pushMail(@Valid @RequestBody MailMessageReqDTO reqDTO) {
         if (signVerify){
             String sign = reqDTO.getSign();
-            reqDTO.setSign(Constants.EMPTY);
+            reqDTO.setSign(NULL);
             SignUtils.verify(reqDTO, reqDTO.getAppId(), reqDTO.getRequestTime(), sign);
         }
         MailMessage mailMessage = new MailMessage().build(reqDTO);
@@ -80,7 +82,7 @@ public class OpenPushCenterController {
     public <T> DataResponse<T> pushWeChat(@Valid @RequestBody WeChatMessageReqDTO reqDTO) {
         if (signVerify){
             String sign = reqDTO.getSign();
-            reqDTO.setSign(Constants.EMPTY);
+            reqDTO.setSign(NULL);
             SignUtils.verify(reqDTO, reqDTO.getAppId(), reqDTO.getRequestTime(), sign);
         }
         WeChatMessage weChatMessage = new WeChatMessage().build(reqDTO);
@@ -93,7 +95,7 @@ public class OpenPushCenterController {
     public <T> DataResponse<T> pushApp(@Valid @RequestBody AppMessageReqDTO reqDTO) {
         if (signVerify){
             String sign = reqDTO.getSign();
-            reqDTO.setSign(Constants.EMPTY);
+            reqDTO.setSign(NULL);
             SignUtils.verify(reqDTO, reqDTO.getAppId(), reqDTO.getRequestTime(), sign);
         }
         AppMessage appMessage = new AppMessage().build(reqDTO);
