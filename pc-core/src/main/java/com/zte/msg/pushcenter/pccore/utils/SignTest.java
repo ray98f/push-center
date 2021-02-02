@@ -42,7 +42,7 @@ public class SignTest {
         smsMessageReqDTO.setVars(vars);
         // 获取应用密钥值
         CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpGet httpGet = new HttpGet("http://wshmang.f3322.net:40323/api/v1/app/open/secret?appId=" + appId);
+        HttpGet httpGet = new HttpGet("http://wshmang.f3322.net:40323/api/v1/open/app/secret?appId=" + appId);
         httpGet.addHeader("Content-Type", "application/json;charset=utf8");
         HttpResponse response = httpClient.execute(httpGet);
         JSONObject jsonObject = JSONObject.parseObject(EntityUtils.toString(response.getEntity()));
@@ -51,7 +51,7 @@ public class SignTest {
         String sign = DigestUtils.md5DigestAsHex(str.getBytes(StandardCharsets.UTF_8));
         smsMessageReqDTO.setSign(sign);
         // 发送邮件通知
-        HttpPost httpPost = new HttpPost("http://wshmang.f3322.net:40323/api/open/v1/push/sms");
+        HttpPost httpPost = new HttpPost("http://wshmang.f3322.net:40323/api/v1/open/push/sms");
         httpPost.setHeader("Content-Type", "application/json;charset=utf8");
         String jsonString = JSON.toJSONString(smsMessageReqDTO);
         StringEntity entity = new StringEntity(jsonString, "UTF-8");
@@ -77,7 +77,7 @@ public class SignTest {
         mailMessageReqDTO.setContent("<h1 id=\\\"q3kn4\\\">邮件</h1><p><i>邮件</i><br></p><p>下划线<i><br></i></p>");
         // 获取应用密钥值
         CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpGet httpGet = new HttpGet("http://wshmang.f3322.net:40323/api/v1/app/open/secret?appId=" + appId);
+        HttpGet httpGet = new HttpGet("http://wshmang.f3322.net:40323/api/v1/open/app/secret?appId=" + appId);
         httpGet.addHeader("Content-Type", "application/json;charset=utf8");
         HttpResponse response = httpClient.execute(httpGet);
         JSONObject jsonObject = JSONObject.parseObject(EntityUtils.toString(response.getEntity()));
@@ -86,7 +86,7 @@ public class SignTest {
         String sign = DigestUtils.md5DigestAsHex(str.getBytes(StandardCharsets.UTF_8));
         mailMessageReqDTO.setSign(sign);
         // 发送邮件通知
-        HttpPost httpPost = new HttpPost("http://wshmang.f3322.net:40323/api/open/v1/push/mail");
+        HttpPost httpPost = new HttpPost("http://wshmang.f3322.net:40323/api/v1/open/push/mail");
         httpPost.setHeader("Content-Type", "application/json;charset=utf8");
         String jsonString = JSON.toJSONString(mailMessageReqDTO);
         StringEntity entity = new StringEntity(jsonString, "UTF-8");
@@ -113,7 +113,7 @@ public class SignTest {
         weChatMessageReqDTO.setAppletData("{…}");
         // 获取应用密钥值
         CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpGet httpGet = new HttpGet("http://wshmang.f3322.net:40323/api/v1/app/open/secret?appId=" + appId);
+        HttpGet httpGet = new HttpGet("http://wshmang.f3322.net:40323/api/v1/open/app/secret?appId=" + appId);
         httpGet.addHeader("Content-Type", "application/json;charset=utf8");
         HttpResponse response = httpClient.execute(httpGet);
         JSONObject jsonObject = JSONObject.parseObject(EntityUtils.toString(response.getEntity()));
@@ -122,7 +122,7 @@ public class SignTest {
         String sign = DigestUtils.md5DigestAsHex(str.getBytes(StandardCharsets.UTF_8));
         weChatMessageReqDTO.setSign(sign);
         // 发送微信公众号通知
-        HttpPost httpPost = new HttpPost("http://wshmang.f3322.net:40323/api/open/v1/push/wechat");
+        HttpPost httpPost = new HttpPost("http://wshmang.f3322.net:40323/api/v1/open/push/wechat");
         httpPost.setHeader("Content-Type", "application/json;charset=utf8");
         String jsonString = JSON.toJSONString(weChatMessageReqDTO);
         StringEntity entity = new StringEntity(jsonString, "UTF-8");
@@ -149,7 +149,7 @@ public class SignTest {
         appMessageReqDTO.setContent("<h1 id=\\\"phakb\\\">推送</h1><p style=\\\"padding-left:2em;\\\"><b>test</b></p>");
         // 获取应用密钥值
         CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpGet httpGet = new HttpGet("http://wshmang.f3322.net:40323/api/v1/app/open/secret?appId=" + appId);
+        HttpGet httpGet = new HttpGet("http://wshmang.f3322.net:40323/api/v1/open/app/secret?appId=" + appId);
         httpGet.addHeader("Content-Type", "application/json;charset=utf8");
         HttpResponse response = httpClient.execute(httpGet);
         JSONObject jsonObject = JSONObject.parseObject(EntityUtils.toString(response.getEntity()));
@@ -158,7 +158,7 @@ public class SignTest {
         String sign = DigestUtils.md5DigestAsHex(str.getBytes(StandardCharsets.UTF_8));
         appMessageReqDTO.setSign(sign);
         // 发送微信公众号通知
-        HttpPost httpPost = new HttpPost("http://wshmang.f3322.net:40323/api/open/v1/push/app");
+        HttpPost httpPost = new HttpPost("http://wshmang.f3322.net:40323/api/v1/open/push/app");
         httpPost.setHeader("Content-Type", "application/json;charset=utf8");
         String jsonString = JSON.toJSONString(appMessageReqDTO);
         StringEntity entity = new StringEntity(jsonString, "UTF-8");

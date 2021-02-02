@@ -143,7 +143,7 @@ public class AppController {
      * @param appId
      * @return
      */
-    @GetMapping("/app/open/secret")
+    @GetMapping("/open/app/secret")
     @ApiOperation(value = "根据appId获取secret")
     public DataResponse<Map<String, Object>> getSecret(@Valid @RequestParam @NotNull(message = "32000006") Long appId){
         String secret = secretService.selectAppSecret(appId);
