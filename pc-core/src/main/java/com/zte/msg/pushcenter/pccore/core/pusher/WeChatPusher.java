@@ -27,6 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -128,14 +129,16 @@ public class WeChatPusher extends BasePusher {
         long now = System.currentTimeMillis();
         AccessToken accessToken = accessTokens.get(wxConfig.getAppId());
         if (Objects.isNull(accessToken) || accessToken.getExpire() < now) {
-            accessToken = restTemplate.getForObject(ACCESS_TOKEN_URL, AccessToken.class, wxConfig.getAppId(), wxConfig.getAppSecret());
+            ResponseEntity<String> forEntity = restTemplate.getForEntity(ACCESS_TOKEN_URL, String.class,
+                    wxConfig.getAppId(), wxConfig.getAppSecret());
+            accessToken = JSONObject.parseObject(forEntity.getBody(), AccessToken.class);
             if (Objects.nonNull(accessToken) && StringUtils.isNotBlank(accessToken.getAccessToken())) {
                 accessToken.setExpire(now + ACCESS_TOKEN_EXPIRE);
                 accessToken.setAppId(wxConfig.getAppId());
                 accessTokens.put(wxConfig.getAppId(), accessToken);
                 log.info("inset a new access token: {}", accessToken.getAccessToken());
             } else {
-                log.info("AccessToken request result: {}" ,accessToken);
+                log.info("AccessToken request result: {}", forEntity.toString());
                 log.error("WeChart access token request fail : {}", wxConfig.getAppId());
                 throw new CommonException(-1, "WeChat access token request fail");
             }
@@ -153,7 +156,6 @@ public class WeChatPusher extends BasePusher {
 
     @Override
     protected void persist(Message message, PcScript.Res res) {
-        System.out.println("========== Wechat message persist ==========");
         try {
             WeChatMessage weChatMessage = (WeChatMessage) message;
 
@@ -272,10 +274,10 @@ public class WeChatPusher extends BasePusher {
         private String appId;
 
         // 过期的具体时间
-        @JsonProperty("expires_in")
+        @JSONField(name = "expires_in")
         private Long expire;
 
-        @JsonProperty("access_token")
+        @JSONField(name = "access_token")
         private String accessToken;
     }
 

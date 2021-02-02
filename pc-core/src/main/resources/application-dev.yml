@@ -56,3 +56,6 @@ async:
    pool-size:
      core: 100
      max: 100
+#logging:
+#  file:
+#    path: C:\All\workspace\push-center\log

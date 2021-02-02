@@ -53,7 +53,6 @@ public class MailPusher extends BasePusher {
     public void push(Message message) {
         MailMessage mailMessage = (MailMessage) message;
         CompletableFuture.supplyAsync(() -> {
-            log.info("==========submit mail push task==========");
             MailConfig config = getConfig(mailMessage.getProviderId());
             JavaMailSenderImpl mailSender = buildMailSender(config);
             MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -86,7 +85,6 @@ public class MailPusher extends BasePusher {
 
     @Override
     protected void persist(Message message, PcScript.Res res) {
-        System.out.println("========== Mail message persist ==========");
         MailMessage mailMessage = (MailMessage) message;
         mailMessage.setAppName(appService.getAppName(mailMessage.getAppId()));
 
