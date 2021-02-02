@@ -85,7 +85,6 @@ public class AppPusher extends BasePusher {
 
         ApplicationInfo applicationInfo = new ApplicationInfo(appMessage, res);
         historyService.addApplicationInfo(applicationInfo);
-        System.out.println("========== App message persist ==========");
     }
 
     public void flushConfig(List<Provider> providers) {

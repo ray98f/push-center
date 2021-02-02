@@ -95,7 +95,6 @@ public class SmsPusher extends BasePusher {
                 smsMessage.setIndex(i);
                 String phoneNum = smsMessage.getPhoneNum()[i];
                 paramMap.put(ParamConstants.PHONE_NUM, phoneNum);
-                log.info("==========submit sms push task==========");
                 PcScript.Res res = null;
                 try {
                     log.info("success find script class : name {}, obj :{}", smsConfig.getScriptTag(), scriptClass.getName());
@@ -127,7 +126,6 @@ public class SmsPusher extends BasePusher {
     @Override
     @Transactional(rollbackFor = Exception.class)
     protected void persist(Message message, PcScript.Res res) {
-        System.out.println("========== Sms message persist ==========");
         try {
             SmsMessage smsMessage = (SmsMessage) message;
             smsMessage.setDelay(getDelay(message));
