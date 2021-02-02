@@ -18,12 +18,15 @@ public interface RoleMapper extends BaseMapper<Role> {
 
     /**
      * 获取所有角色
+     *
      * @return
      */
     List<Role> listAllRole();
 
     /**
      * 查询角色列表
+     *
+     * @param page
      * @param roleReqDTO
      * @return
      */
@@ -31,6 +34,7 @@ public interface RoleMapper extends BaseMapper<Role> {
 
     /**
      * 删除角色
+     *
      * @param ids
      * @return
      */
@@ -38,6 +42,7 @@ public interface RoleMapper extends BaseMapper<Role> {
 
     /**
      * 删除角色菜单关联
+     *
      * @param ids
      * @return
      */
@@ -45,6 +50,7 @@ public interface RoleMapper extends BaseMapper<Role> {
 
     /**
      * 新增角色
+     *
      * @param role
      * @return
      */
@@ -52,6 +58,7 @@ public interface RoleMapper extends BaseMapper<Role> {
 
     /**
      * 新增角色菜单关联
+     *
      * @param roleId
      * @param menuIds
      * @param doName
@@ -61,6 +68,7 @@ public interface RoleMapper extends BaseMapper<Role> {
 
     /**
      * 修改角色
+     *
      * @param role
      * @return
      */
@@ -68,12 +76,14 @@ public interface RoleMapper extends BaseMapper<Role> {
 
     /**
      * 清空角色修改关联
+     *
      * @param roleId
      */
     void deleteRoleMenus(Long roleId);
 
     /**
      * 搜索角色对应菜单权限标识
+     *
      * @param roleId
      * @return
      */
@@ -81,6 +91,7 @@ public interface RoleMapper extends BaseMapper<Role> {
 
     /**
      * 获取角色对应菜单ids
+     *
      * @param roleId
      * @return
      */
@@ -88,6 +99,7 @@ public interface RoleMapper extends BaseMapper<Role> {
 
     /**
      * 搜索角色对应菜单ids
+     *
      * @param roleIds
      * @return
      */

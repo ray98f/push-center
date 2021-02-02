@@ -19,6 +19,7 @@ public interface UserMapper extends BaseMapper<User> {
 
     /**
      * 获取用户信息
+     *
      * @param userName
      * @return
      */
@@ -26,6 +27,7 @@ public interface UserMapper extends BaseMapper<User> {
 
     /**
      * 获取用户权限id
+     *
      * @param userName
      * @return
      */
@@ -33,6 +35,7 @@ public interface UserMapper extends BaseMapper<User> {
 
     /**
      * 新增用户
+     *
      * @param user
      * @param doName
      * @return
@@ -41,6 +44,7 @@ public interface UserMapper extends BaseMapper<User> {
 
     /**
      * 修改密码
+     *
      * @param passwordReqDTO
      * @param updateBy
      * @return
@@ -49,6 +53,7 @@ public interface UserMapper extends BaseMapper<User> {
 
     /**
      * 重置密码
+     *
      * @param password
      * @param updateBy
      * @param id
@@ -58,6 +63,7 @@ public interface UserMapper extends BaseMapper<User> {
 
     /**
      * 修改用户
+     *
      * @param userReqDTO
      * @param updateBy
      * @return
@@ -66,6 +72,7 @@ public interface UserMapper extends BaseMapper<User> {
 
     /**
      * 删除用户
+     *
      * @param ids
      * @return
      */
@@ -73,12 +80,15 @@ public interface UserMapper extends BaseMapper<User> {
 
     /**
      * 获取所有用户列表
+     *
      * @return
      */
     List<User> listAllUser();
 
     /**
      * 查询用户列表
+     *
+     * @param page
      * @param userReqDTO
      * @return
      */

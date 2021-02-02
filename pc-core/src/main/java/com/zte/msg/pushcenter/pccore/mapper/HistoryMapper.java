@@ -29,6 +29,7 @@ public interface HistoryMapper {
     /**
      * 查询短信历史记录
      *
+     * @param page
      * @param smsHistoryReqDTO
      * @return
      */
@@ -37,6 +38,7 @@ public interface HistoryMapper {
     /**
      * 查询邮件历史记录
      *
+     * @param page
      * @param mailHistoryReqDTO
      * @return
      */
@@ -45,6 +47,7 @@ public interface HistoryMapper {
     /**
      * 查询微信推送历史记录
      *
+     * @param page
      * @param wechatHistoryReqDTO
      * @return
      */
@@ -53,6 +56,7 @@ public interface HistoryMapper {
     /**
      * 查询app推送历史记录
      *
+     * @param page
      * @param applicationHistoryReqDTO
      * @return
      */
