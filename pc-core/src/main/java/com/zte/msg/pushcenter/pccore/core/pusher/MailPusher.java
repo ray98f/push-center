@@ -80,7 +80,7 @@ public class MailPusher extends BasePusher {
                 warn();
             }
             persist(mailMessage, o);
-        });
+        }, resExecutor);
     }
 
     @Override

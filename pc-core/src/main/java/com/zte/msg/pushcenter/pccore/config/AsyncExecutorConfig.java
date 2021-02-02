@@ -28,7 +28,7 @@ public class AsyncExecutorConfig {
 
     @Bean(name = "asyncResponseExecutor")
     public ThreadPoolTaskExecutor asyncResponseExecutor() {
-        return buildExecutor(10, 10, 2000, "asyncResponseExecutor-");
+        return buildExecutor(20, 20, 2000, "asyncResponseExecutor-");
     }
 
     @Bean(name = "asyncWarnExecutor")
