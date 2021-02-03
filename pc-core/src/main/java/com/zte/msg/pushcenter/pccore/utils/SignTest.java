@@ -41,22 +41,17 @@ public class SignTest {
         vars.put("a", "123456");
         smsMessageReqDTO.setVars(vars);
         // 获取应用密钥值
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpGet httpGet = new HttpGet("http://wshmang.f3322.net:40323/api/v1/open/app/secret?appId=" + appId);
-        httpGet.addHeader("Content-Type", "application/json;charset=utf8");
-        HttpResponse response = httpClient.execute(httpGet);
-        JSONObject jsonObject = JSONObject.parseObject(EntityUtils.toString(response.getEntity()));
-        String secret = JSONObject.parseObject(jsonObject.getString("data")).getString("secret");
-        String str = secret + JSON.toJSONString(smsMessageReqDTO) + appId + requestTime + secret;
+        String str = "secret" + JSON.toJSONString(smsMessageReqDTO) + appId + requestTime + "secret";
         String sign = DigestUtils.md5DigestAsHex(str.getBytes(StandardCharsets.UTF_8));
         smsMessageReqDTO.setSign(sign);
         // 发送邮件通知
+        CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost("http://wshmang.f3322.net:40323/api/v1/open/push/sms");
         httpPost.setHeader("Content-Type", "application/json;charset=utf8");
         String jsonString = JSON.toJSONString(smsMessageReqDTO);
         StringEntity entity = new StringEntity(jsonString, "UTF-8");
         httpPost.setEntity(entity);
-        response = httpClient.execute(httpPost);
+        HttpResponse response = httpClient.execute(httpPost);
         System.out.println(response.getStatusLine().getStatusCode());
         System.out.println(EntityUtils.toString(response.getEntity()));
     }
@@ -76,22 +71,17 @@ public class SignTest {
         mailMessageReqDTO.setSubject("这是一封邮件");
         mailMessageReqDTO.setContent("<h1 id=\\\"q3kn4\\\">邮件</h1><p><i>邮件</i><br></p><p>下划线<i><br></i></p>");
         // 获取应用密钥值
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpGet httpGet = new HttpGet("http://wshmang.f3322.net:40323/api/v1/open/app/secret?appId=" + appId);
-        httpGet.addHeader("Content-Type", "application/json;charset=utf8");
-        HttpResponse response = httpClient.execute(httpGet);
-        JSONObject jsonObject = JSONObject.parseObject(EntityUtils.toString(response.getEntity()));
-        String secret = JSONObject.parseObject(jsonObject.getString("data")).getString("secret");
-        String str = secret + JSON.toJSONString(mailMessageReqDTO) + appId + requestTime + secret;
+        String str = "secret" + JSON.toJSONString(mailMessageReqDTO) + appId + requestTime + "secret";
         String sign = DigestUtils.md5DigestAsHex(str.getBytes(StandardCharsets.UTF_8));
         mailMessageReqDTO.setSign(sign);
         // 发送邮件通知
+        CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost("http://wshmang.f3322.net:40323/api/v1/open/push/mail");
         httpPost.setHeader("Content-Type", "application/json;charset=utf8");
         String jsonString = JSON.toJSONString(mailMessageReqDTO);
         StringEntity entity = new StringEntity(jsonString, "UTF-8");
         httpPost.setEntity(entity);
-        response = httpClient.execute(httpPost);
+        HttpResponse response = httpClient.execute(httpPost);
         System.out.println(response.getStatusLine().getStatusCode());
         System.out.println(EntityUtils.toString(response.getEntity()));
     }
@@ -108,26 +98,21 @@ public class SignTest {
         weChatMessageReqDTO.setOpenId("ozZ6k5mWals6PZy8VCYlrstPP2Ck");
         weChatMessageReqDTO.setProviderId(5L);
         weChatMessageReqDTO.setTemplateId(1L);
-        weChatMessageReqDTO.setData("{\"first\": {\"value\": \"测试\"},\"keyword1\": {\"value\": \"预警\"},\"keyword2\": {…}}");
-        weChatMessageReqDTO.setUrl("www.baidu.com");
-        weChatMessageReqDTO.setAppletData("{…}");
+        weChatMessageReqDTO.setData("{\"first\": {\"value\": \"测试\"},\"keyword1\": {\"value\": \"预警\"}, …}");
+        weChatMessageReqDTO.setUrl("http://bbxxxbbb.com");
+        weChatMessageReqDTO.setAppletData("{\"a\": \"aaaa\", \"b\": \"bbbb\"}, …");
         // 获取应用密钥值
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpGet httpGet = new HttpGet("http://wshmang.f3322.net:40323/api/v1/open/app/secret?appId=" + appId);
-        httpGet.addHeader("Content-Type", "application/json;charset=utf8");
-        HttpResponse response = httpClient.execute(httpGet);
-        JSONObject jsonObject = JSONObject.parseObject(EntityUtils.toString(response.getEntity()));
-        String secret = JSONObject.parseObject(jsonObject.getString("data")).getString("secret");
-        String str = secret + JSON.toJSONString(weChatMessageReqDTO) + appId + requestTime + secret;
+        String str = "secret" + JSON.toJSONString(weChatMessageReqDTO) + appId + requestTime + "secret";
         String sign = DigestUtils.md5DigestAsHex(str.getBytes(StandardCharsets.UTF_8));
         weChatMessageReqDTO.setSign(sign);
         // 发送微信公众号通知
+        CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost("http://wshmang.f3322.net:40323/api/v1/open/push/wechat");
         httpPost.setHeader("Content-Type", "application/json;charset=utf8");
         String jsonString = JSON.toJSONString(weChatMessageReqDTO);
         StringEntity entity = new StringEntity(jsonString, "UTF-8");
         httpPost.setEntity(entity);
-        response = httpClient.execute(httpPost);
+        HttpResponse response = httpClient.execute(httpPost);
         System.out.println(response.getStatusLine().getStatusCode());
         System.out.println(EntityUtils.toString(response.getEntity()));
     }
@@ -143,27 +128,22 @@ public class SignTest {
         appMessageReqDTO.setRequestTime(requestTime);
         appMessageReqDTO.setProviderId(14L);
         appMessageReqDTO.setTargetPlatform(3);
-        appMessageReqDTO.setRegistrationId(new String[]{"1104a897920a8f31c7d"});
+        appMessageReqDTO.setRegistrationId(new String[]{"160axxxxxxxe665", "180exxxxxxxa935"});
         appMessageReqDTO.setMessageType(2);
         appMessageReqDTO.setTitle("这是一个App推送");
         appMessageReqDTO.setContent("<h1 id=\\\"phakb\\\">推送</h1><p style=\\\"padding-left:2em;\\\"><b>test</b></p>");
         // 获取应用密钥值
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpGet httpGet = new HttpGet("http://wshmang.f3322.net:40323/api/v1/open/app/secret?appId=" + appId);
-        httpGet.addHeader("Content-Type", "application/json;charset=utf8");
-        HttpResponse response = httpClient.execute(httpGet);
-        JSONObject jsonObject = JSONObject.parseObject(EntityUtils.toString(response.getEntity()));
-        String secret = JSONObject.parseObject(jsonObject.getString("data")).getString("secret");
-        String str = secret + JSON.toJSONString(appMessageReqDTO) + appId + requestTime + secret;
+        String str = "secret" + JSON.toJSONString(appMessageReqDTO) + appId + requestTime + "secret";
         String sign = DigestUtils.md5DigestAsHex(str.getBytes(StandardCharsets.UTF_8));
         appMessageReqDTO.setSign(sign);
-        // 发送微信公众号通知
+        // 发送app通知
+        CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost("http://wshmang.f3322.net:40323/api/v1/open/push/app");
         httpPost.setHeader("Content-Type", "application/json;charset=utf8");
         String jsonString = JSON.toJSONString(appMessageReqDTO);
         StringEntity entity = new StringEntity(jsonString, "UTF-8");
         httpPost.setEntity(entity);
-        response = httpClient.execute(httpPost);
+        HttpResponse response = httpClient.execute(httpPost);
         System.out.println(response.getStatusLine().getStatusCode());
         System.out.println(EntityUtils.toString(response.getEntity()));
     }
