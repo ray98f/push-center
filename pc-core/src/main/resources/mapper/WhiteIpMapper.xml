@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zte.msg.pushcenter.pccore.mapper.WhiteIpMapper">
+    <select id="listAppId" resultType="com.zte.msg.pushcenter.pccore.dto.res.WhiteIpResDTO">
+        select app_id from app_white_ip;
+    </select>
+
+    <select id="selectWhiteIp" resultType="java.lang.String">
+        select ip from app_white_ip where app_id = #{appId}
+    </select>
+</mapper>

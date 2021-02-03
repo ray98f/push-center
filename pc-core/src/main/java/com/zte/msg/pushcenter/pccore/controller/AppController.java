@@ -4,6 +4,7 @@ import com.zte.msg.pushcenter.pccore.dto.DataResponse;
 import com.zte.msg.pushcenter.pccore.dto.PageResponse;
 import com.zte.msg.pushcenter.pccore.dto.req.AppListReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.SecretKeyResDTO;
+import com.zte.msg.pushcenter.pccore.dto.res.WhiteIpResDTO;
 import com.zte.msg.pushcenter.pccore.entity.App;
 import com.zte.msg.pushcenter.pccore.service.AppService;
 import com.zte.msg.pushcenter.pccore.service.SecretService;
@@ -150,5 +151,11 @@ public class AppController {
         Map<String, Object> data = new HashMap<>(16);
         data.put("secret", secret);
         return DataResponse.of(data);
+    }
+
+    @GetMapping("/app/white/ip")
+    @ApiOperation(value = "根据appId获取secret")
+    public DataResponse<List<WhiteIpResDTO>> getWhiteIp(){
+        return DataResponse.of(appService.listWhiteIp());
     }
 }

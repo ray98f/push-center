@@ -4,6 +4,7 @@ package com.zte.msg.pushcenter.pccore.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageInfo;
 import com.zte.msg.pushcenter.pccore.dto.req.AppListReqDTO;
+import com.zte.msg.pushcenter.pccore.dto.res.WhiteIpResDTO;
 import com.zte.msg.pushcenter.pccore.entity.App;
 
 import java.util.List;
@@ -63,4 +64,16 @@ public interface AppService {
      */
     String getAppName(Long appId);
 
+    /**
+     * 获取白名单ip列表
+     * @return
+     */
+    List<WhiteIpResDTO> listWhiteIp();
+
+    /**
+     * 获取白名单ip
+     * @param appId
+     * @return
+     */
+    List<String> selectWhiteIp(Long appId);
 }

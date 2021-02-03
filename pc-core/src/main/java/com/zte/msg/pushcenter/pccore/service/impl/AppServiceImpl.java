@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageHelper;
 import com.zte.msg.pushcenter.pccore.dto.PageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.AppListReqDTO;
+import com.zte.msg.pushcenter.pccore.dto.res.WhiteIpResDTO;
 import com.zte.msg.pushcenter.pccore.entity.App;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.mapper.AppMapper;
+import com.zte.msg.pushcenter.pccore.mapper.WhiteIpMapper;
 import com.zte.msg.pushcenter.pccore.service.AppService;
 import com.zte.msg.pushcenter.pccore.utils.Constants;
 import com.zte.msg.pushcenter.pccore.utils.TokenUtil;
@@ -33,6 +35,9 @@ public class AppServiceImpl implements AppService {
 
     @Autowired
     private AppMapper appMapper;
+
+    @Autowired
+    private WhiteIpMapper whiteIpMapper;
 
     @Override
     public List<App> listAllApp() {
@@ -120,4 +125,28 @@ public class AppServiceImpl implements AppService {
         return appMapper.selectAppName(appId);
     }
 
+    /**
+     * 获取白名单ip列表
+     *
+     * @return
+     */
+    @Override
+    public List<WhiteIpResDTO> listWhiteIp() {
+        List<WhiteIpResDTO> whiteIpResDTOList = whiteIpMapper.listAppId();
+        for (WhiteIpResDTO whiteIpResDTO : Objects.requireNonNull(whiteIpResDTOList)) {
+            List<String> ips = whiteIpMapper.selectWhiteIp(whiteIpResDTO.getAppId());
+            whiteIpResDTO.setIp(ips);
+        }
+        return whiteIpResDTOList;
+    }
+
+    /**
+     * 获取白名单ip
+     * @param appId
+     * @return
+     */
+    @Override
+    public List<String> selectWhiteIp(Long appId){
+        return whiteIpMapper.selectWhiteIp(appId);
+    }
 }
