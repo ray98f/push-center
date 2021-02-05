@@ -1,8 +1,12 @@
 package com.zte.msg.pushcenter.pccore.mapper;
 
+import com.zte.msg.pushcenter.pccore.dto.res.AppPushDataScreenResDTO;
+import com.zte.msg.pushcenter.pccore.dto.res.PushFailedStatisticsScreenResDTO;
+import com.zte.msg.pushcenter.pccore.dto.res.PushSuccessDataScreenResDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -15,5 +19,29 @@ import java.util.List;
 @Mapper
 @Repository
 public interface ScreenMapper {
+
+    /**
+     * 应用推送信息数据
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    List<AppPushDataScreenResDTO> appPushInfoData(Timestamp startTime, Timestamp endTime);
+
+    /**
+     * 信息推送成功数据
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    List<PushSuccessDataScreenResDTO> pushInfoSuccessData(Timestamp startTime, Timestamp endTime);
+
+    /**
+     * 信息推送失败统计
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    List<PushFailedStatisticsScreenResDTO> pushInfoFailedStatistics(Timestamp startTime, Timestamp endTime);
 
 }
