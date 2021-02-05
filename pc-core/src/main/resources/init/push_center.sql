@@ -24,11 +24,11 @@ FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `app`;
 CREATE TABLE `app`
 (
-    `id`         bigint(20) NOT NULL AUTO_INCREMENT COMMENT '服务ID',
+    `id`         bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '服务ID',
     `app_name`   varchar(45) CHARACTER SET utf8 COLLATE utf8_bin        NOT NULL COMMENT '服务名',
     `app_key`    varchar(40) CHARACTER SET utf8 COLLATE utf8_bin        NOT NULL COMMENT '服务对应Key',
     `app_secret` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin       NOT NULL COMMENT '服务对应密码',
-    `status`     int(11) NOT NULL DEFAULT 1 COMMENT '状态',
+    `status`     int(11) UNSIGNED NOT NULL DEFAULT 1 COMMENT '状态',
     `created_at` timestamp(0)                                           NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '新增时间',
     `updated_at` timestamp(0)                                           NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP (0) COMMENT '修改时间',
     `created_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '创建人',
@@ -50,17 +50,17 @@ VALUES (1, '告警中心', 'zte1611631143297BJjNA', 'f605974df0cc4635be07ddae886
 DROP TABLE IF EXISTS `app_role`;
 CREATE TABLE `app_role`
 (
-    `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT '服务权限ID',
-    `app_id`          bigint(20) NOT NULL COMMENT '服务ID',
-    `mode_id`         bigint(20) NOT NULL COMMENT '权限ID',
-    `sms_template_id` bigint(20) NULL DEFAULT NULL COMMENT '模板ID',
-    `wechat_id`       bigint(20) NULL DEFAULT NULL COMMENT '公众号id',
-    `status`          int(11) NOT NULL DEFAULT 1 COMMENT '状态（0可用，1不可用）',
+    `id`              bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '服务权限ID',
+    `app_id`          bigint(20) UNSIGNED NOT NULL COMMENT '服务ID',
+    `mode_id`         bigint(20) UNSIGNED NOT NULL COMMENT '权限ID',
+    `sms_template_id` bigint(20) UNSIGNED NULL DEFAULT NULL COMMENT '模板ID',
+    `wechat_id`       bigint(20) UNSIGNED NULL DEFAULT NULL COMMENT '公众号id',
+    `status`          int(11) UNSIGNED NOT NULL DEFAULT 1 COMMENT '状态（0可用，1不可用）',
     `created_at`      timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '新增时间',
     `updated_at`      timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP (0) COMMENT '修改时间',
     `created_by`      varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建人',
     `updated_by`      varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '更新人',
-    `is_deleted`      tinyint(1) NOT NULL DEFAULT 0 COMMENT '删除标志',
+    `is_deleted`      tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除标志',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '服务对应的推送权限表' ROW_FORMAT = Dynamic;
 
@@ -70,19 +70,19 @@ CREATE TABLE `app_role`
 DROP TABLE IF EXISTS `application_info`;
 CREATE TABLE `application_info`
 (
-    `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
-    `app_id`          bigint(20) NOT NULL COMMENT 'appid',
+    `id`              bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `app_id`          bigint(20) UNSIGNED NOT NULL COMMENT 'appid',
     `message_id`      varchar(32) COLLATE utf8_bin NOT NULL COMMENT 'message的uuid',
     `app_name`        varchar(45) COLLATE utf8_bin          DEFAULT NULL COMMENT 'app名称',
-    `target_platform` tinyint(2) DEFAULT NULL COMMENT '目标平台，1-android，2-ios，3-all',
+    `target_platform` tinyint(2) UNSIGNED DEFAULT NULL COMMENT '目标平台，1-android，2-ios，3-all',
     `audience`        varchar(45) COLLATE utf8_bin NOT NULL COMMENT '推送目标',
     `title`           varchar(45) COLLATE utf8_bin          DEFAULT NULL COMMENT '标题',
     `content`         varchar(500) COLLATE utf8_bin         DEFAULT NULL COMMENT '内容',
     `transmit_time`   timestamp                    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '发送时间 ',
     `provider_name`   varchar(20) COLLATE utf8_bin NOT NULL COMMENT '推送平台',
     `delay`           int(10) unsigned NOT NULL COMMENT '延迟',
-    `result`          int(11) NOT NULL DEFAULT '0' COMMENT '发送结果',
-    `fail_code`       int(11) DEFAULT NULL COMMENT '结果时间',
+    `result`          int(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '发送结果',
+    `fail_code`       int(11) UNSIGNED DEFAULT NULL COMMENT '结果时间',
     `fail_reason`     varchar(255) COLLATE utf8_bin         DEFAULT NULL COMMENT '失败原因',
     `created_at`      timestamp                    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
     `updated_at`      timestamp                    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -128,7 +128,7 @@ CREATE TABLE `dic_data`
     `key`         smallint(5) NOT NULL COMMENT '字典键值',
     `value`       varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '字典标签',
     `type`        varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '类型',
-    `order`       tinyint(3) NULL DEFAULT NULL COMMENT '字典排序',
+    `order`       tinyint(3) UNSIGNED NULL DEFAULT NULL COMMENT '字典排序',
     `description` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
     `is_enable`   tinyint(1) UNSIGNED NOT NULL COMMENT '状态：0-停用，1-启用',
     `created_at`  timestamp(0)                                           NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -157,20 +157,20 @@ VALUES (4, 4, '微信', 'push_method', 4, '', 1, '2021-01-26 11:22:40', '2021-01
 DROP TABLE IF EXISTS `early_warn_config`;
 CREATE TABLE `early_warn_config`
 (
-    `id`                 bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
-    `alarm_cycle`        bigint(20) NOT NULL COMMENT '周期',
-    `threshold`          bigint(20) NOT NULL COMMENT '阈值',
-    `alarm_interval`     bigint(20) NOT NULL COMMENT '报警间隔',
+    `id`                 bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `alarm_cycle`        bigint(20) UNSIGNED NOT NULL COMMENT '周期',
+    `threshold`          bigint(20) UNSIGNED NOT NULL COMMENT '阈值',
+    `alarm_interval`     bigint(20) UNSIGNED NOT NULL COMMENT '报警间隔',
     `user_ids`           varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '处置人员，user表主键逗号拼接',
-    `sms_template_id`    bigint(20) NOT NULL COMMENT '短信模板id',
+    `sms_template_id`    bigint(20) UNSIGNED NOT NULL COMMENT '短信模板id',
     `mail_title`         varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '邮件标题',
     `mail_body`          text CHARACTER SET utf8 COLLATE utf8_bin NULL COMMENT '邮件内容',
-    `mail_provider_id`   bigint(20) NULL DEFAULT NULL COMMENT '邮箱，消息平台id',
+    `mail_provider_id`   bigint(20) UNSIGNED NULL DEFAULT NULL COMMENT '邮箱，消息平台id',
     `open_ids`           varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '目标微信id，逗号拼接',
-    `wechat_provider_id` bigint(20) NULL DEFAULT NULL COMMENT '公众号，消息平台id',
-    `wechat_template_id` bigint(20) NULL DEFAULT NULL COMMENT '公众号模板',
+    `wechat_provider_id` bigint(20) UNSIGNED NULL DEFAULT NULL COMMENT '公众号，消息平台id',
+    `wechat_template_id` bigint(20) UNSIGNED NULL DEFAULT NULL COMMENT '公众号模板',
     `wechat_data`        varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '公众号内容',
-    `app_id`             bigint(20) NOT NULL COMMENT 'appId',
+    `app_id`             bigint(20) UNSIGNED NOT NULL COMMENT 'appId',
     `created_at`         timestamp(0)                                     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '新增时间',
     `updated_at`         timestamp(0)                                     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP (0) COMMENT '修改时间',
     `created_by`         varchar(32) CHARACTER SET utf8 COLLATE utf8_bin  NOT NULL COMMENT '创建人',
@@ -185,7 +185,7 @@ CREATE TABLE `early_warn_config`
 DROP TABLE IF EXISTS `early_warn_info`;
 CREATE TABLE `early_warn_info`
 (
-    `id`         bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `id`         bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键id',
     `time`       timestamp                    NOT NULL COMMENT '预警时间',
     `reason`     varchar(45) COLLATE utf8_bin          DEFAULT NULL COMMENT '预警原因',
     `content`    text COLLATE utf8_bin COMMENT '预警内容',
@@ -204,8 +204,8 @@ CREATE TABLE `early_warn_info`
 DROP TABLE IF EXISTS `mail_info`;
 CREATE TABLE `mail_info`
 (
-    `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
-    `app_id`          bigint(20) NOT NULL COMMENT '服务ID',
+    `id`              bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `app_id`          bigint(20) UNSIGNED NOT NULL COMMENT '服务ID',
     `app_name`        varchar(45) CHARACTER SET utf8 COLLATE utf8_bin        NOT NULL COMMENT '服务名称',
     `message_id`      varchar(32) CHARACTER SET utf8 COLLATE utf8_bin        NOT NULL COMMENT 'messageId',
     `receive_address` text CHARACTER SET utf8 COLLATE utf8_bin NULL COMMENT '收件地址',
@@ -214,10 +214,10 @@ CREATE TABLE `mail_info`
     `mail_body`       text CHARACTER SET utf8 COLLATE utf8_bin NULL COMMENT '邮件正文',
     `provider_name`   varchar(20) CHARACTER SET utf8 COLLATE utf8_bin        NOT NULL COMMENT '短信平台',
     `transmit_time`   timestamp(0) NULL DEFAULT NULL COMMENT '发送时间',
-    `result`          int(11) NOT NULL DEFAULT 0 COMMENT '发送结果（0成功，1失败）',
-    `fail_code`       int(11) NULL DEFAULT NULL COMMENT '失败code',
+    `result`          int(11) UNSIGNED NOT NULL DEFAULT 0 COMMENT '发送结果（0成功，1失败）',
+    `fail_code`       int(11) UNSIGNED NULL DEFAULT NULL COMMENT '失败code',
     `fail_reason`     varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '失败原因',
-    `delay`           int(10) NULL DEFAULT NULL COMMENT '延迟',
+    `delay`           int(10) UNSIGNED NULL DEFAULT NULL COMMENT '延迟',
     `created_at`      timestamp(0)                                           NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '新增时间',
     `updated_at`      timestamp(0)                                           NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP (0) COMMENT '修改时间',
     `created_by`      varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '创建人',
@@ -232,20 +232,20 @@ CREATE TABLE `mail_info`
 DROP TABLE IF EXISTS `menu`;
 CREATE TABLE `menu`
 (
-    `id`             bigint(20) NOT NULL AUTO_INCREMENT COMMENT '菜单管理id',
-    `is_catalog`     tinyint(4) NULL DEFAULT 1 COMMENT '是否为目录',
-    `catalog_id`     bigint(20) NULL DEFAULT NULL COMMENT '目录id',
-    `is_menu`        tinyint(4) NULL DEFAULT 1 COMMENT '是否为菜单',
-    `menu_id`        bigint(20) NULL DEFAULT NULL COMMENT '菜单id',
+    `id`             bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '菜单管理id',
+    `is_catalog`     tinyint(4) UNSIGNED NULL DEFAULT 1 COMMENT '是否为目录',
+    `catalog_id`     bigint(20) UNSIGNED NULL DEFAULT NULL COMMENT '目录id',
+    `is_menu`        tinyint(4) UNSIGNED NULL DEFAULT 1 COMMENT '是否为菜单',
+    `menu_id`        bigint(20) UNSIGNED NULL DEFAULT NULL COMMENT '菜单id',
     `menu_name`      varchar(45) CHARACTER SET utf8 COLLATE utf8_bin        NOT NULL COMMENT '名称',
-    `menu_type`      tinyint(4) NULL DEFAULT NULL COMMENT '类型',
+    `menu_type`      tinyint(4) UNSIGNED NULL DEFAULT NULL COMMENT '类型',
     `menu_icon`      varchar(45) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '图标',
     `menu_sort`      varchar(45) CHARACTER SET utf8 COLLATE utf8_bin        NOT NULL COMMENT '排序',
     `menu_url`       varchar(45) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '路由地址',
     `role_identify`  varchar(45) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '权限标识',
     `component_path` varchar(45) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '组件路径',
-    `is_use`         tinyint(4) NULL DEFAULT 0 COMMENT '是否使用',
-    `is_show`        tinyint(4) NULL DEFAULT 0 COMMENT '是否显示',
+    `is_use`         tinyint(4) UNSIGNED NULL DEFAULT 0 COMMENT '是否使用',
+    `is_show`        tinyint(4) UNSIGNED NULL DEFAULT 0 COMMENT '是否显示',
     `created_at`     timestamp(0)                                           NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP (0) COMMENT '新增时间',
     `updated_at`     timestamp(0)                                           NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP (0) COMMENT '修改时间',
     `created_by`     varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '创建人',
@@ -1269,9 +1269,9 @@ VALUES ('a', 20319);
 DROP TABLE IF EXISTS `provider`;
 CREATE TABLE `provider`
 (
-    `id`             int(11) NOT NULL AUTO_INCREMENT,
+    `id`             bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'id',
     `provider_name`  varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '第三方服务商名',
-    `type`           int(11) NULL DEFAULT NULL COMMENT '第三方服务商类型：1-短信，2-邮件，3-App，4-微信',
+    `type`           int(11) UNSIGNED NULL DEFAULT NULL COMMENT '第三方服务商类型：1-短信，2-邮件，3-App，4-微信',
     `script_context` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '脚本内容',
     `script_tag`     varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '脚本唯一标识',
     `config`         text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '配置信息json字符串',
@@ -1310,11 +1310,11 @@ CREATE TABLE `provider_sms_template`
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role`
 (
-    `id`         bigint(20) NOT NULL AUTO_INCREMENT COMMENT '角色id',
+    `id`         bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '角色id',
     `role_name`  varchar(45) CHARACTER SET utf8 COLLATE utf8_bin        NOT NULL COMMENT '角色名',
     `role_str`   varchar(45) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '权限字符',
-    `role_sort`  int(11) NULL DEFAULT NULL COMMENT '角色排序',
-    `status`     tinyint(4) NULL DEFAULT 0 COMMENT '状态',
+    `role_sort`  int(11) UNSIGNED NULL DEFAULT NULL COMMENT '角色排序',
+    `status`     tinyint(4) UNSIGNED NULL DEFAULT 0 COMMENT '状态',
     `remark`     varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '备注',
     `created_at` timestamp(0)                                           NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP (0) COMMENT '新增时间',
     `updated_at` timestamp(0)                                           NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP (0) COMMENT '修改时间',
@@ -1336,9 +1336,9 @@ VALUES (1, '超级管理员', 'admin', 1, 0, NULL, '2021-01-25 17:03:02', '2021-
 DROP TABLE IF EXISTS `role_menu`;
 CREATE TABLE `role_menu`
 (
-    `id`         bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
-    `role_id`    varchar(45) CHARACTER SET utf8 COLLATE utf8_bin        NOT NULL COMMENT '角色id',
-    `menu_id`    bigint(20) NOT NULL COMMENT '菜单权限id',
+    `id`         bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `role_id`    bigint(20) UNSIGNED NOT NULL COMMENT '角色id',
+    `menu_id`    bigint(20) UNSIGNED NOT NULL COMMENT '菜单权限id',
     `created_at` timestamp(0)                                           NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP (0) COMMENT '新增时间',
     `updated_at` timestamp(0)                                           NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP (0) COMMENT '修改时间',
     `created_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '创建人',
@@ -1487,7 +1487,7 @@ VALUES (73, '1', 33, '2021-01-26 07:40:50', '2021-01-26 07:40:50', 'admin', 'adm
 DROP TABLE IF EXISTS `send_mode`;
 CREATE TABLE `send_mode`
 (
-    `id`         bigint(20) NOT NULL AUTO_INCREMENT COMMENT '权限ID',
+    `id`         bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '权限ID',
     `mode_name`  varchar(45) CHARACTER SET utf8 COLLATE utf8_bin        NOT NULL COMMENT '权限名称',
     `created_at` timestamp(0)                                           NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` timestamp(0)                                           NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP (0),
@@ -1517,15 +1517,15 @@ CREATE TABLE `sms_info`
 (
     `id`            bigint(20) unsigned NOT NULL AUTO_INCREMENT,
     `message_id`    varchar(32)  NOT NULL COMMENT '消息uuid',
-    `app_id`        bigint(20) NOT NULL COMMENT 'appid',
+    `app_id`        bigint(20) UNSIGNED NOT NULL COMMENT 'appid',
     `app_name`      varchar(45)           DEFAULT NULL COMMENT 'app名称',
     `phone_num`     char(11)     NOT NULL COMMENT '接收人号码',
     `transmit_time` timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '发送时间 ',
     `content`       varchar(500) NOT NULL COMMENT '短信内容',
     `provider_name` varchar(20)  NOT NULL COMMENT '短信平台',
-    `template_id`   bigint(20) NOT NULL COMMENT '模版id',
-    `result`        int(11) NOT NULL DEFAULT '0' COMMENT '发送结果',
-    `fail_code`     int(11) DEFAULT NULL COMMENT '消息平台失败errorCode',
+    `template_id`   bigint(20) UNSIGNED NOT NULL COMMENT '模版id',
+    `result`        int(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '发送结果',
+    `fail_code`     int(11) UNSIGNED DEFAULT NULL COMMENT '消息平台失败errorCode',
     `fail_reason`   varchar(255)          DEFAULT NULL COMMENT '失败原因',
     `result_time`   timestamp NULL DEFAULT NULL COMMENT '接收到回调的时间',
     `delay`         int(10) unsigned NOT NULL COMMENT '延迟',
@@ -1562,10 +1562,10 @@ CREATE TABLE `sms_template`
 DROP TABLE IF EXISTS `sms_template_relation`;
 CREATE TABLE `sms_template_relation`
 (
-    `id`                   bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `sms_template_id`      bigint(20) NOT NULL COMMENT '短信模板编号',
-    `provider_template_id` bigint(20) NOT NULL COMMENT '平台模板编号',
-    `priority`             int(11) NOT NULL COMMENT '优先级 值越大 优先级越高',
+    `id`                   bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `sms_template_id`      bigint(20) UNSIGNED NOT NULL COMMENT '短信模板编号',
+    `provider_template_id` bigint(20) UNSIGNED NOT NULL COMMENT '平台模板编号',
+    `priority`             int(11) UNSIGNED NOT NULL COMMENT '优先级 值越大 优先级越高',
     `created_by`           varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '创建人',
     `created_at`           timestamp(0)                                           NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `updated_by`           varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '更新人',
@@ -1580,14 +1580,14 @@ CREATE TABLE `sms_template_relation`
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`
 (
-    `id`             bigint(20) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+    `id`             bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '用户ID',
     `user_name`      varchar(45) CHARACTER SET utf8 COLLATE utf8_bin        NOT NULL COMMENT '用户名',
     `user_real_name` varchar(45) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '用户真实姓名',
     `password`       text CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '密码（加密）',
     `phone`          char(11) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '手机号',
     `mail`           varchar(45) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '邮箱',
-    `status`         int(11) NULL DEFAULT 0 COMMENT '状态',
-    `role_id`        bigint(20) NULL DEFAULT NULL COMMENT '用户角色',
+    `status`         int(11) UNSIGNED NULL DEFAULT 0 COMMENT '状态',
+    `role_id`        bigint(20) UNSIGNED NULL DEFAULT NULL COMMENT '用户角色',
     `remark`         varchar(80) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '备注',
     `created_at`     timestamp(0)                                           NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP (0) COMMENT '新增时间',
     `updated_at`     timestamp(0)                                           NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP (0) COMMENT '修改时间',
@@ -1610,9 +1610,9 @@ VALUES (1, 'admin', 'admin', 'xF0EJZJQ/2fzjYIlfwOG5w==', NULL, NULL, 0, 1, NULL,
 DROP TABLE IF EXISTS `user_role`;
 CREATE TABLE `user_role`
 (
-    `id`         bigint(20) NOT NULL AUTO_INCREMENT,
-    `user_id`    bigint(20) NOT NULL,
-    `role_id`    bigint(20) NOT NULL,
+    `id`         bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `user_id`    bigint(20) UNSIGNED NOT NULL,
+    `role_id`    bigint(20) UNSIGNED NOT NULL,
     `created_at` timestamp(0)                                           NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP (0) COMMENT '新增时间',
     `updated_at` timestamp(0)                                           NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP (0) COMMENT '修改时间',
     `created_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '创建人',
@@ -1627,9 +1627,9 @@ CREATE TABLE `user_role`
 DROP TABLE IF EXISTS `wechat_access_token`;
 CREATE TABLE `wechat_access_token`
 (
-    `id`           bigint(20) NOT NULL AUTO_INCREMENT,
+    `id`           bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
     `app_id`       varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci  NOT NULL COMMENT '微信公众号id',
-    `expire`       bigint(20) NOT NULL COMMENT '过期时间',
+    `expire`       bigint(20) UNSIGNED NOT NULL COMMENT '过期时间',
     `access_token` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'token',
     `created_at`   timestamp(0)                                             NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at`   timestamp(0)                                             NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP (0),
@@ -1645,21 +1645,21 @@ CREATE TABLE `wechat_access_token`
 DROP TABLE IF EXISTS `wechat_info`;
 CREATE TABLE `wechat_info`
 (
-    `id`            bigint(20) NOT NULL AUTO_INCREMENT,
+    `id`            bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
     `message_id`    varchar(32) COLLATE utf8_bin NOT NULL,
-    `app_id`        bigint(20) NOT NULL COMMENT 'appid',
+    `app_id`        bigint(20) UNSIGNED NOT NULL COMMENT 'appid',
     `app_name`      varchar(45) COLLATE utf8_bin          DEFAULT NULL COMMENT 'app名称',
     `wechat_name`   varchar(45) COLLATE utf8_bin NOT NULL,
     `open_id`       varchar(45) COLLATE utf8_bin          DEFAULT NULL,
-    `template_id`   bigint(20) NOT NULL COMMENT '模版id',
+    `template_id`   bigint(20) UNSIGNED NOT NULL COMMENT '模版id',
     `template_data` varchar(3000) COLLATE utf8_bin        DEFAULT NULL,
     `skip_url`      varchar(45) COLLATE utf8_bin          DEFAULT NULL,
     `applet_data`   varchar(45) COLLATE utf8_bin          DEFAULT NULL,
     `transmit_time` timestamp                    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '发送时间 ',
-    `result`        int(11) NOT NULL DEFAULT '0' COMMENT '发送结果',
-    `fail_code`     int(11) DEFAULT NULL COMMENT '结果时间',
+    `result`        int(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '发送结果',
+    `fail_code`     int(11) UNSIGNED DEFAULT NULL COMMENT '结果时间',
     `fail_reason`   varchar(255) COLLATE utf8_bin         DEFAULT NULL COMMENT '失败原因',
-    `delay`         int(10) DEFAULT NULL COMMENT '延迟',
+    `delay`         int(10) UNSIGNED DEFAULT NULL COMMENT '延迟',
     `created_at`    timestamp                    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at`    timestamp                    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `created_by`    varchar(32) COLLATE utf8_bin NOT NULL COMMENT '创建人',
@@ -1675,13 +1675,13 @@ CREATE TABLE `wechat_info`
 DROP TABLE IF EXISTS `wechat_template`;
 CREATE TABLE `wechat_template`
 (
-    `id`                 bigint(20) NOT NULL AUTO_INCREMENT,
-    `provider_id`        bigint(20) NOT NULL COMMENT '消息平台id',
+    `id`                 bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `provider_id`        bigint(20) UNSIGNED NOT NULL COMMENT '消息平台id',
     `provider_name`      varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
     `wechat_template_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '公众号模板ID',
     `title`              varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '标题',
     `content`            text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '内容',
-    `status`             int(2) NOT NULL COMMENT '启用状态',
+    `status`             int(2) UNSIGNED NOT NULL COMMENT '启用状态',
     `created_at`         timestamp(0)                                            NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at`         timestamp(0)                                            NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP (0),
     `created_by`         varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci  NOT NULL COMMENT '创建人',
