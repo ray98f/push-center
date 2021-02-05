@@ -13,7 +13,6 @@ import java.util.Date;
 public class DateUtils {
 
 
-
     public static String formatDate(Date date) {
 
         return org.apache.http.client.utils.DateUtils.formatDate(date, Constants.DATE_FORMAT_PATTERN);
@@ -24,4 +23,15 @@ public class DateUtils {
         return new Timestamp(mill - mill % Constants.DAY_MILL);
     }
 
+    public static Timestamp sevenDayBefore(long mill) {
+        return new Timestamp(mill - mill % Constants.DAY_MILL + Constants.DAY_MILL * 7);
+    }
+
+    public static Timestamp now() {
+        return now(System.currentTimeMillis());
+    }
+
+    public static Timestamp now(long mill) {
+        return new Timestamp(mill);
+    }
 }
