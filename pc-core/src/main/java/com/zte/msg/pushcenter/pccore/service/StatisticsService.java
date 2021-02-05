@@ -4,10 +4,8 @@ import com.zte.msg.pushcenter.pccore.dto.req.ConditionStatisticsReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.StatisticsReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.AppStatisticsResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.ProviderStatisticsResDTO;
-import com.zte.msg.pushcenter.pccore.dto.res.ScreenLeftTopResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.TypeStatisticsResDTO;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -43,6 +41,5 @@ public interface StatisticsService {
      */
     List<ProviderStatisticsResDTO> statisticsPlatform(StatisticsReqDTO statisticsReqDTO);
 
-    ScreenLeftTopResDTO getLeftTop(Timestamp start, Timestamp end);
 
 }

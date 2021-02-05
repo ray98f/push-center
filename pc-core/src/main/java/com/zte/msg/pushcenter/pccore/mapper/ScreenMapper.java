@@ -1,11 +1,14 @@
 package com.zte.msg.pushcenter.pccore.mapper;
 
+import com.zte.msg.pushcenter.pccore.dto.res.ScreenLeftTopResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.AppPushDataScreenResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.PushFailedStatisticsScreenResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.PushSuccessDataScreenResDTO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -20,6 +23,8 @@ import java.util.List;
 @Repository
 public interface ScreenMapper {
 
+    @Select("")
+    ScreenLeftTopResDTO getPushCount(Timestamp start, Timestamp end);
     /**
      * 应用推送信息数据
      * @param startTime

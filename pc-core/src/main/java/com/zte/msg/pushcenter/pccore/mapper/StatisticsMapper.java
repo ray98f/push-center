@@ -1,11 +1,9 @@
 package com.zte.msg.pushcenter.pccore.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zte.msg.pushcenter.pccore.dto.req.ConditionStatisticsReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.StatisticsReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.AppStatisticsResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.ProviderStatisticsResDTO;
-import com.zte.msg.pushcenter.pccore.dto.res.StatisticsResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.TypeStatisticsResDTO;
 import com.zte.msg.pushcenter.pccore.entity.App;
 import org.apache.ibatis.annotations.Mapper;
@@ -22,10 +20,11 @@ import java.util.List;
  */
 @Mapper
 @Repository
-public interface StatisticsMapper extends BaseMapper<StatisticsResDTO> {
+public interface StatisticsMapper {
 
     /**
      * 分类统计
+     *
      * @param typeArray
      * @param statisticsReqDTO
      * @return
@@ -34,6 +33,7 @@ public interface StatisticsMapper extends BaseMapper<StatisticsResDTO> {
 
     /**
      * 应用统计、条件统计搜索
+     *
      * @param appList
      * @param conditionStatisticsReqDTO
      * @return
@@ -42,8 +42,11 @@ public interface StatisticsMapper extends BaseMapper<StatisticsResDTO> {
 
     /**
      * 消息平台统计搜索
+     *
      * @param statisticsReqDTO
      * @return
      */
     List<ProviderStatisticsResDTO> statisticsPlatform(StatisticsReqDTO statisticsReqDTO);
+
+
 }

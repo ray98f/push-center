@@ -3,8 +3,8 @@ package com.zte.msg.pushcenter.pccore.service;
 import com.zte.msg.pushcenter.pccore.dto.res.AppPushDataScreenResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.PushFailedStatisticsScreenResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.PushSuccessDataScreenResDTO;
+import com.zte.msg.pushcenter.pccore.dto.res.ScreenLeftTopResDTO;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -15,6 +15,8 @@ import java.util.List;
  * @date 2020/12/23 15:42
  */
 public interface ScreenService {
+
+    ScreenLeftTopResDTO getLeftTop(long now);
 
     /**
      * 应用推送信息数据
