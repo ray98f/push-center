@@ -11,7 +11,7 @@ import com.zte.msg.pushcenter.pccore.dto.res.DicDataResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.DicResDTO;
 import com.zte.msg.pushcenter.pccore.service.DicDataService;
 import com.zte.msg.pushcenter.pccore.service.DicService;
-import com.zte.msg.pushcenter.pccore.utils.PermissionCheck;
+import com.zte.msg.pushcenter.pccore.annotation.PermissionCheck;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

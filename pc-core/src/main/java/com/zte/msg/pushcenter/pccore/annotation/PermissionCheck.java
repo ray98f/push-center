@@ -1,4 +1,4 @@
-package com.zte.msg.pushcenter.pccore.utils;
+package com.zte.msg.pushcenter.pccore.annotation;
 
 import java.lang.annotation.*;
 

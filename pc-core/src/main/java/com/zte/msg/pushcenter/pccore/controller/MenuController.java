@@ -6,7 +6,7 @@ import com.zte.msg.pushcenter.pccore.dto.res.MenuResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.SuperMenuResDTO;
 import com.zte.msg.pushcenter.pccore.entity.Menu;
 import com.zte.msg.pushcenter.pccore.service.MenuService;
-import com.zte.msg.pushcenter.pccore.utils.PermissionCheck;
+import com.zte.msg.pushcenter.pccore.annotation.PermissionCheck;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;

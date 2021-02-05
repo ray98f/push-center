@@ -9,7 +9,7 @@ import com.zte.msg.pushcenter.pccore.dto.res.SmsTemplateDetailResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.WeChatTemplateResDTO;
 import com.zte.msg.pushcenter.pccore.service.ProviderSmsTemplateService;
 import com.zte.msg.pushcenter.pccore.service.TemplateService;
-import com.zte.msg.pushcenter.pccore.utils.PermissionCheck;
+import com.zte.msg.pushcenter.pccore.annotation.PermissionCheck;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

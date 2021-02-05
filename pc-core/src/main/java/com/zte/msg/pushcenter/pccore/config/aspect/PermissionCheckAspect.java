@@ -1,7 +1,7 @@
 package com.zte.msg.pushcenter.pccore.config.aspect;
 
 import com.zte.msg.pushcenter.pccore.mapper.RoleMapper;
-import com.zte.msg.pushcenter.pccore.utils.PermissionCheck;
+import com.zte.msg.pushcenter.pccore.annotation.PermissionCheck;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;

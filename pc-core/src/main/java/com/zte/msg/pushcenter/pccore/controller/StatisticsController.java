@@ -7,7 +7,7 @@ import com.zte.msg.pushcenter.pccore.dto.res.AppStatisticsResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.ProviderStatisticsResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.TypeStatisticsResDTO;
 import com.zte.msg.pushcenter.pccore.service.StatisticsService;
-import com.zte.msg.pushcenter.pccore.utils.PermissionCheck;
+import com.zte.msg.pushcenter.pccore.annotation.PermissionCheck;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
