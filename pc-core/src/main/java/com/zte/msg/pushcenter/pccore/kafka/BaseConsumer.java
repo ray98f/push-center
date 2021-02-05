@@ -1,18 +1,18 @@
 package com.zte.msg.pushcenter.pccore.kafka;
 
-import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.event.ConsumerStoppedEvent;
 import org.springframework.kafka.support.Acknowledgment;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.annotation.Resource;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * description:
@@ -24,31 +24,11 @@ import java.util.concurrent.*;
 @Slf4j
 public abstract class BaseConsumer implements ApplicationListener<ConsumerStoppedEvent> {
 
-    @Getter
-    @Setter
-    @Value("${spring.kafka.consumer.thread.min}")
-    private int consumerThreadMin;
 
-    @Getter
-    @Setter
-    @Value("${spring.kafka.consumer.thread.max}")
-    private int consumerThreadMax;
-
+    @Resource(name = "kafkaConsumerExecutor")
     private ThreadPoolExecutor consumeExecutor;
 
     private volatile boolean isClosePoolExecutor = false;
-
-    @SuppressWarnings("AlibabaThreadShouldSetName")
-    @PostConstruct
-    public void init() {
-
-        this.consumeExecutor = new ThreadPoolExecutor(
-                getConsumerThreadMin(),
-                getConsumerThreadMax(),
-                1000 * 60,
-                TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<>());
-    }
 
     /**
      * 收到spring-kafka 关闭Consumer的通知

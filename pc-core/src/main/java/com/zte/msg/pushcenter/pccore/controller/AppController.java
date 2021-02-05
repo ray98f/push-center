@@ -8,7 +8,7 @@ import com.zte.msg.pushcenter.pccore.dto.res.WhiteIpResDTO;
 import com.zte.msg.pushcenter.pccore.entity.App;
 import com.zte.msg.pushcenter.pccore.service.AppService;
 import com.zte.msg.pushcenter.pccore.service.SecretService;
-import com.zte.msg.pushcenter.pccore.utils.PermissionCheck;
+import com.zte.msg.pushcenter.pccore.annotation.PermissionCheck;
 import com.zte.msg.pushcenter.pccore.utils.TokenUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,7 +17,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.HashMap;

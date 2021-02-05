@@ -6,7 +6,7 @@ import com.zte.msg.pushcenter.pccore.dto.PageResponse;
 import com.zte.msg.pushcenter.pccore.dto.req.ProviderReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.ProviderResDTO;
 import com.zte.msg.pushcenter.pccore.service.ProviderService;
-import com.zte.msg.pushcenter.pccore.utils.PermissionCheck;
+import com.zte.msg.pushcenter.pccore.annotation.PermissionCheck;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

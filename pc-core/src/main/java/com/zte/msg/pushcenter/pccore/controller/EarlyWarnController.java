@@ -7,7 +7,7 @@ import com.zte.msg.pushcenter.pccore.entity.EarlyWarnConfig;
 import com.zte.msg.pushcenter.pccore.entity.EarlyWarnInfo;
 import com.zte.msg.pushcenter.pccore.service.EarlyWarnInfoService;
 import com.zte.msg.pushcenter.pccore.service.EarlyWarnService;
-import com.zte.msg.pushcenter.pccore.utils.PermissionCheck;
+import com.zte.msg.pushcenter.pccore.annotation.PermissionCheck;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
