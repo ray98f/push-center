@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -68,6 +69,9 @@ public class ScreenServiceImpl implements ScreenService {
     @Override
     public List<PushFailedStatisticsScreenResDTO> pushInfoFailedStatistics() {
         long now = System.currentTimeMillis();
-        return screenMapper.pushInfoFailedStatistics(DateUtils.sevenDayBefore(now), new Timestamp(now));
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+        String startTime = sf.format(DateUtils.sevenDayBefore(now));
+        String endTime = sf.format(new Timestamp(now));
+        return screenMapper.pushInfoFailedStatistics(startTime, endTime);
     }
 }

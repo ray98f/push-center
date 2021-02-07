@@ -47,6 +47,6 @@ public interface ScreenMapper {
      * @param endTime
      * @return
      */
-    List<PushFailedStatisticsScreenResDTO> pushInfoFailedStatistics(Timestamp startTime, Timestamp endTime);
+    List<PushFailedStatisticsScreenResDTO> pushInfoFailedStatistics(String startTime, String endTime);
 
 }
