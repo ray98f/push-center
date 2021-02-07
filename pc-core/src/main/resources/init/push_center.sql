@@ -190,6 +190,7 @@ CREATE TABLE `early_warn_info`
     `reason`     varchar(45) COLLATE utf8_bin          DEFAULT NULL COMMENT '预警原因',
     `content`    text COLLATE utf8_bin COMMENT '预警内容',
     `disposer`   varchar(45) COLLATE utf8_bin          DEFAULT NULL,
+    `is_handle`  tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否处理，0-未处理，1-已处理',
     `created_at` timestamp                    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '新增时间',
     `updated_at` timestamp                    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
     `created_by` varchar(32) COLLATE utf8_bin NOT NULL COMMENT '创建人',
