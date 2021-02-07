@@ -39,21 +39,26 @@ public class ScreenServiceImpl implements ScreenService {
         List<PushDelayResDTO.PushDelay> smsPushDelays = screenMapper.selectSmsPushDelayByFifteenMinute(start, end);
         List<PushDelayResDTO.PushDelay> wechatPushDelays = screenMapper.selectWechatPushDelayByFifteenMinute(start, end);
         List<PushDelayResDTO.PushDelay> mailPushDelays = screenMapper.selectMailPushDelayByFifteenMinute(start, end);
-        appPushDelays.sort(Comparator.comparing(PushDelayResDTO.PushDelay::getTime));
-        smsPushDelays.sort(Comparator.comparing(PushDelayResDTO.PushDelay::getTime));
-        wechatPushDelays.sort(Comparator.comparing(PushDelayResDTO.PushDelay::getTime));
-        mailPushDelays.sort(Comparator.comparing(PushDelayResDTO.PushDelay::getTime));
-        for (int i = 0; i < SEVEN; i++) {
-
-
-        }
-
-
-        pushDelayResDTO.setAppPushDelays(appPushDelays);
-        pushDelayResDTO.setSmsPushDelays(smsPushDelays);
-        pushDelayResDTO.setMailPushDelays(mailPushDelays);
-        pushDelayResDTO.setWechatDelays(wechatPushDelays);
+        pushDelayResDTO.setAppPushDelays(buildPushDelayList(appPushDelays, start));
+        pushDelayResDTO.setSmsPushDelays(buildPushDelayList(smsPushDelays, start));
+        pushDelayResDTO.setMailPushDelays(buildPushDelayList(mailPushDelays, start));
+        pushDelayResDTO.setWechatDelays(buildPushDelayList(wechatPushDelays, start));
         return pushDelayResDTO;
+    }
+
+    private List<PushDelayResDTO.PushDelay> buildPushDelayList(List<PushDelayResDTO.PushDelay> pushDelays, Timestamp start) {
+        Timestamp timestamp = start;
+        pushDelays.sort(Comparator.comparing(PushDelayResDTO.PushDelay::getTime));
+        for (int i = 0; i < SEVEN; i++) {
+            timestamp = new Timestamp(timestamp.getTime() + FIFTEEN_MINUTES_MILL);
+            if (pushDelays.size() <= i || !pushDelays.get(i).getTime().equals(timestamp)) {
+                PushDelayResDTO.PushDelay pushDelay = new PushDelayResDTO.PushDelay();
+                pushDelay.setDelayAvg(0);
+                pushDelay.setTime(timestamp);
+                pushDelays.add(i, pushDelay);
+            }
+        }
+        return pushDelays;
     }
 
     /**

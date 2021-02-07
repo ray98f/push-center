@@ -2,7 +2,6 @@ package com.zte.msg.pushcenter.pccore.utils;
 
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.TimeZone;
 
 /**
  * description:
@@ -13,9 +12,9 @@ import java.util.TimeZone;
  */
 public class DateUtils {
 
-    static {
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC+8"));
-    }
+//    static {
+//        TimeZone.setDefault(TimeZone.getTimeZone("UTC+8"));
+//    }
 
     public static String formatDate(Date date) {
 
@@ -28,9 +27,7 @@ public class DateUtils {
     }
 
     public static Timestamp zeroClockOf(long mill) {
-
-
-        return new Timestamp(mill - mill % Constants.DAY_MILL);
+        return new Timestamp(mill - 8 * 3600 - mill % Constants.DAY_MILL);
     }
 
     public static Timestamp sevenDayBefore(long mill) {
