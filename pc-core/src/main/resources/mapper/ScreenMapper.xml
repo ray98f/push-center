@@ -4,12 +4,12 @@
     <select id="appPushInfoData" resultType="com.zte.msg.pushcenter.pccore.dto.res.AppPushDataScreenResDTO">
         select r.app_name,count(r.app_id) as num from
         (select app_id,app_name,result,delay,transmit_time,is_deleted from sms_info
-         UNION ALL
-         select app_id,app_name,result,delay,transmit_time,is_deleted from application_info
-         UNION ALL
-         select app_id,app_name,result,delay,transmit_time,is_deleted from mail_info
-         UNION ALL
-         select app_id,app_name,result,delay,transmit_time,is_deleted from wechat_info) as r
+        UNION ALL
+        select app_id,app_name,result,delay,transmit_time,is_deleted from application_info
+        UNION ALL
+        select app_id,app_name,result,delay,transmit_time,is_deleted from mail_info
+        UNION ALL
+        select app_id,app_name,result,delay,transmit_time,is_deleted from wechat_info) as r
         where r.is_deleted=0 and r.transmit_time >= #{startTime} and #{endTime} >= r.transmit_time
         group by r.app_id
     </select>
@@ -18,17 +18,18 @@
         select r.type,count(r.id) as total,sum(case when r.result=0 then 1 end) as success_num
         from
         (select '短信推送' as type,id,result,transmit_time,is_deleted from sms_info
-         UNION ALL
-         select 'App推送' as type,id,result,transmit_time,is_deleted from application_info
-         UNION ALL
-         select '邮件推送' as type,id,result,transmit_time,is_deleted from mail_info
-         UNION ALL
-         select '公众号推送' as type,id,result,transmit_time,is_deleted from wechat_info) as r
+        UNION ALL
+        select 'App推送' as type,id,result,transmit_time,is_deleted from application_info
+        UNION ALL
+        select '邮件推送' as type,id,result,transmit_time,is_deleted from mail_info
+        UNION ALL
+        select '公众号推送' as type,id,result,transmit_time,is_deleted from wechat_info) as r
         where r.is_deleted=0 and r.transmit_time >= #{startTime} and #{endTime} >= r.transmit_time
         group by r.type
     </select>
 
-    <select id="pushInfoFailedStatistics" resultType="com.zte.msg.pushcenter.pccore.dto.res.">
+    <select id="pushInfoFailedStatistics"
+            resultType="com.zte.msg.pushcenter.pccore.dto.res.PushFailedStatisticsScreenResDTO">
         select r.transmit_time,count(r.id) as fail_num from
         (SELECT id,result,date(transmit_time) as transmit_time,is_deleted from sms_info
         UNION ALL
@@ -51,7 +52,97 @@
         SELECT null as id,1 as result,date_sub(date(#{endTime}), interval 5 day) as transmit_time,0 as is_deleted
         UNION ALL
         SELECT null as id,1 as result,date_sub(date(#{endTime}), interval 6 day) as transmit_time,0 as is_deleted) as r
-        where r.is_deleted=0 and r.result=1 and r.transmit_time >= date(#{startTime}) and date(#{endTime}) >= r.transmit_time
+        where r.is_deleted=0 and r.result=1 and r.transmit_time >= date(#{startTime}) and date(#{endTime}) >=
+        r.transmit_time
         group by r.transmit_time
+    </select>
+
+    <select id="getPushCount" resultType="com.zte.msg.pushcenter.pccore.dto.res.ScreenLeftTopResDTO">
+        SELECT
+        *
+        FROM
+        ( SELECT COUNT( 0 ) smsDaily FROM sms_info ) a
+        LEFT JOIN ( SELECT COUNT( 0 ) appDaily FROM application_info WHERE transmit_time BETWEEN #{startDaily} AND
+        #{endDaily} ) b ON 1 = 1
+        LEFT JOIN ( SELECT COUNT( 0 ) mailDaily FROM mail_info WHERE transmit_time BETWEEN #{startDaily} AND
+        #{endDaily}) c ON 1 = 1
+        LEFT JOIN ( SELECT COUNT( 0 ) wechatDaily FROM wechat_info WHERE transmit_time BETWEEN #{startDaily} AND
+        #{endDaily}) d ON 1 = 1
+        LEFT JOIN ( SELECT count( 0 ) smsWeekly FROM sms_info WHERE transmit_time BETWEEN #{startWeekly} AND
+        #{endWeekly}) e ON 1 = 1
+        LEFT JOIN ( SELECT COUNT( 0 ) appWeekly FROM application_info WHERE transmit_time BETWEEN #{startWeekly} AND
+        #{endWeekly}) f ON 1 = 1
+        LEFT JOIN ( SELECT count( 0 ) wechatWeekly FROM wechat_info WHERE transmit_time BETWEEN #{startWeekly} AND
+        #{endWeekly}) g ON 1 = 1
+        LEFT JOIN ( SELECT count( 0 ) mailWeekly FROM mail_info WHERE transmit_time BETWEEN #{startWeekly} AND
+        #{endWeekly}) h ON 1 =1
+    </select>
+
+    <select id="selectSmsPushDelayByFifteenMinute"
+            resultType="com.zte.msg.pushcenter.pccore.dto.res.PushDelayResDTO$PushDelay">
+        SELECT
+        AVG( delay ) delayAvg,
+        DATE_FORMAT(
+        concat( date( transmit_time ), ' ', HOUR ( transmit_time ), ':', floor( MINUTE ( transmit_time ) / 15 ) * 15 ),
+        '%Y-%m-%d %H:%i:00'
+        ) AS time
+        FROM
+        sms_info si
+        WHERE transmit_time BETWEEN #{start} AND #{end}
+        GROUP BY
+        DATE( time ),
+        HOUR ( time ),
+        MINUTE ( time )
+    </select>
+
+    <select id="selectMailPushDelayByFifteenMinute"
+            resultType="com.zte.msg.pushcenter.pccore.dto.res.PushDelayResDTO$PushDelay">
+        SELECT
+        AVG( delay ) delayAvg,
+        DATE_FORMAT(
+        concat( date( transmit_time ), ' ', HOUR ( transmit_time ), ':', floor( MINUTE ( transmit_time ) / 15 ) * 15 ),
+        '%Y-%m-%d %H:%i:00'
+        ) AS time
+        FROM
+        mail_info mi
+        WHERE transmit_time BETWEEN #{start} AND #{end}
+        GROUP BY
+        DATE( time ),
+        HOUR ( time ),
+        MINUTE ( time )
+    </select>
+
+    <select id="selectWechatPushDelayByFifteenMinute"
+            resultType="com.zte.msg.pushcenter.pccore.dto.res.PushDelayResDTO$PushDelay">
+        SELECT
+        AVG( delay ) delayAvg,
+        DATE_FORMAT(
+        concat( date( transmit_time ), ' ', HOUR ( transmit_time ), ':', floor( MINUTE ( transmit_time ) / 15 ) * 15 ),
+        '%Y-%m-%d %H:%i:00'
+        ) AS time
+        FROM
+        wechat_info wi
+        WHERE transmit_time BETWEEN #{start} AND #{end}
+        GROUP BY
+        DATE( time ),
+        HOUR ( time ),
+        MINUTE ( time )
+    </select>
+
+    <select id="selectAppPushDelayByFifteenMinute"
+            resultType="com.zte.msg.pushcenter.pccore.dto.res.PushDelayResDTO$PushDelay">
+        SELECT
+        AVG( delay ) delayAvg,
+        DATE_FORMAT(
+        concat( date( transmit_time ), ' ', HOUR ( transmit_time ), ':', floor( MINUTE ( transmit_time ) / 15 ) * 15 ),
+        '%Y-%m-%d %H:%i:00'
+        ) AS time
+        FROM
+        application_info ai
+        WHERE transmit_time BETWEEN #{start} AND #{end}
+        GROUP BY
+        DATE( time ),
+        HOUR ( time ),
+        MINUTE ( time )
     </select>
 </mapper>

@@ -21,6 +21,12 @@ public class DateUtils {
 
         return org.apache.http.client.utils.DateUtils.formatDate(date, Constants.DATE_FORMAT_PATTERN);
     }
+
+    public static Date parseDate(String date) {
+
+        return org.apache.http.client.utils.DateUtils.parseDate(date);
+    }
+
     public static Timestamp zeroClockOf(long mill) {
 
 
@@ -32,10 +38,10 @@ public class DateUtils {
     }
 
     public static Timestamp now() {
-        return now(System.currentTimeMillis());
+        return timestamp(System.currentTimeMillis());
     }
 
-    public static Timestamp now(long mill) {
+    public static Timestamp timestamp(long mill) {
         return new Timestamp(mill);
     }
 

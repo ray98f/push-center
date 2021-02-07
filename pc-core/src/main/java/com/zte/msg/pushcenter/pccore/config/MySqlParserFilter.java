@@ -36,24 +36,24 @@ public class MySqlParserFilter implements ISqlParserFilter {
     @Value("${mybatis-plus.global-config.db-config.logic-delete-field}")
     private String logicDeleteField;
 
-    private static final String WHERE = "where";
+    private static final String WHERE = "WHERE";
 
-    private static final String LIMIT = "limit";
+    private static final String LIMIT = "LIMIT";
 
-    private static final String GROUP_BY = "group by";
+    private static final String GROUP_BY = "GROUP BY";
 
-    private static final String AND = "and";
+    private static final String AND = "AND";
 
     private static final String SPACE = " ";
 
-    private static final String ORDER_BY = "order by";
+    private static final String ORDER_BY = "ORDER BY";
 
     @Override
     public boolean doFilter(MetaObject metaObject) {
         MappedStatement mappedStatement = (MappedStatement) metaObject.getValue("delegate.mappedStatement");
         if (SqlCommandType.SELECT == mappedStatement.getSqlCommandType()) {
             BoundSql boundSql = (BoundSql) metaObject.getValue("delegate.boundSql");
-            String sql = boundSql.getSql().toLowerCase();
+            String sql = boundSql.getSql();
             List<String> tables = new ArrayList<>();
             try {
                 Select select = (Select) CCJSqlParserUtil.parse(sql);
