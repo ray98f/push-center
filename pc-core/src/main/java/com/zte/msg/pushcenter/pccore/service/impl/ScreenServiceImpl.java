@@ -1,10 +1,6 @@
 package com.zte.msg.pushcenter.pccore.service.impl;
 
-import com.baomidou.mybatisplus.extension.api.R;
-import com.zte.msg.pushcenter.pccore.dto.res.AppPushDataScreenResDTO;
-import com.zte.msg.pushcenter.pccore.dto.res.PushFailedStatisticsScreenResDTO;
-import com.zte.msg.pushcenter.pccore.dto.res.PushSuccessDataScreenResDTO;
-import com.zte.msg.pushcenter.pccore.dto.res.ScreenLeftTopResDTO;
+import com.zte.msg.pushcenter.pccore.dto.res.*;
 import com.zte.msg.pushcenter.pccore.mapper.ScreenMapper;
 import com.zte.msg.pushcenter.pccore.service.ScreenService;
 import com.zte.msg.pushcenter.pccore.utils.DateUtils;
@@ -14,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -28,15 +25,49 @@ import java.util.List;
 public class ScreenServiceImpl implements ScreenService {
 
     public static final int SEVEN = 7;
+
+    public static final long FIFTEEN_MINUTES_MILL = 900000;
+
     @Resource
     private ScreenMapper screenMapper;
 
     @Override
+    public PushDelayResDTO getAvgDelayByFifteenMinute(long now) {
+        Timestamp start = DateUtils.timestamp(now - now % FIFTEEN_MINUTES_MILL - SEVEN * FIFTEEN_MINUTES_MILL);
+        Timestamp end = DateUtils.timestamp(now - now % FIFTEEN_MINUTES_MILL);
+        PushDelayResDTO pushDelayResDTO = new PushDelayResDTO();
+        List<PushDelayResDTO.PushDelay> appPushDelays = screenMapper.selectAppPushDelayByFifteenMinute(start, end);
+        List<PushDelayResDTO.PushDelay> smsPushDelays = screenMapper.selectSmsPushDelayByFifteenMinute(start, end);
+        List<PushDelayResDTO.PushDelay> wechatPushDelays = screenMapper.selectWechatPushDelayByFifteenMinute(start, end);
+        List<PushDelayResDTO.PushDelay> mailPushDelays = screenMapper.selectMailPushDelayByFifteenMinute(start, end);
+        appPushDelays.sort(Comparator.comparing(PushDelayResDTO.PushDelay::getTime));
+        smsPushDelays.sort(Comparator.comparing(PushDelayResDTO.PushDelay::getTime));
+        wechatPushDelays.sort(Comparator.comparing(PushDelayResDTO.PushDelay::getTime));
+        mailPushDelays.sort(Comparator.comparing(PushDelayResDTO.PushDelay::getTime));
+        for (int i = 0; i < SEVEN; i++) {
+
+
+        }
+
+
+        pushDelayResDTO.setAppPushDelays(appPushDelays);
+        pushDelayResDTO.setSmsPushDelays(smsPushDelays);
+        pushDelayResDTO.setMailPushDelays(mailPushDelays);
+        pushDelayResDTO.setWechatDelays(wechatPushDelays);
+        return pushDelayResDTO;
+    }
+
+    /**
+     * 分类每日和每周推送数
+     *
+     * @param now
+     * @return
+     */
+    @Override
     public ScreenLeftTopResDTO getLeftTop(long now) {
 
-        screenMapper.getPushCount(DateUtils.zeroClockOf(now), DateUtils.now(now));
-        screenMapper.getPushCount(DateUtils.sevenDayBefore(now), DateUtils.now(now));
-        return null;
+        return screenMapper.getPushCount(DateUtils.zeroClockOf(now), DateUtils.timestamp(now),
+                DateUtils.sevenDayBefore(now), DateUtils.timestamp(now));
     }
 
     /**
