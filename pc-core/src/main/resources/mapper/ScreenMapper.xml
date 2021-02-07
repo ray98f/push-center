@@ -30,13 +30,27 @@
 
     <select id="pushInfoFailedStatistics" resultType="com.zte.msg.pushcenter.pccore.dto.res.">
         select r.transmit_time,count(r.id) as fail_num from
-        (select id,result,date(transmit_time) as transmit_time,is_deleted from sms_info
+        (SELECT id,result,date(transmit_time) as transmit_time,is_deleted from sms_info
         UNION ALL
-        select id,result,date(transmit_time) as transmit_time,is_deleted from application_info
+        SELECT id,result,date(transmit_time) as transmit_time,is_deleted from application_info
         UNION ALL
-        select id,result,date(transmit_time) as transmit_time,is_deleted from mail_info
+        SELECT id,result,date(transmit_time) as transmit_time,is_deleted from mail_info
         UNION ALL
-        select id,result,date(transmit_time) as transmit_time,is_deleted from wechat_info) as r
+        SELECT id,result,date(transmit_time) as transmit_time,is_deleted from wechat_info
+        UNION ALL
+        SELECT null as id,1 as result,date_sub(date(#{endTime}), interval 0 day) as transmit_time,0 as is_deleted
+        UNION ALL
+        SELECT null as id,1 as result,date_sub(date(#{endTime}), interval 1 day) as transmit_time,0 as is_deleted
+        UNION ALL
+        SELECT null as id,1 as result,date_sub(date(#{endTime}), interval 2 day) as transmit_time,0 as is_deleted
+        UNION ALL
+        SELECT null as id,1 as result,date_sub(date(#{endTime}), interval 3 day) as transmit_time,0 as is_deleted
+        UNION ALL
+        SELECT null as id,1 as result,date_sub(date(#{endTime}), interval 4 day) as transmit_time,0 as is_deleted
+        UNION ALL
+        SELECT null as id,1 as result,date_sub(date(#{endTime}), interval 5 day) as transmit_time,0 as is_deleted
+        UNION ALL
+        SELECT null as id,1 as result,date_sub(date(#{endTime}), interval 6 day) as transmit_time,0 as is_deleted) as r
         where r.is_deleted=0 and r.result=1 and r.transmit_time >= date(#{startTime}) and date(#{endTime}) >= r.transmit_time
         group by r.transmit_time
     </select>

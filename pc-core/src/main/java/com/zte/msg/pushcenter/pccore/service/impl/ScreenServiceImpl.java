@@ -1,5 +1,6 @@
 package com.zte.msg.pushcenter.pccore.service.impl;
 
+import com.baomidou.mybatisplus.extension.api.R;
 import com.zte.msg.pushcenter.pccore.dto.res.AppPushDataScreenResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.PushFailedStatisticsScreenResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.PushSuccessDataScreenResDTO;
@@ -25,6 +26,7 @@ import java.util.List;
 @Slf4j
 public class ScreenServiceImpl implements ScreenService {
 
+    public static final int SEVEN = 7;
     @Resource
     private ScreenMapper screenMapper;
 
@@ -67,6 +69,5 @@ public class ScreenServiceImpl implements ScreenService {
     public List<PushFailedStatisticsScreenResDTO> pushInfoFailedStatistics() {
         long now = System.currentTimeMillis();
         return screenMapper.pushInfoFailedStatistics(DateUtils.sevenDayBefore(now), new Timestamp(now));
-
     }
 }

@@ -25,4 +25,7 @@ public class EarlyWarnInfo extends BaseEntity{
     @ApiModelProperty(value = "处置人")
     private String disposer;
 
+    @ApiModelProperty(value = "是否处理，0-未处理，1-已处理")
+    private Integer isHandle;
+
 }

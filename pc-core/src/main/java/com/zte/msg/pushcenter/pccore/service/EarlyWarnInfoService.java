@@ -26,4 +26,11 @@ public interface EarlyWarnInfoService extends IService<EarlyWarnInfo> {
      */
     Page<EarlyWarnInfo> getWarnInfoByPage(PageReqDTO pageReqDTO, Timestamp startTime, Timestamp endTime);
 
+    /**
+     * 处理预警信息
+     *
+     * @param id
+     */
+    void handleWarnInfo(Long id);
+
 }

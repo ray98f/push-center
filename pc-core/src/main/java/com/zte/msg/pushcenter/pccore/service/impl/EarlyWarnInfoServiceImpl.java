@@ -33,4 +33,12 @@ public class EarlyWarnInfoServiceImpl extends ServiceImpl<EarlyWarnInfoMapper, E
         earlyWarnInfoPage.getRecords().sort(Comparator.comparing(EarlyWarnInfo::getUpdatedAt).reversed());
         return earlyWarnInfoPage;
     }
+
+    @Override
+    public void handleWarnInfo(Long id) {
+        EarlyWarnInfo earlyWarnInfo = new EarlyWarnInfo();
+        earlyWarnInfo.setIsHandle(1);
+        earlyWarnInfo.setId(id);
+        getBaseMapper().updateById(earlyWarnInfo);
+    }
 }
