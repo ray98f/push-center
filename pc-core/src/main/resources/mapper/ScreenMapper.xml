@@ -52,8 +52,7 @@
         SELECT null as id,1 as result,date_sub(date(#{endTime}), interval 5 day) as transmit_time,0 as is_deleted
         UNION ALL
         SELECT null as id,1 as result,date_sub(date(#{endTime}), interval 6 day) as transmit_time,0 as is_deleted) as r
-        where r.is_deleted=0 and r.result=1 and r.transmit_time >= date(#{startTime}) and date(#{endTime}) >=
-        r.transmit_time
+        where r.is_deleted=0 and r.result=1 and r.transmit_time >= date(#{startTime}) and date(#{endTime}) >= r.transmit_time
         group by r.transmit_time
     </select>
 
