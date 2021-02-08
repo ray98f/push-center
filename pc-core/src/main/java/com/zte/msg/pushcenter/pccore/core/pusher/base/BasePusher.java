@@ -3,7 +3,6 @@ package com.zte.msg.pushcenter.pccore.core.pusher.base;
 import com.alibaba.fastjson.JSONObject;
 import com.zte.msg.pushcenter.pccore.core.javac.CodeJavac;
 import com.zte.msg.pushcenter.pccore.core.warn.WarnHandler;
-import com.zte.msg.pushcenter.pccore.dto.DataResponse;
 import com.zte.msg.pushcenter.pccore.enums.PushMethods;
 import com.zte.msg.pushcenter.pccore.mapper.ProviderMapper;
 import com.zte.msg.pushcenter.pccore.service.AppService;
@@ -109,7 +108,7 @@ public abstract class BasePusher {
         }
         log.info("==========start sms push response==========");
         try {
-            restTemplate.exchange(message.getCallBackUrl(), HttpMethod.POST, new HttpEntity<>(DataResponse.of(res)), String.class);
+            restTemplate.exchange(message.getCallBackUrl(), HttpMethod.POST, new HttpEntity<>(res), String.class);
         } catch (Exception e) {
             log.error("Error!!! An exception occurred when response.");
         }
