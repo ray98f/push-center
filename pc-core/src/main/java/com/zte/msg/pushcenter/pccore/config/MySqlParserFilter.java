@@ -88,33 +88,37 @@ public class MySqlParserFilter implements ISqlParserFilter {
             }
             String join = StringUtils.join(joins, SPACE + AND + SPACE);
             StringBuilder sqlBuilder = new StringBuilder(sql);
-            boolean where = sql.contains(WHERE);
-            boolean limit = sql.contains(LIMIT);
-            boolean group = sql.contains(GROUP_BY);
+
+            boolean where = StringUtils.containsIgnoreCase(sql, WHERE);
+            boolean limit = StringUtils.containsIgnoreCase(sql, LIMIT);
+            boolean group = StringUtils.containsIgnoreCase(sql, GROUP_BY);
             boolean deleted = sql.contains(logicDeleteField);
-            boolean orderBy = sql.contains(ORDER_BY);
+            boolean orderBy = StringUtils.containsIgnoreCase(sql, ORDER_BY);
             if (deleted) {
                 return false;
             }
             if (where) {
-                sqlBuilder.insert(sqlBuilder.indexOf(WHERE) + 6, SPACE + join + SPACE + AND + SPACE);
+
+
+                sqlBuilder.insert(StringUtils.indexOfIgnoreCase(sql, WHERE) + 6, SPACE + join + SPACE + AND + SPACE);
             } else {
                 if (!limit && !group && !orderBy) {
                     sqlBuilder.append(" ").append(WHERE).append(SPACE).append(join);
                 }
                 if (group) {
-                    sqlBuilder.insert(sqlBuilder.indexOf(GROUP_BY), SPACE + WHERE + SPACE + join + SPACE);
+                    sqlBuilder.insert(StringUtils.indexOfIgnoreCase(sql, GROUP_BY), SPACE + WHERE + SPACE + join + SPACE);
                 }
                 if (!group && orderBy) {
-                    sqlBuilder.insert(sqlBuilder.indexOf(ORDER_BY) - 1, SPACE + WHERE + SPACE + join + SPACE);
+                    sqlBuilder.insert(StringUtils.indexOfIgnoreCase(sql, ORDER_BY) - 1, SPACE + WHERE + SPACE + join + SPACE);
                 }
                 if (limit && !group && !orderBy) {
-                    sqlBuilder.insert(sqlBuilder.indexOf(LIMIT), SPACE + WHERE + SPACE + join + SPACE);
+                    sqlBuilder.insert(StringUtils.indexOfIgnoreCase(sql, LIMIT), SPACE + WHERE + SPACE + join + SPACE);
                 }
             }
             metaObject.setValue(PluginUtils.DELEGATE_BOUNDSQL_SQL, sqlBuilder.toString());
         }
         return false;
     }
+
 
 }
