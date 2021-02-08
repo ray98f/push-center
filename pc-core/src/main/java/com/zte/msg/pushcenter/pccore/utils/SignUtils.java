@@ -13,9 +13,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -53,22 +53,35 @@ public class SignUtils {
         return DigestUtils.md5DigestAsHex(str.getBytes(StandardCharsets.UTF_8));
     }
 
-    public static String generateOpenSign(Object view, Long appId, Long requestTime) {
-        String s = JSON.toJSONString(view) + appId + requestTime;
+    public static StringBuilder mapToString(Map<String, Object> paramsMap) {
+        Set<String> keySet = paramsMap.keySet();
+        List<String> paramNames = new ArrayList<>(keySet);
+        // 请求参数按参数名升序排序
+        Collections.sort(paramNames);
+        StringBuilder paramNameValue = new StringBuilder();
+        // 拼接参数名及参数值
+        for (String paramName : paramNames) {
+            paramNameValue.append(paramName).append(paramsMap.get(paramName));
+        }
+        return paramNameValue;
+    }
+
+    public static String generateOpenSign(Map<String, Object> paramsMap, Long appId) {
+        StringBuilder paramNameValue = mapToString(paramsMap);
+        // 拼接密钥
         String secret = serviceSecret.selectAppSecret(appId);
         if (StringUtils.isBlank(secret)) {
             throw new CommonException(ErrorCode.SECRET_NOT_EXIST);
         }
-//        s = s + String.join(SEMICOLON, serviceApp.selectWhiteIp(appId));
-        s = secret + s + secret;
-        return signMd5(s);
+        String source = secret + paramNameValue.toString() + secret;
+        return signMd5(source);
     }
 
-    public static void verify(Object view, Long appId, Long requestTime, String sign) {
+    public static void verify(Map<String, Object> view, Long appId, Long requestTime, String sign) {
         if (Long.valueOf(TokenUtil.getTimestamp()).compareTo((requestTime) + SIGN_DEADLINE) > 0) {
             throw new RuntimeException("请求失效，请重新发起请求");
         }
-        if (sign.equals(generateOpenSign(view, appId, requestTime))) {
+        if (sign.equals(generateOpenSign(view, appId))) {
             log.info("签名校验通过");
         } else {
             throw new CommonException(ErrorCode.OPENAPI_VERIFY_FAIL);
