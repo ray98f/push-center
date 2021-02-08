@@ -220,6 +220,8 @@ public class TemplateServiceImpl implements TemplateService {
             smsTemplateDetailResDTO.setContent(o.getContent());
             smsTemplateDetailResDTO.setParams(o.getParams());
             smsTemplateDetailResDTO.setStatus(o.getStatus());
+            smsTemplateDetailResDTO.setUpdatedAt(o.getUpdatedAt());
+            smsTemplateDetailResDTO.setUpdatedBy(o.getUpdatedBy());
             smsTemplateMap.put(o.getId(), smsTemplateDetailResDTO);
         });
         List<SmsTemplateRelationModel> smsTemplateRelationModels = smsTemplateRelationMapper.selectByTemplateIds(templateIds);
