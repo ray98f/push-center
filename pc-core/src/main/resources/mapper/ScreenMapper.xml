@@ -15,8 +15,8 @@
     </select>
 
     <select id="pushInfoSuccessData" resultType="com.zte.msg.pushcenter.pccore.dto.res.PushSuccessDataScreenResDTO">
-        select r.type,sum(case when r.id is not null and r.transmit_time >= #{startTime} and #{endTime} >= r.transmit_time then 1 end) as total,
-        sum(case when r.result=0 and r.transmit_time >= #{startTime} and #{endTime} >= r.transmit_time then 1 end) as success_num
+        select r.type,count(case when r.id is not null and r.transmit_time >= #{startTime} and #{endTime} >= r.transmit_time then 1 end) as total,
+        count(case when r.result=0 and r.transmit_time >= #{startTime} and #{endTime} >= r.transmit_time then 1 end) as success_num
         from
         (select '短信推送' as type,id,result,transmit_time,is_deleted from sms_info
         UNION ALL
