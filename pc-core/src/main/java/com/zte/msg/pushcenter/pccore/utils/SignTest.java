@@ -1,22 +1,18 @@
 package com.zte.msg.pushcenter.pccore.utils;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.zte.msg.pushcenter.pccore.dto.req.AppMessageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.MailMessageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsMessageReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.WeChatMessageReqDTO;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.springframework.util.DigestUtils;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -40,10 +36,7 @@ public class SignTest {
         Map<String, String> vars = new HashMap<>(16);
         vars.put("a", "123456");
         smsMessageReqDTO.setVars(vars);
-        // 获取应用密钥值
-        String str = "secret" + JSON.toJSONString(smsMessageReqDTO) + appId + requestTime + "secret";
-        String sign = DigestUtils.md5DigestAsHex(str.getBytes(StandardCharsets.UTF_8));
-        smsMessageReqDTO.setSign(sign);
+        smsMessageReqDTO.setSign(SignUtils.generateOpenSign(MapUtils.objectToMap(smsMessageReqDTO), appId));
         // 发送邮件通知
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost("http://wshmang.f3322.net:40323/api/v1/open/push/sms");
@@ -70,10 +63,7 @@ public class SignTest {
         mailMessageReqDTO.setProviderId(4L);
         mailMessageReqDTO.setSubject("这是一封邮件");
         mailMessageReqDTO.setContent("<h1 id=\\\"q3kn4\\\">邮件</h1><p><i>邮件</i><br></p><p>下划线<i><br></i></p>");
-        // 获取应用密钥值
-        String str = "secret" + JSON.toJSONString(mailMessageReqDTO) + appId + requestTime + "secret";
-        String sign = DigestUtils.md5DigestAsHex(str.getBytes(StandardCharsets.UTF_8));
-        mailMessageReqDTO.setSign(sign);
+        mailMessageReqDTO.setSign(SignUtils.generateOpenSign(MapUtils.objectToMap(mailMessageReqDTO), appId));
         // 发送邮件通知
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost("http://wshmang.f3322.net:40323/api/v1/open/push/mail");
@@ -101,10 +91,7 @@ public class SignTest {
         weChatMessageReqDTO.setData("{\"first\": {\"value\": \"测试\"},\"keyword1\": {\"value\": \"预警\"}, …}");
         weChatMessageReqDTO.setUrl("http://bbxxxbbb.com");
         weChatMessageReqDTO.setAppletData("{\"a\": \"aaaa\", \"b\": \"bbbb\"}, …");
-        // 获取应用密钥值
-        String str = "secret" + JSON.toJSONString(weChatMessageReqDTO) + appId + requestTime + "secret";
-        String sign = DigestUtils.md5DigestAsHex(str.getBytes(StandardCharsets.UTF_8));
-        weChatMessageReqDTO.setSign(sign);
+        weChatMessageReqDTO.setSign(SignUtils.generateOpenSign(MapUtils.objectToMap(weChatMessageReqDTO), appId));
         // 发送微信公众号通知
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost("http://wshmang.f3322.net:40323/api/v1/open/push/wechat");
@@ -132,10 +119,7 @@ public class SignTest {
         appMessageReqDTO.setMessageType(2);
         appMessageReqDTO.setTitle("这是一个App推送");
         appMessageReqDTO.setContent("<h1 id=\\\"phakb\\\">推送</h1><p style=\\\"padding-left:2em;\\\"><b>test</b></p>");
-        // 获取应用密钥值
-        String str = "secret" + JSON.toJSONString(appMessageReqDTO) + appId + requestTime + "secret";
-        String sign = DigestUtils.md5DigestAsHex(str.getBytes(StandardCharsets.UTF_8));
-        appMessageReqDTO.setSign(sign);
+        appMessageReqDTO.setSign(SignUtils.generateOpenSign(MapUtils.objectToMap(appMessageReqDTO), appId));
         // 发送app通知
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost("http://wshmang.f3322.net:40323/api/v1/open/push/app");
