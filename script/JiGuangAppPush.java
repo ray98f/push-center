@@ -8,6 +8,7 @@ import com.zte.msg.pushcenter.pcscript.PcScript;
 import org.apache.http.Header;
 import org.apache.http.impl.client.CloseableHttpClient;
 
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -87,6 +88,8 @@ public class JiGuangAppPush implements PcScript {
         ERROR_APP_KEY("1008", 32100004, "app_key 参数非法"),
 
         NOT_SUPPORT_KEY("1009", 32100005, "推送对象中有不支持的 key"),
+
+        USER_ERROR("1011", 32100009, "cannot find user by this audience or has been inactive for more than 255 days"),
 
         SUCCESS("0", 0, "成功"),
 
