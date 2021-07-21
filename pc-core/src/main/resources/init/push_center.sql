@@ -471,798 +471,7 @@ CREATE TABLE `pinyin_config`
 -- ----------------------------
 -- Records of pinyin_config
 -- ----------------------------
-INSERT INTO `pinyin_config`
-VALUES ('zuo', 10254);
-INSERT INTO `pinyin_config`
-VALUES ('zun', 10256);
-INSERT INTO `pinyin_config`
-VALUES ('zui', 10260);
-INSERT INTO `pinyin_config`
-VALUES ('zuan', 10262);
-INSERT INTO `pinyin_config`
-VALUES ('zu', 10270);
-INSERT INTO `pinyin_config`
-VALUES ('zou', 10274);
-INSERT INTO `pinyin_config`
-VALUES ('zong', 10281);
-INSERT INTO `pinyin_config`
-VALUES ('zi', 10296);
-INSERT INTO `pinyin_config`
-VALUES ('zhuo', 10307);
-INSERT INTO `pinyin_config`
-VALUES ('zhun', 10309);
-INSERT INTO `pinyin_config`
-VALUES ('zhui', 10315);
-INSERT INTO `pinyin_config`
-VALUES ('zhuang', 10322);
-INSERT INTO `pinyin_config`
-VALUES ('zhuan', 10328);
-INSERT INTO `pinyin_config`
-VALUES ('zhuai', 10329);
-INSERT INTO `pinyin_config`
-VALUES ('zhua', 10331);
-INSERT INTO `pinyin_config`
-VALUES ('zhu', 10519);
-INSERT INTO `pinyin_config`
-VALUES ('zhou', 10533);
-INSERT INTO `pinyin_config`
-VALUES ('zhong', 10544);
-INSERT INTO `pinyin_config`
-VALUES ('zhi', 10587);
-INSERT INTO `pinyin_config`
-VALUES ('zheng', 10764);
-INSERT INTO `pinyin_config`
-VALUES ('zhen', 10780);
-INSERT INTO `pinyin_config`
-VALUES ('zhe', 10790);
-INSERT INTO `pinyin_config`
-VALUES ('zhao', 10800);
-INSERT INTO `pinyin_config`
-VALUES ('zhang', 10815);
-INSERT INTO `pinyin_config`
-VALUES ('zhan', 10832);
-INSERT INTO `pinyin_config`
-VALUES ('zhai', 10838);
-INSERT INTO `pinyin_config`
-VALUES ('zha', 11014);
-INSERT INTO `pinyin_config`
-VALUES ('zeng', 11018);
-INSERT INTO `pinyin_config`
-VALUES ('zen', 11019);
-INSERT INTO `pinyin_config`
-VALUES ('zei', 11020);
-INSERT INTO `pinyin_config`
-VALUES ('ze', 11024);
-INSERT INTO `pinyin_config`
-VALUES ('zao', 11038);
-INSERT INTO `pinyin_config`
-VALUES ('zang', 11041);
-INSERT INTO `pinyin_config`
-VALUES ('zan', 11045);
-INSERT INTO `pinyin_config`
-VALUES ('zai', 11052);
-INSERT INTO `pinyin_config`
-VALUES ('za', 11055);
-INSERT INTO `pinyin_config`
-VALUES ('yun', 11067);
-INSERT INTO `pinyin_config`
-VALUES ('yue', 11077);
-INSERT INTO `pinyin_config`
-VALUES ('yuan', 11097);
-INSERT INTO `pinyin_config`
-VALUES ('yu', 11303);
-INSERT INTO `pinyin_config`
-VALUES ('you', 11324);
-INSERT INTO `pinyin_config`
-VALUES ('yong', 11339);
-INSERT INTO `pinyin_config`
-VALUES ('yo', 11340);
-INSERT INTO `pinyin_config`
-VALUES ('ying', 11358);
-INSERT INTO `pinyin_config`
-VALUES ('yin', 11536);
-INSERT INTO `pinyin_config`
-VALUES ('yi', 11589);
-INSERT INTO `pinyin_config`
-VALUES ('ye', 11604);
-INSERT INTO `pinyin_config`
-VALUES ('yao', 11781);
-INSERT INTO `pinyin_config`
-VALUES ('yang', 11798);
-INSERT INTO `pinyin_config`
-VALUES ('yan', 11831);
-INSERT INTO `pinyin_config`
-VALUES ('ya', 11847);
-INSERT INTO `pinyin_config`
-VALUES ('xun', 11861);
-INSERT INTO `pinyin_config`
-VALUES ('xue', 11867);
-INSERT INTO `pinyin_config`
-VALUES ('xuan', 12039);
-INSERT INTO `pinyin_config`
-VALUES ('xu', 12058);
-INSERT INTO `pinyin_config`
-VALUES ('xiu', 12067);
-INSERT INTO `pinyin_config`
-VALUES ('xiong', 12074);
-INSERT INTO `pinyin_config`
-VALUES ('xing', 12089);
-INSERT INTO `pinyin_config`
-VALUES ('xin', 12099);
-INSERT INTO `pinyin_config`
-VALUES ('xie', 12120);
-INSERT INTO `pinyin_config`
-VALUES ('xiao', 12300);
-INSERT INTO `pinyin_config`
-VALUES ('xiang', 12320);
-INSERT INTO `pinyin_config`
-VALUES ('xian', 12346);
-INSERT INTO `pinyin_config`
-VALUES ('xia', 12359);
-INSERT INTO `pinyin_config`
-VALUES ('xi', 12556);
-INSERT INTO `pinyin_config`
-VALUES ('wu', 12585);
-INSERT INTO `pinyin_config`
-VALUES ('wo', 12594);
-INSERT INTO `pinyin_config`
-VALUES ('weng', 12597);
-INSERT INTO `pinyin_config`
-VALUES ('wen', 12607);
-INSERT INTO `pinyin_config`
-VALUES ('wei', 12802);
-INSERT INTO `pinyin_config`
-VALUES ('wang', 12812);
-INSERT INTO `pinyin_config`
-VALUES ('wan', 12829);
-INSERT INTO `pinyin_config`
-VALUES ('wai', 12831);
-INSERT INTO `pinyin_config`
-VALUES ('wa', 12838);
-INSERT INTO `pinyin_config`
-VALUES ('tuo', 12849);
-INSERT INTO `pinyin_config`
-VALUES ('tun', 12852);
-INSERT INTO `pinyin_config`
-VALUES ('tui', 12858);
-INSERT INTO `pinyin_config`
-VALUES ('tuan', 12860);
-INSERT INTO `pinyin_config`
-VALUES ('tu', 12871);
-INSERT INTO `pinyin_config`
-VALUES ('tou', 12875);
-INSERT INTO `pinyin_config`
-VALUES ('tong', 12888);
-INSERT INTO `pinyin_config`
-VALUES ('ting', 13060);
-INSERT INTO `pinyin_config`
-VALUES ('tie', 13063);
-INSERT INTO `pinyin_config`
-VALUES ('tiao', 13068);
-INSERT INTO `pinyin_config`
-VALUES ('tian', 13076);
-INSERT INTO `pinyin_config`
-VALUES ('ti', 13091);
-INSERT INTO `pinyin_config`
-VALUES ('teng', 13095);
-INSERT INTO `pinyin_config`
-VALUES ('te', 13096);
-INSERT INTO `pinyin_config`
-VALUES ('tao', 13107);
-INSERT INTO `pinyin_config`
-VALUES ('tang', 13120);
-INSERT INTO `pinyin_config`
-VALUES ('tan', 13138);
-INSERT INTO `pinyin_config`
-VALUES ('tai', 13147);
-INSERT INTO `pinyin_config`
-VALUES ('ta', 13318);
-INSERT INTO `pinyin_config`
-VALUES ('suo', 13326);
-INSERT INTO `pinyin_config`
-VALUES ('sun', 13329);
-INSERT INTO `pinyin_config`
-VALUES ('sui', 13340);
-INSERT INTO `pinyin_config`
-VALUES ('suan', 13343);
-INSERT INTO `pinyin_config`
-VALUES ('su', 13356);
-INSERT INTO `pinyin_config`
-VALUES ('sou', 13359);
-INSERT INTO `pinyin_config`
-VALUES ('song', 13367);
-INSERT INTO `pinyin_config`
-VALUES ('si', 13383);
-INSERT INTO `pinyin_config`
-VALUES ('shuo', 13387);
-INSERT INTO `pinyin_config`
-VALUES ('shun', 13391);
-INSERT INTO `pinyin_config`
-VALUES ('shui', 13395);
-INSERT INTO `pinyin_config`
-VALUES ('shuang', 13398);
-INSERT INTO `pinyin_config`
-VALUES ('shuan', 13400);
-INSERT INTO `pinyin_config`
-VALUES ('shuai', 13404);
-INSERT INTO `pinyin_config`
-VALUES ('shua', 13406);
-INSERT INTO `pinyin_config`
-VALUES ('shu', 13601);
-INSERT INTO `pinyin_config`
-VALUES ('shou', 13611);
-INSERT INTO `pinyin_config`
-VALUES ('shi', 13658);
-INSERT INTO `pinyin_config`
-VALUES ('sheng', 13831);
-INSERT INTO `pinyin_config`
-VALUES ('shen', 13847);
-INSERT INTO `pinyin_config`
-VALUES ('she', 13859);
-INSERT INTO `pinyin_config`
-VALUES ('shao', 13870);
-INSERT INTO `pinyin_config`
-VALUES ('shang', 13878);
-INSERT INTO `pinyin_config`
-VALUES ('shan', 13894);
-INSERT INTO `pinyin_config`
-VALUES ('shai', 13896);
-INSERT INTO `pinyin_config`
-VALUES ('sha', 13905);
-INSERT INTO `pinyin_config`
-VALUES ('seng', 13906);
-INSERT INTO `pinyin_config`
-VALUES ('sen', 13907);
-INSERT INTO `pinyin_config`
-VALUES ('se', 13910);
-INSERT INTO `pinyin_config`
-VALUES ('sao', 13914);
-INSERT INTO `pinyin_config`
-VALUES ('sang', 13917);
-INSERT INTO `pinyin_config`
-VALUES ('san', 14083);
-INSERT INTO `pinyin_config`
-VALUES ('sai', 14087);
-INSERT INTO `pinyin_config`
-VALUES ('sa', 14090);
-INSERT INTO `pinyin_config`
-VALUES ('ruo', 14092);
-INSERT INTO `pinyin_config`
-VALUES ('run', 14094);
-INSERT INTO `pinyin_config`
-VALUES ('rui', 14097);
-INSERT INTO `pinyin_config`
-VALUES ('ruan', 14099);
-INSERT INTO `pinyin_config`
-VALUES ('ru', 14109);
-INSERT INTO `pinyin_config`
-VALUES ('rou', 14112);
-INSERT INTO `pinyin_config`
-VALUES ('rong', 14122);
-INSERT INTO `pinyin_config`
-VALUES ('ri', 14123);
-INSERT INTO `pinyin_config`
-VALUES ('reng', 14125);
-INSERT INTO `pinyin_config`
-VALUES ('ren', 14135);
-INSERT INTO `pinyin_config`
-VALUES ('re', 14137);
-INSERT INTO `pinyin_config`
-VALUES ('rao', 14140);
-INSERT INTO `pinyin_config`
-VALUES ('rang', 14145);
-INSERT INTO `pinyin_config`
-VALUES ('ran', 14149);
-INSERT INTO `pinyin_config`
-VALUES ('qun', 14151);
-INSERT INTO `pinyin_config`
-VALUES ('que', 14159);
-INSERT INTO `pinyin_config`
-VALUES ('quan', 14170);
-INSERT INTO `pinyin_config`
-VALUES ('qu', 14345);
-INSERT INTO `pinyin_config`
-VALUES ('qiu', 14353);
-INSERT INTO `pinyin_config`
-VALUES ('qiong', 14355);
-INSERT INTO `pinyin_config`
-VALUES ('qing', 14368);
-INSERT INTO `pinyin_config`
-VALUES ('qin', 14379);
-INSERT INTO `pinyin_config`
-VALUES ('qie', 14384);
-INSERT INTO `pinyin_config`
-VALUES ('qiao', 14399);
-INSERT INTO `pinyin_config`
-VALUES ('qiang', 14407);
-INSERT INTO `pinyin_config`
-VALUES ('qian', 14429);
-INSERT INTO `pinyin_config`
-VALUES ('qia', 14594);
-INSERT INTO `pinyin_config`
-VALUES ('qi', 14630);
-INSERT INTO `pinyin_config`
-VALUES ('pu', 14645);
-INSERT INTO `pinyin_config`
-VALUES ('po', 14654);
-INSERT INTO `pinyin_config`
-VALUES ('ping', 14663);
-INSERT INTO `pinyin_config`
-VALUES ('pin', 14668);
-INSERT INTO `pinyin_config`
-VALUES ('pie', 14670);
-INSERT INTO `pinyin_config`
-VALUES ('piao', 14674);
-INSERT INTO `pinyin_config`
-VALUES ('pian', 14678);
-INSERT INTO `pinyin_config`
-VALUES ('pi', 14857);
-INSERT INTO `pinyin_config`
-VALUES ('peng', 14871);
-INSERT INTO `pinyin_config`
-VALUES ('pen', 14873);
-INSERT INTO `pinyin_config`
-VALUES ('pei', 14882);
-INSERT INTO `pinyin_config`
-VALUES ('pao', 14889);
-INSERT INTO `pinyin_config`
-VALUES ('pang', 14894);
-INSERT INTO `pinyin_config`
-VALUES ('pan', 14902);
-INSERT INTO `pinyin_config`
-VALUES ('pai', 14908);
-INSERT INTO `pinyin_config`
-VALUES ('pa', 14914);
-INSERT INTO `pinyin_config`
-VALUES ('ou', 14921);
-INSERT INTO `pinyin_config`
-VALUES ('o', 14922);
-INSERT INTO `pinyin_config`
-VALUES ('nuo', 14926);
-INSERT INTO `pinyin_config`
-VALUES ('nue', 14928);
-INSERT INTO `pinyin_config`
-VALUES ('nuan', 14929);
-INSERT INTO `pinyin_config`
-VALUES ('nv', 14930);
-INSERT INTO `pinyin_config`
-VALUES ('nu', 14933);
-INSERT INTO `pinyin_config`
-VALUES ('nong', 14937);
-INSERT INTO `pinyin_config`
-VALUES ('niu', 14941);
-INSERT INTO `pinyin_config`
-VALUES ('ning', 15109);
-INSERT INTO `pinyin_config`
-VALUES ('nin', 15110);
-INSERT INTO `pinyin_config`
-VALUES ('nie', 15117);
-INSERT INTO `pinyin_config`
-VALUES ('niao', 15119);
-INSERT INTO `pinyin_config`
-VALUES ('niang', 15121);
-INSERT INTO `pinyin_config`
-VALUES ('nian', 15128);
-INSERT INTO `pinyin_config`
-VALUES ('ni', 15139);
-INSERT INTO `pinyin_config`
-VALUES ('neng', 15140);
-INSERT INTO `pinyin_config`
-VALUES ('nen', 15141);
-INSERT INTO `pinyin_config`
-VALUES ('nei', 15143);
-INSERT INTO `pinyin_config`
-VALUES ('ne', 15144);
-INSERT INTO `pinyin_config`
-VALUES ('nao', 15149);
-INSERT INTO `pinyin_config`
-VALUES ('nang', 15150);
-INSERT INTO `pinyin_config`
-VALUES ('nan', 15153);
-INSERT INTO `pinyin_config`
-VALUES ('nai', 15158);
-INSERT INTO `pinyin_config`
-VALUES ('na', 15165);
-INSERT INTO `pinyin_config`
-VALUES ('mu', 15180);
-INSERT INTO `pinyin_config`
-VALUES ('mou', 15183);
-INSERT INTO `pinyin_config`
-VALUES ('mo', 15362);
-INSERT INTO `pinyin_config`
-VALUES ('miu', 15363);
-INSERT INTO `pinyin_config`
-VALUES ('ming', 15369);
-INSERT INTO `pinyin_config`
-VALUES ('min', 15375);
-INSERT INTO `pinyin_config`
-VALUES ('mie', 15377);
-INSERT INTO `pinyin_config`
-VALUES ('miao', 15385);
-INSERT INTO `pinyin_config`
-VALUES ('mian', 15394);
-INSERT INTO `pinyin_config`
-VALUES ('mi', 15408);
-INSERT INTO `pinyin_config`
-VALUES ('meng', 15416);
-INSERT INTO `pinyin_config`
-VALUES ('men', 15419);
-INSERT INTO `pinyin_config`
-VALUES ('mei', 15435);
-INSERT INTO `pinyin_config`
-VALUES ('me', 15436);
-INSERT INTO `pinyin_config`
-VALUES ('mao', 15448);
-INSERT INTO `pinyin_config`
-VALUES ('mang', 15454);
-INSERT INTO `pinyin_config`
-VALUES ('man', 15625);
-INSERT INTO `pinyin_config`
-VALUES ('mai', 15631);
-INSERT INTO `pinyin_config`
-VALUES ('ma', 15640);
-INSERT INTO `pinyin_config`
-VALUES ('luo', 15652);
-INSERT INTO `pinyin_config`
-VALUES ('lun', 15659);
-INSERT INTO `pinyin_config`
-VALUES ('lue', 15661);
-INSERT INTO `pinyin_config`
-VALUES ('luan', 15667);
-INSERT INTO `pinyin_config`
-VALUES ('lv', 15681);
-INSERT INTO `pinyin_config`
-VALUES ('lu', 15701);
-INSERT INTO `pinyin_config`
-VALUES ('lou', 15707);
-INSERT INTO `pinyin_config`
-VALUES ('long', 15878);
-INSERT INTO `pinyin_config`
-VALUES ('liu', 15889);
-INSERT INTO `pinyin_config`
-VALUES ('ling', 15903);
-INSERT INTO `pinyin_config`
-VALUES ('lin', 15915);
-INSERT INTO `pinyin_config`
-VALUES ('lie', 15920);
-INSERT INTO `pinyin_config`
-VALUES ('liao', 15933);
-INSERT INTO `pinyin_config`
-VALUES ('liang', 15944);
-INSERT INTO `pinyin_config`
-VALUES ('lian', 15958);
-INSERT INTO `pinyin_config`
-VALUES ('lia', 15959);
-INSERT INTO `pinyin_config`
-VALUES ('li', 16155);
-INSERT INTO `pinyin_config`
-VALUES ('leng', 16158);
-INSERT INTO `pinyin_config`
-VALUES ('lei', 16169);
-INSERT INTO `pinyin_config`
-VALUES ('le', 16171);
-INSERT INTO `pinyin_config`
-VALUES ('lao', 16180);
-INSERT INTO `pinyin_config`
-VALUES ('lang', 16187);
-INSERT INTO `pinyin_config`
-VALUES ('lan', 16202);
-INSERT INTO `pinyin_config`
-VALUES ('lai', 16205);
-INSERT INTO `pinyin_config`
-VALUES ('la', 16212);
-INSERT INTO `pinyin_config`
-VALUES ('kuo', 16216);
-INSERT INTO `pinyin_config`
-VALUES ('kun', 16220);
-INSERT INTO `pinyin_config`
-VALUES ('kui', 16393);
-INSERT INTO `pinyin_config`
-VALUES ('kuang', 16401);
-INSERT INTO `pinyin_config`
-VALUES ('kuan', 16403);
-INSERT INTO `pinyin_config`
-VALUES ('kuai', 16407);
-INSERT INTO `pinyin_config`
-VALUES ('kua', 16412);
-INSERT INTO `pinyin_config`
-VALUES ('ku', 16419);
-INSERT INTO `pinyin_config`
-VALUES ('kou', 16423);
-INSERT INTO `pinyin_config`
-VALUES ('kong', 16427);
-INSERT INTO `pinyin_config`
-VALUES ('keng', 16429);
-INSERT INTO `pinyin_config`
-VALUES ('ken', 16433);
-INSERT INTO `pinyin_config`
-VALUES ('ke', 16448);
-INSERT INTO `pinyin_config`
-VALUES ('kao', 16452);
-INSERT INTO `pinyin_config`
-VALUES ('kang', 16459);
-INSERT INTO `pinyin_config`
-VALUES ('kan', 16465);
-INSERT INTO `pinyin_config`
-VALUES ('kai', 16470);
-INSERT INTO `pinyin_config`
-VALUES ('ka', 16474);
-INSERT INTO `pinyin_config`
-VALUES ('jun', 16647);
-INSERT INTO `pinyin_config`
-VALUES ('jue', 16657);
-INSERT INTO `pinyin_config`
-VALUES ('juan', 16664);
-INSERT INTO `pinyin_config`
-VALUES ('ju', 16689);
-INSERT INTO `pinyin_config`
-VALUES ('jiu', 16706);
-INSERT INTO `pinyin_config`
-VALUES ('jiong', 16708);
-INSERT INTO `pinyin_config`
-VALUES ('jing', 16733);
-INSERT INTO `pinyin_config`
-VALUES ('jin', 16915);
-INSERT INTO `pinyin_config`
-VALUES ('jie', 16942);
-INSERT INTO `pinyin_config`
-VALUES ('jiao', 16970);
-INSERT INTO `pinyin_config`
-VALUES ('jiang', 16983);
-INSERT INTO `pinyin_config`
-VALUES ('jian', 17185);
-INSERT INTO `pinyin_config`
-VALUES ('jia', 17202);
-INSERT INTO `pinyin_config`
-VALUES ('ji', 17417);
-INSERT INTO `pinyin_config`
-VALUES ('huo', 17427);
-INSERT INTO `pinyin_config`
-VALUES ('hun', 17433);
-INSERT INTO `pinyin_config`
-VALUES ('hui', 17454);
-INSERT INTO `pinyin_config`
-VALUES ('huang', 17468);
-INSERT INTO `pinyin_config`
-VALUES ('huan', 17482);
-INSERT INTO `pinyin_config`
-VALUES ('huai', 17487);
-INSERT INTO `pinyin_config`
-VALUES ('hua', 17496);
-INSERT INTO `pinyin_config`
-VALUES ('hu', 17676);
-INSERT INTO `pinyin_config`
-VALUES ('hou', 17683);
-INSERT INTO `pinyin_config`
-VALUES ('hong', 17692);
-INSERT INTO `pinyin_config`
-VALUES ('heng', 17697);
-INSERT INTO `pinyin_config`
-VALUES ('hen', 17701);
-INSERT INTO `pinyin_config`
-VALUES ('hei', 17703);
-INSERT INTO `pinyin_config`
-VALUES ('he', 17721);
-INSERT INTO `pinyin_config`
-VALUES ('hao', 17730);
-INSERT INTO `pinyin_config`
-VALUES ('hang', 17733);
-INSERT INTO `pinyin_config`
-VALUES ('han', 17752);
-INSERT INTO `pinyin_config`
-VALUES ('hai', 17759);
-INSERT INTO `pinyin_config`
-VALUES ('ha', 17922);
-INSERT INTO `pinyin_config`
-VALUES ('guo', 17928);
-INSERT INTO `pinyin_config`
-VALUES ('gun', 17931);
-INSERT INTO `pinyin_config`
-VALUES ('gui', 17947);
-INSERT INTO `pinyin_config`
-VALUES ('guang', 17950);
-INSERT INTO `pinyin_config`
-VALUES ('guan', 17961);
-INSERT INTO `pinyin_config`
-VALUES ('guai', 17964);
-INSERT INTO `pinyin_config`
-VALUES ('gua', 17970);
-INSERT INTO `pinyin_config`
-VALUES ('gu', 17988);
-INSERT INTO `pinyin_config`
-VALUES ('gou', 17997);
-INSERT INTO `pinyin_config`
-VALUES ('gong', 18012);
-INSERT INTO `pinyin_config`
-VALUES ('geng', 18181);
-INSERT INTO `pinyin_config`
-VALUES ('gen', 18183);
-INSERT INTO `pinyin_config`
-VALUES ('gei', 18184);
-INSERT INTO `pinyin_config`
-VALUES ('ge', 18201);
-INSERT INTO `pinyin_config`
-VALUES ('gao', 18211);
-INSERT INTO `pinyin_config`
-VALUES ('gang', 18220);
-INSERT INTO `pinyin_config`
-VALUES ('gan', 18231);
-INSERT INTO `pinyin_config`
-VALUES ('gai', 18237);
-INSERT INTO `pinyin_config`
-VALUES ('ga', 18239);
-INSERT INTO `pinyin_config`
-VALUES ('fu', 18446);
-INSERT INTO `pinyin_config`
-VALUES ('fou', 18447);
-INSERT INTO `pinyin_config`
-VALUES ('fo', 18448);
-INSERT INTO `pinyin_config`
-VALUES ('feng', 18463);
-INSERT INTO `pinyin_config`
-VALUES ('fen', 18478);
-INSERT INTO `pinyin_config`
-VALUES ('fei', 18490);
-INSERT INTO `pinyin_config`
-VALUES ('fang', 18501);
-INSERT INTO `pinyin_config`
-VALUES ('fan', 18518);
-INSERT INTO `pinyin_config`
-VALUES ('fa', 18526);
-INSERT INTO `pinyin_config`
-VALUES ('er', 18696);
-INSERT INTO `pinyin_config`
-VALUES ('en', 18697);
-INSERT INTO `pinyin_config`
-VALUES ('e', 18710);
-INSERT INTO `pinyin_config`
-VALUES ('duo', 18722);
-INSERT INTO `pinyin_config`
-VALUES ('dun', 18731);
-INSERT INTO `pinyin_config`
-VALUES ('dui', 18735);
-INSERT INTO `pinyin_config`
-VALUES ('duan', 18741);
-INSERT INTO `pinyin_config`
-VALUES ('du', 18756);
-INSERT INTO `pinyin_config`
-VALUES ('dou', 18763);
-INSERT INTO `pinyin_config`
-VALUES ('dong', 18773);
-INSERT INTO `pinyin_config`
-VALUES ('diu', 18774);
-INSERT INTO `pinyin_config`
-VALUES ('ding', 18783);
-INSERT INTO `pinyin_config`
-VALUES ('die', 18952);
-INSERT INTO `pinyin_config`
-VALUES ('diao', 18961);
-INSERT INTO `pinyin_config`
-VALUES ('dian', 18977);
-INSERT INTO `pinyin_config`
-VALUES ('di', 18996);
-INSERT INTO `pinyin_config`
-VALUES ('deng', 19003);
-INSERT INTO `pinyin_config`
-VALUES ('de', 19006);
-INSERT INTO `pinyin_config`
-VALUES ('dao', 19018);
-INSERT INTO `pinyin_config`
-VALUES ('dang', 19023);
-INSERT INTO `pinyin_config`
-VALUES ('dan', 19038);
-INSERT INTO `pinyin_config`
-VALUES ('dai', 19212);
-INSERT INTO `pinyin_config`
-VALUES ('da', 19218);
-INSERT INTO `pinyin_config`
-VALUES ('cuo', 19224);
-INSERT INTO `pinyin_config`
-VALUES ('cun', 19227);
-INSERT INTO `pinyin_config`
-VALUES ('cui', 19235);
-INSERT INTO `pinyin_config`
-VALUES ('cuan', 19238);
-INSERT INTO `pinyin_config`
-VALUES ('cu', 19242);
-INSERT INTO `pinyin_config`
-VALUES ('cou', 19243);
-INSERT INTO `pinyin_config`
-VALUES ('cong', 19249);
-INSERT INTO `pinyin_config`
-VALUES ('ci', 19261);
-INSERT INTO `pinyin_config`
-VALUES ('chuo', 19263);
-INSERT INTO `pinyin_config`
-VALUES ('chun', 19270);
-INSERT INTO `pinyin_config`
-VALUES ('chui', 19275);
-INSERT INTO `pinyin_config`
-VALUES ('chuang', 19281);
-INSERT INTO `pinyin_config`
-VALUES ('chuan', 19288);
-INSERT INTO `pinyin_config`
-VALUES ('chuai', 19289);
-INSERT INTO `pinyin_config`
-VALUES ('chu', 19467);
-INSERT INTO `pinyin_config`
-VALUES ('chou', 19479);
-INSERT INTO `pinyin_config`
-VALUES ('chong', 19484);
-INSERT INTO `pinyin_config`
-VALUES ('chi', 19500);
-INSERT INTO `pinyin_config`
-VALUES ('cheng', 19515);
-INSERT INTO `pinyin_config`
-VALUES ('chen', 19525);
-INSERT INTO `pinyin_config`
-VALUES ('che', 19531);
-INSERT INTO `pinyin_config`
-VALUES ('chao', 19540);
-INSERT INTO `pinyin_config`
-VALUES ('chang', 19715);
-INSERT INTO `pinyin_config`
-VALUES ('chan', 19725);
-INSERT INTO `pinyin_config`
-VALUES ('chai', 19728);
-INSERT INTO `pinyin_config`
-VALUES ('cha', 19739);
-INSERT INTO `pinyin_config`
-VALUES ('ceng', 19741);
-INSERT INTO `pinyin_config`
-VALUES ('ce', 19746);
-INSERT INTO `pinyin_config`
-VALUES ('cao', 19751);
-INSERT INTO `pinyin_config`
-VALUES ('cang', 19756);
-INSERT INTO `pinyin_config`
-VALUES ('can', 19763);
-INSERT INTO `pinyin_config`
-VALUES ('cai', 19774);
-INSERT INTO `pinyin_config`
-VALUES ('ca', 19775);
-INSERT INTO `pinyin_config`
-VALUES ('bu', 19784);
-INSERT INTO `pinyin_config`
-VALUES ('bo', 19805);
-INSERT INTO `pinyin_config`
-VALUES ('bing', 19976);
-INSERT INTO `pinyin_config`
-VALUES ('bin', 19982);
-INSERT INTO `pinyin_config`
-VALUES ('bie', 19986);
-INSERT INTO `pinyin_config`
-VALUES ('biao', 19990);
-INSERT INTO `pinyin_config`
-VALUES ('bian', 20002);
-INSERT INTO `pinyin_config`
-VALUES ('bi', 20026);
-INSERT INTO `pinyin_config`
-VALUES ('beng', 20032);
-INSERT INTO `pinyin_config`
-VALUES ('ben', 20036);
-INSERT INTO `pinyin_config`
-VALUES ('bei', 20051);
-INSERT INTO `pinyin_config`
-VALUES ('bao', 20230);
-INSERT INTO `pinyin_config`
-VALUES ('bang', 20242);
-INSERT INTO `pinyin_config`
-VALUES ('ban', 20257);
-INSERT INTO `pinyin_config`
-VALUES ('bai', 20265);
-INSERT INTO `pinyin_config`
-VALUES ('ba', 20283);
-INSERT INTO `pinyin_config`
-VALUES ('ao', 20292);
-INSERT INTO `pinyin_config`
-VALUES ('ang', 20295);
-INSERT INTO `pinyin_config`
-VALUES ('an', 20304);
-INSERT INTO `pinyin_config`
-VALUES ('ai', 20317);
-INSERT INTO `pinyin_config`
-VALUES ('a', 20319);
+INSERT INTO pinyin_config (pin_yin_,code_)  VALUES ("a", 20319),("ai", 20317),("an", 20304),("ang", 20295),("ao", 20292),("ba", 20283),("bai", 20265),("ban", 20257),("bang", 20242),("bao", 20230),("bei", 20051),("ben", 20036),("beng", 20032),("bi", 20026),("bian", 20002),("biao", 19990),("bie", 19986),("bin", 19982),("bing", 19976),("bo", 19805),("bu", 19784),("ca", 19775),("cai", 19774),("can", 19763),("cang", 19756),("cao", 19751),("ce", 19746),("ceng", 19741),("cha", 19739),("chai", 19728),("chan", 19725),("chang", 19715),("chao", 19540),("che", 19531),("chen", 19525),("cheng", 19515),("chi", 19500),("chong", 19484),("chou", 19479),("chu", 19467),("chuai", 19289),("chuan", 19288),("chuang", 19281),("chui", 19275),("chun", 19270),("chuo", 19263),("ci", 19261),("cong", 19249),("cou", 19243),("cu", 19242),("cuan", 19238),("cui", 19235),("cun", 19227),("cuo", 19224),("da", 19218),("dai", 19212),("dan", 19038),("dang", 19023),("dao", 19018),("de", 19006),("deng", 19003),("di", 18996),("dian", 18977),("diao", 18961),("die", 18952),("ding", 18783),("diu", 18774),("dong", 18773),("dou", 18763),("du", 18756),("duan", 18741),("dui", 18735),("dun", 18731),("duo", 18722),("e", 18710),("en", 18697),("er", 18696),("fa", 18526),("fan", 18518),("fang", 18501),("fei", 18490),("fen", 18478),("feng", 18463),("fo", 18448),("fou", 18447),("fu", 18446),("ga", 18239),("gai", 18237),("gan", 18231),("gang", 18220),("gao", 18211),("ge", 18201),("gei", 18184),("gen", 18183),("geng", 18181),("gong", 18012),("gou", 17997),("gu", 17988),("gua", 17970),("guai", 17964),("guan", 17961),("guang", 17950),("gui", 17947),("gun", 17931),("guo", 17928),("ha", 17922),("hai", 17759),("han", 17752),("hang", 17733),("hao", 17730),("he", 17721),("hei", 17703),("hen", 17701),("heng", 17697),("hong", 17692),("hou", 17683),("hu", 17676),("hua", 17496),("huai", 17487),("huan", 17482),("huang", 17468),("hui", 17454),("hun", 17433),("huo", 17427),("ji", 17417),("jia", 17202),("jian", 17185),("jiang", 16983),("jiao", 16970),("jie", 16942),("jin", 16915),("jing", 16733),("jiong", 16708),("jiu", 16706),("ju", 16689),("juan", 16664),("jue", 16657),("jun", 16647),("ka", 16474),("kai", 16470),("kan", 16465),("kang", 16459),("kao", 16452),("ke", 16448),("ken", 16433),("keng", 16429),("kong", 16427),("kou", 16423),("ku", 16419),("kua", 16412),("kuai", 16407),("kuan", 16403),("kuang", 16401),("kui", 16393),("kun", 16220),("kuo", 16216),("la", 16212),("lai", 16205),("lan", 16202),("lang", 16187),("lao", 16180),("le", 16171),("lei", 16169),("leng", 16158),("li", 16155),("lia", 15959),("lian", 15958),("liang", 15944),("liao", 15933),("lie", 15920),("lin", 15915),("ling", 15903),("liu", 15889),("long", 15878),("lou", 15707),("lu", 15701),("lv", 15681),("luan", 15667),("lue", 15661),("lun", 15659),("luo", 15652),("ma", 15640),("mai", 15631),("man", 15625),("mang", 15454),("mao", 15448),("me", 15436),("mei", 15435),("men", 15419),("meng", 15416),("mi", 15408),("mian", 15394),("miao", 15385),("mie", 15377),("min", 15375),("ming", 15369),("miu", 15363),("mo", 15362),("mou", 15183),("mu", 15180),("na", 15165),("nai", 15158),("nan", 15153),("nang", 15150),("nao", 15149),("ne", 15144),("nei", 15143),("nen", 15141),("neng", 15140),("ni", 15139),("nian", 15128),("niang", 15121),("niao", 15119),("nie", 15117),("nin", 15110),("ning", 15109),("niu", 14941),("nong", 14937),("nu", 14933),("nv", 14930),("nuan", 14929),("nue", 14928),("nuo", 14926),("o", 14922),("ou", 14921),("pa", 14914),("pai", 14908),("pan", 14902),("pang", 14894),("pao", 14889),("pei", 14882),("pen", 14873),("peng", 14871),("pi", 14857),("pian", 14678),("piao", 14674),("pie", 14670),("pin", 14668),("ping", 14663),("po", 14654),("pu", 14645),("qi", 14630),("qia", 14594),("qian", 14429),("qiang", 14407),("qiao", 14399),("qie", 14384),("qin", 14379),("qing", 14368),("qiong", 14355),("qiu", 14353),("qu", 14345),("quan", 14170),("que", 14159),("qun", 14151),("ran", 14149),("rang", 14145),("rao", 14140),("re", 14137),("ren", 14135),("reng", 14125),("ri", 14123),("rong", 14122),("rou", 14112),("ru", 14109),("ruan", 14099),("rui", 14097),("run", 14094),("ruo", 14092),("sa", 14090),("sai", 14087),("san", 14083),("sang", 13917),("sao", 13914),("se", 13910),("sen", 13907),("seng", 13906),("sha", 13905),("shai", 13896),("shan", 13894),("shang", 13878),("shao", 13870),("she", 13859),("shen", 13847),("sheng", 13831),("shi", 13658),("shou", 13611),("shu", 13601),("shua", 13406),("shuai", 13404),("shuan", 13400),("shuang", 13398),("shui", 13395),("shun", 13391),("shuo", 13387),("si", 13383),("song", 13367),("sou", 13359),("su", 13356),("suan", 13343),("sui", 13340),("sun", 13329),("suo", 13326),("ta", 13318),("tai", 13147),("tan", 13138),("tang", 13120),("tao", 13107),("te", 13096),("teng", 13095),("ti", 13091),("tian", 13076),("tiao", 13068),("tie", 13063),("ting", 13060),("tong", 12888),("tou", 12875),("tu", 12871),("tuan", 12860) ,("tui", 12858),("tun", 12852),("tuo", 12849),("wa", 12838),("wai", 12831),("wan", 12829),("wang", 12812),("wei", 12802),("wen", 12607),("weng", 12597),("wo", 12594),("wu", 12585),("xi", 12556),("xia", 12359),("xian", 12346),("xiang", 12320),("xiao", 12300),("xie", 12120),("xin", 12099),("xing", 12089),("xiong", 12074),("xiu", 12067),("xu", 12058),("xuan", 12039),("xue", 11867),("xun", 11861),("ya", 11847),("yan", 11831),("yang", 11798),("yao", 11781),("ye", 11604),("yi", 11589),("yin", 11536),("ying", 11358),("yo", 11340),("yong", 11339),("you", 11324),("yu", 11303),("yuan", 11097),("yue", 11077),("yun", 11067),("za", 11055),("zai", 11052),("zan", 11045),("zang", 11041),("zao", 11038),("ze", 11024),("zei", 11020),("zen", 11019),("zeng", 11018),("zha", 11014),("zhai", 10838),("zhan", 10832),("zhang", 10815),("zhao", 10800),("zhe", 10790),("zhen", 10780),("zheng", 10764),("zhi", 10587),("zhong", 10544),("zhou", 10533),("zhu", 10519),("zhua", 10331),("zhuai", 10329),("zhuan", 10328),("zhuang", 10322),("zhui", 10315),("zhun", 10309),("zhuo", 10307),("zi", 10296),("zong", 10281),("zou", 10274),("zu", 10270),("zuan", 10262),("zui", 10260),("zun", 10256),("zuo", 10254);
 
 -- ----------------------------
 -- Table structure for provider
@@ -1697,9 +906,9 @@ CREATE TABLE `wechat_template`
 -- Function structure for fristPinyin
 -- ----------------------------
 DROP FUNCTION IF EXISTS `fristPinyin`;
-delimiter;;
+delimiter $
 CREATE
-DEFINER=`root`@`%` FUNCTION `fristPinyin`(P_NAME VARCHAR(255)) RETURNS varchar(255) CHARSET utf8
+FUNCTION `fristPinyin`(P_NAME VARCHAR(255)) RETURNS varchar(255) CHARSET utf8
 BEGIN
     DECLARE
 V_RETURN VARCHAR(255);
@@ -1715,182 +924,137 @@ V_RETURN = ELT(INTERVAL(CONV(HEX(left(CONVERT(P_NAME USING gbk),1)),16,10),
 END IF;
 RETURN V_RETURN;
 END
-;;
+$
 delimiter ;
 
 -- ----------------------------
 -- Function structure for Num_char_extract
 -- ----------------------------
-DROP FUNCTION IF EXISTS `Num_char_extract`;
-delimiter;;
-CREATE
-DEFINER=`root`@`%` FUNCTION `Num_char_extract`(Varstring VARCHAR(100)CHARSET utf8, is_deleted INT) RETURNS varchar(50) CHARSET utf8
+DELIMITER $$
+
+DROP FUNCTION IF EXISTS `num_char_extract`$$
+
+CREATE FUNCTION `num_char_extract`(Varstring VARCHAR(100)CHARSET utf8, flag INT) RETURNS VARCHAR(50) CHARSET utf8
 BEGIN
-	DECLARE
-len INT DEFAULT 0;
-	DECLARE
-Tmp VARCHAR(100) DEFAULT '';
-	SET
-len=CHAR_LENGTH(Varstring);
-	IF
-is_deleted = 0
-	THEN
-		WHILE len > 0 DO
-		IF MID(Varstring,len,1)REGEXP'[0-9]' THEN
-		SET Tmp=CONCAT(Tmp,MID(Varstring,len,1));
-END IF;
-		SET
-len = len - 1;
-END WHILE;
-	ELSEIF
-is_deleted=1
-	THEN
-		WHILE len > 0 DO
-		IF (MID(Varstring,len,1)REGEXP '[a-zA-Z]')
-		THEN
-		SET Tmp=CONCAT(Tmp,MID(Varstring,len,1));
-END IF;
-		SET
-len = len - 1;
-END WHILE;
-	ELSEIF
-is_deleted=2
-	THEN
-		WHILE len > 0 DO
-		IF ( (MID(Varstring,len,1)REGEXP'[0-9]')
-		OR (MID(Varstring,len,1)REGEXP '[a-zA-Z]') )
-		THEN
-		SET Tmp=CONCAT(Tmp,MID(Varstring,len,1));
-END IF;
-		SET
-len = len - 1;
-END WHILE;
-	ELSEIF
-is_deleted=3
-	THEN
-		WHILE len > 0 DO
-		IF NOT (MID(Varstring,len,1)REGEXP '^[u0391-uFFE5]')
-		THEN
-		SET Tmp=CONCAT(Tmp,MID(Varstring,len,1));
-END IF;
-		SET
-len = len - 1;
-END WHILE;
-ELSE
-		SET Tmp = 'Error: The second paramter should be in (0,1,2,3)';
-RETURN Tmp;
-END IF;
-RETURN REVERSE(Tmp);
-END
-;;
-delimiter ;
+    DECLARE len INT DEFAULT 0;
+    DECLARE Tmp VARCHAR(100) DEFAULT '';
+    SET len=CHAR_LENGTH(Varstring);
+    IF flag = 0
+    THEN
+        WHILE len > 0 DO
+        IF MID(Varstring,len,1)REGEXP'[0-9]' THEN
+        SET Tmp=CONCAT(Tmp,MID(Varstring,len,1));
+        END IF;
+        SET len = len - 1;
+        END WHILE;
+    ELSEIF flag=1
+    THEN
+        WHILE len > 0 DO
+        IF (MID(Varstring,len,1)REGEXP '[a-zA-Z]')
+        THEN
+        SET Tmp=CONCAT(Tmp,MID(Varstring,len,1));
+        END IF;
+        SET len = len - 1;
+        END WHILE;
+    ELSEIF flag=2
+    THEN
+        WHILE len > 0 DO
+        IF ( (MID(Varstring,len,1)REGEXP'[0-9]')
+        OR (MID(Varstring,len,1)REGEXP '[a-zA-Z]') )
+        THEN
+        SET Tmp=CONCAT(Tmp,MID(Varstring,len,1));
+        END IF;
+        SET len = len - 1;
+        END WHILE;
+    ELSEIF flag=3
+    THEN
+        WHILE len > 0 DO
+        IF NOT (MID(Varstring,len,1)REGEXP '^[u0391-uFFE5]')
+        THEN
+        SET Tmp=CONCAT(Tmp,MID(Varstring,len,1));
+        END IF;
+        SET len = len - 1;
+        END WHILE;
+    ELSE
+        SET Tmp = 'Error: The second paramter should be in (0,1,2,3)';
+        RETURN Tmp;
+    END IF;
+    RETURN REVERSE(Tmp);
+    END$$
+
+DELIMITER ;
 
 -- ----------------------------
 -- Function structure for pinyin
 -- ----------------------------
 DROP FUNCTION IF EXISTS `pinyin`;
-delimiter;;
-CREATE
-DEFINER=`root`@`%` FUNCTION `pinyin`(P_NAME VARCHAR(255)) RETURNS varchar(255) CHARSET utf8
+delimiter $
+CREATE FUNCTION `pinyin`(P_NAME VARCHAR(255)) RETURNS varchar(255) CHARSET utf8
 BEGIN
-    DECLARE
-V_COMPARE VARCHAR(255);
-    DECLARE
-V_RETURN VARCHAR(255);
-    DECLARE
-I INT;
-    SET
-I = 1;
-    SET
-V_RETURN = '';
-    while
-I <= char_length(P_NAME) do
+    DECLARE V_COMPARE VARCHAR(255);
+    DECLARE V_RETURN VARCHAR(255);
+    DECLARE I INT;
+    SET I = 1;
+    SET V_RETURN = '';
+    while I < LENGTH(P_NAME) do
         SET V_COMPARE = SUBSTR(P_NAME, I, 1);
-        IF
-(V_COMPARE != '') THEN
+        IF (V_COMPARE != '') THEN
             #SET V_RETURN = CONCAT(V_RETURN, ',', V_COMPARE);
-            SET
-V_RETURN = CONCAT(V_RETURN, fristPinyin(V_COMPARE));
-            #SET
-V_RETURN = fristPinyin(V_COMPARE);
-END IF;
-        SET
-I = I + 1;
-end while;
-
-    IF
-(ISNULL(V_RETURN) or V_RETURN = '') THEN
+            SET V_RETURN = CONCAT(V_RETURN, fristPinyin(V_COMPARE));
+            #SET V_RETURN = fristPinyin(V_COMPARE);
+        END IF;
+        SET I = I + 1;
+    end while;
+    IF (ISNULL(V_RETURN) or V_RETURN = '') THEN
         SET V_RETURN = P_NAME;
-END IF;
-
-RETURN V_RETURN;
+    END IF;
+    RETURN V_RETURN;
 END
-;;
+$
 delimiter ;
 
 -- ----------------------------
 -- Function structure for to_pinyin
 -- ----------------------------
-DROP FUNCTION IF EXISTS `to_pinyin`;
-delimiter;;
-CREATE
-DEFINER=`root`@`%` FUNCTION `to_pinyin`(NAME VARCHAR(255) CHARSET gbk) RETURNS varchar(255) CHARSET gbk
+-- 建立汉字转换拼音函数
+DROP FUNCTION IF EXISTS to_pinyin;
+DELIMITER $
+CREATE FUNCTION to_pinyin(NAME VARCHAR(255) CHARSET gbk)
+RETURNS VARCHAR(255) CHARSET gbk
 BEGIN
-    DECLARE
-mycode INT;
-    DECLARE
-tmp_lcode VARCHAR(2) CHARSET gbk;
-    DECLARE
-lcode INT;
+    DECLARE mycode INT;
+    DECLARE tmp_lcode VARCHAR(2) CHARSET gbk;
+    DECLARE lcode INT;
+    DECLARE tmp_rcode VARCHAR(2) CHARSET gbk;
+    DECLARE rcode INT;
 
-    DECLARE
-tmp_rcode VARCHAR(2) CHARSET gbk;
-    DECLARE
-rcode INT;
+    DECLARE mypy VARCHAR(255) CHARSET gbk DEFAULT '';
+    DECLARE lp INT;
 
-    DECLARE
-mypy VARCHAR(255) CHARSET gbk DEFAULT '';
-    DECLARE
-lp INT;
+    SET mycode = 0;
+    SET lp = 1;
 
-    SET
-mycode = 0;
-    SET
-lp = 1;
+    SET NAME = HEX(NAME);
 
-    SET
-NAME = HEX(NAME);
-
-    WHILE
-lp < LENGTH(NAME) DO
+    WHILE lp < LENGTH(NAME) DO
 
         SET tmp_lcode = SUBSTRING(NAME, lp, 2);
-        SET
-lcode = CAST(ASCII(UNHEX(tmp_lcode)) AS UNSIGNED);
-        SET
-tmp_rcode = SUBSTRING(NAME, lp + 2, 2);
-        SET
-rcode = CAST(ASCII(UNHEX(tmp_rcode)) AS UNSIGNED);
-        IF
-lcode > 128 THEN
+        SET lcode = CAST(ASCII(UNHEX(tmp_lcode)) AS UNSIGNED);
+        SET tmp_rcode = SUBSTRING(NAME, lp + 2, 2);
+        SET rcode = CAST(ASCII(UNHEX(tmp_rcode)) AS UNSIGNED);
+        IF lcode > 128 THEN
             SET mycode =65536 - lcode * 256 - rcode ;
-SELECT CONCAT(mypy, pin_yin_)
-INTO mypy
-FROM pinyin_config
-WHERE CODE_ >= ABS(mycode)
-ORDER BY CODE_ ASC LIMIT 1;
-SET
-lp = lp + 4;
-ELSE
+            SELECT CONCAT(mypy,pin_yin_) INTO mypy FROM pinyin_config WHERE CODE_ >= ABS(mycode) ORDER BY CODE_ ASC LIMIT 1;
+            SET lp = lp + 4;
+        ELSE
             SET mypy = CONCAT(mypy,CHAR(CAST(ASCII(UNHEX(SUBSTRING(NAME, lp, 2))) AS UNSIGNED)));
-            SET
-lp = lp + 2;
-END IF;
-END WHILE;
-RETURN LOWER(mypy);
-END
-;;
-delimiter ;
+            SET lp = lp + 2;
+        END IF;
+    END WHILE;
+    RETURN LOWER(mypy);
+END;
+$
+DELIMITER ;
 
 SET
 FOREIGN_KEY_CHECKS = 1;
