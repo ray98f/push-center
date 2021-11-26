@@ -1,5 +1,6 @@
 package com.zte.msg.pushcenter.pccore.core.pusher;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -103,6 +104,7 @@ public class WeChatPusher extends BasePusher {
             Req req = new Req(weChatMessage, config);
             long start = System.currentTimeMillis();
             Res body = restTemplate.exchange(WECHAT_PUSH_URL, HttpMethod.POST, new HttpEntity<>(JSONObject.toJSON(req)), Res.class, accessKey).getBody();
+            log.error(JSONObject.toJSON(req).toString());
             int delay = (int) (System.currentTimeMillis() - start);
             weChatMessage.setDelay(delay);
             if (Objects.isNull(body)) {
@@ -289,7 +291,7 @@ public class WeChatPusher extends BasePusher {
             this.toUser = message.getOpenId();
             this.templateId = config.getWechatTemplateId();
             this.url = message.getSkipUrl();
-            this.data = message.getData();
+            this.data = JSONObject.parseObject(message.getData());
 //            this.miniProgram.setAppId(config.getAppId());
         }
 
@@ -300,7 +302,7 @@ public class WeChatPusher extends BasePusher {
         private String url;
         @JSONField(name = "miniprogram")
         private MiniProgramDTO miniProgram;
-        private String data;
+        private JSONObject data;
 
         @Data
         public static class MiniProgramDTO {
