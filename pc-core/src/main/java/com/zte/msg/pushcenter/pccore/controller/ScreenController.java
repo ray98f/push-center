@@ -48,8 +48,7 @@ public class ScreenController {
     @GetMapping("/push-delay")
     @ApiOperation("信息推送延迟数据")
     public DataResponse<PushDelayResDTO> getPushDelay() {
-
-        return DataResponse.of(screenService.getAvgDelayByFifteenMinute(1611737500000L));
+        return DataResponse.of(screenService.getAvgDelayByFifteenMinute(System.currentTimeMillis()));
     }
 
     /**
