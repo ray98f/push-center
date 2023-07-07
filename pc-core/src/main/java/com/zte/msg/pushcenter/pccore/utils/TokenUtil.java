@@ -214,6 +214,16 @@ public class TokenUtil {
         return userName;
     }
 
+    public static String getCurrentUserId() {
+        String userName;
+        try {
+            userName = RequestHeaderContext.getInstance().getUser().getUserId();
+        } catch (Exception e) {
+            userName = "";
+        }
+        return userName;
+    }
+
     /**
      * Simple
      * 校验token

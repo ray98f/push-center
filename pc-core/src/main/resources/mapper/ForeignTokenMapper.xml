@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zte.msg.pushcenter.pccore.mapper.ForeignTokenMapper">
+
+
+    <insert id="saveToken" parameterType="com.zte.msg.pushcenter.pccore.entity.ForeignToken">
+        insert into foreign_token(id, sys, token, expire, create_at, create_by)
+        values (#{id, jdbcType=VARCHAR}, #{sys, jdbcType=VARCHAR}, #{token, jdbcType=VARCHAR},
+                #{expire}, now(), #{createBy, jdbcType=VARCHAR})
+    </insert>
+
+    <update id="resetToken" parameterType="com.zte.msg.pushcenter.pccore.entity.ForeignToken">
+        update foreign_token
+        set token = #{token, jdbcType=VARCHAR}, expire = #{expire, jdbcType=VARCHAR}, update_by = #{updateBy, jdbcType=VARCHAR}, update_at = now()
+        where sys = #{sys, jdbcType=VARCHAR}
+    </update>
+
+    <delete id="deleteToken">
+        delete from foreign_token where sys = #{sys, jdbcType=VARCHAR};
+    </delete>
+
+    <select id="getToken" resultType="com.zte.msg.pushcenter.pccore.entity.ForeignToken">
+        select id, sys, token, expire
+        from foreign_token
+        where sys = #{sys, jdbcType=VARCHAR}
+    </select>
+</mapper>

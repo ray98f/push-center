@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -20,6 +21,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @MapperScan("com/zte/msg/pushcenter/pccore/mapper")
 @EntityScan("com/zte/msg/pushcenter/pccore/entity")
 @EnableAsync
+@EnableCaching
 @ServletComponentScan("com.zte.msg.pushcenter.pccore.config.filter")
 public class Application {
 

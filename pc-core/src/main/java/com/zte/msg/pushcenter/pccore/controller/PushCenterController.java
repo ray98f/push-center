@@ -5,15 +5,13 @@ import com.zte.msg.pushcenter.pccore.core.pusher.msg.MailMessage;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.SmsMessage;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.WeChatMessage;
 import com.zte.msg.pushcenter.pccore.dto.DataResponse;
-import com.zte.msg.pushcenter.pccore.dto.req.AppMessageReqDTO;
-import com.zte.msg.pushcenter.pccore.dto.req.MailMessageReqDTO;
-import com.zte.msg.pushcenter.pccore.dto.req.SmsMessageReqDTO;
-import com.zte.msg.pushcenter.pccore.dto.req.WeChatMessageReqDTO;
+import com.zte.msg.pushcenter.pccore.dto.req.*;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.service.PushCenterService;
 import com.zte.msg.pushcenter.pccore.utils.PatternUtils;
 import com.zte.msg.pushcenter.pccore.annotation.PermissionCheck;
+import com.zte.msg.pushcenter.pccore.validation.RegisterUser;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
@@ -86,4 +84,6 @@ public class PushCenterController {
         pushCenterService.pushApp(appMessage);
         return DataResponse.success();
     }
+
+
 }

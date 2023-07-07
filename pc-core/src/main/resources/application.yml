@@ -4,7 +4,7 @@ server:
     uri-encoding: UTF-8
 spring:
   profiles:
-    active: dev-102
+    active: dev-95
   messages:
     basename: i18n/messages
   application:

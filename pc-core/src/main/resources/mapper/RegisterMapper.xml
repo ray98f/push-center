@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zte.msg.pushcenter.pccore.mapper.RegisterMapper">
+
+
+    <insert id="register" parameterType="com.zte.msg.pushcenter.pccore.dto.req.RegisterReqDTO">
+        insert into user_register_info
+        (sys_code, cid, phone, mobile_version, user_id, created_by, created_at) values
+        (#{sysCode}, #{cid}, #{phone}, #{mobileVersion}, #{userId}, #{createBy}, now())
+    </insert>
+
+    <update id="modifyRegisterInfo" parameterType="com.zte.msg.pushcenter.pccore.dto.req.RegisterReqDTO">
+        update user_register_info
+        set cid = #{cid}, updated_at = now(), updated_by = #{updateBy}
+        <if test="phone != null and phone != ''">
+            ,phone = #{phone}
+        </if>
+        <if test="mobileVersion != null and mobileVersion != ''">
+            ,mobile_version = #{mobileVersion}
+        </if>
+        where sys_code = #{sysCode} and user_id = #{userId} and is_deleted = 0
+    </update>
+
+    <update id="deleteRegisterInfo" parameterType="com.zte.msg.pushcenter.pccore.dto.req.RegisterReqDTO">
+        update user_register_info set is_deleted = 1, updated_at=now(), update_by=#{updateBy} where user_id = #{userId, jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectRegisterInfo" resultType="com.zte.msg.pushcenter.pccore.dto.res.RegisterResDTO">
+        select sys_code, cid, user_id, phone, mobile_version, created_at, updated_at
+        from user_register_info
+        where is_deleted = 0
+        <if test="userId != null and userId != ''">
+            and user_id = #{userId}
+        </if>
+        <if test="sysCode != null and sysCode != ''">
+            and sys_code = #{sysCode}
+        </if>
+    </select>
+
+
+    <select id="selectRegisterInfos" resultType="String">
+        select cid
+        from user_register_info
+        where is_deleted = 0
+        <if test="userId != null and userId.size() > 0">
+            user_id in
+            <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="sysCode != null and sysCode != ''">
+            and sys_code = #{sysCode}
+        </if>
+    </select>
+</mapper>

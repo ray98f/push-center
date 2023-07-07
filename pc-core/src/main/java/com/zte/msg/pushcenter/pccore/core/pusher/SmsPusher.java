@@ -1,5 +1,6 @@
 package com.zte.msg.pushcenter.pccore.core.pusher;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.zte.msg.pushcenter.pccore.core.pusher.base.BasePusher;
 import com.zte.msg.pushcenter.pccore.core.pusher.base.Config;
@@ -84,9 +85,11 @@ public class SmsPusher extends BasePusher {
             log.error("模版: {} 参数列表数量不匹配，短信发送失败..", smsMessage.getTemplateId());
             throw new CommonException(ErrorCode.SMS_TEMPLATE_PARAMS_NOT_MATCH);
         }
-        for (int i = 0; i < smsConfig.getParams().size(); i++) {
-            smsMessage.getVars().put(smsConfig.getParams().get(i), smsMessage.getVars().remove(varsKeySet[i]));
-        }
+//        log.info("======smsMessage:" + JSON.toJSONString(smsMessage) + "======");
+//        log.info("======smsConfig:" + JSON.toJSONString(smsConfig) + "======");
+//        for (int i = 0; i < smsConfig.getParams().size(); i++) {
+//            smsMessage.getVars().put(smsConfig.getParams().get(i), smsMessage.getVars().remove(varsKeySet[i]));
+//        }
         Map<String, Object> paramMap = getParamMap(smsConfig, smsMessage, smsConfig.getConfig().getInnerMap());
         Class<?> scriptClass = scriptManager.getScriptClass(smsConfig.getScriptTag());
         List<PcScript.Res> resList = new ArrayList<>(smsMessage.getPhoneNum().length);
@@ -95,6 +98,8 @@ public class SmsPusher extends BasePusher {
                 smsMessage.setIndex(i);
                 String phoneNum = smsMessage.getPhoneNum()[i];
                 paramMap.put(ParamConstants.PHONE_NUM, phoneNum);
+
+                log.info("======params:" + JSON.toJSONString(paramMap) + "======");
                 PcScript.Res res = null;
                 try {
                     log.info("success find script class : name {}, obj :{}", smsConfig.getScriptTag(), scriptClass.getName());

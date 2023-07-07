@@ -5,27 +5,23 @@ import com.zte.msg.pushcenter.pccore.core.pusher.msg.MailMessage;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.SmsMessage;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.WeChatMessage;
 import com.zte.msg.pushcenter.pccore.dto.DataResponse;
-import com.zte.msg.pushcenter.pccore.dto.req.AppMessageReqDTO;
-import com.zte.msg.pushcenter.pccore.dto.req.MailMessageReqDTO;
-import com.zte.msg.pushcenter.pccore.dto.req.SmsMessageReqDTO;
-import com.zte.msg.pushcenter.pccore.dto.req.WeChatMessageReqDTO;
+import com.zte.msg.pushcenter.pccore.dto.req.*;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
 import com.zte.msg.pushcenter.pccore.service.PushCenterService;
 import com.zte.msg.pushcenter.pccore.utils.Constants;
 import com.zte.msg.pushcenter.pccore.utils.MapUtils;
 import com.zte.msg.pushcenter.pccore.utils.SignUtils;
+import com.zte.msg.pushcenter.pccore.validation.RegisterUser;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -102,5 +98,30 @@ public class OpenPushCenterController {
         AppMessage appMessage = new AppMessage().build(reqDTO);
         pushCenterService.pushApp(appMessage);
         return DataResponse.success();
+    }
+
+    @PostMapping(value = "/register")
+    @ApiOperation(value = "注册用户ID")
+    public <T> DataResponse<T> registerUser(@Validated(RegisterUser.class) @RequestBody RegisterReqDTO reqDTO) {
+
+        pushCenterService.register(reqDTO);
+        return DataResponse.success();
+    }
+
+
+    @GetMapping(value = "/cid")
+    @ApiOperation(value = "获取用户ID")
+    public DataResponse<String> getCid(@RequestParam String sysCode,
+                                       @RequestParam String userId) {
+
+        return DataResponse.of(pushCenterService.getCid(sysCode, userId));
+    }
+
+    @GetMapping(value = "/cids")
+    @ApiOperation(value = "获取用户ID")
+    public DataResponse<List<String>> getCids(@RequestParam String sysCode,
+                                              @RequestParam List<String> userId) {
+
+        return DataResponse.of(pushCenterService.getCids(sysCode, userId));
     }
 }
