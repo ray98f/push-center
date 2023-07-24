@@ -29,12 +29,8 @@
         select sys_code, cid, user_id, phone, mobile_version, created_at, updated_at
         from user_register_info
         where is_deleted = 0
-        <if test="userId != null and userId != ''">
-            and user_id = #{userId}
-        </if>
-        <if test="sysCode != null and sysCode != ''">
-            and sys_code = #{sysCode}
-        </if>
+        and user_id = #{userId}
+        and sys_code = #{sysCode}
     </select>
 
 
@@ -42,14 +38,10 @@
         select cid
         from user_register_info
         where is_deleted = 0
-        <if test="userId != null and userId.size() > 0">
-            user_id in
-            <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
-                #{item}
-            </foreach>
-        </if>
-        <if test="sysCode != null and sysCode != ''">
-            and sys_code = #{sysCode}
-        </if>
+        and user_id in
+        <foreach collection="userIds" index="index" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        and sys_code = #{sysCode}
     </select>
 </mapper>

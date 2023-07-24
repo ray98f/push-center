@@ -117,11 +117,9 @@ public class OpenPushCenterController {
         return DataResponse.of(pushCenterService.getCid(sysCode, userId));
     }
 
-    @GetMapping(value = "/cids")
+    @PostMapping(value = "/cids")
     @ApiOperation(value = "获取用户ID")
-    public DataResponse<List<String>> getCids(@RequestParam String sysCode,
-                                              @RequestParam List<String> userId) {
-
-        return DataResponse.of(pushCenterService.getCids(sysCode, userId));
+    public DataResponse<List<String>> getCids(@RequestBody CidsReqDTO cidsReqDTO) {
+        return DataResponse.of(pushCenterService.getCids(cidsReqDTO));
     }
 }

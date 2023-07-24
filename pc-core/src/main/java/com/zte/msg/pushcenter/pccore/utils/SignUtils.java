@@ -1,6 +1,7 @@
 package com.zte.msg.pushcenter.pccore.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.zte.msg.pushcenter.pccore.dto.req.SmsMessageReqDTO;
 import com.zte.msg.pushcenter.pccore.enums.ErrorCode;
 import com.zte.msg.pushcenter.pccore.exception.CommonException;
@@ -47,6 +48,7 @@ public class SignUtils {
     }
 
     public static StringBuilder mapToString(Map<String, Object> paramsMap) {
+        log.info("mapToString:" + JSONObject.toJSONString(paramsMap));
         Set<String> keySet = paramsMap.keySet();
         List<String> paramNames = new ArrayList<>(keySet);
         // 请求参数按参数名升序排序
@@ -54,6 +56,7 @@ public class SignUtils {
         StringBuilder paramNameValue = new StringBuilder();
         // 拼接参数名及参数值
         for (String paramName : paramNames) {
+            if (Objects.isNull(paramsMap.get(paramName))) continue;
             if (paramsMap.get(paramName) instanceof Map){
                 Map<String, Object> map = new TreeMap<>((HashMap<String, Object>) paramsMap.get(paramName));
                 paramNameValue.append(paramName).append(map);

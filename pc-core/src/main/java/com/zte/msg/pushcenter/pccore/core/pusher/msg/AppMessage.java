@@ -28,6 +28,10 @@ public class AppMessage extends Message {
 
     private String content;
 
+    private String pcUrl;
+
+    private String mobileUrl;
+
     public AppMessage build(AppMessageReqDTO reqDTO) {
 
         this.setPushMethod(PushMethods.APP);

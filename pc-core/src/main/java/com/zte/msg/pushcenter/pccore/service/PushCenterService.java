@@ -5,6 +5,7 @@ import com.zte.msg.pushcenter.pccore.core.pusher.msg.AppMessage;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.MailMessage;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.SmsMessage;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.WeChatMessage;
+import com.zte.msg.pushcenter.pccore.dto.req.CidsReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.RegisterReqDTO;
 
 import java.util.List;
@@ -58,5 +59,5 @@ public interface PushCenterService {
 
     String getCid(String sysCode, String userId);
 
-    List<String> getCids(String sysCode, List<String> userIds);
+    List<String> getCids(CidsReqDTO cidsReqDTO);
 }

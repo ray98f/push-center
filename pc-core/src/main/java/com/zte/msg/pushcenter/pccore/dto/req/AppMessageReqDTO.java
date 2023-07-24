@@ -42,4 +42,8 @@ public class AppMessageReqDTO extends PushReqDTO {
     @ApiModelProperty(value = "内容")
     private String content;
 
+    private String pcUrl;
+
+    private String mobileUrl;
+
 }

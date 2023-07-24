@@ -10,6 +10,7 @@ import com.zte.msg.pushcenter.pccore.core.pusher.msg.AppMessage;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.MailMessage;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.SmsMessage;
 import com.zte.msg.pushcenter.pccore.core.pusher.msg.WeChatMessage;
+import com.zte.msg.pushcenter.pccore.dto.req.CidsReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.req.RegisterReqDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.ProviderResDTO;
 import com.zte.msg.pushcenter.pccore.dto.res.RegisterResDTO;
@@ -26,8 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * description:
@@ -117,15 +117,18 @@ public class PushCenterServiceImpl implements PushCenterService {
     }
 
     @Override
-    public List<String> getCids(String sysCode, List<String> userIds) {
-        if (StringUtils.isBlank(sysCode) || Objects.isNull(userIds)) {
+    public List<String> getCids(CidsReqDTO cidsReqDTO) {
+        if (Objects.isNull(cidsReqDTO) || StringUtils.isBlank(cidsReqDTO.getSysCode())
+                || Objects.isNull(cidsReqDTO.getUserIds()) || cidsReqDTO.getUserIds().size() <= 0) {
             throw new CommonException(ErrorCode.PARAM_ERROR);
         }
         RegisterReqDTO dto = new RegisterReqDTO();
-        dto.setSysCode(sysCode);
-        dto.setUserIds(userIds);
+        dto.setSysCode(cidsReqDTO.getSysCode());
+        dto.setUserIds(cidsReqDTO.getUserIds());
+
         List<String> res = registerMapper.selectRegisterInfos(dto);
-        return res;
+        Set<String> ss = new HashSet<>(res);
+        return new ArrayList<>(ss);
     }
 
     private void checkProviderType(Message message, Long providerId) {
