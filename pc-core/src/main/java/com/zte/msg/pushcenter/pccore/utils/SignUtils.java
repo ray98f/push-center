@@ -76,7 +76,8 @@ public class SignUtils {
     public static String generateOpenSign(Map<String, Object> paramsMap, Long appId) {
         StringBuilder paramNameValue = mapToString(paramsMap);
         // 拼接密钥
-        String secret = service.selectAppSecret(appId);
+        //String secret = service.selectAppSecret(appId);
+        String secret = "19f327bcddb3413aa88d91f8dc3dbfc496Hfrtpj0E5Yx1VV";//TODO
         if (StringUtils.isBlank(secret)) {
             throw new CommonException(ErrorCode.SECRET_NOT_EXIST);
         }
@@ -99,7 +100,7 @@ public class SignUtils {
         SmsMessageReqDTO smsMessageReqDTO = new SmsMessageReqDTO();
         smsMessageReqDTO.setTemplateId(1L);
         smsMessageReqDTO.setPhoneNum(new String[]{"1111", "2222"});
-        Map<String, String> data = new HashMap<>(16);
+        LinkedHashMap<String, String> data = new LinkedHashMap<>(16);
         data.put("aa", "deadened");
         data.put("bb", "referrer");
         data.put("cc", "trotter");

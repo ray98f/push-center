@@ -139,7 +139,7 @@ public class WarnHandler {
 
     private void pushSms(Reference reference) {
         String[] phoneNums = warnConfig.getUsers().stream().map(User::getPhone).toArray(String[]::new);
-        Map<String, String> var = new HashMap<>(8);
+        LinkedHashMap<String, String> var = new LinkedHashMap<>(8);
         SmsPusher.SmsConfig smsConfig = pushCenterService.getSmsConfig(warnConfig.getSmsTemplateId());
         List<String> params = smsConfig.getParams();
         if (params.size() < VAR_COUNT) {

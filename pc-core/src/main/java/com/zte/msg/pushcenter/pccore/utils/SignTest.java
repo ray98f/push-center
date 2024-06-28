@@ -14,6 +14,7 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -23,6 +24,10 @@ import java.util.UUID;
 public class SignTest {
 
     private static void sms() throws IOException {
+        //EIP
+        //zte1679380975521dg260
+        //19f327bcddb3413aa88d91f8dc3dbfc496Hfrtpj0E5Yx1VV
+
         SmsMessageReqDTO smsMessageReqDTO = new SmsMessageReqDTO();
         smsMessageReqDTO.setMessageId(UUID.randomUUID().toString());
         Long appId = 3L;
@@ -31,15 +36,23 @@ public class SignTest {
         smsMessageReqDTO.setCallBackUrl(null);
         Long requestTime = System.currentTimeMillis();
         smsMessageReqDTO.setRequestTime(requestTime);
-        smsMessageReqDTO.setPhoneNum(new String[]{"13588xxxx37", "13958xxxx87"});
-        smsMessageReqDTO.setTemplateId(4L);
-        Map<String, String> vars = new HashMap<>(16);
-        vars.put("a", "123456");
+        smsMessageReqDTO.setPhoneNum(new String[]{"15858289644"});
+        smsMessageReqDTO.setTemplateId(59L);
+        LinkedHashMap<String, String> vars = new LinkedHashMap<>(16);
+        vars.put("instName", "192.168.1.134");
+        vars.put("year", "2024");
+        vars.put("month", "1");
+        vars.put("day", "25");
+        vars.put("when", "8");
+        vars.put("points", "47");
+        vars.put("seconds", "50");
+        vars.put("alarmName", "唉都是浮动浮动");
+        vars.put("alarmDetai", "XJSDKFJDK");
         smsMessageReqDTO.setVars(vars);
         smsMessageReqDTO.setSign(SignUtils.generateOpenSign(MapUtils.objectToMap(smsMessageReqDTO), appId));
         // 发送邮件通知
         CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpPost httpPost = new HttpPost("http://wshmang.f3322.net:40323/api/v1/open/push/sms");
+        HttpPost httpPost = new HttpPost("http://sms.wzmtr.com:9999/api/v1/open/push/sms");
         httpPost.setHeader("Content-Type", "application/json;charset=utf8");
         String jsonString = JSON.toJSONString(smsMessageReqDTO);
         StringEntity entity = new StringEntity(jsonString, "UTF-8");
@@ -134,8 +147,8 @@ public class SignTest {
 
     public static void main(String[] args) throws IOException {
         sms();
-        mail();
+/*        mail();
         wechat();
-        app();
+        app();*/
     }
 }

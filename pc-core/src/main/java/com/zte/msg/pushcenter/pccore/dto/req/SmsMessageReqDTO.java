@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotNull;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -29,6 +30,6 @@ public class SmsMessageReqDTO extends PushReqDTO {
     private Long templateId;
 
     @ApiModelProperty(value = "模版变量键值对")
-    private Map<String, String> vars;
+    private LinkedHashMap<String, String> vars;
 
 }

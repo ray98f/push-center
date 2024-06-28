@@ -6,10 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author frp
@@ -76,7 +73,7 @@ public class ObjectUtils {
 
     public static void main(String[] args) {
         SmsMessageReqDTO smsMessageReqDTO = new SmsMessageReqDTO();
-        Map<String, String> map = new HashMap<>(16);
+        LinkedHashMap<String, String> map = new LinkedHashMap<>(16);
         map.put("aaa","chentong");
         map.put("bbb","fengruipeng");
         map.put("ccc","chenshengpu");
